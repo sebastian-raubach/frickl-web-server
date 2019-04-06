@@ -1,0 +1,90 @@
+<project name="Frickl" basedir="." default="compile8">
+
+	<property file="build.properties"/>
+
+	<property name="src" location="src"/>
+	<property name="res" value="res"/>
+	<property name="lib" location="lib"/>
+	<property name="cls" location="web/WEB-INF/classes"/>
+	<property name="web" location="web"/>
+
+	<property name="path" value="${deploy.name}/v${api.version}"/>
+
+	<property name="jar" value="frickl.jar"/>
+	<property name="war" value="${project.name}.war"/>
+
+	<!-- Development classpath -->
+	<path id="project.classpath">
+		<fileset dir="${lib}"/>
+	</path>
+
+	<!-- Runtime classpath (manifest formatted) -->
+	<manifestclasspath jarfile="${jar}" property="jar.classpath">
+		<classpath>
+			<fileset dir="${lib}">
+				<exclude name="**/lib-devel/**"/>
+			</fileset>
+		</classpath>
+	</manifestclasspath>
+
+	<target name="clean">
+		<delete failonerror="false" includeemptydirs="true">
+			<fileset dir="${cls}" includes="**/*"/>
+			<fileset file="${jar}"/>
+		</delete>
+	</target>
+
+	<target name="compile8" depends="clean">
+		<javac debug="true" destdir="${cls}" includeantruntime="false" source="8" srcdir="${src}" target="8">
+			<src path="${src}"/>
+			<classpath refid="project.classpath"/>
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile8">
+		<jar jarfile="${jar}">
+			<fileset dir="${cls}"/>
+			<manifest>
+				<attribute name="Main-Class" value="jhi.seedstore.server.Seedstore"/>
+				<attribute name="Class-Path" value="${jar.classpath}"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="war" depends="jar">
+		<copy
+			file="web/context.xml.template"
+			overwrite="true"
+			tofile="web/context.xml">
+			<filterset>
+				<filter token="database.username" value="${database.username}"/>
+				<filter token="database.password" value="${database.password}"/>
+				<filter token="database.url" value="${database.url}"/>
+				<filter token="api.version" value="${api.version}"/>
+			</filterset>
+		</copy>
+
+		<war destfile="${war}" update="false">
+			<webinf dir="web/WEB-INF"/>
+			<lib dir="${lib}" excludes="**/lib-devel/**"/>
+			<lib file="${jar}"/>
+
+			<zipfileset dir="." includes="logging.properties" prefix="WEB-INF/classes"/>
+
+			<metainf file="web/context.xml"/>
+		</war>
+	</target>
+
+	<target name="undeploy">
+		<taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask" classpathref="project.classpath"/>
+		<undeploy failOnError="false" password="${tomcat.manager.password}" path="/${path}"
+				  url="${tomcat.manager.url}" username="${tomcat.manager.username}"/>
+	</target>
+
+	<target name="deploy" depends="war, undeploy">
+		<taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" classpathref="project.classpath"/>
+		<deploy password="${tomcat.manager.password}" path="/${path}" url="${tomcat.manager.url}"
+				username="${tomcat.manager.username}" war="${project.name}.war"/>
+	</target>
+
+</project>
