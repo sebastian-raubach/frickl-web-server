@@ -17,6 +17,7 @@ import static raubach.fricklweb.server.database.tables.Images.*;
 public class ImageResource extends PaginatedServerResource
 {
 	private Integer albumId = null;
+	private Integer imageId = null;
 
 	@Override
 	protected void doInit()
@@ -31,6 +32,14 @@ public class ImageResource extends PaginatedServerResource
 		catch (Exception e)
 		{
 		}
+
+		try
+		{
+			imageId = Integer.parseInt(getRequestAttributes().get("imageId").toString());
+		}
+		catch (Exception e)
+		{
+		}
 	}
 
 	@Get("json")
@@ -38,11 +47,26 @@ public class ImageResource extends PaginatedServerResource
 	{
 		if (albumId != null)
 		{
-			try (SelectSelectStep<Record> select = Database.select())
+			try (SelectSelectStep<Record> select = Database.context().select())
 			{
 				return select.from(IMAGES)
 							 .where(IMAGES.ALBUM_ID.eq(albumId))
 							 .offset(pageSize * currentPage)
+							 .limit(pageSize)
+							 .fetch()
+							 .into(Images.class);
+			}
+			catch (SQLException e)
+			{
+				throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+			}
+		}
+		else if (imageId != null)
+		{
+			try (SelectSelectStep<Record> select = Database.context().select())
+			{
+				return select.from(IMAGES)
+							 .where(IMAGES.ID.eq(imageId))
 							 .fetch()
 							 .into(Images.class);
 			}

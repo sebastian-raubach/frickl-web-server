@@ -36,7 +36,7 @@ public class TagResource extends PaginatedServerResource
 	@Get("json")
 	public List<Tags> getJson()
 	{
-		try (SelectSelectStep<Record> select = Database.select())
+		try (SelectSelectStep<Record> select = Database.context().select())
 		{
 			SelectJoinStep<Record> step = select.from(TAGS);
 

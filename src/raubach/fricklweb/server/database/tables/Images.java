@@ -12,6 +12,8 @@ import java.util.*;
 
 import javax.annotation.*;
 
+import raubach.fricklweb.server.binding.*;
+import raubach.fricklweb.server.computed.*;
 import raubach.fricklweb.server.database.*;
 import raubach.fricklweb.server.database.tables.records.*;
 
@@ -34,7 +36,7 @@ public class Images extends TableImpl<ImagesRecord>
 	 * The reference instance of <code>frickl.images</code>
 	 */
 	public static final  Images                              IMAGES           = new Images();
-	private static final long                                serialVersionUID = 1790479921;
+	private static final long                                serialVersionUID = 126077830;
 	/**
 	 * The column <code>frickl.images.id</code>.
 	 */
@@ -44,10 +46,9 @@ public class Images extends TableImpl<ImagesRecord>
 	 */
 	public final         TableField<ImagesRecord, String>    PATH             = createField("path", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
 	/**
-	 * @deprecated Unknown data type. Please define an explicit {@link org.jooq.Binding} to specify how this type should be handled. Deprecation can be turned off using {@literal <deprecationOnUnknownTypes/>} in your code generator configuration.
+	 * The column <code>frickl.images.exif</code>.
 	 */
-	@java.lang.Deprecated
-	public final         TableField<ImagesRecord, Object>    EXIF             = createField("exif", org.jooq.impl.DefaultDataType.getDefaultDataType("\"frickl\".\"images_exif\""), this, "");
+	public final         TableField<ImagesRecord, Exif>      EXIF             = createField("exif", org.jooq.impl.DefaultDataType.getDefaultDataType("\"frickl\".\"images_exif\""), this, "", new JsonExifBinding());
 	/**
 	 * The column <code>frickl.images.album_id</code>.
 	 */

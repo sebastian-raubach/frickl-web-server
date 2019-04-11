@@ -12,11 +12,12 @@ public class ApplicationListener implements ServletContextListener
 		String username = ctx.getInitParameter("username");
 		String password = ctx.getInitParameter("password");
 		Database.init(database, username, password);
+
+		Frickl.BASE_PATH = ctx.getInitParameter("basePath");
 	}
 
 	@Override
 	public void contextDestroyed(ServletContextEvent servletContextEvent)
 	{
-
 	}
 }

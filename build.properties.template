@@ -6,4 +6,5 @@ database.password=
 database.url=jdbc:mysql://localhost:3306/frickl
 project.name=
 deploy.name=
+base.path=
 api.version=

@@ -22,6 +22,35 @@
 
 	<generator>
 		<database>
+			<forcedTypes>
+				<forcedType>
+
+					<!-- Specify the Java type of your custom type. This corresponds to the Binding's <U> type. -->
+					<userType>raubach.fricklweb.server.computed.Exif</userType>
+
+					<!-- Associate that custom type with your binding. -->
+					<binding>raubach.fricklweb.server.binding.JsonExifBinding</binding>
+
+					<!-- Add a Java regular expression matching fully-qualified columns. Use the pipe to separate several expressions.
+
+						 If provided, both "expressions" and "types" must match. -->
+					<expression>.*</expression>
+
+					<!-- Add a Java regular expression matching data types to be forced to
+						 have this type.
+
+						 Data types may be reported by your database as:
+						 - NUMBER              regexp suggestion: NUMBER
+						 - NUMBER(5)           regexp suggestion: NUMBER\(5\)
+						 - NUMBER(5, 2)        regexp suggestion: NUMBER\(5,\s*2\)
+						 - any other form
+
+						 It is thus recommended to use defensive regexes for types.
+
+						 If provided, both "expressions" and "types" must match. -->
+					<types>.*json.*</types>
+				</forcedType>
+			</forcedTypes>
 			<!-- The database dialect from jooq-meta. Available dialects are
 				 named org.jooq.meta.[database].[database]Database.
 

@@ -18,6 +18,7 @@ public class AlbumResource extends PaginatedServerResource
 {
 	public static final String PARAM_PARENT_ALBUM_ID = "parentAlbumId";
 
+	private Integer albumId       = null;
 	private Integer parentAlbumId = null;
 
 	@Override
@@ -26,6 +27,13 @@ public class AlbumResource extends PaginatedServerResource
 	{
 		super.doInit();
 
+		try
+		{
+			this.albumId = Integer.parseInt(getRequestAttributes().get("albumId").toString());
+		}
+		catch (Exception e)
+		{
+		}
 		try
 		{
 			this.parentAlbumId = Integer.parseInt(getQueryValue(PARAM_PARENT_ALBUM_ID));
@@ -38,12 +46,16 @@ public class AlbumResource extends PaginatedServerResource
 	@Get("json")
 	public List<Albums> getJson()
 	{
-		try (SelectSelectStep<Record> select = Database.select())
+		try (SelectSelectStep<Record> select = Database.context().select())
 		{
 			SelectJoinStep<Record> step = select.from(ALBUMS);
 
-			if (parentAlbumId != null)
+			if (albumId != null)
+				step.where(ALBUMS.ID.eq(albumId));
+			else if (parentAlbumId != null)
 				step.where(ALBUMS.PARENT_ALBUM_ID.eq(parentAlbumId));
+			else
+				step.where(ALBUMS.PARENT_ALBUM_ID.isNull());
 
 			return step.limit(pageSize)
 					   .offset(pageSize * currentPage)

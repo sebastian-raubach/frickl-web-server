@@ -61,6 +61,7 @@
 				<filter token="database.password" value="${database.password}"/>
 				<filter token="database.url" value="${database.url}"/>
 				<filter token="api.version" value="${api.version}"/>
+				<filter token="base.path" value="${base.path}"/>
 			</filterset>
 		</copy>
 

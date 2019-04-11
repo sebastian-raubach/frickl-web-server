@@ -14,7 +14,7 @@ import raubach.fricklweb.server.database.tables.records.*;
 
 
 /**
- * A class modelling foreign key relationships and constraints of tables of
+ * A class modelling foreign key relationships and constraints of tables of 
  * the <code>frickl</code> schema.
  */
 @Generated(

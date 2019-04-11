@@ -12,6 +12,7 @@ import java.util.*;
 
 import javax.annotation.*;
 
+import raubach.fricklweb.server.computed.*;
 import raubach.fricklweb.server.database.tables.*;
 import raubach.fricklweb.server.database.tables.records.*;
 
@@ -80,10 +81,9 @@ public class ImagesDao extends DAOImpl<ImagesRecord, raubach.fricklweb.server.da
 	}
 
 	/**
-	 * @deprecated Unknown data type. Please define an explicit {@link org.jooq.Binding} to specify how this type should be handled. Deprecation can be turned off using {@literal <deprecationOnUnknownTypes/>} in your code generator configuration.
+	 * Fetch records that have <code>exif IN (values)</code>
 	 */
-	@java.lang.Deprecated
-	public List<raubach.fricklweb.server.database.tables.pojos.Images> fetchByExif(Object... values)
+	public List<raubach.fricklweb.server.database.tables.pojos.Images> fetchByExif(Exif... values)
 	{
 		return fetch(Images.IMAGES.EXIF, values);
 	}

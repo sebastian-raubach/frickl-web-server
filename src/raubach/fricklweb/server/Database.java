@@ -27,9 +27,9 @@ public class Database
 		return DriverManager.getConnection(database, username, password);
 	}
 
-	public static SelectSelectStep<Record> select()
+	public static DSLContext context()
 		throws SQLException
 	{
-		return DSL.using(getConnection(), SQLDialect.MYSQL).select();
+		return DSL.using(getConnection(), SQLDialect.MYSQL);
 	}
 }
