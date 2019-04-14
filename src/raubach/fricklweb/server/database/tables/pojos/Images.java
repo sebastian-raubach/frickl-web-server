@@ -35,12 +35,12 @@ public class Images implements Serializable
     private Timestamp createdOn;
     private Timestamp updatedOn;
 
-    public Images()
-    {
-    }
+	public Images()
+	{
+	}
 
-    public Images(Images value)
-    {
+	public Images(Images value)
+	{
         this.id = value.id;
         this.path = value.path;
         this.exif = value.exif;
@@ -50,14 +50,14 @@ public class Images implements Serializable
     }
 
     public Images(
-        Integer id,
-        String path,
-        Exif exif,
-        Integer albumId,
-        Timestamp createdOn,
-        Timestamp updatedOn
-    )
-    {
+		Integer id,
+		String path,
+		Exif exif,
+		Integer albumId,
+		Timestamp createdOn,
+		Timestamp updatedOn
+	)
+	{
         this.id = id;
         this.path = path;
         this.exif = exif;
@@ -66,69 +66,69 @@ public class Images implements Serializable
         this.updatedOn = updatedOn;
     }
 
-    public Integer getId()
-    {
+	public Integer getId()
+	{
         return this.id;
     }
 
-    public void setId(Integer id)
-    {
+	public void setId(Integer id)
+	{
         this.id = id;
     }
 
-    public String getPath()
-    {
+	public String getPath()
+	{
         return this.path;
     }
 
-    public void setPath(String path)
-    {
+	public void setPath(String path)
+	{
         this.path = path;
     }
 
-    public Exif getExif()
-    {
+	public Exif getExif()
+	{
         return this.exif;
     }
 
-    public void setExif(Exif exif)
-    {
+	public void setExif(Exif exif)
+	{
         this.exif = exif;
     }
 
-    public Integer getAlbumId()
-    {
+	public Integer getAlbumId()
+	{
         return this.albumId;
     }
 
-    public void setAlbumId(Integer albumId)
-    {
+	public void setAlbumId(Integer albumId)
+	{
         this.albumId = albumId;
     }
 
-    public Timestamp getCreatedOn()
-    {
+	public Timestamp getCreatedOn()
+	{
         return this.createdOn;
     }
 
-    public void setCreatedOn(Timestamp createdOn)
-    {
+	public void setCreatedOn(Timestamp createdOn)
+	{
         this.createdOn = createdOn;
     }
 
-    public Timestamp getUpdatedOn()
-    {
+	public Timestamp getUpdatedOn()
+	{
         return this.updatedOn;
     }
 
-    public void setUpdatedOn(Timestamp updatedOn)
-    {
+	public void setUpdatedOn(Timestamp updatedOn)
+	{
         this.updatedOn = updatedOn;
     }
 
     @Override
-    public String toString()
-    {
+	public String toString()
+	{
         StringBuilder sb = new StringBuilder("Images (");
 
         sb.append(id);

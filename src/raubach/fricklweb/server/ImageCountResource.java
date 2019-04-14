@@ -5,25 +5,20 @@ import org.jooq.impl.*;
 import org.restlet.data.Status;
 import org.restlet.resource.*;
 
-import java.sql.Date;
 import java.sql.*;
 import java.text.*;
-import java.util.*;
-
-import raubach.fricklweb.server.database.tables.pojos.*;
 
 import static raubach.fricklweb.server.database.tables.Images.*;
 
 /**
  * @author Sebastian Raubach
  */
-public class ImageResource extends PaginatedServerResource
+public class ImageCountResource extends PaginatedServerResource
 {
 	public static final String PARAM_DATE = "date";
 
-	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	private Integer albumId = null;
-	private Integer imageId = null;
+	private SimpleDateFormat sdf     = new SimpleDateFormat("yyyy-MM-dd");
+	private Integer          albumId = null;
 
 	private String date;
 
@@ -36,13 +31,6 @@ public class ImageResource extends PaginatedServerResource
 		try
 		{
 			albumId = Integer.parseInt(getRequestAttributes().get("albumId").toString());
-		}
-		catch (Exception e)
-		{
-		}
-		try
-		{
-			imageId = Integer.parseInt(getRequestAttributes().get("imageId").toString());
 		}
 		catch (Exception e)
 		{
@@ -69,32 +57,15 @@ public class ImageResource extends PaginatedServerResource
 	}
 
 	@Get("json")
-	public List<Images> getJson()
+	public int getJson()
 	{
 		if (albumId != null)
 		{
-			try (SelectSelectStep<Record> select = Database.context().select())
+			try (SelectSelectStep<Record1<Integer>> select = Database.context().selectCount())
 			{
 				return select.from(IMAGES)
 							 .where(IMAGES.ALBUM_ID.eq(albumId))
-							 .offset(pageSize * currentPage)
-							 .limit(pageSize)
-							 .fetch()
-							 .into(Images.class);
-			}
-			catch (SQLException e)
-			{
-				throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
-			}
-		}
-		else if (imageId != null)
-		{
-			try (SelectSelectStep<Record> select = Database.context().select())
-			{
-				return select.from(IMAGES)
-							 .where(IMAGES.ID.eq(imageId))
-							 .fetch()
-							 .into(Images.class);
+							 .fetchOne(0, int.class);
 			}
 			catch (SQLException e)
 			{
@@ -103,17 +74,14 @@ public class ImageResource extends PaginatedServerResource
 		}
 		else
 		{
-			try (SelectSelectStep<Record> select = Database.context().select())
+			try (SelectSelectStep<Record1<Integer>> select = Database.context().selectCount())
 			{
-				SelectJoinStep<Record> step = select.from(IMAGES);
+				SelectJoinStep<Record1<Integer>> step = select.from(IMAGES);
 
 				if (date != null)
 					step.where(DSL.date(IMAGES.CREATED_ON).eq(getDate(date)));
 
-				return step.offset(pageSize * currentPage)
-						   .limit(pageSize)
-						   .fetch()
-						   .into(Images.class);
+				return step.fetchOne(0, int.class);
 			}
 			catch (SQLException e)
 			{

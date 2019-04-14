@@ -111,10 +111,17 @@ public class Frickl extends Application
 		// Attach the url handlers
 		attachToRouter(router, "/album", AlbumResource.class);
 		attachToRouter(router, "/album/{albumId}", AlbumResource.class);
+		attachToRouter(router, "/album/{albumId}/location", AlbumLocationResource.class);
 		attachToRouter(router, "/album/{albumId}/image", ImageResource.class);
+		attachToRouter(router, "/album/{albumId}/image/count", ImageCountResource.class);
+		attachToRouter(router, "/calendar", CalendarResource.class);
+		attachToRouter(router, "/calendar/year", CalendarYearResource.class);
+		attachToRouter(router, "/image", ImageResource.class);
+		attachToRouter(router, "/image/count", ImageCountResource.class);
 		attachToRouter(router, "/image/{imageId}", ImageResource.class);
 		attachToRouter(router, "/image/{imageId}/tag", ImageTagResource.class);
 		attachToRouter(router, "/image/{imageId}/img", ImageImageResource.class);
+		attachToRouter(router, "/stats/camera", StatsCameraResource.class);
 		attachToRouter(router, "/tag", TagResource.class);
 		attachToRouter(router, "/tag/{tagId}", TagResource.class);
 		attachToRouter(router, "/tag/{tagId}/image", TagImageResource.class);

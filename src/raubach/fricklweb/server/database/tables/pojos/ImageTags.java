@@ -28,12 +28,12 @@ public class ImageTags implements Serializable
     private Integer imageId;
     private Integer tagId;
 
-    public ImageTags()
-    {
-    }
+	public ImageTags()
+	{
+	}
 
-    public ImageTags(ImageTags value)
-    {
+	public ImageTags(ImageTags value)
+	{
         this.imageId = value.imageId;
         this.tagId = value.tagId;
     }
@@ -41,35 +41,35 @@ public class ImageTags implements Serializable
     public ImageTags(
         Integer imageId,
         Integer tagId
-    )
-    {
+	)
+	{
         this.imageId = imageId;
         this.tagId = tagId;
     }
 
-    public Integer getImageId()
-    {
+	public Integer getImageId()
+	{
         return this.imageId;
     }
 
-    public void setImageId(Integer imageId)
-    {
+	public void setImageId(Integer imageId)
+	{
         this.imageId = imageId;
     }
 
-    public Integer getTagId()
-    {
+	public Integer getTagId()
+	{
         return this.tagId;
     }
 
-    public void setTagId(Integer tagId)
-    {
+	public void setTagId(Integer tagId)
+	{
         this.tagId = tagId;
     }
 
     @Override
-    public String toString()
-    {
+	public String toString()
+	{
         StringBuilder sb = new StringBuilder("ImageTags (");
 
         sb.append(imageId);

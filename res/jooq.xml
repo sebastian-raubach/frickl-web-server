@@ -34,7 +34,7 @@
 					<!-- Add a Java regular expression matching fully-qualified columns. Use the pipe to separate several expressions.
 
 						 If provided, both "expressions" and "types" must match. -->
-					<expression>.*</expression>
+					<expression>.*\.(images)\..*</expression>
 
 					<!-- Add a Java regular expression matching data types to be forced to
 						 have this type.
@@ -129,7 +129,6 @@
 		<generate>
 			<!-- Generation flags: See advanced configuration properties -->
 			<pojos>true</pojos>
-			<daos>true</daos>
 		</generate>
 
 		<target>

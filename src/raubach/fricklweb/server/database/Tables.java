@@ -29,6 +29,11 @@ public class Tables
 	public static final Albums ALBUMS = raubach.fricklweb.server.database.tables.Albums.ALBUMS;
 
 	/**
+	 * VIEW
+	 */
+	public static final CalendarData CALENDAR_DATA = raubach.fricklweb.server.database.tables.CalendarData.CALENDAR_DATA;
+
+	/**
 	 * The table <code>frickl.images</code>.
 	 */
 	public static final Images IMAGES = raubach.fricklweb.server.database.tables.Images.IMAGES;
@@ -37,6 +42,16 @@ public class Tables
 	 * The table <code>frickl.image_tags</code>.
 	 */
 	public static final ImageTags IMAGE_TAGS = raubach.fricklweb.server.database.tables.ImageTags.IMAGE_TAGS;
+
+	/**
+	 * VIEW
+	 */
+	public static final LatLngs LAT_LNGS = raubach.fricklweb.server.database.tables.LatLngs.LAT_LNGS;
+
+	/**
+	 * VIEW
+	 */
+	public static final StatsCamera STATS_CAMERA = raubach.fricklweb.server.database.tables.StatsCamera.STATS_CAMERA;
 
 	/**
 	 * The table <code>frickl.tags</code>.
