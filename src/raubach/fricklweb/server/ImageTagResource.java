@@ -49,12 +49,13 @@ public class ImageTagResource extends PaginatedServerResource
 	{
 		if (imageTag.getImageId() != null && imageTag.getTagId() != null && imageTag.getImageId() == imageId)
 		{
-			try (DSLContext insert = Database.context())
+			// TODO: Add tag to image itself
+			try (DSLContext context = Database.context())
 			{
-				int numberOfInsertedItems = insert.insertInto(IMAGE_TAGS, IMAGE_TAGS.IMAGE_ID, IMAGE_TAGS.TAG_ID)
-												  .values(imageTag.getImageId(), imageTag.getTagId())
-												  .onDuplicateKeyIgnore()
-												  .execute();
+				int numberOfInsertedItems = context.insertInto(IMAGE_TAGS, IMAGE_TAGS.IMAGE_ID, IMAGE_TAGS.TAG_ID)
+												   .values(imageTag.getImageId(), imageTag.getTagId())
+												   .onDuplicateKeyIgnore()
+												   .execute();
 
 				return numberOfInsertedItems == 1;
 			}
@@ -75,12 +76,13 @@ public class ImageTagResource extends PaginatedServerResource
 	{
 		if (imageTag.getImageId() != null && imageTag.getTagId() != null && imageTag.getImageId() == imageId)
 		{
-			try (DSLContext insert = Database.context())
+			// TODO: Delete tag from image itself
+			try (DSLContext context = Database.context())
 			{
-				int numberOfInsertedItems = insert.deleteFrom(IMAGE_TAGS)
-												  .where(IMAGE_TAGS.IMAGE_ID.eq(imageTag.getImageId()))
-												  .and(IMAGE_TAGS.TAG_ID.eq(imageTag.getTagId()))
-												  .execute();
+				int numberOfInsertedItems = context.deleteFrom(IMAGE_TAGS)
+												   .where(IMAGE_TAGS.IMAGE_ID.eq(imageTag.getImageId()))
+												   .and(IMAGE_TAGS.TAG_ID.eq(imageTag.getTagId()))
+												   .execute();
 
 				return numberOfInsertedItems == 1;
 			}

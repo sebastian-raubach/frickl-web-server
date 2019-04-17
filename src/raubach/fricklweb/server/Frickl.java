@@ -1,12 +1,5 @@
 package raubach.fricklweb.server;
 
-import com.drew.imaging.*;
-import com.drew.lang.*;
-import com.drew.metadata.Directory;
-import com.drew.metadata.Metadata;
-import com.drew.metadata.Tag;
-import com.drew.metadata.exif.*;
-
 import org.restlet.*;
 import org.restlet.data.*;
 import org.restlet.engine.application.*;
@@ -15,7 +8,6 @@ import org.restlet.routing.*;
 import org.restlet.service.*;
 import org.restlet.util.*;
 
-import java.io.*;
 import java.util.*;
 
 /**
@@ -32,37 +24,6 @@ public class Frickl extends Application
 		setDescription("This is the server implementation of Frickl");
 		setOwner("Sebastian Raubach");
 		setAuthor("Sebastian Raubach <sebastian@raubach.co.uk>");
-	}
-
-	public static void main(String[] args)
-		throws ImageProcessingException, IOException
-	{
-		Metadata metadata = ImageMetadataReader.readMetadata(new File("C:\\Users\\sr41756\\Downloads\\32409897731_99f4091bbc_o.jpg"));
-		// See whether it has GPS data
-		Collection<GpsDirectory> gpsDirectories = metadata.getDirectoriesOfType(GpsDirectory.class);
-		for (GpsDirectory gpsDirectory : gpsDirectories)
-		{
-			// Try to read out the location, making sure it's non-zero
-			GeoLocation geoLocation = gpsDirectory.getGeoLocation();
-			if (geoLocation != null && !geoLocation.isZero())
-			{
-				// Add to our collection for use below
-				System.out.println(geoLocation);
-				break;
-			}
-		}
-
-		Iterable<Directory> directories = metadata.getDirectories();
-		Iterator<Directory> iterator = directories.iterator();
-		while (iterator.hasNext())
-		{
-			Directory dir = iterator.next();
-			Collection<Tag> tags = dir.getTags();
-			for (Tag tag : tags)
-			{
-				System.out.println(tag.getTagName() + "  " + tag.getDescription() + " " + tag.getTagTypeHex());
-			}
-		}
 	}
 
 	private void attachToRouter(Router router, String url, Class<? extends ServerResource> clazz)
@@ -110,7 +71,9 @@ public class Frickl extends Application
 		Router router = new Router(context);
 		// Attach the url handlers
 		attachToRouter(router, "/album", AlbumResource.class);
+		attachToRouter(router, "/album/count", AlbumCountResource.class);
 		attachToRouter(router, "/album/{albumId}", AlbumResource.class);
+		attachToRouter(router, "/album/{albumId}/count", AlbumCountResource.class);
 		attachToRouter(router, "/album/{albumId}/location", AlbumLocationResource.class);
 		attachToRouter(router, "/album/{albumId}/image", ImageResource.class);
 		attachToRouter(router, "/album/{albumId}/image/count", ImageCountResource.class);

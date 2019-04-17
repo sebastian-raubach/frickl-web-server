@@ -26,14 +26,15 @@ import raubach.fricklweb.server.computed.*;
 public class Images implements Serializable
 {
 
-    private static final long serialVersionUID = -754146536;
+	private static final long serialVersionUID = -1009641510;
 
-    private Integer   id;
-    private String    path;
-    private Exif      exif;
-    private Integer   albumId;
-    private Timestamp createdOn;
-    private Timestamp updatedOn;
+	private Integer   id;
+	private String    path;
+	private Byte      isFavorite;
+	private Exif      exif;
+	private Integer   albumId;
+	private Timestamp createdOn;
+	private Timestamp updatedOn;
 
 	public Images()
 	{
@@ -43,6 +44,7 @@ public class Images implements Serializable
 	{
         this.id = value.id;
         this.path = value.path;
+		this.isFavorite = value.isFavorite;
         this.exif = value.exif;
         this.albumId = value.albumId;
         this.createdOn = value.createdOn;
@@ -52,6 +54,7 @@ public class Images implements Serializable
     public Images(
 		Integer id,
 		String path,
+		Byte isFavorite,
 		Exif exif,
 		Integer albumId,
 		Timestamp createdOn,
@@ -60,6 +63,7 @@ public class Images implements Serializable
 	{
         this.id = id;
         this.path = path;
+		this.isFavorite = isFavorite;
         this.exif = exif;
         this.albumId = albumId;
         this.createdOn = createdOn;
@@ -85,6 +89,16 @@ public class Images implements Serializable
 	{
         this.path = path;
     }
+
+	public Byte getIsFavorite()
+	{
+		return this.isFavorite;
+	}
+
+	public void setIsFavorite(Byte isFavorite)
+	{
+		this.isFavorite = isFavorite;
+	}
 
 	public Exif getExif()
 	{
@@ -133,6 +147,7 @@ public class Images implements Serializable
 
         sb.append(id);
         sb.append(", ").append(path);
+		sb.append(", ").append(isFavorite);
         sb.append(", ").append(exif);
         sb.append(", ").append(albumId);
         sb.append(", ").append(createdOn);

@@ -31,12 +31,12 @@ public class Frickl extends SchemaImpl
     /**
      * The reference instance of <code>frickl</code>
      */
-    public static final  Frickl FRICKL           = new Frickl();
-    private static final long   serialVersionUID = 2050238569;
+	public static final  Frickl FRICKL           = new Frickl();
+	private static final long   serialVersionUID = 2050238569;
     /**
      * The table <code>frickl.albums</code>.
      */
-    public final         Albums ALBUMS           = raubach.fricklweb.server.database.tables.Albums.ALBUMS;
+	public final         Albums ALBUMS           = raubach.fricklweb.server.database.tables.Albums.ALBUMS;
 
     /**
      * VIEW
@@ -71,8 +71,8 @@ public class Frickl extends SchemaImpl
     /**
      * No further instances allowed
      */
-    private Frickl()
-    {
+	private Frickl()
+	{
         super("frickl", null);
     }
 
@@ -81,21 +81,21 @@ public class Frickl extends SchemaImpl
      * {@inheritDoc}
      */
     @Override
-    public Catalog getCatalog()
-    {
+	public Catalog getCatalog()
+	{
         return DefaultCatalog.DEFAULT_CATALOG;
     }
 
     @Override
-    public final List<Table<?>> getTables()
-    {
+	public final List<Table<?>> getTables()
+	{
         List result = new ArrayList();
         result.addAll(getTables0());
         return result;
     }
 
-    private final List<Table<?>> getTables0()
-    {
+	private final List<Table<?>> getTables0()
+	{
         return Arrays.<Table<?>>asList(
             Albums.ALBUMS,
             CalendarData.CALENDAR_DATA,

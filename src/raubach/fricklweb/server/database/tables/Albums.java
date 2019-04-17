@@ -34,7 +34,7 @@ public class Albums extends TableImpl<AlbumsRecord>
 	 * The reference instance of <code>frickl.albums</code>
 	 */
 	public static final  Albums                              ALBUMS           = new Albums();
-	private static final long                                serialVersionUID = 2003090847;
+	private static final long                                serialVersionUID = -183042603;
 	/**
 	 * The column <code>frickl.albums.id</code>.
 	 */
@@ -47,6 +47,10 @@ public class Albums extends TableImpl<AlbumsRecord>
 	 * The column <code>frickl.albums.description</code>.
 	 */
 	public final         TableField<AlbumsRecord, String>    DESCRIPTION      = createField("description", org.jooq.impl.SQLDataType.CLOB, this, "");
+	/**
+	 * The column <code>frickl.albums.path</code>.
+	 */
+	public final         TableField<AlbumsRecord, String>    PATH             = createField("path", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
 	/**
 	 * The column <code>frickl.albums.banner_image_id</code>.
 	 */

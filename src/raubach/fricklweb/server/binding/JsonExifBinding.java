@@ -31,7 +31,7 @@ public class JsonExifBinding implements Binding<Object, Exif>
 			@Override
 			public Object to(Exif exif)
 			{
-				return gson.toJson(exif);
+				return exif == null ? null : gson.toJson(exif);
 			}
 
 			@Override

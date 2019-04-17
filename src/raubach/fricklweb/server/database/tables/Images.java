@@ -35,69 +35,73 @@ public class Images extends TableImpl<ImagesRecord>
     /**
      * The reference instance of <code>frickl.images</code>
      */
-    public static final  Images                              IMAGES           = new Images();
-    private static final long                                serialVersionUID = 126077830;
+	public static final  Images                              IMAGES           = new Images();
+	private static final long                                serialVersionUID = 626606352;
     /**
      * The column <code>frickl.images.id</code>.
      */
-    public final         TableField<ImagesRecord, Integer>   ID               = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
+	public final         TableField<ImagesRecord, Integer>   ID               = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
     /**
      * The column <code>frickl.images.path</code>.
      */
-    public final         TableField<ImagesRecord, String>    PATH             = createField("path", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
+	public final         TableField<ImagesRecord, String>    PATH             = createField("path", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "");
     /**
-     * The column <code>frickl.images.exif</code>.
-     */
-    public final         TableField<ImagesRecord, Exif>      EXIF             = createField("exif", org.jooq.impl.DefaultDataType.getDefaultDataType("\"frickl\".\"images_exif\""), this, "", new JsonExifBinding());
+	 * The column <code>frickl.images.is_favorite</code>.
+	 */
+	public final         TableField<ImagesRecord, Byte>      IS_FAVORITE      = createField("is_favorite", org.jooq.impl.SQLDataType.TINYINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.TINYINT)), this, "");
+	/**
+	 * The column <code>frickl.images.exif</code>.
+	 */
+	public final         TableField<ImagesRecord, Exif>      EXIF             = createField("exif", org.jooq.impl.DefaultDataType.getDefaultDataType("\"frickl\".\"images_exif\""), this, "", new JsonExifBinding());
     /**
      * The column <code>frickl.images.album_id</code>.
      */
-    public final         TableField<ImagesRecord, Integer>   ALBUM_ID         = createField("album_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
+	public final         TableField<ImagesRecord, Integer>   ALBUM_ID         = createField("album_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
     /**
      * The column <code>frickl.images.created_on</code>.
      */
-    public final         TableField<ImagesRecord, Timestamp> CREATED_ON       = createField("created_on", org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+	public final         TableField<ImagesRecord, Timestamp> CREATED_ON       = createField("created_on", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
     /**
      * The column <code>frickl.images.updated_on</code>.
      */
-    public final         TableField<ImagesRecord, Timestamp> UPDATED_ON       = createField("updated_on", org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+	public final         TableField<ImagesRecord, Timestamp> UPDATED_ON       = createField("updated_on", org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
 
     /**
      * Create a <code>frickl.images</code> table reference
      */
-    public Images()
-    {
+	public Images()
+	{
         this(DSL.name("images"), null);
     }
 
     /**
      * Create an aliased <code>frickl.images</code> table reference
      */
-    public Images(String alias)
-    {
+	public Images(String alias)
+	{
         this(DSL.name(alias), IMAGES);
     }
 
     /**
      * Create an aliased <code>frickl.images</code> table reference
      */
-    public Images(Name alias)
-    {
+	public Images(Name alias)
+	{
         this(alias, IMAGES);
     }
 
-    private Images(Name alias, Table<ImagesRecord> aliased)
-    {
+	private Images(Name alias, Table<ImagesRecord> aliased)
+	{
         this(alias, aliased, null);
     }
 
-    private Images(Name alias, Table<ImagesRecord> aliased, Field<?>[] parameters)
-    {
+	private Images(Name alias, Table<ImagesRecord> aliased, Field<?>[] parameters)
+	{
         super(alias, null, aliased, parameters, DSL.comment(""));
     }
 
-    public <O extends Record> Images(Table<O> child, ForeignKey<O, ImagesRecord> key)
-    {
+	public <O extends Record> Images(Table<O> child, ForeignKey<O, ImagesRecord> key)
+	{
         super(child, key, IMAGES);
     }
 
@@ -105,8 +109,8 @@ public class Images extends TableImpl<ImagesRecord>
      * The class holding records for this type
      */
     @Override
-    public Class<ImagesRecord> getRecordType()
-    {
+	public Class<ImagesRecord> getRecordType()
+	{
         return ImagesRecord.class;
     }
 
@@ -114,8 +118,8 @@ public class Images extends TableImpl<ImagesRecord>
      * {@inheritDoc}
      */
     @Override
-    public Schema getSchema()
-    {
+	public Schema getSchema()
+	{
         return Frickl.FRICKL;
     }
 
@@ -123,8 +127,8 @@ public class Images extends TableImpl<ImagesRecord>
      * {@inheritDoc}
      */
     @Override
-    public List<Index> getIndexes()
-    {
+	public List<Index> getIndexes()
+	{
         return Arrays.<Index>asList(Indexes.IMAGES_ALBUM_ID, Indexes.IMAGES_PRIMARY);
     }
 
@@ -132,8 +136,8 @@ public class Images extends TableImpl<ImagesRecord>
      * {@inheritDoc}
      */
     @Override
-    public Identity<ImagesRecord, Integer> getIdentity()
-    {
+	public Identity<ImagesRecord, Integer> getIdentity()
+	{
         return Keys.IDENTITY_IMAGES;
     }
 
@@ -141,8 +145,8 @@ public class Images extends TableImpl<ImagesRecord>
      * {@inheritDoc}
      */
     @Override
-    public UniqueKey<ImagesRecord> getPrimaryKey()
-    {
+	public UniqueKey<ImagesRecord> getPrimaryKey()
+	{
         return Keys.KEY_IMAGES_PRIMARY;
     }
 
@@ -150,8 +154,8 @@ public class Images extends TableImpl<ImagesRecord>
      * {@inheritDoc}
      */
     @Override
-    public List<UniqueKey<ImagesRecord>> getKeys()
-    {
+	public List<UniqueKey<ImagesRecord>> getKeys()
+	{
         return Arrays.<UniqueKey<ImagesRecord>>asList(Keys.KEY_IMAGES_PRIMARY);
     }
 
@@ -159,13 +163,13 @@ public class Images extends TableImpl<ImagesRecord>
      * {@inheritDoc}
      */
     @Override
-    public List<ForeignKey<ImagesRecord, ?>> getReferences()
-    {
+	public List<ForeignKey<ImagesRecord, ?>> getReferences()
+	{
         return Arrays.<ForeignKey<ImagesRecord, ?>>asList(Keys.IMAGES_IBFK_1);
     }
 
-    public Albums albums()
-    {
+	public Albums albums()
+	{
         return new Albums(this, Keys.IMAGES_IBFK_1);
     }
 
@@ -173,8 +177,8 @@ public class Images extends TableImpl<ImagesRecord>
      * {@inheritDoc}
      */
     @Override
-    public Images as(String alias)
-    {
+	public Images as(String alias)
+	{
         return new Images(DSL.name(alias), this);
     }
 
@@ -182,8 +186,8 @@ public class Images extends TableImpl<ImagesRecord>
      * {@inheritDoc}
      */
     @Override
-    public Images as(Name alias)
-    {
+	public Images as(Name alias)
+	{
         return new Images(alias, this);
     }
 
@@ -191,8 +195,8 @@ public class Images extends TableImpl<ImagesRecord>
      * Rename this table
      */
     @Override
-    public Images rename(String name)
-    {
+	public Images rename(String name)
+	{
         return new Images(DSL.name(name), null);
     }
 
@@ -200,8 +204,8 @@ public class Images extends TableImpl<ImagesRecord>
      * Rename this table
      */
     @Override
-    public Images rename(Name name)
-    {
+	public Images rename(Name name)
+	{
         return new Images(name, null);
     }
 }

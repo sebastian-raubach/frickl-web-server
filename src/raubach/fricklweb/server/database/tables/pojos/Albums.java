@@ -24,11 +24,12 @@ import javax.annotation.*;
 public class Albums implements Serializable
 {
 
-	private static final long serialVersionUID = -1876052315;
+	private static final long serialVersionUID = 143454834;
 
 	private Integer   id;
 	private String    name;
 	private String    description;
+	private String    path;
 	private Integer   bannerImageId;
 	private Integer   parentAlbumId;
 	private Timestamp createdOn;
@@ -43,6 +44,7 @@ public class Albums implements Serializable
 		this.id = value.id;
 		this.name = value.name;
 		this.description = value.description;
+		this.path = value.path;
 		this.bannerImageId = value.bannerImageId;
 		this.parentAlbumId = value.parentAlbumId;
 		this.createdOn = value.createdOn;
@@ -53,6 +55,7 @@ public class Albums implements Serializable
 		Integer id,
 		String name,
 		String description,
+		String path,
 		Integer bannerImageId,
 		Integer parentAlbumId,
 		Timestamp createdOn,
@@ -62,6 +65,7 @@ public class Albums implements Serializable
 		this.id = id;
 		this.name = name;
 		this.description = description;
+		this.path = path;
 		this.bannerImageId = bannerImageId;
 		this.parentAlbumId = parentAlbumId;
 		this.createdOn = createdOn;
@@ -96,6 +100,16 @@ public class Albums implements Serializable
 	public void setDescription(String description)
 	{
 		this.description = description;
+	}
+
+	public String getPath()
+	{
+		return this.path;
+	}
+
+	public void setPath(String path)
+	{
+		this.path = path;
 	}
 
 	public Integer getBannerImageId()
@@ -146,6 +160,7 @@ public class Albums implements Serializable
 		sb.append(id);
 		sb.append(", ").append(name);
 		sb.append(", ").append(description);
+		sb.append(", ").append(path);
 		sb.append(", ").append(bannerImageId);
 		sb.append(", ").append(parentAlbumId);
 		sb.append(", ").append(createdOn);

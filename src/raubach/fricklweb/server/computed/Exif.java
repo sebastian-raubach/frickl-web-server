@@ -15,9 +15,7 @@ public class Exif
 	private String  cameraModel;
 	private String  colorSpace;
 	private String  compression;
-	private String  compressionType;
 	private String  contrast;
-	private String  dataPrecision;
 	private Date    dateTime;
 	private Date    dateTimeOriginal;
 	private Date    dateTimeDigitized;
@@ -25,6 +23,7 @@ public class Exif
 	private Integer exifImageHeight;
 	private Integer exifImageWidth;
 	private String  exifVersion;
+	private String  exposure;
 	private String  exposureBiasValue;
 	private String  exposureMode;
 	private String  exposureProgram;
@@ -33,7 +32,6 @@ public class Exif
 	private String  flash;
 	private String  fNumber;
 	private String  focalLength;
-	private String  focusType;
 	private String  gainControl;
 	private Double  gpsAltitude;
 	private Double  gpsLatitude;
@@ -42,7 +40,8 @@ public class Exif
 	private Integer imageHeight;
 	private Integer imageWidth;
 	private Integer isoSpeedRatings;
-	private String  maxExposureValue;
+	private String  lensMake;
+	private String  lensModel;
 	private String  meteringMode;
 	private String  oriantation;
 	private String  photometricInterpretation;
@@ -54,6 +53,7 @@ public class Exif
 	private String  sharpness;
 	private String  shutterSpeedValue;
 	private String  userComment;
+	private String  whiteBalance;
 	private String  whiteBalanceMode;
 	private String  xResolution;
 	private String  yResolution;
@@ -113,17 +113,6 @@ public class Exif
 		return this;
 	}
 
-	public String getCompressionType()
-	{
-		return compressionType;
-	}
-
-	public Exif setCompressionType(String compressionType)
-	{
-		this.compressionType = compressionType;
-		return this;
-	}
-
 	public String getContrast()
 	{
 		return contrast;
@@ -132,17 +121,6 @@ public class Exif
 	public Exif setContrast(String contrast)
 	{
 		this.contrast = contrast;
-		return this;
-	}
-
-	public String getDataPrecision()
-	{
-		return dataPrecision;
-	}
-
-	public Exif setDataPrecision(String dataPrecision)
-	{
-		this.dataPrecision = dataPrecision;
 		return this;
 	}
 
@@ -220,6 +198,17 @@ public class Exif
 	public Exif setExifVersion(String exifVersion)
 	{
 		this.exifVersion = exifVersion;
+		return this;
+	}
+
+	public String getExposure()
+	{
+		return exposure;
+	}
+
+	public Exif setExposure(String exposure)
+	{
+		this.exposure = exposure;
 		return this;
 	}
 
@@ -311,17 +300,6 @@ public class Exif
 		return this;
 	}
 
-	public String getFocusType()
-	{
-		return focusType;
-	}
-
-	public Exif setFocusType(String focusType)
-	{
-		this.focusType = focusType;
-		return this;
-	}
-
 	public String getGainControl()
 	{
 		return gainControl;
@@ -410,14 +388,25 @@ public class Exif
 		return this;
 	}
 
-	public String getMaxExposureValue()
+	public String getLensMake()
 	{
-		return maxExposureValue;
+		return lensMake;
 	}
 
-	public Exif setMaxExposureValue(String maxExposureValue)
+	public Exif setLensMake(String lensMake)
 	{
-		this.maxExposureValue = maxExposureValue;
+		this.lensMake = lensMake;
+		return this;
+	}
+
+	public String getLensModel()
+	{
+		return lensModel;
+	}
+
+	public Exif setLensModel(String lensModel)
+	{
+		this.lensModel = lensModel;
 		return this;
 	}
 
@@ -539,6 +528,17 @@ public class Exif
 	public Exif setUserComment(String userComment)
 	{
 		this.userComment = userComment;
+		return this;
+	}
+
+	public String getWhiteBalance()
+	{
+		return whiteBalance;
+	}
+
+	public Exif setWhiteBalance(String whiteBalance)
+	{
+		this.whiteBalance = whiteBalance;
 		return this;
 	}
 
