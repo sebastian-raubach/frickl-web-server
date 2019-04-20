@@ -26,10 +26,11 @@ import raubach.fricklweb.server.computed.*;
 public class Images implements Serializable
 {
 
-	private static final long serialVersionUID = -1009641510;
+	private static final long serialVersionUID = -1521940563;
 
 	private Integer   id;
 	private String    path;
+	private String    name;
 	private Byte      isFavorite;
 	private Exif      exif;
 	private Integer   albumId;
@@ -44,6 +45,7 @@ public class Images implements Serializable
 	{
         this.id = value.id;
         this.path = value.path;
+		this.name = value.name;
 		this.isFavorite = value.isFavorite;
         this.exif = value.exif;
         this.albumId = value.albumId;
@@ -54,6 +56,7 @@ public class Images implements Serializable
     public Images(
 		Integer id,
 		String path,
+		String name,
 		Byte isFavorite,
 		Exif exif,
 		Integer albumId,
@@ -63,6 +66,7 @@ public class Images implements Serializable
 	{
         this.id = id;
         this.path = path;
+		this.name = name;
 		this.isFavorite = isFavorite;
         this.exif = exif;
         this.albumId = albumId;
@@ -89,6 +93,16 @@ public class Images implements Serializable
 	{
         this.path = path;
     }
+
+	public String getName()
+	{
+		return this.name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 
 	public Byte getIsFavorite()
 	{
@@ -147,6 +161,7 @@ public class Images implements Serializable
 
         sb.append(id);
         sb.append(", ").append(path);
+		sb.append(", ").append(name);
 		sb.append(", ").append(isFavorite);
         sb.append(", ").append(exif);
         sb.append(", ").append(albumId);

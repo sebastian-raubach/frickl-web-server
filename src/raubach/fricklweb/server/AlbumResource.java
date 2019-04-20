@@ -1,6 +1,7 @@
 package raubach.fricklweb.server;
 
 import org.jooq.*;
+import org.jooq.impl.*;
 import org.restlet.data.Status;
 import org.restlet.resource.*;
 
@@ -46,7 +47,8 @@ public class AlbumResource extends PaginatedServerResource
 	@Get("json")
 	public List<Albums> getJson()
 	{
-		try (SelectSelectStep<Record> select = Database.context().select())
+		try (Connection conn = Database.getConnection();
+			 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
 		{
 			SelectJoinStep<Record> step = select.from(ALBUMS);
 
@@ -57,13 +59,15 @@ public class AlbumResource extends PaginatedServerResource
 			else
 				step.where(ALBUMS.PARENT_ALBUM_ID.isNull());
 
-			return step.limit(pageSize)
+			return step.orderBy(ALBUMS.CREATED_ON.desc(), ALBUMS.NAME.desc())
+					   .limit(pageSize)
 					   .offset(pageSize * currentPage)
 					   .fetch()
 					   .into(Albums.class);
 		}
 		catch (SQLException e)
 		{
+			e.printStackTrace();
 			throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
 		}
 	}

@@ -34,7 +34,7 @@ public class Albums extends TableImpl<AlbumsRecord>
 	 * The reference instance of <code>frickl.albums</code>
 	 */
 	public static final  Albums                              ALBUMS           = new Albums();
-	private static final long                                serialVersionUID = -183042603;
+	private static final long                                serialVersionUID = 1521851664;
 	/**
 	 * The column <code>frickl.albums.id</code>.
 	 */
@@ -62,7 +62,7 @@ public class Albums extends TableImpl<AlbumsRecord>
 	/**
 	 * The column <code>frickl.albums.created_on</code>.
 	 */
-	public final         TableField<AlbumsRecord, Timestamp> CREATED_ON       = createField("created_on", org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+	public final         TableField<AlbumsRecord, Timestamp> CREATED_ON       = createField("created_on", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
 	/**
 	 * The column <code>frickl.albums.updated_on</code>.
 	 */

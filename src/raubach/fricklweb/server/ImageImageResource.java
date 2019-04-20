@@ -1,8 +1,7 @@
 package raubach.fricklweb.server;
 
-import net.coobird.thumbnailator.*;
-
 import org.jooq.*;
+import org.jooq.impl.*;
 import org.restlet.data.*;
 import org.restlet.data.Status;
 import org.restlet.representation.*;
@@ -15,6 +14,7 @@ import java.util.logging.*;
 import javax.servlet.*;
 
 import raubach.fricklweb.server.database.tables.pojos.*;
+import raubach.fricklweb.server.util.*;
 
 import static raubach.fricklweb.server.database.tables.Images.*;
 
@@ -57,7 +57,8 @@ public class ImageImageResource extends PaginatedServerResource
 
 		if (imageId != null)
 		{
-			try (SelectSelectStep<Record> select = Database.context().select())
+			try (Connection conn = Database.getConnection();
+				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
 			{
 				Images image = select.from(IMAGES)
 									 .where(IMAGES.ID.eq(imageId))
@@ -67,61 +68,34 @@ public class ImageImageResource extends PaginatedServerResource
 				if (image != null)
 				{
 					File file = new File(Frickl.BASE_PATH, image.getPath());
+					MediaType type;
 
-					// Check if the image exists
-					if (file.exists() && file.isFile())
+					if (file.getName().toLowerCase().endsWith(".jpg"))
+						type = MediaType.IMAGE_JPEG;
+					else if (file.getName().toLowerCase().endsWith(".png"))
+						type = MediaType.IMAGE_PNG;
+					else
+						type = MediaType.IMAGE_ALL;
+
+					if (small)
 					{
 						try
 						{
-							MediaType type;
-
-							if (file.getName().toLowerCase().endsWith(".jpg"))
-								type = MediaType.IMAGE_JPEG;
-							else if (file.getName().toLowerCase().endsWith(".png"))
-								type = MediaType.IMAGE_PNG;
-							else
-								type = MediaType.IMAGE_ALL;
-
-							if (small)
-							{
-								ServletContext servlet = (ServletContext) getContext().getAttributes().get("org.restlet.ext.servlet.ServletContext");
-								String version = servlet.getInitParameter("version");
-								File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-thumbnails" + "-" + version);
-								folder.mkdirs();
-
-								String extension = type == MediaType.IMAGE_PNG ? ".png" : ".jpg";
-
-								File target = new File(folder, image.getId() + "-small" + extension);
-
-								// Delete the thumbnail if it's older than the source image
-								if (target.lastModified() < file.lastModified())
-									target.delete();
-
-								// If it exists, fine, just return it
-								if (target.exists())
-								{
-									file = target;
-								}
-								// If not, create a new thumbnail
-								else
-								{
-									Thumbnails.of(file)
-											  .height(400)
-											  .keepAspectRatio(true)
-											  .toFile(target);
-
-									file = target;
-								}
-							}
-
-							representation = new FileRepresentation(file, type);
-							representation.setSize(file.length());
-							representation.setDisposition(new Disposition(Disposition.TYPE_ATTACHMENT));
+							ServletContext servlet = (ServletContext) getContext().getAttributes().get("org.restlet.ext.servlet.ServletContext");
+							file = ThumbnailUtils.getOrCreateThumbnail(servlet, type, image.getId(), file);
 						}
 						catch (IOException e)
 						{
 							e.printStackTrace();
 						}
+					}
+					// Check if the image exists
+					if (file.exists() && file.isFile())
+					{
+
+						representation = new FileRepresentation(file, type);
+						representation.setSize(file.length());
+						representation.setDisposition(new Disposition(Disposition.TYPE_ATTACHMENT));
 					}
 					else
 					{

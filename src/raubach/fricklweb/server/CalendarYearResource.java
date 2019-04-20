@@ -18,7 +18,8 @@ public class CalendarYearResource extends PaginatedServerResource
 	@Get("json")
 	public List<Integer> getJson()
 	{
-		try (SelectSelectStep<Record1<Integer>> select = Database.context().selectDistinct(DSL.year(CALENDAR_DATA.DATE).as("year")))
+		try (Connection conn = Database.getConnection();
+			 SelectSelectStep<Record1<Integer>> select = DSL.using(conn, SQLDialect.MYSQL).selectDistinct(DSL.year(CALENDAR_DATA.DATE).as("year")))
 		{
 			return select.from(CALENDAR_DATA)
 						 .fetch()

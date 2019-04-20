@@ -9,4 +9,5 @@
 <Parameter name="username" value="@database.username@" override="true" />
 <Parameter name="password" value="@database.password@" override="true" />
 <Parameter name="basePath" value="@base.path@" override="true" />
+<Parameter name="version"  value="@api.version@" override="true" />
 </Context>

@@ -5,8 +5,8 @@ import org.jooq.impl.*;
 import org.restlet.data.Status;
 import org.restlet.resource.*;
 
-import java.sql.Date;
 import java.sql.*;
+import java.sql.Date;
 import java.text.*;
 import java.util.*;
 
@@ -73,7 +73,8 @@ public class ImageResource extends PaginatedServerResource
 	{
 		if (albumId != null)
 		{
-			try (SelectSelectStep<Record> select = Database.context().select())
+			try (Connection conn = Database.getConnection();
+				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
 			{
 				return select.from(IMAGES)
 							 .where(IMAGES.ALBUM_ID.eq(albumId))
@@ -89,7 +90,8 @@ public class ImageResource extends PaginatedServerResource
 		}
 		else if (imageId != null)
 		{
-			try (SelectSelectStep<Record> select = Database.context().select())
+			try (Connection conn = Database.getConnection();
+				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
 			{
 				return select.from(IMAGES)
 							 .where(IMAGES.ID.eq(imageId))
@@ -103,7 +105,8 @@ public class ImageResource extends PaginatedServerResource
 		}
 		else
 		{
-			try (SelectSelectStep<Record> select = Database.context().select())
+			try (Connection conn = Database.getConnection();
+				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
 			{
 				SelectJoinStep<Record> step = select.from(IMAGES);
 

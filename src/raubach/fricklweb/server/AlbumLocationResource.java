@@ -1,6 +1,7 @@
 package raubach.fricklweb.server;
 
 import org.jooq.*;
+import org.jooq.impl.*;
 import org.restlet.data.Status;
 import org.restlet.resource.*;
 
@@ -38,7 +39,8 @@ public class AlbumLocationResource extends PaginatedServerResource
 	{
 		if (albumId != null)
 		{
-			try (SelectSelectStep<Record> select = Database.context().select())
+			try (Connection conn = Database.getConnection();
+				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
 			{
 				return select.from(LAT_LNGS)
 							 .where(LAT_LNGS.ALBUM_ID.eq(albumId))

@@ -39,7 +39,8 @@ public class CalendarResource extends PaginatedServerResource
 	@Get("json")
 	public List<CalendarData> getJson()
 	{
-		try (SelectSelectStep<Record> select = Database.context().select())
+		try (Connection conn = Database.getConnection();
+			 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
 		{
 			SelectJoinStep<Record> step = select.from(CALENDAR_DATA);
 

@@ -90,6 +90,8 @@ public class Frickl extends Application
 		attachToRouter(router, "/tag/{tagId}/image", TagImageResource.class);
 		attachToRouter(router, "/tag/{tagId}/image/count", TagImageCountResource.class);
 
+		attachToRouter(router, "/status", StatusResource.class);
+
 		// CORS first, then encoder
 		corsFilter.setNext(encoder);
 		// After that the unauthorized paths

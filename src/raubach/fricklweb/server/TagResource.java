@@ -1,6 +1,7 @@
 package raubach.fricklweb.server;
 
 import org.jooq.*;
+import org.jooq.impl.*;
 import org.restlet.data.Status;
 import org.restlet.resource.*;
 
@@ -36,14 +37,16 @@ public class TagResource extends PaginatedServerResource
 	@Get("json")
 	public List<Tags> getJson()
 	{
-		try (SelectSelectStep<Record> select = Database.context().select())
+		try (Connection conn = Database.getConnection();
+			 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
 		{
 			SelectJoinStep<Record> step = select.from(TAGS);
 
 			if (tagId != null)
 				step.where(TAGS.ID.eq(tagId));
 
-			return step.limit(pageSize)
+			return step.orderBy(TAGS.NAME)
+					   .limit(pageSize)
 					   .offset(pageSize * currentPage)
 					   .fetch()
 					   .into(Tags.class);

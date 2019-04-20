@@ -1,6 +1,7 @@
 package raubach.fricklweb.server;
 
 import org.jooq.*;
+import org.jooq.impl.*;
 import org.restlet.data.Status;
 import org.restlet.resource.*;
 
@@ -19,7 +20,8 @@ public class StatsCameraResource extends PaginatedServerResource
 	@Get("json")
 	public List<StatsCamera> getJson()
 	{
-		try (SelectSelectStep<Record> select = Database.context().select())
+		try (Connection conn = Database.getConnection();
+			 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
 		{
 			return select.from(STATS_CAMERA)
 						 .limit(10)

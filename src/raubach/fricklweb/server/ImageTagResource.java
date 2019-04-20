@@ -1,6 +1,7 @@
 package raubach.fricklweb.server;
 
 import org.jooq.*;
+import org.jooq.impl.*;
 import org.restlet.data.Status;
 import org.restlet.resource.Delete;
 import org.restlet.resource.*;
@@ -50,7 +51,8 @@ public class ImageTagResource extends PaginatedServerResource
 		if (imageTag.getImageId() != null && imageTag.getTagId() != null && imageTag.getImageId() == imageId)
 		{
 			// TODO: Add tag to image itself
-			try (DSLContext context = Database.context())
+			try (Connection conn = Database.getConnection();
+				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
 			{
 				int numberOfInsertedItems = context.insertInto(IMAGE_TAGS, IMAGE_TAGS.IMAGE_ID, IMAGE_TAGS.TAG_ID)
 												   .values(imageTag.getImageId(), imageTag.getTagId())
@@ -77,7 +79,8 @@ public class ImageTagResource extends PaginatedServerResource
 		if (imageTag.getImageId() != null && imageTag.getTagId() != null && imageTag.getImageId() == imageId)
 		{
 			// TODO: Delete tag from image itself
-			try (DSLContext context = Database.context())
+			try (Connection conn = Database.getConnection();
+				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
 			{
 				int numberOfInsertedItems = context.deleteFrom(IMAGE_TAGS)
 												   .where(IMAGE_TAGS.IMAGE_ID.eq(imageTag.getImageId()))
@@ -103,17 +106,19 @@ public class ImageTagResource extends PaginatedServerResource
 	{
 		if (imageId != null)
 		{
-			try (SelectSelectStep<Record> select = Database.context().select())
+			try (Connection conn = Database.getConnection();
+				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
 			{
-				return select.from(IMAGES
-					.leftJoin(IMAGE_TAGS).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID))
-					.leftJoin(TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID)))
-							 .where(IMAGES.ID.eq(imageId))
-							 .orderBy(TAGS.NAME)
-							 .offset(pageSize * currentPage)
-							 .limit(pageSize)
-							 .fetch()
-							 .into(Tags.class);
+				return context.select(TAGS.ID, TAGS.NAME, TAGS.CREATED_ON, TAGS.UPDATED_ON)
+							  .from(TAGS
+								  .leftJoin(IMAGE_TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))
+								  .leftJoin(IMAGES).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID)))
+							  .where(IMAGES.ID.eq(imageId))
+							  .orderBy(TAGS.NAME)
+							  .offset(pageSize * currentPage)
+							  .limit(pageSize)
+							  .fetch()
+							  .into(Tags.class);
 			}
 			catch (SQLException e)
 			{

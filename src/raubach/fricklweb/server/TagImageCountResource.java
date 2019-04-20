@@ -1,6 +1,7 @@
 package raubach.fricklweb.server;
 
 import org.jooq.*;
+import org.jooq.impl.*;
 import org.restlet.data.Status;
 import org.restlet.resource.*;
 
@@ -37,7 +38,8 @@ public class TagImageCountResource extends PaginatedServerResource
 	{
 		if (tagId != null)
 		{
-			try (SelectSelectStep<Record1<Integer>> select = Database.context().selectCount())
+			try (Connection conn = Database.getConnection();
+				 SelectSelectStep<Record1<Integer>> select = DSL.using(conn, SQLDialect.MYSQL).selectCount())
 			{
 				return select.from(TAGS
 					.leftJoin(IMAGE_TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))

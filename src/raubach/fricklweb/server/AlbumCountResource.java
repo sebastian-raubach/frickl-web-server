@@ -1,6 +1,7 @@
 package raubach.fricklweb.server;
 
 import org.jooq.*;
+import org.jooq.impl.*;
 import org.restlet.data.Status;
 import org.restlet.resource.*;
 
@@ -35,7 +36,8 @@ public class AlbumCountResource extends PaginatedServerResource
 	{
 		if (albumId != null)
 		{
-			try (SelectSelectStep<Record1<Integer>> select = Database.context().selectCount())
+			try (Connection conn = Database.getConnection();
+				 SelectSelectStep<Record1<Integer>> select = DSL.using(conn, SQLDialect.MYSQL).selectCount())
 			{
 				return select.from(ALBUMS)
 							 .where(ALBUMS.ID.eq(albumId))
@@ -48,7 +50,8 @@ public class AlbumCountResource extends PaginatedServerResource
 		}
 		else
 		{
-			try (SelectSelectStep<Record1<Integer>> select = Database.context().selectCount())
+			try (Connection conn = Database.getConnection();
+				 SelectSelectStep<Record1<Integer>> select = DSL.using(conn, SQLDialect.MYSQL).selectCount())
 			{
 				return select.from(ALBUMS)
 							 .fetchOne(0, int.class);

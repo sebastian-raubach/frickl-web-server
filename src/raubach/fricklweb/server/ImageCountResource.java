@@ -61,7 +61,8 @@ public class ImageCountResource extends PaginatedServerResource
 	{
 		if (albumId != null)
 		{
-			try (SelectSelectStep<Record1<Integer>> select = Database.context().selectCount())
+			try (Connection conn = Database.getConnection();
+				 SelectSelectStep<Record1<Integer>> select = DSL.using(conn, SQLDialect.MYSQL).selectCount())
 			{
 				return select.from(IMAGES)
 							 .where(IMAGES.ALBUM_ID.eq(albumId))
@@ -74,7 +75,8 @@ public class ImageCountResource extends PaginatedServerResource
 		}
 		else
 		{
-			try (SelectSelectStep<Record1<Integer>> select = Database.context().selectCount())
+			try (Connection conn = Database.getConnection();
+				 SelectSelectStep<Record1<Integer>> select = DSL.using(conn, SQLDialect.MYSQL).selectCount())
 			{
 				SelectJoinStep<Record1<Integer>> step = select.from(IMAGES);
 

@@ -10,53 +10,53 @@ import java.util.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Exif
 {
-	private String  apertureValue;
-	private String  cameraMake;
-	private String  cameraModel;
-	private String  colorSpace;
-	private String  compression;
-	private String  contrast;
-	private Date    dateTime;
-	private Date    dateTimeOriginal;
-	private Date    dateTimeDigitized;
-	private String  digitalZoomRatio;
-	private Integer exifImageHeight;
-	private Integer exifImageWidth;
-	private String  exifVersion;
-	private String  exposure;
-	private String  exposureBiasValue;
-	private String  exposureMode;
-	private String  exposureProgram;
-	private String  exposureTime;
-	private String  fileSource;
-	private String  flash;
-	private String  fNumber;
-	private String  focalLength;
-	private String  gainControl;
-	private Double  gpsAltitude;
-	private Double  gpsLatitude;
-	private Double  gpsLongitude;
-	private Date    gpsTimestamp;
-	private Integer imageHeight;
-	private Integer imageWidth;
-	private Integer isoSpeedRatings;
-	private String  lensMake;
-	private String  lensModel;
-	private String  meteringMode;
-	private String  oriantation;
-	private String  photometricInterpretation;
-	private String  samplesPerPixel;
-	private String  saturation;
-	private String  sceneCaptureType;
-	private String  sceneType;
-	private String  sensingMethod;
-	private String  sharpness;
-	private String  shutterSpeedValue;
-	private String  userComment;
-	private String  whiteBalance;
-	private String  whiteBalanceMode;
-	private String  xResolution;
-	private String  yResolution;
+	private String apertureValue;
+	private String cameraMake;
+	private String cameraModel;
+	private String colorSpace;
+	private String compression;
+	private String contrast;
+	private Date   dateTime;
+	private Date   dateTimeOriginal;
+	private Date   dateTimeDigitized;
+	private String digitalZoomRatio;
+	private String exifImageHeight;
+	private String exifImageWidth;
+	private String exifVersion;
+	private String exposure;
+	private String exposureBiasValue;
+	private String exposureMode;
+	private String exposureProgram;
+	private String exposureTime;
+	private String fileSource;
+	private String flash;
+	private String fNumber;
+	private String focalLength;
+	private String gainControl;
+	private Double gpsAltitude;
+	private Double gpsLatitude;
+	private Double gpsLongitude;
+	private Date   gpsTimestamp;
+	private String imageHeight;
+	private String imageWidth;
+	private String isoSpeedRatings;
+	private String lensMake;
+	private String lensModel;
+	private String meteringMode;
+	private String oriantation;
+	private String photometricInterpretation;
+	private String samplesPerPixel;
+	private String saturation;
+	private String sceneCaptureType;
+	private String sceneType;
+	private String sensingMethod;
+	private String sharpness;
+	private String shutterSpeedValue;
+	private String userComment;
+	private String whiteBalance;
+	private String whiteBalanceMode;
+	private String xResolution;
+	private String yResolution;
 
 	public String getApertureValue()
 	{
@@ -168,23 +168,23 @@ public class Exif
 		return this;
 	}
 
-	public Integer getExifImageHeight()
+	public String getExifImageHeight()
 	{
 		return exifImageHeight;
 	}
 
-	public Exif setExifImageHeight(Integer exifImageHeight)
+	public Exif setExifImageHeight(String exifImageHeight)
 	{
 		this.exifImageHeight = exifImageHeight;
 		return this;
 	}
 
-	public Integer getExifImageWidth()
+	public String getExifImageWidth()
 	{
 		return exifImageWidth;
 	}
 
-	public Exif setExifImageWidth(Integer exifImageWidth)
+	public Exif setExifImageWidth(String exifImageWidth)
 	{
 		this.exifImageWidth = exifImageWidth;
 		return this;
@@ -355,34 +355,34 @@ public class Exif
 		return this;
 	}
 
-	public Integer getImageHeight()
+	public String getImageHeight()
 	{
 		return imageHeight;
 	}
 
-	public Exif setImageHeight(Integer imageHeight)
+	public Exif setImageHeight(String imageHeight)
 	{
 		this.imageHeight = imageHeight;
 		return this;
 	}
 
-	public Integer getImageWidth()
+	public String getImageWidth()
 	{
 		return imageWidth;
 	}
 
-	public Exif setImageWidth(Integer imageWidth)
+	public Exif setImageWidth(String imageWidth)
 	{
 		this.imageWidth = imageWidth;
 		return this;
 	}
 
-	public Integer getIsoSpeedRatings()
+	public String getIsoSpeedRatings()
 	{
 		return isoSpeedRatings;
 	}
 
-	public Exif setIsoSpeedRatings(Integer isoSpeedRatings)
+	public Exif setIsoSpeedRatings(String isoSpeedRatings)
 	{
 		this.isoSpeedRatings = isoSpeedRatings;
 		return this;

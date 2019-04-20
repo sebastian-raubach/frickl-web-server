@@ -19,17 +19,21 @@ public class Database
 		Database.database = database;
 		Database.username = username;
 		Database.password = password;
+
+		// Get an initial connection to try if it works
+		try (Connection conn = getConnection())
+		{
+			DSL.using(conn, SQLDialect.MYSQL).close();
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public static Connection getConnection()
 		throws SQLException
 	{
 		return DriverManager.getConnection(database, username, password);
-	}
-
-	public static DSLContext context()
-		throws SQLException
-	{
-		return DSL.using(getConnection(), SQLDialect.MYSQL);
 	}
 }
