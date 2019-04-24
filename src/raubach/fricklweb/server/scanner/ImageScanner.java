@@ -211,6 +211,7 @@ public class ImageScanner
 			{
 				if (imageId == null)
 				{
+					// If the image doesn't exist, import it
 					String relativePath = basePath.toURI().relativize(new File(path).toURI()).getPath();
 
 					Optional<ImagesRecord> newImage = context.insertInto(IMAGES, IMAGES.ALBUM_ID, IMAGES.PATH, IMAGES.NAME)
@@ -226,7 +227,20 @@ public class ImageScanner
 
 						executor.submit(new ImageScaler(this.context, imagesRecord));
 						executor.submit(new ImageExifReader(imagesRecord));
-						// TODO: read tags
+					}
+				}
+				else
+				{
+					// If it exists, get it and then check if exif is missing.
+					ImagesRecord imagesRecord = context.select()
+													   .from(IMAGES)
+													   .where(IMAGES.ID.eq(imageId))
+													   .fetchSingleInto(ImagesRecord.class);
+
+					if (imagesRecord != null && imagesRecord.getExif() == null)
+					{
+						executor.submit(new ImageScaler(this.context, imagesRecord));
+						executor.submit(new ImageExifReader(imagesRecord));
 					}
 				}
 			}

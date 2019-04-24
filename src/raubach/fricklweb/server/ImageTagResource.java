@@ -6,10 +6,12 @@ import org.restlet.data.Status;
 import org.restlet.resource.Delete;
 import org.restlet.resource.*;
 
+import java.io.*;
 import java.sql.*;
 import java.util.*;
 
 import raubach.fricklweb.server.database.tables.pojos.*;
+import raubach.fricklweb.server.util.*;
 
 import static raubach.fricklweb.server.database.tables.ImageTags.*;
 import static raubach.fricklweb.server.database.tables.Images.*;
@@ -21,7 +23,6 @@ import static raubach.fricklweb.server.database.tables.Tags.*;
 public class ImageTagResource extends PaginatedServerResource
 {
 	private Integer imageId = null;
-	private Integer tagId   = null;
 
 	@Override
 	protected void doInit()
@@ -36,21 +37,13 @@ public class ImageTagResource extends PaginatedServerResource
 		catch (Exception e)
 		{
 		}
-		try
-		{
-			tagId = Integer.parseInt(getRequestAttributes().get("tagId").toString());
-		}
-		catch (Exception e)
-		{
-		}
 	}
 
 	@Put("json")
 	public boolean addTagJson(ImageTags imageTag)
 	{
-		if (imageTag.getImageId() != null && imageTag.getTagId() != null && imageTag.getImageId() == imageId)
+		if (imageTag.getImageId() != null && imageTag.getTagId() != null && Objects.equals(imageTag.getImageId(), imageId))
 		{
-			// TODO: Add tag to image itself
 			try (Connection conn = Database.getConnection();
 				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
 			{
@@ -58,6 +51,24 @@ public class ImageTagResource extends PaginatedServerResource
 												   .values(imageTag.getImageId(), imageTag.getTagId())
 												   .onDuplicateKeyIgnore()
 												   .execute();
+
+				Images image = context.selectFrom(IMAGES)
+									  .where(IMAGES.ID.eq(imageTag.getImageId()))
+									  .fetchOneInto(Images.class);
+
+				Tags tag = context.selectFrom(TAGS)
+								  .where(TAGS.ID.eq(imageTag.getTagId()))
+								  .fetchOneInto(Tags.class);
+
+				File file = new File(Frickl.BASE_PATH, image.getPath());
+				try
+				{
+					TagUtils.addTagToImage(file, tag.getName());
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
 
 				return numberOfInsertedItems == 1;
 			}
@@ -76,9 +87,8 @@ public class ImageTagResource extends PaginatedServerResource
 	@Delete("json")
 	public boolean removeTagJson(ImageTags imageTag)
 	{
-		if (imageTag.getImageId() != null && imageTag.getTagId() != null && imageTag.getImageId() == imageId)
+		if (imageTag.getImageId() != null && imageTag.getTagId() != null && Objects.equals(imageTag.getImageId(), imageId))
 		{
-			// TODO: Delete tag from image itself
 			try (Connection conn = Database.getConnection();
 				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
 			{
@@ -86,6 +96,24 @@ public class ImageTagResource extends PaginatedServerResource
 												   .where(IMAGE_TAGS.IMAGE_ID.eq(imageTag.getImageId()))
 												   .and(IMAGE_TAGS.TAG_ID.eq(imageTag.getTagId()))
 												   .execute();
+
+				Images image = context.selectFrom(IMAGES)
+									  .where(IMAGES.ID.eq(imageTag.getImageId()))
+									  .fetchOneInto(Images.class);
+
+				Tags tag = context.selectFrom(TAGS)
+								  .where(TAGS.ID.eq(imageTag.getTagId()))
+								  .fetchOneInto(Tags.class);
+
+				File file = new File(Frickl.BASE_PATH, image.getPath());
+				try
+				{
+					TagUtils.deleteTagFromImage(file, tag.getName());
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
 
 				return numberOfInsertedItems == 1;
 			}
