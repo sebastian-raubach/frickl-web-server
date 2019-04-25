@@ -16,11 +16,13 @@ import static raubach.fricklweb.server.database.tables.Images.*;
 public class ImageCountResource extends PaginatedServerResource
 {
 	public static final String PARAM_DATE = "date";
+	public static final String PARAM_FAV  = "fav";
 
 	private SimpleDateFormat sdf     = new SimpleDateFormat("yyyy-MM-dd");
 	private Integer          albumId = null;
 
-	private String date;
+	private String  date;
+	private Boolean isFav;
 
 	@Override
 	protected void doInit()
@@ -38,6 +40,13 @@ public class ImageCountResource extends PaginatedServerResource
 		try
 		{
 			date = getQueryValue(PARAM_DATE);
+		}
+		catch (Exception e)
+		{
+		}
+		try
+		{
+			isFav = Boolean.parseBoolean(getQueryValue(PARAM_FAV));
 		}
 		catch (Exception e)
 		{
@@ -80,6 +89,8 @@ public class ImageCountResource extends PaginatedServerResource
 			{
 				SelectJoinStep<Record1<Integer>> step = select.from(IMAGES);
 
+				if (isFav != null && isFav)
+					step.where(IMAGES.IS_FAVORITE.eq((byte) 1));
 				if (date != null)
 					step.where(DSL.date(IMAGES.CREATED_ON).eq(getDate(date)));
 

@@ -6,13 +6,14 @@ import com.icafe4j.image.meta.iptc.*;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
+import java.util.stream.*;
 
 /**
  * @author Sebastian Raubach
  */
 public class TagUtils
 {
-	public static synchronized void deleteTagFromImage(File file, String tag)
+	public static synchronized void deleteTagFromImage(File file, List<String> tags)
 		throws IOException
 	{
 		Map<MetadataType, Metadata> metadataMap = Metadata.readMetadata(file);
@@ -30,24 +31,27 @@ public class TagUtils
 			// If any exist
 			if (datasets != null)
 			{
-				// Remove the ones that matches the given tag
-				datasets.removeIf(ds -> Objects.equals(ds.getDataAsString(), tag));
+				// Remove the ones that matches the given tags
+				boolean toRemove = datasets.removeIf(ds -> tags.contains(ds.getDataAsString()));
 
-				// Write the file to temp, then move to overwrite
-				File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-temp");
-				folder.mkdirs();
-				File target = new File(folder, UUID.randomUUID().toString() + ".jpg");
-				try (InputStream in = new FileInputStream(file);
-					 OutputStream out = new FileOutputStream(target))
+				if (toRemove)
 				{
-					Metadata.insertIPTC(in, out, datasets);
+					// Write the file to temp, then move to overwrite
+					File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-temp");
+					folder.mkdirs();
+					File target = new File(folder, UUID.randomUUID().toString() + ".jpg");
+					try (InputStream in = new FileInputStream(file);
+						 OutputStream out = new FileOutputStream(target))
+					{
+						Metadata.insertIPTC(in, out, datasets);
+					}
+					Files.move(target.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
 				}
-				Files.move(target.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
 			}
 		}
 	}
 
-	public static synchronized void addTagToImage(File file, String tag)
+	public static synchronized void addTagToImage(File file, List<String> tags)
 		throws IOException
 	{
 		Map<MetadataType, Metadata> metadataMap = Metadata.readMetadata(file);
@@ -67,14 +71,18 @@ public class TagUtils
 		if (datasets == null)
 			datasets = new ArrayList<>();
 
-		// Check if the one in question is already present
-		boolean exists = datasets.stream()
-								 .anyMatch(ds -> Objects.equals(ds.getDataAsString(), tag));
+		// Remove the ones that are already there
+		List<String> tagStrings = datasets.stream()
+										  .map(IPTCDataSet::getDataAsString)
+										  .collect(Collectors.toList());
 
-		if (!exists)
+		tags.removeAll(tagStrings);
+
+		if (tags.size() > 0)
 		{
 			// Add it if not present
-			datasets.add(new IPTCDataSet(IPTCApplicationTag.KEY_WORDS, tag));
+			for (String tag : tags)
+				datasets.add(new IPTCDataSet(IPTCApplicationTag.KEY_WORDS, tag));
 
 			// Write the file to temp, then move to overwrite
 			File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-temp");

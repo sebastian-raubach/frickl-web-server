@@ -14,6 +14,7 @@ import javax.servlet.*;
 
 import raubach.fricklweb.server.*;
 import raubach.fricklweb.server.computed.*;
+import raubach.fricklweb.server.database.tables.*;
 import raubach.fricklweb.server.database.tables.records.*;
 
 import static raubach.fricklweb.server.database.tables.Albums.*;
@@ -123,6 +124,8 @@ public class ImageScanner
 					while (!executor.awaitTermination(10, TimeUnit.SECONDS))
 					{
 						// Wait here
+						if (executor.getQueue().size() < 1 && executor.getActiveCount() < 1)
+							executor.shutdownNow();
 					}
 				}
 				catch (InterruptedException e)
@@ -151,6 +154,16 @@ public class ImageScanner
 				   .set(ALBUMS.BANNER_IMAGE_ID, context.select(IMAGES.ID).from(IMAGES).where(IMAGES.ALBUM_ID.eq(ALBUMS.ID)).limit(1))
 				   .where(ALBUMS.BANNER_IMAGE_ID.isNull())
 				   .and(ALBUMS.ID.eq(id))
+				   .execute();
+
+			Albums parent = ALBUMS.as("parent");
+			Albums child = ALBUMS.as("child");
+			// For albums that only contain other albums and no images, use the image of the first album within the album and use that as the initial banner image
+			context.update(parent.innerJoin(child)
+								 .on(parent.ID.eq(child.PARENT_ALBUM_ID)))
+				   .set(parent.BANNER_IMAGE_ID, child.BANNER_IMAGE_ID)
+				   .where(parent.BANNER_IMAGE_ID.isNull())
+				   .and(parent.ID.eq(id))
 				   .execute();
 		}
 	}

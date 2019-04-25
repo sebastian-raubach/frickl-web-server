@@ -50,7 +50,7 @@ public class ImageImageResource extends PaginatedServerResource
 		}
 	}
 
-	@Get()
+	@Get
 	public Representation getImage()
 	{
 		FileRepresentation representation = null;

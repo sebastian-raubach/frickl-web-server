@@ -63,7 +63,7 @@ public class ImageTagResource extends PaginatedServerResource
 				File file = new File(Frickl.BASE_PATH, image.getPath());
 				try
 				{
-					TagUtils.addTagToImage(file, tag.getName());
+					TagUtils.addTagToImage(file, Collections.singletonList(tag.getName()));
 				}
 				catch (IOException e)
 				{
@@ -108,7 +108,7 @@ public class ImageTagResource extends PaginatedServerResource
 				File file = new File(Frickl.BASE_PATH, image.getPath());
 				try
 				{
-					TagUtils.deleteTagFromImage(file, tag.getName());
+					TagUtils.deleteTagFromImage(file, Collections.singletonList(tag.getName()));
 				}
 				catch (IOException e)
 				{
