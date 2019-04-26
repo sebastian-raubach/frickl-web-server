@@ -1,4 +1,4 @@
-package raubach.fricklweb.server;
+package raubach.fricklweb.server.resource.image;
 
 import org.jooq.*;
 import org.jooq.impl.*;
@@ -6,6 +6,9 @@ import org.restlet.data.Status;
 import org.restlet.resource.*;
 
 import java.sql.*;
+
+import raubach.fricklweb.server.*;
+import raubach.fricklweb.server.resource.*;
 
 import static raubach.fricklweb.server.database.tables.Images.*;
 

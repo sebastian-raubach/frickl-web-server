@@ -1,4 +1,4 @@
-package raubach.fricklweb.server;
+package raubach.fricklweb.server.resource.image;
 
 import org.jooq.*;
 import org.jooq.impl.*;
@@ -10,7 +10,9 @@ import java.io.*;
 import java.sql.*;
 import java.util.*;
 
+import raubach.fricklweb.server.*;
 import raubach.fricklweb.server.database.tables.pojos.*;
+import raubach.fricklweb.server.resource.*;
 import raubach.fricklweb.server.util.*;
 
 import static raubach.fricklweb.server.database.tables.ImageTags.*;

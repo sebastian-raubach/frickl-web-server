@@ -1,4 +1,4 @@
-package raubach.fricklweb.server;
+package raubach.fricklweb.server.resource;
 
 import org.restlet.resource.*;
 

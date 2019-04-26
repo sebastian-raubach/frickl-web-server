@@ -1,4 +1,4 @@
-package raubach.fricklweb.server;
+package raubach.fricklweb.server.resource.image;
 
 import org.jooq.*;
 import org.jooq.impl.*;
@@ -6,20 +6,27 @@ import org.restlet.data.Status;
 import org.restlet.resource.*;
 
 import java.sql.*;
+import java.sql.Date;
 import java.text.*;
+import java.util.*;
+
+import raubach.fricklweb.server.*;
+import raubach.fricklweb.server.database.tables.pojos.*;
+import raubach.fricklweb.server.resource.*;
 
 import static raubach.fricklweb.server.database.tables.Images.*;
 
 /**
  * @author Sebastian Raubach
  */
-public class ImageCountResource extends PaginatedServerResource
+public class ImageResource extends PaginatedServerResource
 {
 	public static final String PARAM_DATE = "date";
 	public static final String PARAM_FAV  = "fav";
 
 	private SimpleDateFormat sdf     = new SimpleDateFormat("yyyy-MM-dd");
 	private Integer          albumId = null;
+	private Integer          imageId = null;
 
 	private String  date;
 	private Boolean isFav;
@@ -33,6 +40,13 @@ public class ImageCountResource extends PaginatedServerResource
 		try
 		{
 			albumId = Integer.parseInt(getRequestAttributes().get("albumId").toString());
+		}
+		catch (Exception e)
+		{
+		}
+		try
+		{
+			imageId = Integer.parseInt(getRequestAttributes().get("imageId").toString());
 		}
 		catch (Exception e)
 		{
@@ -66,16 +80,34 @@ public class ImageCountResource extends PaginatedServerResource
 	}
 
 	@Get("json")
-	public int getJson()
+	public List<Images> getJson()
 	{
 		if (albumId != null)
 		{
 			try (Connection conn = Database.getConnection();
-				 SelectSelectStep<Record1<Integer>> select = DSL.using(conn, SQLDialect.MYSQL).selectCount())
+				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
 			{
 				return select.from(IMAGES)
 							 .where(IMAGES.ALBUM_ID.eq(albumId))
-							 .fetchOne(0, int.class);
+							 .offset(pageSize * currentPage)
+							 .limit(pageSize)
+							 .fetch()
+							 .into(Images.class);
+			}
+			catch (SQLException e)
+			{
+				throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+			}
+		}
+		else if (imageId != null)
+		{
+			try (Connection conn = Database.getConnection();
+				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
+			{
+				return select.from(IMAGES)
+							 .where(IMAGES.ID.eq(imageId))
+							 .fetch()
+							 .into(Images.class);
 			}
 			catch (SQLException e)
 			{
@@ -85,16 +117,19 @@ public class ImageCountResource extends PaginatedServerResource
 		else
 		{
 			try (Connection conn = Database.getConnection();
-				 SelectSelectStep<Record1<Integer>> select = DSL.using(conn, SQLDialect.MYSQL).selectCount())
+				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
 			{
-				SelectJoinStep<Record1<Integer>> step = select.from(IMAGES);
+				SelectJoinStep<Record> step = select.from(IMAGES);
 
 				if (isFav != null && isFav)
 					step.where(IMAGES.IS_FAVORITE.eq((byte) 1));
 				if (date != null)
 					step.where(DSL.date(IMAGES.CREATED_ON).eq(getDate(date)));
 
-				return step.fetchOne(0, int.class);
+				return step.offset(pageSize * currentPage)
+						   .limit(pageSize)
+						   .fetch()
+						   .into(Images.class);
 			}
 			catch (SQLException e)
 			{

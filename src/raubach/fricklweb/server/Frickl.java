@@ -10,6 +10,13 @@ import org.restlet.util.*;
 
 import java.util.*;
 
+import raubach.fricklweb.server.resource.*;
+import raubach.fricklweb.server.resource.album.*;
+import raubach.fricklweb.server.resource.calendar.*;
+import raubach.fricklweb.server.resource.image.*;
+import raubach.fricklweb.server.resource.stats.*;
+import raubach.fricklweb.server.resource.tag.*;
+
 /**
  * @author Sebastian Raubach
  */
@@ -78,8 +85,10 @@ public class Frickl extends Application
 		attachToRouter(router, "/album/{albumId}/image", ImageResource.class);
 		attachToRouter(router, "/album/{albumId}/image/count", ImageCountResource.class);
 		attachToRouter(router, "/album/{albumId}/tag", AlbumTagResource.class);
+
 		attachToRouter(router, "/calendar", CalendarResource.class);
 		attachToRouter(router, "/calendar/year", CalendarYearResource.class);
+
 		attachToRouter(router, "/image", ImageResource.class);
 		attachToRouter(router, "/image/count", ImageCountResource.class);
 		attachToRouter(router, "/image/fav/random", ImageRandomResource.class);
@@ -87,7 +96,9 @@ public class Frickl extends Application
 		attachToRouter(router, "/image/{imageId}/fav", ImageFavResource.class);
 		attachToRouter(router, "/image/{imageId}/tag", ImageTagResource.class);
 		attachToRouter(router, "/image/{imageId}/img", ImageImageResource.class);
+
 		attachToRouter(router, "/stats/camera", StatsCameraResource.class);
+
 		attachToRouter(router, "/tag", TagResource.class);
 		attachToRouter(router, "/tag/{tagId}", TagResource.class);
 		attachToRouter(router, "/tag/{tagId}/image", TagImageResource.class);

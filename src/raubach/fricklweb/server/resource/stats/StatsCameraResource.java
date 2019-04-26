@@ -1,4 +1,4 @@
-package raubach.fricklweb.server;
+package raubach.fricklweb.server.resource.stats;
 
 import org.jooq.*;
 import org.jooq.impl.*;
@@ -8,7 +8,9 @@ import org.restlet.resource.*;
 import java.sql.*;
 import java.util.*;
 
+import raubach.fricklweb.server.*;
 import raubach.fricklweb.server.database.tables.pojos.*;
+import raubach.fricklweb.server.resource.*;
 
 import static raubach.fricklweb.server.database.tables.StatsCamera.*;
 
