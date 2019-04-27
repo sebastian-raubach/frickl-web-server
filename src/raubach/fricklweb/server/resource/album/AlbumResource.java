@@ -46,6 +46,31 @@ public class AlbumResource extends PaginatedServerResource
 		}
 	}
 
+	@Patch("json")
+	public void patchJson(Albums album)
+	{
+		if (albumId != null && album != null && Objects.equals(album.getId(), albumId))
+		{
+			try (Connection conn = Database.getConnection();
+				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
+			{
+				context.update(ALBUMS)
+					   .set(ALBUMS.BANNER_IMAGE_ID, album.getBannerImageId())
+					   .where(ALBUMS.ID.eq(albumId))
+					   .execute();
+			}
+			catch (SQLException e)
+			{
+				e.printStackTrace();
+				throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+			}
+		}
+		else
+		{
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
+		}
+	}
+
 	@Get("json")
 	public List<Albums> getJson()
 	{

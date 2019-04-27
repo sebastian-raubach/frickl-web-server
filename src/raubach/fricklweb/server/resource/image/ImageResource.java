@@ -79,6 +79,31 @@ public class ImageResource extends PaginatedServerResource
 		}
 	}
 
+	@Patch("json")
+	public void patchJson(Images image)
+	{
+		if (imageId != null && image != null && Objects.equals(image.getId(), imageId))
+		{
+			try (Connection conn = Database.getConnection();
+				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
+			{
+				context.update(IMAGES)
+					   .set(IMAGES.IS_FAVORITE, image.getIsFavorite())
+					   .where(IMAGES.ID.eq(imageId))
+					   .execute();
+			}
+			catch (SQLException e)
+			{
+				e.printStackTrace();
+				throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+			}
+		}
+		else
+		{
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
+		}
+	}
+
 	@Get("json")
 	public List<Images> getJson()
 	{
