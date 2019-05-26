@@ -8,12 +8,14 @@ import org.restlet.routing.*;
 import org.restlet.service.*;
 import org.restlet.util.*;
 
+import java.sql.SQLException;
 import java.util.*;
 
 import raubach.fricklweb.server.resource.*;
 import raubach.fricklweb.server.resource.album.*;
 import raubach.fricklweb.server.resource.calendar.*;
 import raubach.fricklweb.server.resource.image.*;
+import raubach.fricklweb.server.resource.location.LocationResource;
 import raubach.fricklweb.server.resource.stats.*;
 import raubach.fricklweb.server.resource.tag.*;
 
@@ -95,6 +97,8 @@ public class Frickl extends Application
 		attachToRouter(router, "/image/{imageId}", ImageResource.class);
 		attachToRouter(router, "/image/{imageId}/tag", ImageTagResource.class);
 		attachToRouter(router, "/image/{imageId}/img", ImageImageResource.class);
+
+		attachToRouter(router, "/location", LocationResource.class);
 
 		attachToRouter(router, "/stats/camera", StatsCameraResource.class);
 

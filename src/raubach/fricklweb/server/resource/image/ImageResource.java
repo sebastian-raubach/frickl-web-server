@@ -114,6 +114,7 @@ public class ImageResource extends PaginatedServerResource
 			{
 				return select.from(IMAGES)
 							 .where(IMAGES.ALBUM_ID.eq(albumId))
+							 .orderBy(IMAGES.CREATED_ON)
 							 .offset(pageSize * currentPage)
 							 .limit(pageSize)
 							 .fetch()
@@ -151,7 +152,8 @@ public class ImageResource extends PaginatedServerResource
 				if (date != null)
 					step.where(DSL.date(IMAGES.CREATED_ON).eq(getDate(date)));
 
-				return step.offset(pageSize * currentPage)
+				return step.orderBy(IMAGES.CREATED_ON)
+						   .offset(pageSize * currentPage)
 						   .limit(pageSize)
 						   .fetch()
 						   .into(Images.class);

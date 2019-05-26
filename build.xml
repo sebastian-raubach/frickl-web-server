@@ -22,7 +22,7 @@
 	<manifestclasspath jarfile="${jar}" property="jar.classpath">
 		<classpath>
 			<fileset dir="${lib}">
-				<exclude name="**/lib-devel/**"/>
+				<exclude name="**/lib-dev/**"/>
 			</fileset>
 		</classpath>
 	</manifestclasspath>
@@ -35,6 +35,8 @@
 	</target>
 
 	<target name="compile8" depends="clean">
+        <mkdir dir="${cls}"/>
+
 		<javac debug="true" destdir="${cls}" includeantruntime="false" source="8" srcdir="${src}" target="8">
 			<src path="${src}"/>
 			<classpath refid="project.classpath"/>
@@ -66,8 +68,8 @@
 		</copy>
 
 		<war destfile="${war}" update="false">
-			<webinf dir="web/WEB-INF"/>
-			<lib dir="${lib}" excludes="**/lib-devel/**"/>
+			<webinf dir="web/WEB-INF" excludes="**/classes/**"/>
+			<lib dir="${lib}" excludes="**/lib-dev/**"/>
 			<lib file="${jar}"/>
 
 			<zipfileset dir="." includes="logging.properties" prefix="WEB-INF/classes"/>

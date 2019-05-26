@@ -12,10 +12,12 @@ import java.util.concurrent.*;
 
 import javax.servlet.*;
 
+import org.restlet.data.MediaType;
 import raubach.fricklweb.server.*;
 import raubach.fricklweb.server.computed.*;
 import raubach.fricklweb.server.database.tables.*;
 import raubach.fricklweb.server.database.tables.records.*;
+import raubach.fricklweb.server.util.ThumbnailUtils;
 
 import static raubach.fricklweb.server.database.tables.Albums.*;
 import static raubach.fricklweb.server.database.tables.Images.*;
@@ -23,7 +25,6 @@ import static raubach.fricklweb.server.database.tables.Images.*;
 /**
  * Image scanner class that recursively walks through the base directory and imports all images that haven't been there before.
  * Also reads and imports their EXIF data and existing tags.
- * // TODO: Add a queue and push images on it when found by file walker. Then work through the queue in separate threats making use of multiple cores.
  */
 public class ImageScanner
 {
@@ -250,10 +251,24 @@ public class ImageScanner
 													   .where(IMAGES.ID.eq(imageId))
 													   .fetchSingleInto(ImagesRecord.class);
 
-					if (imagesRecord != null && imagesRecord.getExif() == null)
-					{
-						executor.submit(new ImageScaler(this.context, imagesRecord));
-						executor.submit(new ImageExifReader(imagesRecord));
+					if(imagesRecord != null) {
+						if (imagesRecord.getExif() == null) {
+							executor.submit(new ImageExifReader(imagesRecord));
+						}
+
+						MediaType type;
+
+						if (file.toFile().getName().toLowerCase().endsWith(".jpg"))
+							type = MediaType.IMAGE_JPEG;
+						else if (file.toFile().getName().toLowerCase().endsWith(".png"))
+							type = MediaType.IMAGE_PNG;
+						else
+							type = MediaType.IMAGE_ALL;
+
+						File thumbnailFile = ThumbnailUtils.getOrCreateThumbnail(this.context, type, imagesRecord.getId(), file.toFile());
+						if (!thumbnailFile.exists()) {
+							executor.submit(new ImageScaler(this.context, imagesRecord));
+						}
 					}
 				}
 			}

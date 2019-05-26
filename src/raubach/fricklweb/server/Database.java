@@ -20,6 +20,15 @@ public class Database
 		Database.username = username;
 		Database.password = password;
 
+		try {
+			// The newInstance() call is a work around for some
+			// broken Java implementations
+
+			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+		} catch (Exception ex) {
+			// handle the error
+		}
+
 		// Get an initial connection to try if it works
 		try (Connection conn = getConnection())
 		{

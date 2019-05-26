@@ -16,7 +16,7 @@ public class ThumbnailUtils
 	public static File getOrCreateThumbnail(ServletContext servlet, MediaType type, Integer imageId, File file)
 		throws IOException
 	{
-		File result = file;
+		File result;
 		String version = servlet.getInitParameter("version");
 		File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-thumbnails" + "-" + version);
 		folder.mkdirs();
