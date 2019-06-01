@@ -13,6 +13,7 @@ import raubach.fricklweb.server.database.tables.pojos.*;
 import raubach.fricklweb.server.resource.*;
 
 import static raubach.fricklweb.server.database.tables.Albums.*;
+import static raubach.fricklweb.server.database.tables.AlbumStats.*;
 
 /**
  * @author Sebastian Raubach
@@ -72,32 +73,32 @@ public class AlbumResource extends PaginatedServerResource
 	}
 
 	@Get("json")
-	public List<Albums> getJson()
+	public List<AlbumStats> getJson()
 	{
 		try (Connection conn = Database.getConnection();
 			 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
 		{
-			SelectJoinStep<Record> step = select.from(ALBUMS);
+			SelectJoinStep<Record> step = select.from(ALBUM_STATS);
 
 			if (albumId != null)
 			{
-				step.where(ALBUMS.ID.eq(albumId));
+				step.where(ALBUM_STATS.ID.eq(albumId));
 			}
 			else if (parentAlbumId != null)
 			{
 				if (parentAlbumId != -1)
-					step.where(ALBUMS.PARENT_ALBUM_ID.eq(parentAlbumId));
+					step.where(ALBUM_STATS.PARENT_ALBUM_ID.eq(parentAlbumId));
 			}
 			else
 			{
-				step.where(ALBUMS.PARENT_ALBUM_ID.isNull());
+				step.where(ALBUM_STATS.PARENT_ALBUM_ID.isNull());
 			}
 
-			return step.orderBy(ALBUMS.CREATED_ON.desc(), ALBUMS.NAME.desc())
+			return step.orderBy(ALBUM_STATS.CREATED_ON.desc(), ALBUM_STATS.NAME.desc())
 					   .limit(pageSize)
 					   .offset(pageSize * currentPage)
 					   .fetch()
-					   .into(Albums.class);
+					   .into(AlbumStats.class);
 		}
 		catch (SQLException e)
 		{
