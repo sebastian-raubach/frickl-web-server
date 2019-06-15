@@ -16,6 +16,8 @@ import raubach.fricklweb.server.resource.album.*;
 import raubach.fricklweb.server.resource.calendar.*;
 import raubach.fricklweb.server.resource.image.*;
 import raubach.fricklweb.server.resource.location.LocationResource;
+import raubach.fricklweb.server.resource.search.SearchImageCountResource;
+import raubach.fricklweb.server.resource.search.SearchImageResource;
 import raubach.fricklweb.server.resource.stats.*;
 import raubach.fricklweb.server.resource.tag.*;
 
@@ -99,6 +101,9 @@ public class Frickl extends Application
 		attachToRouter(router, "/image/{imageId}/img", ImageImageResource.class);
 
 		attachToRouter(router, "/location", LocationResource.class);
+
+		attachToRouter(router, "/search/{searchTerm}/image", SearchImageResource.class);
+		attachToRouter(router, "/search/{searchTerm}/image/count", SearchImageCountResource.class);
 
 		attachToRouter(router, "/stats/camera", StatsCameraResource.class);
 

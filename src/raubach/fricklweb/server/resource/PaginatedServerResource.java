@@ -2,6 +2,9 @@ package raubach.fricklweb.server.resource;
 
 import org.restlet.resource.*;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+
 /**
  * @author Sebastian Raubach
  */
@@ -34,6 +37,19 @@ public class PaginatedServerResource extends ServerResource
 		catch (NullPointerException | NumberFormatException e)
 		{
 			this.pageSize = Integer.MAX_VALUE;
+		}
+	}
+
+	protected String getRequestAttributeAsString(String parameter)
+	{
+		try
+		{
+			return URLDecoder.decode(getRequestAttributes().get(parameter).toString(), StandardCharsets.UTF_8.name());
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return null;
 		}
 	}
 }
