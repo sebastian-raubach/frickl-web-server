@@ -14,7 +14,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-import static raubach.fricklweb.server.database.tables.Albums.ALBUMS;
 import static raubach.fricklweb.server.database.tables.ImageTags.IMAGE_TAGS;
 import static raubach.fricklweb.server.database.tables.Images.IMAGES;
 import static raubach.fricklweb.server.database.tables.Tags.TAGS;
@@ -47,7 +46,6 @@ public class SearchImageResource extends PaginatedServerResource
 				return context.select(IMAGES.asterisk()).from(IMAGES)
 						.leftJoin(IMAGE_TAGS).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID))
 						.leftJoin(TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))
-						.leftJoin(ALBUMS).on(ALBUMS.ID.eq(IMAGES.ALBUM_ID))
 						.where(TAGS.NAME.like(searchTerm))
 						.or(IMAGES.PATH.like(searchTerm))
 						.groupBy(IMAGES.ID)

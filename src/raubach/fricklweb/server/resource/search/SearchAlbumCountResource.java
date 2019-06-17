@@ -13,14 +13,12 @@ import raubach.fricklweb.server.resource.PaginatedServerResource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static raubach.fricklweb.server.database.tables.ImageTags.IMAGE_TAGS;
-import static raubach.fricklweb.server.database.tables.Images.IMAGES;
-import static raubach.fricklweb.server.database.tables.Tags.TAGS;
+import static raubach.fricklweb.server.database.tables.Albums.ALBUMS;
 
 /**
  * @author Sebastian Raubach
  */
-public class SearchImageCountResource extends PaginatedServerResource
+public class SearchAlbumCountResource extends PaginatedServerResource
 {
 	private String searchTerm = null;
 
@@ -42,11 +40,9 @@ public class SearchImageCountResource extends PaginatedServerResource
 			try (Connection conn = Database.getConnection();
 				 SelectSelectStep<Record1<Integer>> select = DSL.using(conn, SQLDialect.MYSQL).selectCount())
 			{
-				return select.from(IMAGES)
-						.leftJoin(IMAGE_TAGS).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID))
-						.leftJoin(TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))
-						.where(TAGS.NAME.like(searchTerm))
-						.or(IMAGES.PATH.like(searchTerm))
+				return select.from(ALBUMS)
+						.where(ALBUMS.NAME.like(searchTerm))
+						.or(ALBUMS.DESCRIPTION.like(searchTerm))
 						.fetchOne(0, int.class);
 			}
 			catch (SQLException e)
