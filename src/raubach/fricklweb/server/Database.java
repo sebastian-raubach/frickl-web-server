@@ -4,7 +4,9 @@ import org.jooq.*;
 import org.jooq.impl.*;
 import raubach.fricklweb.server.util.ScriptRunner;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.*;
@@ -40,8 +42,11 @@ public class Database
 		{
 			File databaseScript = new File(Database.class.getClassLoader().getResource("database.sql").toURI());
 			Logger.getLogger("").log(Level.INFO, "Running database setup: " + databaseScript.getAbsolutePath());
-			new ScriptRunner(conn, true, true)
-					.runScript(databaseScript.getAbsolutePath());
+
+			try(BufferedReader br = new BufferedReader(new FileReader(databaseScript))) {
+				new ScriptRunner(conn, true, true)
+						.runScript(br);
+			}
 			DSL.using(conn, SQLDialect.MYSQL).close();
 		}
 		catch (SQLException | URISyntaxException | IOException e)
