@@ -2,8 +2,14 @@ package raubach.fricklweb.server;
 
 import org.jooq.*;
 import org.jooq.impl.*;
+import raubach.fricklweb.server.util.ScriptRunner;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Sebastian Raubach
@@ -32,9 +38,13 @@ public class Database
 		// Get an initial connection to try if it works
 		try (Connection conn = getConnection())
 		{
+			File databaseScript = new File(Database.class.getClassLoader().getResource("database.sql").toURI());
+			Logger.getLogger("").log(Level.INFO, "Running database setup: " + databaseScript.getAbsolutePath());
+			new ScriptRunner(conn, true, true)
+					.runScript(databaseScript.getAbsolutePath());
 			DSL.using(conn, SQLDialect.MYSQL).close();
 		}
-		catch (SQLException e)
+		catch (SQLException | URISyntaxException | IOException e)
 		{
 			e.printStackTrace();
 		}

@@ -73,6 +73,7 @@
 			<lib file="${jar}"/>
 
 			<zipfileset dir="." includes="logging.properties" prefix="WEB-INF/classes"/>
+			<zipfileset dir="${res}" includes="database.sql" prefix="WEB-INF/classes"/>
 
 			<metainf file="web/context.xml"/>
 		</war>

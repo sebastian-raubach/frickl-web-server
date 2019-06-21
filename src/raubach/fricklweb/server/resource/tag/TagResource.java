@@ -69,6 +69,7 @@ public class TagResource extends PaginatedServerResource
 		}
 		catch (SQLException e)
 		{
+			e.printStackTrace();
 			throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
 		}
 	}
