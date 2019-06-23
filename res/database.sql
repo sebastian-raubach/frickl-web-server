@@ -1,6 +1,6 @@
 SET FOREIGN_KEY_CHECKS=0;
 
-CREATE TABLE IF NOT EXISTS`albums` (
+CREATE TABLE IF NOT EXISTS `albums` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Auto incremented id of this table.',
   `name` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT 'The name of the album. Should ideally be relatively short.',
   `description` text CHARACTER SET latin1 COLLATE latin1_swedish_ci COMMENT 'Optional description of the album.',
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS`albums` (
   KEY `parent_album_id` (`parent_album_id`) USING BTREE,
   CONSTRAINT `albums_ibfk_1` FOREIGN KEY (`banner_image_id`) REFERENCES `images` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `albums_ibfk_2` FOREIGN KEY (`parent_album_id`) REFERENCES `albums` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=373 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC COMMENT='This table contains all albums in Frickl. Albums correspond to image folders on the file system.';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC COMMENT='This table contains all albums in Frickl. Albums correspond to image folders on the file system.';
 
 CREATE TABLE IF NOT EXISTS `tags` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Auto incremented id of this table.',
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `tags` (
   `created_on` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'When this record has been created.',
   `updated_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'When this record has last been updated.',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC COMMENT='This table contains all tags/keywords that have been defined and assigned to images.';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC COMMENT='This table contains all tags/keywords that have been defined and assigned to images.';
 
 CREATE TABLE IF NOT EXISTS `images` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Auto incremented id of this table.',
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `images` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `images_ibfk_1` (`album_id`) USING BTREE,
   CONSTRAINT `images_ibfk_1` FOREIGN KEY (`album_id`) REFERENCES `albums` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=22055 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC COMMENT='This table contains images from the file system.';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC COMMENT='This table contains images from the file system.';
 
 CREATE TABLE IF NOT EXISTS `image_tags` (
   `image_id` int(11) NOT NULL COMMENT 'The foreign key id of the referenced image.',
@@ -111,5 +111,22 @@ group by
     `camera`
 order by
     `count` desc;
+
+CREATE OR REPLACE
+VIEW `image_timeline` AS select
+    year(`images`.`created_on`) AS `year`,
+    month(`images`.`created_on`) AS `month`,
+    json_arrayagg(`images`.`id`) AS `ids`
+from
+    `images`
+where
+    ((year(`images`.`created_on`) is not null)
+    and (month(`images`.`created_on`) is not null))
+group by
+    `year`,
+    `month`
+order by
+    `year` desc,
+    `month` desc;
     
 SET FOREIGN_KEY_CHECKS=1;

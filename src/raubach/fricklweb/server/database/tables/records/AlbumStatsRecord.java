@@ -32,10 +32,24 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
     private static final long serialVersionUID = -666521372;
 
     /**
+     * Setter for <code>frickl.album_stats.id</code>. Auto incremented id of this table.
+     */
+    public void setId(Integer value) {
+        set(0, value);
+    }
+
+    /**
      * Create a detached AlbumStatsRecord
      */
     public AlbumStatsRecord() {
         super(AlbumStats.ALBUM_STATS);
+    }
+
+    /**
+     * Setter for <code>frickl.album_stats.name</code>. The name of the album. Should ideally be relatively short.
+     */
+    public void setName(String value) {
+        set(1, value);
     }
 
     /**
@@ -56,41 +70,6 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
     }
 
     /**
-     * Getter for <code>frickl.album_stats.id</code>. Auto incremented id of this table.
-     */
-    public Integer getId() {
-        return (Integer) get(0);
-    }
-
-    /**
-     * Setter for <code>frickl.album_stats.id</code>. Auto incremented id of this table.
-     */
-    public void setId(Integer value) {
-        set(0, value);
-    }
-
-    /**
-     * Getter for <code>frickl.album_stats.name</code>. The name of the album. Should ideally be relatively short.
-     */
-    public String getName() {
-        return (String) get(1);
-    }
-
-    /**
-     * Setter for <code>frickl.album_stats.name</code>. The name of the album. Should ideally be relatively short.
-     */
-    public void setName(String value) {
-        set(1, value);
-    }
-
-    /**
-     * Getter for <code>frickl.album_stats.description</code>. Optional description of the album.
-     */
-    public String getDescription() {
-        return (String) get(2);
-    }
-
-    /**
      * Setter for <code>frickl.album_stats.description</code>. Optional description of the album.
      */
     public void setDescription(String value) {
@@ -98,10 +77,10 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
     }
 
     /**
-     * Getter for <code>frickl.album_stats.path</code>. The path to the album relative to the base path of the setup.
+     * Getter for <code>frickl.album_stats.id</code>. Auto incremented id of this table.
      */
-    public String getPath() {
-        return (String) get(3);
+    public Integer getId() {
+        return (Integer) get(0);
     }
 
     /**
@@ -112,10 +91,10 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
     }
 
     /**
-     * Getter for <code>frickl.album_stats.banner_image_id</code>. Optional banner image id. This image will be shown to visually represent this album.
+     * Getter for <code>frickl.album_stats.name</code>. The name of the album. Should ideally be relatively short.
      */
-    public Integer getBannerImageId() {
-        return (Integer) get(4);
+    public String getName() {
+        return (String) get(1);
     }
 
     /**
@@ -126,10 +105,10 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
     }
 
     /**
-     * Getter for <code>frickl.album_stats.parent_album_id</code>. Optional parent album id. If this album is a sub-album of another album, this parent album can be defined here.
+     * Getter for <code>frickl.album_stats.description</code>. Optional description of the album.
      */
-    public Integer getParentAlbumId() {
-        return (Integer) get(5);
+    public String getDescription() {
+        return (String) get(2);
     }
 
     /**
@@ -140,10 +119,10 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
     }
 
     /**
-     * Getter for <code>frickl.album_stats.created_on</code>. When this record has been created.
+     * Getter for <code>frickl.album_stats.path</code>. The path to the album relative to the base path of the setup.
      */
-    public Timestamp getCreatedOn() {
-        return (Timestamp) get(6);
+    public String getPath() {
+        return (String) get(3);
     }
 
     /**
@@ -154,10 +133,10 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
     }
 
     /**
-     * Getter for <code>frickl.album_stats.updated_on</code>. When this record has last been updated.
+     * Getter for <code>frickl.album_stats.banner_image_id</code>. Optional banner image id. This image will be shown to visually represent this album.
      */
-    public Timestamp getUpdatedOn() {
-        return (Timestamp) get(7);
+    public Integer getBannerImageId() {
+        return (Integer) get(4);
     }
 
     /**
@@ -167,15 +146,11 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
         set(7, value);
     }
 
-    // -------------------------------------------------------------------------
-    // Record9 type implementation
-    // -------------------------------------------------------------------------
-
     /**
-     * Getter for <code>frickl.album_stats.count</code>.
+     * Getter for <code>frickl.album_stats.parent_album_id</code>. Optional parent album id. If this album is a sub-album of another album, this parent album can be defined here.
      */
-    public Long getCount() {
-        return (Long) get(8);
+    public Integer getParentAlbumId() {
+        return (Integer) get(5);
     }
 
     /**
@@ -184,6 +159,17 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
     public void setCount(Long value) {
         set(8, value);
     }
+
+    /**
+     * Getter for <code>frickl.album_stats.created_on</code>. When this record has been created.
+     */
+    public Timestamp getCreatedOn() {
+        return (Timestamp) get(6);
+    }
+
+    // -------------------------------------------------------------------------
+    // Record9 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -489,10 +475,6 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -517,5 +499,23 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
         value8(value8);
         value9(value9);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Getter for <code>frickl.album_stats.updated_on</code>. When this record has last been updated.
+     */
+    public Timestamp getUpdatedOn() {
+        return (Timestamp) get(7);
+    }
+
+    /**
+     * Getter for <code>frickl.album_stats.count</code>.
+     */
+    public Long getCount() {
+        return (Long) get(8);
     }
 }

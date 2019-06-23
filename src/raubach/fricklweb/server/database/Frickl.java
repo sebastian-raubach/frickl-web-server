@@ -18,6 +18,7 @@ import raubach.fricklweb.server.database.tables.AlbumStats;
 import raubach.fricklweb.server.database.tables.Albums;
 import raubach.fricklweb.server.database.tables.CalendarData;
 import raubach.fricklweb.server.database.tables.ImageTags;
+import raubach.fricklweb.server.database.tables.ImageTimeline;
 import raubach.fricklweb.server.database.tables.Images;
 import raubach.fricklweb.server.database.tables.LatLngs;
 import raubach.fricklweb.server.database.tables.StatsCamera;
@@ -37,11 +38,13 @@ import raubach.fricklweb.server.database.tables.Tags;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Frickl extends SchemaImpl {
 
+    private static final long serialVersionUID = 1797657265;
+
     /**
      * The reference instance of <code>frickl</code>
      */
     public static final Frickl FRICKL = new Frickl();
-    private static final long serialVersionUID = -160251310;
+
     /**
      * VIEW
      */
@@ -61,6 +64,11 @@ public class Frickl extends SchemaImpl {
      * This table joins `images` and `tags` and therefore defines which tags an image is tagged with.
      */
     public final ImageTags IMAGE_TAGS = raubach.fricklweb.server.database.tables.ImageTags.IMAGE_TAGS;
+
+    /**
+     * VIEW
+     */
+    public final ImageTimeline IMAGE_TIMELINE = raubach.fricklweb.server.database.tables.ImageTimeline.IMAGE_TIMELINE;
 
     /**
      * This table contains images from the file system.
@@ -111,6 +119,7 @@ public class Frickl extends SchemaImpl {
             Albums.ALBUMS,
             CalendarData.CALENDAR_DATA,
             ImageTags.IMAGE_TAGS,
+            ImageTimeline.IMAGE_TIMELINE,
             Images.IMAGES,
             LatLngs.LAT_LNGS,
             StatsCamera.STATS_CAMERA,

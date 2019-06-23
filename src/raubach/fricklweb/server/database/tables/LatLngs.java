@@ -35,27 +35,41 @@ import raubach.fricklweb.server.database.tables.records.LatLngsRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class LatLngs extends TableImpl<LatLngsRecord> {
 
+    private static final long serialVersionUID = -346998387;
+
     /**
      * The reference instance of <code>frickl.lat_lngs</code>
      */
     public static final LatLngs LAT_LNGS = new LatLngs();
-    private static final long serialVersionUID = -346998387;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<LatLngsRecord> getRecordType() {
+        return LatLngsRecord.class;
+    }
+
     /**
      * The column <code>frickl.lat_lngs.id</code>. Auto incremented id of this table.
      */
     public final TableField<LatLngsRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "Auto incremented id of this table.");
+
     /**
      * The column <code>frickl.lat_lngs.path</code>. The path to the image relative to the base path of the setup.
      */
     public final TableField<LatLngsRecord, String> PATH = createField("path", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "The path to the image relative to the base path of the setup.");
+
     /**
      * The column <code>frickl.lat_lngs.album_id</code>. The album this image belongs to. This will be the containing folder.
      */
     public final TableField<LatLngsRecord, Integer> ALBUM_ID = createField("album_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "The album this image belongs to. This will be the containing folder.");
+
     /**
      * The column <code>frickl.lat_lngs.latitude</code>.
      */
     public final TableField<LatLngsRecord, BigDecimal> LATITUDE = createField("latitude", org.jooq.impl.SQLDataType.DECIMAL(64, 10), this, "");
+
     /**
      * The column <code>frickl.lat_lngs.longitude</code>.
      */
@@ -92,14 +106,6 @@ public class LatLngs extends TableImpl<LatLngsRecord> {
 
     public <O extends Record> LatLngs(Table<O> child, ForeignKey<O, LatLngsRecord> key) {
         super(child, key, LAT_LNGS);
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<LatLngsRecord> getRecordType() {
-        return LatLngsRecord.class;
     }
 
     /**

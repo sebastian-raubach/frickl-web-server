@@ -41,6 +41,13 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
     }
 
     /**
+     * Getter for <code>frickl.albums.id</code>. Auto incremented id of this table.
+     */
+    public Integer getId() {
+        return (Integer) get(0);
+    }
+
+    /**
      * Create a detached, initialised AlbumsRecord
      */
     public AlbumsRecord(Integer id, String name, String description, String path, Integer bannerImageId, Integer parentAlbumId, Timestamp createdOn, Timestamp updatedOn) {
@@ -57,38 +64,10 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
     }
 
     /**
-     * Getter for <code>frickl.albums.id</code>. Auto incremented id of this table.
-     */
-    public Integer getId() {
-        return (Integer) get(0);
-    }
-
-    /**
-     * Setter for <code>frickl.albums.id</code>. Auto incremented id of this table.
-     */
-    public void setId(Integer value) {
-        set(0, value);
-    }
-
-    /**
      * Getter for <code>frickl.albums.name</code>. The name of the album. Should ideally be relatively short.
      */
     public String getName() {
         return (String) get(1);
-    }
-
-    /**
-     * Setter for <code>frickl.albums.name</code>. The name of the album. Should ideally be relatively short.
-     */
-    public void setName(String value) {
-        set(1, value);
-    }
-
-    /**
-     * Getter for <code>frickl.albums.description</code>. Optional description of the album.
-     */
-    public String getDescription() {
-        return (String) get(2);
     }
 
     /**
@@ -99,10 +78,10 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
     }
 
     /**
-     * Getter for <code>frickl.albums.path</code>. The path to the album relative to the base path of the setup.
+     * Setter for <code>frickl.albums.id</code>. Auto incremented id of this table.
      */
-    public String getPath() {
-        return (String) get(3);
+    public void setId(Integer value) {
+        set(0, value);
     }
 
     /**
@@ -113,10 +92,10 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
     }
 
     /**
-     * Getter for <code>frickl.albums.banner_image_id</code>. Optional banner image id. This image will be shown to visually represent this album.
+     * Setter for <code>frickl.albums.name</code>. The name of the album. Should ideally be relatively short.
      */
-    public Integer getBannerImageId() {
-        return (Integer) get(4);
+    public void setName(String value) {
+        set(1, value);
     }
 
     /**
@@ -127,10 +106,10 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
     }
 
     /**
-     * Getter for <code>frickl.albums.parent_album_id</code>. Optional parent album id. If this album is a sub-album of another album, this parent album can be defined here.
+     * Getter for <code>frickl.albums.description</code>. Optional description of the album.
      */
-    public Integer getParentAlbumId() {
-        return (Integer) get(5);
+    public String getDescription() {
+        return (String) get(2);
     }
 
     /**
@@ -141,6 +120,20 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
     }
 
     /**
+     * Getter for <code>frickl.albums.path</code>. The path to the album relative to the base path of the setup.
+     */
+    public String getPath() {
+        return (String) get(3);
+    }
+
+    /**
+     * Getter for <code>frickl.albums.banner_image_id</code>. Optional banner image id. This image will be shown to visually represent this album.
+     */
+    public Integer getBannerImageId() {
+        return (Integer) get(4);
+    }
+
+    /**
      * Getter for <code>frickl.albums.created_on</code>. When this record has been created.
      */
     public Timestamp getCreatedOn() {
@@ -148,15 +141,11 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
     }
 
     /**
-     * Setter for <code>frickl.albums.created_on</code>. When this record has been created.
+     * Getter for <code>frickl.albums.parent_album_id</code>. Optional parent album id. If this album is a sub-album of another album, this parent album can be defined here.
      */
-    public void setCreatedOn(Timestamp value) {
-        set(6, value);
+    public Integer getParentAlbumId() {
+        return (Integer) get(5);
     }
-
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>frickl.albums.updated_on</code>. When this record has last been updated.
@@ -166,15 +155,8 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
     }
 
     // -------------------------------------------------------------------------
-    // Record8 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>frickl.albums.updated_on</code>. When this record has last been updated.
-     */
-    public void setUpdatedOn(Timestamp value) {
-        set(7, value);
-    }
 
     /**
      * {@inheritDoc}
@@ -183,6 +165,10 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
     public Record1<Integer> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record8 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -455,10 +441,6 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -482,5 +464,23 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
         value7(value7);
         value8(value8);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>frickl.albums.created_on</code>. When this record has been created.
+     */
+    public void setCreatedOn(Timestamp value) {
+        set(6, value);
+    }
+
+    /**
+     * Setter for <code>frickl.albums.updated_on</code>. When this record has last been updated.
+     */
+    public void setUpdatedOn(Timestamp value) {
+        set(7, value);
     }
 }

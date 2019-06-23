@@ -41,6 +41,13 @@ public class TagsRecord extends UpdatableRecordImpl<TagsRecord> implements Recor
     }
 
     /**
+     * Getter for <code>frickl.tags.id</code>. Auto incremented id of this table.
+     */
+    public Integer getId() {
+        return (Integer) get(0);
+    }
+
+    /**
      * Create a detached, initialised TagsRecord
      */
     public TagsRecord(Integer id, String name, Timestamp createdOn, Timestamp updatedOn) {
@@ -53,10 +60,17 @@ public class TagsRecord extends UpdatableRecordImpl<TagsRecord> implements Recor
     }
 
     /**
-     * Getter for <code>frickl.tags.id</code>. Auto incremented id of this table.
+     * Getter for <code>frickl.tags.name</code>. The name of this tag.
      */
-    public Integer getId() {
-        return (Integer) get(0);
+    public String getName() {
+        return (String) get(1);
+    }
+
+    /**
+     * Setter for <code>frickl.tags.created_on</code>. When this record has been created.
+     */
+    public void setCreatedOn(Timestamp value) {
+        set(2, value);
     }
 
     /**
@@ -67,36 +81,11 @@ public class TagsRecord extends UpdatableRecordImpl<TagsRecord> implements Recor
     }
 
     /**
-     * Getter for <code>frickl.tags.name</code>. The name of this tag.
-     */
-    public String getName() {
-        return (String) get(1);
-    }
-
-    /**
      * Setter for <code>frickl.tags.name</code>. The name of this tag.
      */
     public void setName(String value) {
         set(1, value);
     }
-
-    /**
-     * Getter for <code>frickl.tags.created_on</code>. When this record has been created.
-     */
-    public Timestamp getCreatedOn() {
-        return (Timestamp) get(2);
-    }
-
-    /**
-     * Setter for <code>frickl.tags.created_on</code>. When this record has been created.
-     */
-    public void setCreatedOn(Timestamp value) {
-        set(2, value);
-    }
-
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>frickl.tags.updated_on</code>. When this record has last been updated.
@@ -106,15 +95,8 @@ public class TagsRecord extends UpdatableRecordImpl<TagsRecord> implements Recor
     }
 
     // -------------------------------------------------------------------------
-    // Record4 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>frickl.tags.updated_on</code>. When this record has last been updated.
-     */
-    public void setUpdatedOn(Timestamp value) {
-        set(3, value);
-    }
 
     /**
      * {@inheritDoc}
@@ -123,6 +105,10 @@ public class TagsRecord extends UpdatableRecordImpl<TagsRecord> implements Recor
     public Record1<Integer> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record4 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -263,10 +249,6 @@ public class TagsRecord extends UpdatableRecordImpl<TagsRecord> implements Recor
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -286,5 +268,23 @@ public class TagsRecord extends UpdatableRecordImpl<TagsRecord> implements Recor
         value3(value3);
         value4(value4);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Getter for <code>frickl.tags.created_on</code>. When this record has been created.
+     */
+    public Timestamp getCreatedOn() {
+        return (Timestamp) get(2);
+    }
+
+    /**
+     * Setter for <code>frickl.tags.updated_on</code>. When this record has last been updated.
+     */
+    public void setUpdatedOn(Timestamp value) {
+        set(3, value);
     }
 }

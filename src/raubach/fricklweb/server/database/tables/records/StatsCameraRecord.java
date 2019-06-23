@@ -30,10 +30,24 @@ public class StatsCameraRecord extends TableRecordImpl<StatsCameraRecord> implem
     private static final long serialVersionUID = -1252538212;
 
     /**
+     * Setter for <code>frickl.stats_camera.camera</code>.
+     */
+    public void setCamera(String value) {
+        set(0, value);
+    }
+
+    /**
      * Create a detached StatsCameraRecord
      */
     public StatsCameraRecord() {
         super(StatsCamera.STATS_CAMERA);
+    }
+
+    /**
+     * Setter for <code>frickl.stats_camera.count</code>.
+     */
+    public void setCount(Long value) {
+        set(1, value);
     }
 
     /**
@@ -46,37 +60,9 @@ public class StatsCameraRecord extends TableRecordImpl<StatsCameraRecord> implem
         set(1, count);
     }
 
-    /**
-     * Getter for <code>frickl.stats_camera.camera</code>.
-     */
-    public String getCamera() {
-        return (String) get(0);
-    }
-
-    /**
-     * Setter for <code>frickl.stats_camera.camera</code>.
-     */
-    public void setCamera(String value) {
-        set(0, value);
-    }
-
     // -------------------------------------------------------------------------
     // Record2 type implementation
     // -------------------------------------------------------------------------
-
-    /**
-     * Getter for <code>frickl.stats_camera.count</code>.
-     */
-    public Long getCount() {
-        return (Long) get(1);
-    }
-
-    /**
-     * Setter for <code>frickl.stats_camera.count</code>.
-     */
-    public void setCount(Long value) {
-        set(1, value);
-    }
 
     /**
      * {@inheritDoc}
@@ -151,10 +137,6 @@ public class StatsCameraRecord extends TableRecordImpl<StatsCameraRecord> implem
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -172,5 +154,23 @@ public class StatsCameraRecord extends TableRecordImpl<StatsCameraRecord> implem
         value1(value1);
         value2(value2);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Getter for <code>frickl.stats_camera.camera</code>.
+     */
+    public String getCamera() {
+        return (String) get(0);
+    }
+
+    /**
+     * Getter for <code>frickl.stats_camera.count</code>.
+     */
+    public Long getCount() {
+        return (Long) get(1);
     }
 }

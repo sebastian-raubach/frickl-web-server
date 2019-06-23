@@ -10,6 +10,7 @@ import raubach.fricklweb.server.database.tables.AlbumStats;
 import raubach.fricklweb.server.database.tables.Albums;
 import raubach.fricklweb.server.database.tables.CalendarData;
 import raubach.fricklweb.server.database.tables.ImageTags;
+import raubach.fricklweb.server.database.tables.ImageTimeline;
 import raubach.fricklweb.server.database.tables.Images;
 import raubach.fricklweb.server.database.tables.LatLngs;
 import raubach.fricklweb.server.database.tables.StatsCamera;
@@ -48,6 +49,11 @@ public class Tables {
      * This table joins `images` and `tags` and therefore defines which tags an image is tagged with.
      */
     public static final ImageTags IMAGE_TAGS = raubach.fricklweb.server.database.tables.ImageTags.IMAGE_TAGS;
+
+    /**
+     * VIEW
+     */
+    public static final ImageTimeline IMAGE_TIMELINE = raubach.fricklweb.server.database.tables.ImageTimeline.IMAGE_TIMELINE;
 
     /**
      * This table contains images from the file system.

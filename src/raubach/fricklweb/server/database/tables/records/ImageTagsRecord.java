@@ -38,6 +38,13 @@ public class ImageTagsRecord extends UpdatableRecordImpl<ImageTagsRecord> implem
     }
 
     /**
+     * Getter for <code>frickl.image_tags.image_id</code>. The foreign key id of the referenced image.
+     */
+    public Integer getImageId() {
+        return (Integer) get(0);
+    }
+
+    /**
      * Create a detached, initialised ImageTagsRecord
      */
     public ImageTagsRecord(Integer imageId, Integer tagId) {
@@ -48,24 +55,6 @@ public class ImageTagsRecord extends UpdatableRecordImpl<ImageTagsRecord> implem
     }
 
     /**
-     * Getter for <code>frickl.image_tags.image_id</code>. The foreign key id of the referenced image.
-     */
-    public Integer getImageId() {
-        return (Integer) get(0);
-    }
-
-    /**
-     * Setter for <code>frickl.image_tags.image_id</code>. The foreign key id of the referenced image.
-     */
-    public void setImageId(Integer value) {
-        set(0, value);
-    }
-
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
-
-    /**
      * Getter for <code>frickl.image_tags.tag_id</code>. The foreign key id of the referenced tag.
      */
     public Integer getTagId() {
@@ -73,15 +62,8 @@ public class ImageTagsRecord extends UpdatableRecordImpl<ImageTagsRecord> implem
     }
 
     // -------------------------------------------------------------------------
-    // Record2 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>frickl.image_tags.tag_id</code>. The foreign key id of the referenced tag.
-     */
-    public void setTagId(Integer value) {
-        set(1, value);
-    }
 
     /**
      * {@inheritDoc}
@@ -90,6 +72,10 @@ public class ImageTagsRecord extends UpdatableRecordImpl<ImageTagsRecord> implem
     public Record2<Integer, Integer> key() {
         return (Record2) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record2 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -164,10 +150,6 @@ public class ImageTagsRecord extends UpdatableRecordImpl<ImageTagsRecord> implem
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -185,5 +167,23 @@ public class ImageTagsRecord extends UpdatableRecordImpl<ImageTagsRecord> implem
         value1(value1);
         value2(value2);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>frickl.image_tags.image_id</code>. The foreign key id of the referenced image.
+     */
+    public void setImageId(Integer value) {
+        set(0, value);
+    }
+
+    /**
+     * Setter for <code>frickl.image_tags.tag_id</code>. The foreign key id of the referenced tag.
+     */
+    public void setTagId(Integer value) {
+        set(1, value);
     }
 }
