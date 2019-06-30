@@ -12,6 +12,7 @@ import java.util.*;
 
 import raubach.fricklweb.server.*;
 import raubach.fricklweb.server.database.tables.pojos.*;
+import raubach.fricklweb.server.database.tables.records.TagsRecord;
 import raubach.fricklweb.server.resource.*;
 import raubach.fricklweb.server.util.*;
 
@@ -41,26 +42,35 @@ public class ImageTagResource extends PaginatedServerResource
 		}
 	}
 
-	@Put("json")
-	public boolean addTagJson(ImageTags imageTag)
+	@Post("json")
+	public boolean addTagJson(Tags tag)
 	{
-		if (imageTag.getImageId() != null && imageTag.getTagId() != null && Objects.equals(imageTag.getImageId(), imageId))
+		if (tag != null && imageId != null)
 		{
 			try (Connection conn = Database.getConnection();
 				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
 			{
+				Images image = context.selectFrom(IMAGES)
+						.where(IMAGES.ID.eq(imageId))
+						.fetchOneInto(Images.class);
+
+				TagsRecord t = context.selectFrom(TAGS)
+						.where(TAGS.ID.eq(tag.getId()))
+						.fetchOneInto(TagsRecord.class);
+
+				if (t == null)
+					t = context.insertInto(TAGS)
+							.set(TAGS.NAME, tag.getName())
+							.returning()
+							.fetchOne();
+
+				if (t == null || image == null)
+					throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
+
 				int numberOfInsertedItems = context.insertInto(IMAGE_TAGS, IMAGE_TAGS.IMAGE_ID, IMAGE_TAGS.TAG_ID)
-												   .values(imageTag.getImageId(), imageTag.getTagId())
+												   .values(imageId, t.getId())
 												   .onDuplicateKeyIgnore()
 												   .execute();
-
-				Images image = context.selectFrom(IMAGES)
-									  .where(IMAGES.ID.eq(imageTag.getImageId()))
-									  .fetchOneInto(Images.class);
-
-				Tags tag = context.selectFrom(TAGS)
-								  .where(TAGS.ID.eq(imageTag.getTagId()))
-								  .fetchOneInto(Tags.class);
 
 				File file = new File(Frickl.BASE_PATH, image.getPath());
 				try
@@ -87,25 +97,28 @@ public class ImageTagResource extends PaginatedServerResource
 	}
 
 	@Delete("json")
-	public boolean removeTagJson(ImageTags imageTag)
+	public boolean removeTagJson(Tags tag)
 	{
-		if (imageTag.getImageId() != null && imageTag.getTagId() != null && Objects.equals(imageTag.getImageId(), imageId))
+		if (imageId != null && tag != null)
 		{
 			try (Connection conn = Database.getConnection();
 				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
 			{
-				int numberOfInsertedItems = context.deleteFrom(IMAGE_TAGS)
-												   .where(IMAGE_TAGS.IMAGE_ID.eq(imageTag.getImageId()))
-												   .and(IMAGE_TAGS.TAG_ID.eq(imageTag.getTagId()))
-												   .execute();
-
 				Images image = context.selectFrom(IMAGES)
-									  .where(IMAGES.ID.eq(imageTag.getImageId()))
-									  .fetchOneInto(Images.class);
+						.where(IMAGES.ID.eq(imageId))
+						.fetchOneInto(Images.class);
 
-				Tags tag = context.selectFrom(TAGS)
-								  .where(TAGS.ID.eq(imageTag.getTagId()))
-								  .fetchOneInto(Tags.class);
+				Tags t = context.selectFrom(TAGS)
+						.where(TAGS.ID.eq(tag.getId()))
+						.fetchOneInto(Tags.class);
+
+				if (t == null || image == null)
+					throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
+
+				int numberOfDeletedItems = context.deleteFrom(IMAGE_TAGS)
+												   .where(IMAGE_TAGS.IMAGE_ID.eq(image.getId()))
+												   .and(IMAGE_TAGS.TAG_ID.eq(tag.getId()))
+												   .execute();
 
 				File file = new File(Frickl.BASE_PATH, image.getPath());
 				try
@@ -117,7 +130,7 @@ public class ImageTagResource extends PaginatedServerResource
 					e.printStackTrace();
 				}
 
-				return numberOfInsertedItems == 1;
+				return numberOfDeletedItems == 1;
 			}
 			catch (SQLException e)
 			{
