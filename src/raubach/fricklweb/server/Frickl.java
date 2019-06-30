@@ -110,7 +110,6 @@ public class Frickl extends Application
 		attachToRouter(router, "/search/{searchTerm}/image/count", SearchImageCountResource.class);
 
 		attachToRouter(router, "/stats/camera", StatsCameraResource.class);
-		attachToRouter(router, "/stats/timeline", StatsTimelineResource.class);
 
 		attachToRouter(router, "/tag", TagResource.class);
 		attachToRouter(router, "/tag/{tagId}", TagResource.class);
