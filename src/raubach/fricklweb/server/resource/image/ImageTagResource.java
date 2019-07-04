@@ -130,6 +130,8 @@ public class ImageTagResource extends PaginatedServerResource
 					e.printStackTrace();
 				}
 
+				// TODO: Delete all tags that have no more images associated with them
+
 				return numberOfDeletedItems == 1;
 			}
 			catch (SQLException e)

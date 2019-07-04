@@ -8,13 +8,12 @@ import org.restlet.resource.*;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.*;
 
 import org.restlet.resource.Delete;
 import raubach.fricklweb.server.*;
 import raubach.fricklweb.server.database.tables.pojos.*;
+import raubach.fricklweb.server.database.tables.records.ImageTagsRecord;
 import raubach.fricklweb.server.database.tables.records.TagsRecord;
 import raubach.fricklweb.server.resource.*;
 import raubach.fricklweb.server.util.*;
@@ -58,32 +57,36 @@ public class AlbumTagResource extends PaginatedServerResource
 						.where(IMAGES.ALBUM_ID.eq(albumId))
 						.fetchInto(Images.class);
 
-				List<Integer> tagIds = new ArrayList<>();
-
-				for(Tags tag : tags)
-					tagIds.add(tag.getId());
-
-				List<String> tagNames = new ArrayList<>();
-
-				for(Tags tag : tags)
-					tagNames.add(tag.getName());
-
 				if (images == null || images.size() < 1)
 					throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
 
-				for(Images image : images) {
-					context.deleteFrom(IMAGE_TAGS)
-							.where(IMAGE_TAGS.IMAGE_ID.eq(image.getId()))
-							.and(IMAGE_TAGS.TAG_ID.in(tagIds))
-							.execute();
+				List<Integer> imageIds = images.stream().map(Images::getId).collect(Collectors.toList());
 
-					File file = new File(Frickl.BASE_PATH, image.getPath());
-					try {
-						TagUtils.deleteTagFromImage(file, tagNames);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+				List<Integer> tagIds = new ArrayList<>();
+				List<String> tagNames = new ArrayList<>();
+				for(Tags tag : tags) {
+					tagIds.add(tag.getId());
+					tagNames.add(tag.getName());
 				}
+
+				context.deleteFrom(IMAGE_TAGS)
+						.where(IMAGE_TAGS.IMAGE_ID.in(imageIds))
+						.and(IMAGE_TAGS.TAG_ID.in(tagIds))
+						.execute();
+
+				// Run this in a separate thread, we don't need to wait for it to finish
+				new Thread(() -> {
+					for(Images image : images) {
+						File file = new File(Frickl.BASE_PATH, image.getPath());
+						try {
+							TagUtils.deleteTagFromImage(file, tagNames);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}).start();
+
+				// TODO: Delete all tags that have no more images associated with them
 			}
 			catch (SQLException e)
 			{
@@ -102,16 +105,15 @@ public class AlbumTagResource extends PaginatedServerResource
 	{
 		if (albumId != null && tags != null && tags.length > 0)
 		{
-			Logger.getLogger("").log(Level.INFO, tags.toString());
 			try (Connection conn = Database.getConnection();
 				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
 			{
+				long s = System.currentTimeMillis();
 				List<Images> images = context.selectFrom(IMAGES)
 											 .where(IMAGES.ALBUM_ID.eq(albumId))
 											 .fetchInto(Images.class);
 
 				List<String> tagStrings = new ArrayList<>();
-
 				for(Tags tag : tags)
 					tagStrings.add(tag.getName());
 
@@ -122,29 +124,34 @@ public class AlbumTagResource extends PaginatedServerResource
 						t.store();
 						tag.setId(t.getId());
 					}
+
+					List<Integer> existingIds = context.select(IMAGE_TAGS.IMAGE_ID)
+							.from(IMAGE_TAGS)
+							.where(IMAGE_TAGS.TAG_ID.eq(tag.getId()))
+							.fetchInto(Integer.class);
+
+					images.removeIf(i -> existingIds.contains(i.getId()));
+
+					InsertValuesStep2<ImageTagsRecord, Integer, Integer> step = context.insertInto(IMAGE_TAGS, IMAGE_TAGS.IMAGE_ID, IMAGE_TAGS.TAG_ID);
+					for (Images image : images)
+						step.values(image.getId(), tag.getId());
+					step.execute();
 				}
 
-				for (Images image : images)
-				{
-					// Add to the database
-					for (Tags tag : tags)
-					{
-						context.insertInto(IMAGE_TAGS, IMAGE_TAGS.IMAGE_ID, IMAGE_TAGS.TAG_ID)
-							   .values(image.getId(), tag.getId())
-							   .onDuplicateKeyIgnore()
-							   .execute();
+				// Run this in a separate thread, we don't need to wait for it to finish
+				new Thread(() -> {
+					for (Images image : images) {
+						File file = new File(Frickl.BASE_PATH, image.getPath());
+						try
+						{
+							TagUtils.addTagToImage(file, tagStrings);
+						}
+						catch (IOException e)
+						{
+							e.printStackTrace();
+						}
 					}
-
-					File file = new File(Frickl.BASE_PATH, image.getPath());
-					try
-					{
-						TagUtils.addTagToImage(file, tagStrings);
-					}
-					catch (IOException e)
-					{
-						e.printStackTrace();
-					}
-				}
+				}).start();
 			}
 			catch (SQLException e)
 			{

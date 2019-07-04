@@ -47,10 +47,9 @@ public class TagImageResource extends PaginatedServerResource
 				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
 			{
 				return select.from(TAGS
-					.leftJoin(IMAGE_TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))
-					.leftJoin(IMAGES).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID)))
-							 .where(TAGS.ID.eq(tagId))
-							 .orderBy(IMAGES.CREATED_ON.desc())
+						.leftJoin(IMAGE_TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))
+						.leftJoin(IMAGES).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID)))
+						.where(TAGS.ID.eq(tagId))
 							 .offset(pageSize * currentPage)
 							 .limit(pageSize)
 							 .fetch()

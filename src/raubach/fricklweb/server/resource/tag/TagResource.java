@@ -46,7 +46,7 @@ public class TagResource extends PaginatedServerResource
 			 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
 		{
 			SelectJoinStep<Record> step = context.select(TAGS.asterisk(), DSL.count().as("count"))
-												 .from(TAGS.leftJoin(IMAGE_TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))
+												 .from(IMAGE_TAGS.leftJoin(TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))
 														   .leftJoin(IMAGES).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID)));
 
 			if (tagId != null)
