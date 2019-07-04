@@ -228,8 +228,10 @@ public class ImageScanner
 					// If the image doesn't exist, import it
 					String relativePath = basePath.toURI().relativize(new File(path).toURI()).getPath();
 
-					Optional<ImagesRecord> newImage = context.insertInto(IMAGES, IMAGES.ALBUM_ID, IMAGES.PATH, IMAGES.NAME)
-															 .values(albumId, relativePath, file.toFile().getName())
+					BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
+
+					Optional<ImagesRecord> newImage = context.insertInto(IMAGES, IMAGES.ALBUM_ID, IMAGES.PATH, IMAGES.NAME, IMAGES.CREATED_ON)
+															 .values(albumId, relativePath, file.toFile().getName(), attr != null ? new Timestamp(attr.creationTime().toMillis()) : null)
 															 .onDuplicateKeyIgnore()
 															 .returning()
 															 .fetchOptional();
