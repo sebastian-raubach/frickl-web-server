@@ -68,14 +68,15 @@
 		</copy>
 
 		<war destfile="${war}" update="false">
-			<webinf dir="web/WEB-INF" excludes="**/classes/**"/>
+            <fileset erroronmissingdir="false" dir="${web}/dist"/>
+			<webinf dir="${web}/WEB-INF" excludes="**/classes/**"/>
 			<lib dir="${lib}" excludes="**/lib-dev/**"/>
 			<lib file="${jar}"/>
 
 			<zipfileset dir="." includes="logging.properties" prefix="WEB-INF/classes"/>
 			<zipfileset dir="${res}" includes="database.sql" prefix="WEB-INF/classes"/>
 
-			<metainf file="web/context.xml"/>
+			<metainf file="${web}/context.xml"/>
 		</war>
 	</target>
 
