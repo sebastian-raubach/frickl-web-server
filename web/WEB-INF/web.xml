@@ -19,7 +19,7 @@
 
 	<servlet-mapping>
 		<servlet-name>Frickl</servlet-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>/api/*</url-pattern>
 	</servlet-mapping>
 
 	<!-- LISTENERS -->
