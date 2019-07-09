@@ -25,30 +25,38 @@ public class ImageRandomResource extends PaginatedServerResource
 	@Get("json")
 	public Images getJson()
 	{
+		Images result = null;
 		try (Connection conn = Database.getConnection();
 			 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select()) {
-			Images result = select.from(IMAGES)
+			result = select.from(IMAGES)
 					.where(IMAGES.IS_FAVORITE.eq((byte) 1))
 					.orderBy(DSL.rand())
 					.limit(1)
 					.fetchOne()
 					.into(Images.class);
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
 
-			if (result == null) {
+		if (result == null) {
+			try (Connection conn = Database.getConnection();
+				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select()) {
 				result = select.from(IMAGES)
 						.orderBy(DSL.rand())
 						.limit(1)
 						.fetchOne()
 						.into(Images.class);
 			}
+			catch (SQLException e)
+			{
+				e.printStackTrace();
 
-			return result;
+				throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+			}
 		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();;
 
-			throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
-		}
+		return result;
 	}
 }
