@@ -35,7 +35,7 @@ public class ImageRandomResource extends PaginatedServerResource
 					.fetchOne()
 					.into(Images.class);
 		}
-		catch (SQLException e)
+		catch (SQLException | NullPointerException e)
 		{
 			e.printStackTrace();
 		}
@@ -54,6 +54,10 @@ public class ImageRandomResource extends PaginatedServerResource
 				e.printStackTrace();
 
 				throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+			}
+			catch (NullPointerException e)
+			{
+				e.printStackTrace();
 			}
 		}
 
