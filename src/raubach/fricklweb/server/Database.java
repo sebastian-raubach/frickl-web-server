@@ -48,6 +48,7 @@ public class Database
 						.runScript(br);
 			}
 			DSL.using(conn, SQLDialect.MYSQL).close();
+			Logger.getLogger("").log(Level.INFO, "Finished running database setup: " + databaseScript.getAbsolutePath());
 		}
 		catch (SQLException | URISyntaxException | IOException e)
 		{

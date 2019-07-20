@@ -67,7 +67,7 @@
 			</filterset>
 		</copy>
 
-		<war destfile="${war}" update="false">
+		<war destfile="${war}" update="false" webxml="${web}/WEB-INF/web.xml">
             <fileset erroronmissingdir="false" dir="${web}/dist"/>
 			<webinf dir="${web}/WEB-INF" excludes="**/classes/**"/>
 			<lib dir="${lib}" excludes="**/lib-dev/**"/>
