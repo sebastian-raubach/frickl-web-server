@@ -13,6 +13,24 @@ import javax.servlet.*;
  */
 public class ThumbnailUtils
 {
+	public static boolean thumbnailExists(ServletContext servlet, MediaType type, Integer imageId, File file)
+	{
+		String version = servlet.getInitParameter("version");
+		File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-thumbnails" + "-" + version);
+		folder.mkdirs();
+
+		String extension = type == MediaType.IMAGE_PNG ? ".png" : ".jpg";
+
+		File target = new File(folder, imageId + "-small" + extension);
+
+		// Delete the thumbnail if it's older than the source image
+		if (target.lastModified() < file.lastModified())
+			target.delete();
+
+		// If it exists, fine, just return it
+		return target.exists();
+	}
+
 	public static File getOrCreateThumbnail(ServletContext servlet, MediaType type, Integer imageId, File file)
 		throws IOException
 	{
