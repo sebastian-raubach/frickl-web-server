@@ -47,7 +47,7 @@
 		<jar jarfile="${jar}">
 			<fileset dir="${cls}"/>
 			<manifest>
-				<attribute name="Main-Class" value="jhi.seedstore.server.Seedstore"/>
+				<attribute name="Main-Class" value="raubach.fricklweb.server.Frickl"/>
 				<attribute name="Class-Path" value="${jar.classpath}"/>
 			</manifest>
 		</jar>

@@ -44,8 +44,12 @@ public class ImageScanner {
         this.basePath = basePath;
         this.folder = folder;
 
-        // Use one core less than is available, but at least one.
-        int cores = Math.min(1, Runtime.getRuntime().availableProcessors() - 1);
+        int cores = Runtime.getRuntime().availableProcessors();
+
+        // If there are more than 2, leave one for handling of REST requests, otherwise use them all.
+        if (cores > 2)
+            cores--;
+
         executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cores);
     }
 
