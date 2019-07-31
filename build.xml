@@ -8,7 +8,7 @@
 	<property name="cls" location="web/WEB-INF/classes"/>
 	<property name="web" location="web"/>
 
-	<property name="path" value="${deploy.name}/v${api.version}"/>
+	<property name="path" value="${deploy.name}"/>
 
 	<property name="jar" value="frickl.jar"/>
 	<property name="war" value="${project.name}.war"/>
