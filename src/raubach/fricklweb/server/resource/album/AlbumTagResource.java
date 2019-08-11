@@ -108,7 +108,6 @@ public class AlbumTagResource extends PaginatedServerResource
 			try (Connection conn = Database.getConnection();
 				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
 			{
-				long s = System.currentTimeMillis();
 				List<Images> images = context.selectFrom(IMAGES)
 											 .where(IMAGES.ALBUM_ID.eq(albumId))
 											 .fetchInto(Images.class);
@@ -117,9 +116,21 @@ public class AlbumTagResource extends PaginatedServerResource
 				for(Tags tag : tags)
 					tagStrings.add(tag.getName());
 
+				Map<String, Integer> tagIds = context.selectFrom(TAGS)
+						.where(TAGS.NAME.in(tagStrings))
+						.fetchMap(TAGS.NAME, TAGS.ID);
+
+				// Get all existing ids
+				for(Tags tag : tags)
+				{
+					if (tag.getId() == null)
+						tag.setId(tagIds.get(tag.getName()));
+				}
+
 				for (Tags tag : tags) {
 					// If it doesn't exist, create it
 					if (tag.getId() == null) {
+						tag.setCreatedOn(new Timestamp(System.currentTimeMillis()));
 						TagsRecord t = context.newRecord(TAGS, tag);
 						t.store();
 						tag.setId(t.getId());

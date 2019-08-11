@@ -9,6 +9,7 @@ import org.restlet.resource.*;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 import raubach.fricklweb.server.*;
 import raubach.fricklweb.server.database.tables.pojos.*;
@@ -55,16 +56,16 @@ public class ImageTagResource extends PaginatedServerResource
 						.fetchOneInto(Images.class);
 
 				TagsRecord t = context.selectFrom(TAGS)
-						.where(TAGS.ID.eq(tag.getId()))
+						.where(TAGS.NAME.eq(tag.getName()))
 						.fetchOneInto(TagsRecord.class);
 
-				if (t == null)
-					t = context.insertInto(TAGS)
-							.set(TAGS.NAME, tag.getName())
-							.returning()
-							.fetchOne();
+				if (t == null) {
+					tag.setCreatedOn(new Timestamp(System.currentTimeMillis()));
+					t = context.newRecord(TAGS, tag);
+					t.store();
+				}
 
-				if (t == null || image == null)
+				if (image == null)
 					throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
 
 				int numberOfInsertedItems = context.insertInto(IMAGE_TAGS, IMAGE_TAGS.IMAGE_ID, IMAGE_TAGS.TAG_ID)
