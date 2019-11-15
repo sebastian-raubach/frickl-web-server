@@ -13,6 +13,7 @@ import java.util.Date;
 
 import raubach.fricklweb.server.*;
 import raubach.fricklweb.server.database.tables.pojos.*;
+import raubach.fricklweb.server.database.tables.records.ImageTagsRecord;
 import raubach.fricklweb.server.database.tables.records.TagsRecord;
 import raubach.fricklweb.server.resource.*;
 import raubach.fricklweb.server.util.*;
@@ -44,9 +45,10 @@ public class ImageTagResource extends PaginatedServerResource
 	}
 
 	@Post("json")
-	public boolean addTagJson(Tags tag)
+	public boolean addTagJson(Tags[] tags)
 	{
-		if (tag != null && imageId != null)
+		boolean result = false;
+		if (tags != null && tags.length > 0 && imageId != null)
 		{
 			try (Connection conn = Database.getConnection();
 				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
@@ -55,35 +57,55 @@ public class ImageTagResource extends PaginatedServerResource
 						.where(IMAGES.ID.eq(imageId))
 						.fetchOneInto(Images.class);
 
-				TagsRecord t = context.selectFrom(TAGS)
-						.where(TAGS.NAME.eq(tag.getName()))
-						.fetchOneInto(TagsRecord.class);
+				List<String> tagStrings = new ArrayList<>();
+				for(Tags tag : tags)
+					tagStrings.add(tag.getName());
 
-				if (t == null) {
-					tag.setCreatedOn(new Timestamp(System.currentTimeMillis()));
-					t = context.newRecord(TAGS, tag);
-					t.store();
-				}
+				Map<String, Integer> tagIds = context.selectFrom(TAGS)
+						.where(TAGS.NAME.in(tagStrings))
+						.fetchMap(TAGS.NAME, TAGS.ID);
 
-				if (image == null)
-					throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
-
-				int numberOfInsertedItems = context.insertInto(IMAGE_TAGS, IMAGE_TAGS.IMAGE_ID, IMAGE_TAGS.TAG_ID)
-												   .values(imageId, t.getId())
-												   .onDuplicateKeyIgnore()
-												   .execute();
-
-				File file = new File(Frickl.BASE_PATH, image.getPath());
-				try
+				// Get all existing ids
+				for(Tags tag : tags)
 				{
-					TagUtils.addTagToImage(file, Collections.singletonList(tag.getName()));
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
+					if (tag.getId() == null)
+						tag.setId(tagIds.get(tag.getName()));
 				}
 
-				return numberOfInsertedItems == 1;
+				for (Tags tag : tags) {
+					// If it doesn't exist, create it
+					if (tag.getId() == null) {
+						tag.setCreatedOn(new Timestamp(System.currentTimeMillis()));
+						TagsRecord t = context.newRecord(TAGS, tag);
+						t.store();
+						tag.setId(t.getId());
+					}
+
+					List<Integer> existingIds = context.select(IMAGE_TAGS.IMAGE_ID)
+							.from(IMAGE_TAGS)
+							.where(IMAGE_TAGS.TAG_ID.eq(tag.getId()))
+							.fetchInto(Integer.class);
+
+					if (!existingIds.contains(image.getId())) {
+
+						result = context.insertInto(IMAGE_TAGS, IMAGE_TAGS.IMAGE_ID, IMAGE_TAGS.TAG_ID)
+								.values(image.getId(), tag.getId())
+								.execute() == 1;
+					}
+				}
+
+				// Run this in a separate thread, we don't need to wait for it to finish
+				new Thread(() -> {
+					File file = new File(Frickl.BASE_PATH, image.getPath());
+					try
+					{
+						TagUtils.addTagToImage(file, tagStrings);
+					}
+					catch (IOException e)
+					{
+						e.printStackTrace();
+					}
+				}).start();
 			}
 			catch (SQLException e)
 			{
@@ -95,6 +117,8 @@ public class ImageTagResource extends PaginatedServerResource
 		{
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
 		}
+
+		return result;
 	}
 
 	@Delete("json")
