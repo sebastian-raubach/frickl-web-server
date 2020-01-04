@@ -70,6 +70,7 @@ public class ImageImageResource extends PaginatedServerResource
 				if (image != null)
 				{
 					File file = new File(Frickl.BASE_PATH, image.getPath());
+					String filename = file.getName();
 					MediaType type;
 
 					if (file.getName().toLowerCase().endsWith(".jpg"))
@@ -95,9 +96,12 @@ public class ImageImageResource extends PaginatedServerResource
 					if (file.exists() && file.isFile())
 					{
 
+						Disposition disposition = new Disposition(Disposition.TYPE_ATTACHMENT);
+						disposition.setFilename(filename);
+						disposition.setSize(file.length());
 						representation = new FileRepresentation(file, type);
 						representation.setSize(file.length());
-						representation.setDisposition(new Disposition(Disposition.TYPE_ATTACHMENT));
+						representation.setDisposition(disposition);
 					}
 					else
 					{

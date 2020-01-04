@@ -87,6 +87,7 @@ public class Frickl extends Application
 		attachToRouter(router, "/album/count", AlbumCountResource.class);
 		attachToRouter(router, "/album/{albumId}", AlbumResource.class);
 		attachToRouter(router, "/album/{albumId}/count", AlbumCountResource.class);
+		attachToRouter(router, "/album/{albumId}/download", AlbumDownloadResource.class);
 		attachToRouter(router, "/album/{albumId}/location", AlbumLocationResource.class);
 		attachToRouter(router, "/album/{albumId}/image", ImageResource.class);
 		attachToRouter(router, "/album/{albumId}/image/count", ImageCountResource.class);
