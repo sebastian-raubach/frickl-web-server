@@ -13,7 +13,7 @@ import javax.servlet.*;
  */
 public class ThumbnailUtils
 {
-	public static boolean thumbnailExists(ServletContext servlet, MediaType type, Integer imageId, File file)
+	public static boolean thumbnailExists(ServletContext servlet, MediaType type, Integer imageId, File file, Size size)
 	{
 		String version = servlet.getInitParameter("version");
 		File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-thumbnails" + "-" + version);
@@ -21,7 +21,7 @@ public class ThumbnailUtils
 
 		String extension = type == MediaType.IMAGE_PNG ? ".png" : ".jpg";
 
-		File target = new File(folder, imageId + "-small" + extension);
+		File target = new File(folder, imageId + size.getSuffix() + extension);
 
 		// Delete the thumbnail if it's older than the source image
 		if (target.lastModified() < file.lastModified())
@@ -31,7 +31,7 @@ public class ThumbnailUtils
 		return target.exists();
 	}
 
-	public static File getOrCreateThumbnail(ServletContext servlet, MediaType type, Integer imageId, File file)
+	public static File getOrCreateThumbnail(ServletContext servlet, MediaType type, Integer imageId, File file, Size size)
 		throws IOException
 	{
 		File result;
@@ -41,7 +41,7 @@ public class ThumbnailUtils
 
 		String extension = type == MediaType.IMAGE_PNG ? ".png" : ".jpg";
 
-		File target = new File(folder, imageId + "-small" + extension);
+		File target = new File(folder, imageId + size.getSuffix() + extension);
 
 		// Delete the thumbnail if it's older than the source image
 		if (target.lastModified() < file.lastModified())
@@ -56,7 +56,7 @@ public class ThumbnailUtils
 		else
 		{
 			Thumbnails.of(file)
-					  .height(400)
+					  .height(size.height)
 					  .keepAspectRatio(true)
 					  .toFile(target);
 
@@ -64,5 +64,30 @@ public class ThumbnailUtils
 		}
 
 		return result;
+	}
+
+	public enum Size {
+		SMALL("-small", 400),
+		MEDIUM("-medium", 1080),
+		ORIGINAL("", -1);
+
+		private String suffix;
+		private int height;
+
+		Size(String suffix, int height)
+		{
+			this.suffix = suffix;
+			this.height = height;
+		}
+
+		public String getSuffix()
+		{
+			return suffix;
+		}
+
+		public int getHeight()
+		{
+			return height;
+		}
 	}
 }

@@ -210,7 +210,8 @@ public class ImageScanner {
                         ImagesRecord imagesRecord = newImage.get();
                         imagePathToId.put(path, imagesRecord.getId());
 
-                        executor.submit(new ImageScaler(this.context, imagesRecord));
+                        executor.submit(new ImageScaler(this.context, imagesRecord, ThumbnailUtils.Size.SMALL));
+                        executor.submit(new ImageScaler(this.context, imagesRecord, ThumbnailUtils.Size.MEDIUM));
                         executor.submit(new ImageExifReader(imagesRecord));
                     }
                 } else {
@@ -234,8 +235,12 @@ public class ImageScanner {
                         else
                             type = MediaType.IMAGE_ALL;
 
-                        if (!ThumbnailUtils.thumbnailExists(this.context, type, imagesRecord.getId(), file.toFile())) {
-                            executor.submit(new ImageScaler(this.context, imagesRecord));
+                        if (!ThumbnailUtils.thumbnailExists(this.context, type, imagesRecord.getId(), file.toFile(), ThumbnailUtils.Size.SMALL)) {
+                            executor.submit(new ImageScaler(this.context, imagesRecord, ThumbnailUtils.Size.SMALL));
+                        }
+
+                        if (!ThumbnailUtils.thumbnailExists(this.context, type, imagesRecord.getId(), file.toFile(), ThumbnailUtils.Size.MEDIUM)) {
+                            executor.submit(new ImageScaler(this.context, imagesRecord, ThumbnailUtils.Size.MEDIUM));
                         }
                     }
                 }

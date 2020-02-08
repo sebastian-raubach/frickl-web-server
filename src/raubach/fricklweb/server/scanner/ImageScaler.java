@@ -17,11 +17,13 @@ public class ImageScaler implements Runnable
 {
 	private ServletContext context;
 	private ImagesRecord   image;
+	private ThumbnailUtils.Size size;
 
-	public ImageScaler(ServletContext context, ImagesRecord image)
+	public ImageScaler(ServletContext context, ImagesRecord image, ThumbnailUtils.Size size)
 	{
 		this.context = context;
 		this.image = image;
+		this.size = size;
 	}
 
 	@Override
@@ -41,7 +43,7 @@ public class ImageScaler implements Runnable
 			else
 				type = MediaType.IMAGE_ALL;
 
-			ThumbnailUtils.getOrCreateThumbnail(context, type, image.getId(), file);
+			ThumbnailUtils.getOrCreateThumbnail(context, type, image.getId(), file, size);
 		}
 		catch (IOException e)
 		{

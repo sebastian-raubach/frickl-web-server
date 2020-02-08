@@ -25,10 +25,10 @@ import static raubach.fricklweb.server.database.tables.Images.*;
  */
 public class ImageImageResource extends PaginatedServerResource
 {
-	public static final String PARAM_SIZE = "small";
+	public static final String PARAM_SIZE = "size";
 
 	private Integer imageId = null;
-	private boolean small   = false;
+	private ThumbnailUtils.Size size = ThumbnailUtils.Size.ORIGINAL;
 
 	@Override
 	protected void doInit()
@@ -45,10 +45,11 @@ public class ImageImageResource extends PaginatedServerResource
 		}
 		try
 		{
-			this.small = Boolean.parseBoolean(getQueryValue(PARAM_SIZE));
+			this.size = ThumbnailUtils.Size.valueOf(getQueryValue(PARAM_SIZE));
 		}
 		catch (Exception e)
 		{
+			this.size = ThumbnailUtils.Size.ORIGINAL;
 		}
 	}
 
@@ -80,12 +81,12 @@ public class ImageImageResource extends PaginatedServerResource
 					else
 						type = MediaType.IMAGE_ALL;
 
-					if (small)
+					if (size != ThumbnailUtils.Size.ORIGINAL)
 					{
 						try
 						{
 							ServletContext servlet = (ServletContext) getContext().getAttributes().get("org.restlet.ext.servlet.ServletContext");
-							file = ThumbnailUtils.getOrCreateThumbnail(servlet, type, image.getId(), file);
+							file = ThumbnailUtils.getOrCreateThumbnail(servlet, type, image.getId(), file, size);
 						}
 						catch (IOException e)
 						{
