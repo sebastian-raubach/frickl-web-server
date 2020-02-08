@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.*;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,6 +22,8 @@ public class Database
 	private static String database;
 	private static String username;
 	private static String password;
+
+	private static String utc = TimeZone.getDefault().getID();
 
 	public static void init(String database, String username, String password)
 	{
@@ -59,6 +62,6 @@ public class Database
 	public static Connection getConnection()
 		throws SQLException
 	{
-		return DriverManager.getConnection(database, username, password);
+		return DriverManager.getConnection(database + "?useUnicode=yes&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=" + utc, username, password);
 	}
 }
