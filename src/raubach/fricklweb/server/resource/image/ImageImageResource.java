@@ -1,24 +1,35 @@
 package raubach.fricklweb.server.resource.image;
 
-import org.jooq.*;
-import org.jooq.impl.*;
-import org.restlet.data.*;
+import org.jooq.Record;
+import org.jooq.SQLDialect;
+import org.jooq.SelectConditionStep;
+import org.jooq.SelectSelectStep;
+import org.jooq.impl.DSL;
+import org.jooq.tools.StringUtils;
+import org.restlet.data.Disposition;
+import org.restlet.data.MediaType;
 import org.restlet.data.Status;
-import org.restlet.representation.*;
-import org.restlet.resource.*;
+import org.restlet.representation.FileRepresentation;
+import org.restlet.representation.Representation;
+import org.restlet.resource.Get;
+import org.restlet.resource.ResourceException;
+import raubach.fricklweb.server.Database;
+import raubach.fricklweb.server.Frickl;
+import raubach.fricklweb.server.auth.CustomVerifier;
+import raubach.fricklweb.server.database.tables.pojos.Images;
+import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.util.ServerProperty;
+import raubach.fricklweb.server.util.ThumbnailUtils;
+import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import java.io.*;
-import java.sql.*;
-import java.util.logging.*;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import javax.servlet.*;
-
-import raubach.fricklweb.server.*;
-import raubach.fricklweb.server.database.tables.pojos.*;
-import raubach.fricklweb.server.resource.*;
-import raubach.fricklweb.server.util.*;
-
-import static raubach.fricklweb.server.database.tables.Images.*;
+import static raubach.fricklweb.server.database.tables.Images.IMAGES;
 
 /**
  * @author Sebastian Raubach
@@ -26,13 +37,15 @@ import static raubach.fricklweb.server.database.tables.Images.*;
 public class ImageImageResource extends PaginatedServerResource
 {
 	public static final String PARAM_SIZE = "size";
+	public static final String PARAM_TOKEN      = "token";
 
 	private Integer imageId = null;
 	private ThumbnailUtils.Size size = ThumbnailUtils.Size.ORIGINAL;
+	private String token;
 
 	@Override
 	protected void doInit()
-		throws ResourceException
+			throws ResourceException
 	{
 		super.doInit();
 
@@ -51,11 +64,15 @@ public class ImageImageResource extends PaginatedServerResource
 		{
 			this.size = ThumbnailUtils.Size.ORIGINAL;
 		}
+		token = getQueryValue(PARAM_TOKEN);
 	}
 
 	@Get
 	public Representation getImage()
 	{
+		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
+		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+
 		FileRepresentation representation = null;
 
 		if (imageId != null)
@@ -63,10 +80,13 @@ public class ImageImageResource extends PaginatedServerResource
 			try (Connection conn = Database.getConnection();
 				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
 			{
-				Images image = select.from(IMAGES)
-									 .where(IMAGES.ID.eq(imageId))
-									 .fetchOne()
-									 .into(Images.class);
+				SelectConditionStep<Record> step = select.from(IMAGES)
+						.where(IMAGES.ID.eq(imageId));
+
+				if (auth && !CustomVerifier.isValidImageToken(token))
+					step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+
+				Images image = step.fetchAnyInto(Images.class);
 
 				if (image != null)
 				{
@@ -85,8 +105,7 @@ public class ImageImageResource extends PaginatedServerResource
 					{
 						try
 						{
-							ServletContext servlet = (ServletContext) getContext().getAttributes().get("org.restlet.ext.servlet.ServletContext");
-							file = ThumbnailUtils.getOrCreateThumbnail(servlet, type, image.getId(), file, size);
+							file = ThumbnailUtils.getOrCreateThumbnail(type, image.getId(), file, size);
 						}
 						catch (IOException e)
 						{

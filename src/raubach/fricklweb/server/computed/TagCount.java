@@ -1,8 +1,7 @@
 package raubach.fricklweb.server.computed;
 
-import com.fasterxml.jackson.annotation.*;
-
-import raubach.fricklweb.server.database.tables.pojos.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import raubach.fricklweb.server.database.tables.pojos.Tags;
 
 /**
  * @author Sebastian Raubach
@@ -10,7 +9,7 @@ import raubach.fricklweb.server.database.tables.pojos.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TagCount
 {
-	private Tags    tag;
+	private Tags tag;
 	private Integer count;
 
 	public TagCount()

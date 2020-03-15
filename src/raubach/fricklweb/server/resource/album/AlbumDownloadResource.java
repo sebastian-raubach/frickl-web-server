@@ -2,8 +2,10 @@ package raubach.fricklweb.server.resource.album;
 
 import org.jooq.Record;
 import org.jooq.SQLDialect;
+import org.jooq.SelectConditionStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
+import org.jooq.tools.StringUtils;
 import org.restlet.data.Disposition;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
@@ -13,10 +15,12 @@ import org.restlet.resource.Get;
 import org.restlet.resource.ResourceException;
 import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.Frickl;
+import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.database.tables.pojos.Albums;
 import raubach.fricklweb.server.database.tables.pojos.Images;
-import raubach.fricklweb.server.database.tables.pojos.LatLngs;
 import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.util.ServerProperty;
+import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import javax.servlet.ServletContext;
 import java.io.File;
@@ -30,8 +34,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static raubach.fricklweb.server.database.tables.Albums.ALBUMS;
 import static raubach.fricklweb.server.database.tables.Images.IMAGES;
@@ -61,6 +63,9 @@ public class AlbumDownloadResource extends PaginatedServerResource
 	@Get("application/zip")
 	public Representation getJson()
 	{
+		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
+		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+
 		FileRepresentation representation = null;
 
 		if (albumId != null)
@@ -72,9 +77,13 @@ public class AlbumDownloadResource extends PaginatedServerResource
 						.where(ALBUMS.ID.eq(albumId))
 						.fetchAnyInto(Albums.class);
 
-				List<Images> images = select.from(IMAGES)
-						.where(IMAGES.ALBUM_ID.eq(albumId))
-						.fetchInto(Images.class);
+				SelectConditionStep<Record> step = select.from(IMAGES)
+						.where(IMAGES.ALBUM_ID.eq(albumId));
+
+				if (auth && StringUtils.isEmpty(user.getToken()))
+					step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+
+				List<Images> images = step.fetchInto(Images.class);
 
 				if (album != null && images != null && images.size() > 0)
 				{

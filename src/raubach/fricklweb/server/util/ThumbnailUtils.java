@@ -1,21 +1,20 @@
 package raubach.fricklweb.server.util;
 
-import net.coobird.thumbnailator.*;
+import net.coobird.thumbnailator.Thumbnails;
+import org.restlet.data.MediaType;
+import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import org.restlet.data.*;
-
-import java.io.*;
-
-import javax.servlet.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Sebastian Raubach
  */
 public class ThumbnailUtils
 {
-	public static boolean thumbnailExists(ServletContext servlet, MediaType type, Integer imageId, File file, Size size)
+	public static boolean thumbnailExists(MediaType type, Integer imageId, File file, Size size)
 	{
-		String version = servlet.getInitParameter("version");
+		String version = PropertyWatcher.get(ServerProperty.API_VERSION);
 		File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-thumbnails" + "-" + version);
 		folder.mkdirs();
 
@@ -31,11 +30,11 @@ public class ThumbnailUtils
 		return target.exists();
 	}
 
-	public static File getOrCreateThumbnail(ServletContext servlet, MediaType type, Integer imageId, File file, Size size)
-		throws IOException
+	public static File getOrCreateThumbnail(MediaType type, Integer imageId, File file, Size size)
+			throws IOException
 	{
 		File result;
-		String version = servlet.getInitParameter("version");
+		String version = PropertyWatcher.get(ServerProperty.API_VERSION);
 		File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-thumbnails" + "-" + version);
 		folder.mkdirs();
 
@@ -56,9 +55,9 @@ public class ThumbnailUtils
 		else
 		{
 			Thumbnails.of(file)
-					  .height(size.height)
-					  .keepAspectRatio(true)
-					  .toFile(target);
+					.height(size.height)
+					.keepAspectRatio(true)
+					.toFile(target);
 
 			result = target;
 		}
@@ -66,7 +65,8 @@ public class ThumbnailUtils
 		return result;
 	}
 
-	public enum Size {
+	public enum Size
+	{
 		SMALL("-small", 400),
 		MEDIUM("-medium", 1080),
 		ORIGINAL("", -1);

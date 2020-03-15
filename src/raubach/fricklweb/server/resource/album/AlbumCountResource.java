@@ -1,16 +1,25 @@
 package raubach.fricklweb.server.resource.album;
 
-import org.jooq.*;
-import org.jooq.impl.*;
+import org.jooq.Record1;
+import org.jooq.SQLDialect;
+import org.jooq.SelectJoinStep;
+import org.jooq.SelectSelectStep;
+import org.jooq.impl.DSL;
+import org.jooq.tools.StringUtils;
 import org.restlet.data.Status;
-import org.restlet.resource.*;
+import org.restlet.resource.Get;
+import org.restlet.resource.ResourceException;
+import raubach.fricklweb.server.Database;
+import raubach.fricklweb.server.auth.CustomVerifier;
+import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.util.ServerProperty;
+import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 
-import raubach.fricklweb.server.*;
-import raubach.fricklweb.server.resource.*;
-
-import static raubach.fricklweb.server.database.tables.Albums.*;
+import static raubach.fricklweb.server.database.tables.Albums.ALBUMS;
+import static raubach.fricklweb.server.database.tables.Images.IMAGES;
 
 /**
  * @author Sebastian Raubach
@@ -19,12 +28,12 @@ public class AlbumCountResource extends PaginatedServerResource
 {
 	public static final String PARAM_PARENT_ALBUM_ID = "parentAlbumId";
 
-	private Integer albumId       = null;
+	private Integer albumId = null;
 	private Integer parentAlbumId = null;
 
 	@Override
 	protected void doInit()
-		throws ResourceException
+			throws ResourceException
 	{
 		super.doInit();
 
@@ -47,10 +56,14 @@ public class AlbumCountResource extends PaginatedServerResource
 	@Get("json")
 	public int getJson()
 	{
+		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
+		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+
 		try (Connection conn = Database.getConnection();
 			 SelectSelectStep<Record1<Integer>> select = DSL.using(conn, SQLDialect.MYSQL).selectCount())
 		{
 			SelectJoinStep<?> step = select.from(ALBUMS);
+
 
 			if (albumId != null)
 			{
@@ -63,8 +76,18 @@ public class AlbumCountResource extends PaginatedServerResource
 			}
 			else
 			{
-				step.where(ALBUMS.PARENT_ALBUM_ID.isNull());
+				if (!auth || !StringUtils.isEmpty(user.getToken()))
+				{
+					step.where(ALBUMS.PARENT_ALBUM_ID.isNull());
+				}
 			}
+
+			// Restrict to only albums containing at least one public image
+			if (auth && StringUtils.isEmpty(user.getToken()))
+				step.where(DSL.exists(DSL.selectOne()
+						.from(IMAGES)
+						.where(IMAGES.ALBUM_ID.eq(ALBUMS.ID)
+								.and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
 
 			return step.fetchOne(0, int.class);
 		}

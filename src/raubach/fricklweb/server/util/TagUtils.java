@@ -1,12 +1,19 @@
 package raubach.fricklweb.server.util;
 
-import com.icafe4j.image.meta.*;
-import com.icafe4j.image.meta.iptc.*;
+import com.icafe4j.image.meta.Metadata;
+import com.icafe4j.image.meta.MetadataType;
+import com.icafe4j.image.meta.iptc.IPTC;
+import com.icafe4j.image.meta.iptc.IPTCApplicationTag;
+import com.icafe4j.image.meta.iptc.IPTCDataSet;
 
 import java.io.*;
-import java.nio.file.*;
-import java.util.*;
-import java.util.stream.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @author Sebastian Raubach
@@ -14,7 +21,7 @@ import java.util.stream.*;
 public class TagUtils
 {
 	public static synchronized void deleteTagFromImage(File file, List<String> tags)
-		throws IOException
+			throws IOException
 	{
 		Map<MetadataType, Metadata> metadataMap = Metadata.readMetadata(file);
 		IPTC iptc = (IPTC) metadataMap.get(MetadataType.IPTC);
@@ -52,7 +59,7 @@ public class TagUtils
 	}
 
 	public static synchronized void addTagToImage(File file, List<String> tags)
-		throws IOException
+			throws IOException
 	{
 		Map<MetadataType, Metadata> metadataMap = Metadata.readMetadata(file);
 		IPTC iptc = (IPTC) metadataMap.get(MetadataType.IPTC);
@@ -73,8 +80,8 @@ public class TagUtils
 
 		// Remove the ones that are already there
 		List<String> tagStrings = datasets.stream()
-										  .map(IPTCDataSet::getDataAsString)
-										  .collect(Collectors.toList());
+				.map(IPTCDataSet::getDataAsString)
+				.collect(Collectors.toList());
 
 		tags.removeAll(tagStrings);
 

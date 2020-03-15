@@ -2,14 +2,19 @@ package raubach.fricklweb.server.resource.location;
 
 import org.jooq.Record;
 import org.jooq.SQLDialect;
+import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
+import org.jooq.tools.StringUtils;
 import org.restlet.data.Status;
 import org.restlet.resource.Get;
 import org.restlet.resource.ResourceException;
 import raubach.fricklweb.server.Database;
+import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.database.tables.pojos.LatLngs;
 import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.util.ServerProperty;
+import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -25,12 +30,18 @@ public class LocationResource extends PaginatedServerResource
 	@Get("json")
 	public List<LatLngs> getJson()
 	{
+		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
+		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+
 		try (Connection conn = Database.getConnection();
 			 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
 		{
-			return select.from(LAT_LNGS)
-						 .fetch()
-						 .into(LatLngs.class);
+			SelectJoinStep<Record> step = select.from(LAT_LNGS);
+
+			if (auth && StringUtils.isEmpty(user.getToken()))
+				step.where(LAT_LNGS.IS_PUBLIC.eq((byte) 1));
+
+			return step.fetchInto(LatLngs.class);
 		}
 		catch (SQLException e)
 		{

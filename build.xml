@@ -54,27 +54,18 @@
 	</target>
 
 	<target name="war" depends="jar">
-		<copy
-			file="web/context.xml.template"
-			overwrite="true"
-			tofile="web/context.xml">
-			<filterset>
-				<filter token="database.username" value="${database.username}"/>
-				<filter token="database.password" value="${database.password}"/>
-				<filter token="database.url" value="${database.url}"/>
-				<filter token="api.version" value="${api.version}"/>
-				<filter token="base.path" value="${base.path}"/>
-			</filterset>
-		</copy>
-
 		<war destfile="${war}" update="false" webxml="${web}/WEB-INF/web.xml">
             <fileset erroronmissingdir="false" dir="${web}/dist"/>
 			<webinf dir="${web}/WEB-INF" excludes="**/classes/**"/>
 			<lib dir="${lib}" excludes="**/lib-dev/**"/>
 			<lib file="${jar}"/>
 
+			<zipfileset dir="." includes="config.properties" prefix="WEB-INF/classes"/>
 			<zipfileset dir="." includes="logging.properties" prefix="WEB-INF/classes"/>
-			<zipfileset dir="${res}" includes="database.sql" prefix="WEB-INF/classes"/>
+			<zipfileset dir="${res}" includes="*.sql" prefix="WEB-INF/classes"/>
+
+			<!-- Include the SQL update scripts for Flyway -->
+			<zipfileset dir="${src}" includes="**/*.sql" prefix="WEB-INF/classes"/>
 
 			<metainf file="${web}/context.xml"/>
 		</war>

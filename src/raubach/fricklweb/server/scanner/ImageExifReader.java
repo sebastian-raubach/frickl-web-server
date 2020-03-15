@@ -1,25 +1,32 @@
 package raubach.fricklweb.server.scanner;
 
-import com.drew.imaging.*;
-import com.drew.lang.*;
-import com.drew.metadata.*;
-import com.drew.metadata.exif.*;
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
+import com.drew.lang.GeoLocation;
+import com.drew.metadata.Directory;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.Tag;
+import com.drew.metadata.exif.GpsDirectory;
+import org.jooq.DSLContext;
+import org.jooq.SQLDialect;
+import org.jooq.impl.DSL;
+import raubach.fricklweb.server.Database;
+import raubach.fricklweb.server.Frickl;
+import raubach.fricklweb.server.computed.Exif;
+import raubach.fricklweb.server.database.tables.records.ImagesRecord;
+import raubach.fricklweb.server.database.tables.records.TagsRecord;
 
-import org.jooq.*;
-import org.jooq.impl.*;
-
-import java.io.*;
-import java.sql.*;
-import java.text.*;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
-import raubach.fricklweb.server.*;
-import raubach.fricklweb.server.computed.*;
-import raubach.fricklweb.server.database.tables.records.*;
-
-import static raubach.fricklweb.server.database.tables.ImageTags.*;
-import static raubach.fricklweb.server.database.tables.Images.*;
-import static raubach.fricklweb.server.database.tables.Tags.*;
+import static raubach.fricklweb.server.database.tables.ImageTags.IMAGE_TAGS;
+import static raubach.fricklweb.server.database.tables.Images.IMAGES;
+import static raubach.fricklweb.server.database.tables.Tags.TAGS;
 
 /**
  * @author Sebastian Raubach
@@ -39,9 +46,9 @@ public class ImageExifReader implements Runnable
 	{
 		Map<String, Integer> existingKeywords = new HashMap<>();
 		context.selectFrom(TAGS)
-			   .where(TAGS.NAME.in(keywords))
-			   .stream()
-			   .forEach(k -> existingKeywords.put(k.getName(), k.getId()));
+				.where(TAGS.NAME.in(keywords))
+				.stream()
+				.forEach(k -> existingKeywords.put(k.getName(), k.getId()));
 
 		for (String keyword : keywords)
 		{
@@ -50,9 +57,9 @@ public class ImageExifReader implements Runnable
 			if (tagId == null)
 			{
 				Optional<TagsRecord> tag = context.insertInto(TAGS, TAGS.NAME)
-												  .values(keyword)
-												  .returning()
-												  .fetchOptional();
+						.values(keyword)
+						.returning()
+						.fetchOptional();
 
 				if (tag.isPresent())
 					tagId = tag.get().getId();
@@ -61,9 +68,9 @@ public class ImageExifReader implements Runnable
 			if (tagId != null)
 			{
 				context.insertInto(IMAGE_TAGS, IMAGE_TAGS.IMAGE_ID, IMAGE_TAGS.TAG_ID)
-					   .values(image.getId(), tagId)
-					   .onDuplicateKeyIgnore()
-					   .execute();
+						.values(image.getId(), tagId)
+						.onDuplicateKeyIgnore()
+						.execute();
 			}
 			else
 			{
@@ -103,10 +110,10 @@ public class ImageExifReader implements Runnable
 			 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
 		{
 			context.update(IMAGES)
-				   .set(IMAGES.EXIF, exif.exif)
-				   .set(IMAGES.CREATED_ON, date)
-				   .where(IMAGES.ID.eq(image.getId()))
-				   .execute();
+					.set(IMAGES.EXIF, exif.exif)
+					.set(IMAGES.CREATED_ON, date)
+					.where(IMAGES.ID.eq(image.getId()))
+					.execute();
 
 			if (exif.keyword.size() > 0)
 				processKeywords(context, image, exif.keyword);
@@ -118,7 +125,7 @@ public class ImageExifReader implements Runnable
 	}
 
 	private ExifResult getExif(File image)
-		throws ImageProcessingException, IOException
+			throws ImageProcessingException, IOException
 	{
 		Metadata metadata = ImageMetadataReader.readMetadata(image);
 
@@ -135,8 +142,8 @@ public class ImageExifReader implements Runnable
 			{
 				// Add to our collection for use below
 				exif.setGpsLatitude(geoLocation.getLatitude())
-					.setGpsLongitude(geoLocation.getLongitude())
-					.setGpsTimestamp(gpsDirectory.getGpsDate());
+						.setGpsLongitude(geoLocation.getLongitude())
+						.setGpsTimestamp(gpsDirectory.getGpsDate());
 				// TODO: How to get the altitude?
 				break;
 			}
@@ -312,7 +319,7 @@ public class ImageExifReader implements Runnable
 
 	private static class ExifResult
 	{
-		private Exif         exif;
+		private Exif exif;
 		private List<String> keyword;
 
 		public ExifResult(Exif exif, List<String> keyword)

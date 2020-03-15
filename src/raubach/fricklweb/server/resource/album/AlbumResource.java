@@ -1,19 +1,28 @@
 package raubach.fricklweb.server.resource.album;
 
 import org.jooq.*;
-import org.jooq.impl.*;
+import org.jooq.impl.DSL;
+import org.jooq.tools.StringUtils;
 import org.restlet.data.Status;
-import org.restlet.resource.*;
+import org.restlet.resource.Get;
+import org.restlet.resource.Patch;
+import org.restlet.resource.ResourceException;
+import raubach.fricklweb.server.Database;
+import raubach.fricklweb.server.auth.CustomVerifier;
+import raubach.fricklweb.server.database.tables.pojos.AlbumStats;
+import raubach.fricklweb.server.database.tables.pojos.Albums;
+import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.util.ServerProperty;
+import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Objects;
 
-import raubach.fricklweb.server.*;
-import raubach.fricklweb.server.database.tables.pojos.*;
-import raubach.fricklweb.server.resource.*;
-
-import static raubach.fricklweb.server.database.tables.Albums.*;
-import static raubach.fricklweb.server.database.tables.AlbumStats.*;
+import static raubach.fricklweb.server.database.tables.AlbumStats.ALBUM_STATS;
+import static raubach.fricklweb.server.database.tables.Albums.ALBUMS;
+import static raubach.fricklweb.server.database.tables.Images.IMAGES;
 
 /**
  * @author Sebastian Raubach
@@ -22,12 +31,12 @@ public class AlbumResource extends PaginatedServerResource
 {
 	public static final String PARAM_PARENT_ALBUM_ID = "parentAlbumId";
 
-	private Integer albumId       = null;
+	private Integer albumId = null;
 	private Integer parentAlbumId = null;
 
 	@Override
 	protected void doInit()
-		throws ResourceException
+			throws ResourceException
 	{
 		super.doInit();
 
@@ -50,15 +59,21 @@ public class AlbumResource extends PaginatedServerResource
 	@Patch("json")
 	public void patchJson(Albums album)
 	{
+		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
+		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+
+		if (auth && StringUtils.isEmpty(user.getToken()))
+			throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
+
 		if (albumId != null && album != null && Objects.equals(album.getId(), albumId))
 		{
 			try (Connection conn = Database.getConnection();
 				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
 			{
 				context.update(ALBUMS)
-					   .set(ALBUMS.BANNER_IMAGE_ID, album.getBannerImageId())
-					   .where(ALBUMS.ID.eq(albumId))
-					   .execute();
+						.set(ALBUMS.BANNER_IMAGE_ID, album.getBannerImageId())
+						.where(ALBUMS.ID.eq(albumId))
+						.execute();
 			}
 			catch (SQLException e)
 			{
@@ -75,10 +90,14 @@ public class AlbumResource extends PaginatedServerResource
 	@Get("json")
 	public List<AlbumStats> getJson()
 	{
+		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
+		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+
 		try (Connection conn = Database.getConnection();
 			 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
 		{
 			SelectJoinStep<Record> step = select.from(ALBUM_STATS);
+
 
 			if (albumId != null)
 			{
@@ -91,14 +110,24 @@ public class AlbumResource extends PaginatedServerResource
 			}
 			else
 			{
-				step.where(ALBUM_STATS.PARENT_ALBUM_ID.isNull());
+				if (!auth || !StringUtils.isEmpty(user.getToken()))
+				{
+					step.where(ALBUM_STATS.PARENT_ALBUM_ID.isNull());
+				}
 			}
 
+			// Restrict to only albums containing at least one public image
+			if (auth && StringUtils.isEmpty(user.getToken()))
+				step.where(DSL.exists(DSL.selectOne()
+						.from(IMAGES)
+						.where(IMAGES.ALBUM_ID.eq(ALBUM_STATS.ID)
+								.and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
+
 			return step.orderBy(ALBUM_STATS.CREATED_ON.desc(), ALBUM_STATS.NAME.desc())
-					   .limit(pageSize)
-					   .offset(pageSize * currentPage)
-					   .fetch()
-					   .into(AlbumStats.class);
+					.limit(pageSize)
+					.offset(pageSize * currentPage)
+					.fetch()
+					.into(AlbumStats.class);
 		}
 		catch (SQLException e)
 		{

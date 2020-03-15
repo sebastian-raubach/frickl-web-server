@@ -1,27 +1,23 @@
 package raubach.fricklweb.server.scanner;
 
-import org.restlet.data.*;
+import org.restlet.data.MediaType;
+import raubach.fricklweb.server.Frickl;
+import raubach.fricklweb.server.database.tables.records.ImagesRecord;
+import raubach.fricklweb.server.util.ThumbnailUtils;
 
-import java.io.*;
-
-import javax.servlet.*;
-
-import raubach.fricklweb.server.*;
-import raubach.fricklweb.server.database.tables.records.*;
-import raubach.fricklweb.server.util.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Sebastian Raubach
  */
 public class ImageScaler implements Runnable
 {
-	private ServletContext context;
-	private ImagesRecord   image;
+	private ImagesRecord image;
 	private ThumbnailUtils.Size size;
 
-	public ImageScaler(ServletContext context, ImagesRecord image, ThumbnailUtils.Size size)
+	public ImageScaler(ImagesRecord image, ThumbnailUtils.Size size)
 	{
-		this.context = context;
 		this.image = image;
 		this.size = size;
 	}
@@ -43,7 +39,7 @@ public class ImageScaler implements Runnable
 			else
 				type = MediaType.IMAGE_ALL;
 
-			ThumbnailUtils.getOrCreateThumbnail(context, type, image.getId(), file, size);
+			ThumbnailUtils.getOrCreateThumbnail(type, image.getId(), file, size);
 		}
 		catch (IOException e)
 		{

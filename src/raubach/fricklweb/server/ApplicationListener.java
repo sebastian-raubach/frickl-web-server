@@ -1,31 +1,37 @@
 package raubach.fricklweb.server;
 
-import java.io.*;
+import raubach.fricklweb.server.scanner.ImageScanner;
+import raubach.fricklweb.server.util.ServerProperty;
+import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import javax.servlet.*;
-
-import raubach.fricklweb.server.scanner.*;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import java.io.File;
+import java.io.IOException;
 
 public class ApplicationListener implements ServletContextListener
 {
 	@Override
 	public void contextInitialized(ServletContextEvent sce)
 	{
-		ServletContext ctx = sce.getServletContext();
-		String database = ctx.getInitParameter("database");
-		String username = ctx.getInitParameter("username");
-		String password = ctx.getInitParameter("password");
-		Database.init(database, username, password);
+		PropertyWatcher.initialize();
 
-		Frickl.BASE_PATH = ctx.getInitParameter("basePath");
+		Database.init(PropertyWatcher.get(ServerProperty.DATABASE_SERVER),
+				PropertyWatcher.get(ServerProperty.DATABASE_NAME),
+				PropertyWatcher.get(ServerProperty.DATABASE_PORT),
+				PropertyWatcher.get(ServerProperty.DATABASE_USERNAME),
+				PropertyWatcher.get(ServerProperty.DATABASE_PASSWORD),
+				true);
+
+		Frickl.BASE_PATH = PropertyWatcher.get(ServerProperty.BASE_PATH);
 
 		// Spin off a thread to run the initial data import/update
 		new Thread(() -> {
 			File file = new File(Frickl.BASE_PATH);
 			try
 			{
-				new ImageScanner(ctx, file, file)
-					.run();
+				new ImageScanner(file, file)
+						.run();
 			}
 			catch (IOException e)
 			{

@@ -2,13 +2,18 @@ package raubach.fricklweb.server.resource.search;
 
 import org.jooq.Record1;
 import org.jooq.SQLDialect;
+import org.jooq.SelectOnConditionStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
+import org.jooq.tools.StringUtils;
 import org.restlet.data.Status;
 import org.restlet.resource.Get;
 import org.restlet.resource.ResourceException;
 import raubach.fricklweb.server.Database;
+import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.util.ServerProperty;
+import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -26,7 +31,7 @@ public class SearchImageCountResource extends PaginatedServerResource
 
 	@Override
 	protected void doInit()
-		throws ResourceException
+			throws ResourceException
 	{
 		super.doInit();
 
@@ -36,17 +41,24 @@ public class SearchImageCountResource extends PaginatedServerResource
 	@Get("json")
 	public int getJson()
 	{
+		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
+		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+
 		if (searchTerm != null)
 		{
 			searchTerm = "%" + searchTerm.replace(" ", "%") + "%";
 			try (Connection conn = Database.getConnection();
 				 SelectSelectStep<Record1<Integer>> select = DSL.using(conn, SQLDialect.MYSQL).selectCount())
 			{
-				return select.from(IMAGES)
+				SelectOnConditionStep<Record1<Integer>> step = select.from(IMAGES)
 						.leftJoin(IMAGE_TAGS).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID))
-						.leftJoin(TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))
-						.where(TAGS.NAME.like(searchTerm))
-						.or(IMAGES.PATH.like(searchTerm))
+						.leftJoin(TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID));
+
+				if (auth && StringUtils.isEmpty(user.getToken()))
+					step.where(IMAGES.IS_PUBLIC.eq((byte) 1));
+
+				return step.where(TAGS.NAME.like(searchTerm)
+						.or(IMAGES.PATH.like(searchTerm)))
 						.fetchOne(0, int.class);
 			}
 			catch (SQLException e)

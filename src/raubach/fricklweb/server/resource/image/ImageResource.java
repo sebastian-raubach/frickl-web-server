@@ -1,20 +1,27 @@
 package raubach.fricklweb.server.resource.image;
 
 import org.jooq.*;
-import org.jooq.impl.*;
+import org.jooq.impl.DSL;
+import org.jooq.tools.StringUtils;
 import org.restlet.data.Status;
-import org.restlet.resource.*;
+import org.restlet.resource.Get;
+import org.restlet.resource.Patch;
+import org.restlet.resource.ResourceException;
+import raubach.fricklweb.server.Database;
+import raubach.fricklweb.server.auth.CustomVerifier;
+import raubach.fricklweb.server.database.tables.pojos.Images;
+import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.util.ServerProperty;
+import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import java.sql.*;
+import java.sql.Connection;
 import java.sql.Date;
-import java.text.*;
-import java.util.*;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Objects;
 
-import raubach.fricklweb.server.*;
-import raubach.fricklweb.server.database.tables.pojos.*;
-import raubach.fricklweb.server.resource.*;
-
-import static raubach.fricklweb.server.database.tables.Images.*;
+import static raubach.fricklweb.server.database.tables.Images.IMAGES;
 
 /**
  * @author Sebastian Raubach
@@ -22,18 +29,18 @@ import static raubach.fricklweb.server.database.tables.Images.*;
 public class ImageResource extends PaginatedServerResource
 {
 	public static final String PARAM_DATE = "date";
-	public static final String PARAM_FAV  = "fav";
+	public static final String PARAM_FAV = "fav";
 
-	private SimpleDateFormat sdf     = new SimpleDateFormat("yyyy-MM-dd");
-	private Integer          albumId = null;
-	private Integer          imageId = null;
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	private Integer albumId = null;
+	private Integer imageId = null;
 
-	private String  date;
+	private String date;
 	private Boolean isFav;
 
 	@Override
 	protected void doInit()
-		throws ResourceException
+			throws ResourceException
 	{
 		super.doInit();
 
@@ -82,15 +89,22 @@ public class ImageResource extends PaginatedServerResource
 	@Patch("json")
 	public void patchJson(Images image)
 	{
+		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
+		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+
+		if (auth && StringUtils.isEmpty(user.getToken()))
+			throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED);
+
 		if (imageId != null && image != null && Objects.equals(image.getId(), imageId))
 		{
 			try (Connection conn = Database.getConnection();
 				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
 			{
 				context.update(IMAGES)
-					   .set(IMAGES.IS_FAVORITE, image.getIsFavorite())
-					   .where(IMAGES.ID.eq(imageId))
-					   .execute();
+						.set(IMAGES.IS_FAVORITE, image.getIsFavorite())
+						.set(IMAGES.IS_PUBLIC, image.getIsPublic())
+						.where(IMAGES.ID.eq(imageId))
+						.execute();
 			}
 			catch (SQLException e)
 			{
@@ -107,18 +121,25 @@ public class ImageResource extends PaginatedServerResource
 	@Get("json")
 	public List<Images> getJson()
 	{
+		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
+		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+
 		if (albumId != null)
 		{
 			try (Connection conn = Database.getConnection();
 				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
 			{
-				return select.from(IMAGES)
-							 .where(IMAGES.ALBUM_ID.eq(albumId))
-							 .orderBy(IMAGES.CREATED_ON.desc())
-							 .offset(pageSize * currentPage)
-							 .limit(pageSize)
-							 .fetch()
-							 .into(Images.class);
+				SelectConditionStep<Record> step = select.from(IMAGES)
+						.where(IMAGES.ALBUM_ID.eq(albumId));
+
+				if (auth && StringUtils.isEmpty(user.getToken()))
+					step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+
+				return step.orderBy(IMAGES.CREATED_ON.desc())
+						.offset(pageSize * currentPage)
+						.limit(pageSize)
+						.fetch()
+						.into(Images.class);
 			}
 			catch (SQLException e)
 			{
@@ -130,10 +151,14 @@ public class ImageResource extends PaginatedServerResource
 			try (Connection conn = Database.getConnection();
 				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
 			{
-				return select.from(IMAGES)
-							 .where(IMAGES.ID.eq(imageId))
-							 .fetch()
-							 .into(Images.class);
+				SelectConditionStep<Record> step = select.from(IMAGES)
+						.where(IMAGES.ID.eq(imageId));
+
+				if (auth && StringUtils.isEmpty(user.getToken()))
+					step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+
+				return step.fetch()
+						.into(Images.class);
 			}
 			catch (SQLException e)
 			{
@@ -151,12 +176,14 @@ public class ImageResource extends PaginatedServerResource
 					step.where(IMAGES.IS_FAVORITE.eq((byte) 1));
 				if (date != null)
 					step.where(DSL.date(IMAGES.CREATED_ON).eq(getDate(date)));
+				if (auth && StringUtils.isEmpty(user.getToken()))
+					step.where(IMAGES.IS_PUBLIC.eq((byte) 1));
 
 				return step.orderBy(IMAGES.CREATED_ON.desc())
-						   .offset(pageSize * currentPage)
-						   .limit(pageSize)
-						   .fetch()
-						   .into(Images.class);
+						.offset(pageSize * currentPage)
+						.limit(pageSize)
+						.fetch()
+						.into(Images.class);
 			}
 			catch (SQLException e)
 			{

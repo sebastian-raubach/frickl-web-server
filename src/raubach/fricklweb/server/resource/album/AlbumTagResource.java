@@ -1,27 +1,42 @@
 package raubach.fricklweb.server.resource.album;
 
-import org.jooq.*;
-import org.jooq.impl.*;
+import org.jooq.DSLContext;
+import org.jooq.InsertValuesStep2;
+import org.jooq.SQLDialect;
+import org.jooq.SelectConditionStep;
+import org.jooq.impl.DSL;
+import org.jooq.tools.StringUtils;
 import org.restlet.data.Status;
-import org.restlet.resource.*;
-
-import java.io.*;
-import java.sql.*;
-import java.util.*;
-import java.util.stream.*;
-
 import org.restlet.resource.Delete;
-import raubach.fricklweb.server.*;
-import raubach.fricklweb.server.database.tables.pojos.*;
+import org.restlet.resource.Get;
+import org.restlet.resource.Post;
+import org.restlet.resource.ResourceException;
+import raubach.fricklweb.server.Database;
+import raubach.fricklweb.server.Frickl;
+import raubach.fricklweb.server.auth.CustomVerifier;
+import raubach.fricklweb.server.database.tables.pojos.Images;
+import raubach.fricklweb.server.database.tables.pojos.Tags;
 import raubach.fricklweb.server.database.tables.records.ImageTagsRecord;
 import raubach.fricklweb.server.database.tables.records.TagsRecord;
-import raubach.fricklweb.server.resource.*;
-import raubach.fricklweb.server.util.*;
+import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.util.ServerProperty;
+import raubach.fricklweb.server.util.TagUtils;
+import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import static raubach.fricklweb.server.database.tables.Albums.*;
-import static raubach.fricklweb.server.database.tables.ImageTags.*;
-import static raubach.fricklweb.server.database.tables.Images.*;
-import static raubach.fricklweb.server.database.tables.Tags.*;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static raubach.fricklweb.server.database.tables.Albums.ALBUMS;
+import static raubach.fricklweb.server.database.tables.ImageTags.IMAGE_TAGS;
+import static raubach.fricklweb.server.database.tables.Images.IMAGES;
+import static raubach.fricklweb.server.database.tables.Tags.TAGS;
 
 /**
  * @author Sebastian Raubach
@@ -32,7 +47,7 @@ public class AlbumTagResource extends PaginatedServerResource
 
 	@Override
 	protected void doInit()
-		throws ResourceException
+			throws ResourceException
 	{
 		super.doInit();
 
@@ -48,6 +63,12 @@ public class AlbumTagResource extends PaginatedServerResource
 	@Delete("json")
 	public void deleteJson(Tags[] tags)
 	{
+		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
+		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+
+		if (auth && StringUtils.isEmpty(user.getToken()))
+			throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
+
 		if (albumId != null && tags != null && tags.length > 0)
 		{
 			try (Connection conn = Database.getConnection();
@@ -64,7 +85,8 @@ public class AlbumTagResource extends PaginatedServerResource
 
 				List<Integer> tagIds = new ArrayList<>();
 				List<String> tagNames = new ArrayList<>();
-				for(Tags tag : tags) {
+				for (Tags tag : tags)
+				{
 					tagIds.add(tag.getId());
 					tagNames.add(tag.getName());
 				}
@@ -76,11 +98,15 @@ public class AlbumTagResource extends PaginatedServerResource
 
 				// Run this in a separate thread, we don't need to wait for it to finish
 				new Thread(() -> {
-					for(Images image : images) {
+					for (Images image : images)
+					{
 						File file = new File(Frickl.BASE_PATH, image.getPath());
-						try {
+						try
+						{
 							TagUtils.deleteTagFromImage(file, tagNames);
-						} catch (IOException e) {
+						}
+						catch (IOException e)
+						{
 							e.printStackTrace();
 						}
 					}
@@ -103,17 +129,23 @@ public class AlbumTagResource extends PaginatedServerResource
 	@Post("json")
 	public void postJson(Tags[] tags)
 	{
+		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
+		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+
+		if (auth && StringUtils.isEmpty(user.getToken()))
+			throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
+
 		if (albumId != null && tags != null && tags.length > 0)
 		{
 			try (Connection conn = Database.getConnection();
 				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
 			{
 				List<Images> images = context.selectFrom(IMAGES)
-											 .where(IMAGES.ALBUM_ID.eq(albumId))
-											 .fetchInto(Images.class);
+						.where(IMAGES.ALBUM_ID.eq(albumId))
+						.fetchInto(Images.class);
 
 				List<String> tagStrings = new ArrayList<>();
-				for(Tags tag : tags)
+				for (Tags tag : tags)
 					tagStrings.add(tag.getName());
 
 				Map<String, Integer> tagIds = context.selectFrom(TAGS)
@@ -121,15 +153,17 @@ public class AlbumTagResource extends PaginatedServerResource
 						.fetchMap(TAGS.NAME, TAGS.ID);
 
 				// Get all existing ids
-				for(Tags tag : tags)
+				for (Tags tag : tags)
 				{
 					if (tag.getId() == null)
 						tag.setId(tagIds.get(tag.getName()));
 				}
 
-				for (Tags tag : tags) {
+				for (Tags tag : tags)
+				{
 					// If it doesn't exist, create it
-					if (tag.getId() == null) {
+					if (tag.getId() == null)
+					{
 						tag.setCreatedOn(new Timestamp(System.currentTimeMillis()));
 						TagsRecord t = context.newRecord(TAGS, tag);
 						t.store();
@@ -151,7 +185,8 @@ public class AlbumTagResource extends PaginatedServerResource
 
 				// Run this in a separate thread, we don't need to wait for it to finish
 				new Thread(() -> {
-					for (Images image : images) {
+					for (Images image : images)
+					{
 						File file = new File(Frickl.BASE_PATH, image.getPath());
 						try
 						{
@@ -179,22 +214,30 @@ public class AlbumTagResource extends PaginatedServerResource
 	@Get("json")
 	public List<Tags> getJson()
 	{
+		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
+		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+
 		if (albumId != null)
 		{
 			try (Connection conn = Database.getConnection();
 				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
 			{
-				return context.selectDistinct(TAGS.ID, TAGS.NAME, TAGS.CREATED_ON, TAGS.UPDATED_ON)
-							  .from(TAGS
-								  .leftJoin(IMAGE_TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))
-								  .leftJoin(IMAGES).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID))
-								  .leftJoin(ALBUMS).on(ALBUMS.ID.eq(IMAGES.ALBUM_ID)))
-							  .where(ALBUMS.ID.eq(albumId))
-							  .orderBy(TAGS.NAME)
-							  .offset(pageSize * currentPage)
-							  .limit(pageSize)
-							  .fetch()
-							  .into(Tags.class);
+				SelectConditionStep<?> step = context.selectDistinct(TAGS.ID, TAGS.NAME, TAGS.CREATED_ON, TAGS.UPDATED_ON)
+						.from(TAGS
+								.leftJoin(IMAGE_TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))
+								.leftJoin(IMAGES).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID))
+								.leftJoin(ALBUMS).on(ALBUMS.ID.eq(IMAGES.ALBUM_ID)))
+						.where(ALBUMS.ID.eq(albumId));
+
+				// Restrict to only albums containing at least one public image
+				if (auth && StringUtils.isEmpty(user.getToken()))
+					step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+
+				return step.orderBy(TAGS.NAME)
+						.offset(pageSize * currentPage)
+						.limit(pageSize)
+						.fetch()
+						.into(Tags.class);
 			}
 			catch (SQLException e)
 			{

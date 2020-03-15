@@ -3,5 +3,5 @@
 
 ## Code generation using JOOQ
 ```
-java -cp "./lib/*" org.jooq.codegen.GenerationTool ./res/jooq.xml
+java -cp "./lib/*:./lib/lib-dev/*" org.jooq.codegen.GenerationTool ./res/jooq.xml
 ```

@@ -1,9 +1,9 @@
 package raubach.fricklweb.server.resource;
 
-import org.restlet.resource.*;
-
+import org.restlet.resource.Get;
+import org.restlet.resource.ServerResource;
 import raubach.fricklweb.server.computed.Status;
-import raubach.fricklweb.server.scanner.*;
+import raubach.fricklweb.server.scanner.ImageScanner;
 
 /**
  * @author Sebastian Raubach

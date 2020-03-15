@@ -1,18 +1,26 @@
 package raubach.fricklweb.server.resource.calendar;
 
-import org.jooq.*;
-import org.jooq.impl.*;
+import org.jooq.Record;
+import org.jooq.SQLDialect;
+import org.jooq.SelectJoinStep;
+import org.jooq.SelectSelectStep;
+import org.jooq.impl.DSL;
+import org.jooq.tools.StringUtils;
 import org.restlet.data.Status;
-import org.restlet.resource.*;
+import org.restlet.resource.Get;
+import org.restlet.resource.ResourceException;
+import raubach.fricklweb.server.Database;
+import raubach.fricklweb.server.auth.CustomVerifier;
+import raubach.fricklweb.server.database.tables.pojos.CalendarData;
+import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.util.ServerProperty;
+import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
 
-import raubach.fricklweb.server.*;
-import raubach.fricklweb.server.database.tables.pojos.*;
-import raubach.fricklweb.server.resource.*;
-
-import static raubach.fricklweb.server.database.tables.CalendarData.*;
+import static raubach.fricklweb.server.database.tables.CalendarData.CALENDAR_DATA;
 
 /**
  * @author Sebastian Raubach
@@ -25,7 +33,7 @@ public class CalendarResource extends PaginatedServerResource
 
 	@Override
 	protected void doInit()
-		throws ResourceException
+			throws ResourceException
 	{
 		super.doInit();
 
@@ -41,6 +49,12 @@ public class CalendarResource extends PaginatedServerResource
 	@Get("json")
 	public List<CalendarData> getJson()
 	{
+		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
+		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+
+		if (auth && StringUtils.isEmpty(user.getToken()))
+			throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
+
 		try (Connection conn = Database.getConnection();
 			 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
 		{
@@ -50,7 +64,7 @@ public class CalendarResource extends PaginatedServerResource
 				step.where(DSL.year(CALENDAR_DATA.DATE).eq(year));
 
 			return step.fetch()
-					   .into(CalendarData.class);
+					.into(CalendarData.class);
 		}
 		catch (SQLException e)
 		{

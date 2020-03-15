@@ -1,21 +1,22 @@
 package raubach.fricklweb.server.resource.image;
 
 import org.jooq.*;
-import org.jooq.impl.*;
-import org.restlet.data.*;
+import org.jooq.impl.DSL;
+import org.jooq.tools.StringUtils;
 import org.restlet.data.Status;
-import org.restlet.representation.*;
-import org.restlet.resource.*;
+import org.restlet.resource.Get;
+import org.restlet.resource.ResourceException;
+import raubach.fricklweb.server.Database;
+import raubach.fricklweb.server.auth.CustomVerifier;
+import raubach.fricklweb.server.database.tables.pojos.Images;
+import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.util.ServerProperty;
+import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import java.io.*;
-import java.sql.*;
-import java.util.logging.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 
-import raubach.fricklweb.server.*;
-import raubach.fricklweb.server.database.tables.pojos.*;
-import raubach.fricklweb.server.resource.*;
-
-import static raubach.fricklweb.server.database.tables.Images.*;
+import static raubach.fricklweb.server.database.tables.Images.IMAGES;
 
 /**
  * @author Sebastian Raubach
@@ -25,12 +26,21 @@ public class ImageRandomResource extends PaginatedServerResource
 	@Get("json")
 	public Images getJson()
 	{
+		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
+		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+
 		Images result = null;
 		try (Connection conn = Database.getConnection();
-			 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select()) {
-			result = select.from(IMAGES)
-					.where(IMAGES.IS_FAVORITE.eq((byte) 1))
-					.orderBy(DSL.rand())
+			 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
+		{
+
+			SelectConditionStep<Record> step = select.from(IMAGES)
+					.where(IMAGES.IS_FAVORITE.eq((byte) 1));
+
+			if (auth && StringUtils.isEmpty(user.getToken()))
+				step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+
+			result = step.orderBy(DSL.rand())
 					.limit(1)
 					.fetchOne()
 					.into(Images.class);
@@ -40,11 +50,18 @@ public class ImageRandomResource extends PaginatedServerResource
 			e.printStackTrace();
 		}
 
-		if (result == null) {
+		if (result == null)
+		{
 			try (Connection conn = Database.getConnection();
-				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select()) {
-				result = select.from(IMAGES)
-						.orderBy(DSL.rand())
+				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
+			{
+				SelectJoinStep<Record> step = select.from(IMAGES);
+
+				if (auth && StringUtils.isEmpty(user.getToken()))
+					step.where(IMAGES.IS_PUBLIC.eq((byte) 1));
+
+
+				result = step.orderBy(DSL.rand())
 						.limit(1)
 						.fetchOne()
 						.into(Images.class);

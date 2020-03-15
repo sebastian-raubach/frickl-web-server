@@ -1,18 +1,24 @@
 package raubach.fricklweb.server.resource.album;
 
 import org.jooq.*;
-import org.jooq.impl.*;
+import org.jooq.impl.DSL;
+import org.jooq.tools.StringUtils;
 import org.restlet.data.Status;
-import org.restlet.resource.*;
+import org.restlet.resource.Get;
+import org.restlet.resource.ResourceException;
+import raubach.fricklweb.server.Database;
+import raubach.fricklweb.server.auth.CustomVerifier;
+import raubach.fricklweb.server.database.tables.pojos.LatLngs;
+import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.util.ServerProperty;
+import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
 
-import raubach.fricklweb.server.*;
-import raubach.fricklweb.server.database.tables.pojos.*;
-import raubach.fricklweb.server.resource.*;
-
-import static raubach.fricklweb.server.database.tables.LatLngs.*;
+import static raubach.fricklweb.server.database.tables.Images.IMAGES;
+import static raubach.fricklweb.server.database.tables.LatLngs.LAT_LNGS;
 
 /**
  * @author Sebastian Raubach
@@ -23,7 +29,7 @@ public class AlbumLocationResource extends PaginatedServerResource
 
 	@Override
 	protected void doInit()
-		throws ResourceException
+			throws ResourceException
 	{
 		super.doInit();
 
@@ -39,15 +45,24 @@ public class AlbumLocationResource extends PaginatedServerResource
 	@Get("json")
 	public List<LatLngs> getJson()
 	{
+		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
+		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+
 		if (albumId != null)
 		{
 			try (Connection conn = Database.getConnection();
 				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
 			{
-				return select.from(LAT_LNGS)
-							 .where(LAT_LNGS.ALBUM_ID.eq(albumId))
-							 .fetch()
-							 .into(LatLngs.class);
+				SelectJoinStep<Record> step = select.from(LAT_LNGS);
+
+				if (auth && StringUtils.isEmpty(user.getToken()))
+					step.leftJoin(IMAGES).on(IMAGES.ID.eq(LAT_LNGS.ID))
+							.where(IMAGES.IS_PUBLIC.eq((byte) 1));
+
+				step.where(LAT_LNGS.ALBUM_ID.eq(albumId));
+
+				return step.fetch()
+						.into(LatLngs.class);
 			}
 			catch (SQLException e)
 			{

@@ -1,8 +1,8 @@
 package raubach.fricklweb.server.computed;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.util.*;
+import java.util.Date;
 
 /**
  * @author Sebastian Raubach
@@ -16,9 +16,9 @@ public class Exif
 	private String colorSpace;
 	private String compression;
 	private String contrast;
-	private Date   dateTime;
-	private Date   dateTimeOriginal;
-	private Date   dateTimeDigitized;
+	private Date dateTime;
+	private Date dateTimeOriginal;
+	private Date dateTimeDigitized;
 	private String digitalZoomRatio;
 	private String exifImageHeight;
 	private String exifImageWidth;
@@ -36,7 +36,7 @@ public class Exif
 	private Double gpsAltitude;
 	private Double gpsLatitude;
 	private Double gpsLongitude;
-	private Date   gpsTimestamp;
+	private Date gpsTimestamp;
 	private String imageHeight;
 	private String imageWidth;
 	private String isoSpeedRatings;
