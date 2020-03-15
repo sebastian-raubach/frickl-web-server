@@ -26,7 +26,6 @@ import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.computed.LoginDetails;
 import raubach.fricklweb.server.computed.StatusMessage;
 import raubach.fricklweb.server.computed.Token;
-import raubach.fricklweb.server.util.ServerProperty;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.util.Objects;
@@ -42,7 +41,7 @@ public class TokenResource extends ServerResource
 	@Delete("json")
 	public boolean deleteJson(LoginDetails user)
 	{
-		boolean enabled = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+		boolean enabled = PropertyWatcher.authEnabled();
 
 		if (!enabled)
 			throw new ResourceException(Status.SERVER_ERROR_SERVICE_UNAVAILABLE);
@@ -71,13 +70,13 @@ public class TokenResource extends ServerResource
 	@Post("json")
 	public Token postJson(LoginDetails request)
 	{
-		boolean enabled = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+		boolean enabled = PropertyWatcher.authEnabled();
 
 		if (!enabled)
 			throw new ResourceException(Status.SERVER_ERROR_SERVICE_UNAVAILABLE);
 
-		String username = PropertyWatcher.get(ServerProperty.ADMIN_USERNAME);
-		String password = PropertyWatcher.get(ServerProperty.ADMIN_PASSWORD);
+		String username = System.getenv("FRICKL_USERNAME");
+		String password = System.getenv("FRICKL_PASSWORD");
 
 		boolean canAccess = !StringUtils.isEmpty(request.getUsername()) && !StringUtils.isEmpty(request.getPassword()) && Objects.equals(username, request.getUsername()) && Objects.equals(password, request.getPassword());
 

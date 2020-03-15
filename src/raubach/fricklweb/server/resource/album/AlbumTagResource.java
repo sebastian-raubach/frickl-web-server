@@ -19,7 +19,6 @@ import raubach.fricklweb.server.database.tables.pojos.Tags;
 import raubach.fricklweb.server.database.tables.records.ImageTagsRecord;
 import raubach.fricklweb.server.database.tables.records.TagsRecord;
 import raubach.fricklweb.server.resource.PaginatedServerResource;
-import raubach.fricklweb.server.util.ServerProperty;
 import raubach.fricklweb.server.util.TagUtils;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
@@ -64,7 +63,7 @@ public class AlbumTagResource extends PaginatedServerResource
 	public void deleteJson(Tags[] tags)
 	{
 		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
-		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+		boolean auth = PropertyWatcher.authEnabled();
 
 		if (auth && StringUtils.isEmpty(user.getToken()))
 			throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
@@ -130,7 +129,7 @@ public class AlbumTagResource extends PaginatedServerResource
 	public void postJson(Tags[] tags)
 	{
 		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
-		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+		boolean auth = PropertyWatcher.authEnabled();
 
 		if (auth && StringUtils.isEmpty(user.getToken()))
 			throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
@@ -215,7 +214,7 @@ public class AlbumTagResource extends PaginatedServerResource
 	public List<Tags> getJson()
 	{
 		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
-		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+		boolean auth = PropertyWatcher.authEnabled();
 
 		if (albumId != null)
 		{

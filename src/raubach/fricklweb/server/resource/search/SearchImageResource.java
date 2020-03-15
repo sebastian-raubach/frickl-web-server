@@ -13,7 +13,6 @@ import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.database.tables.pojos.Images;
 import raubach.fricklweb.server.resource.PaginatedServerResource;
-import raubach.fricklweb.server.util.ServerProperty;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.sql.Connection;
@@ -44,7 +43,7 @@ public class SearchImageResource extends PaginatedServerResource
 	public List<Images> getJson()
 	{
 		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
-		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+		boolean auth = PropertyWatcher.authEnabled();
 
 		if (searchTerm != null)
 		{

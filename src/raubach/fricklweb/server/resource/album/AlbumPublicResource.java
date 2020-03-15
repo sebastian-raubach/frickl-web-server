@@ -9,16 +9,13 @@ import org.restlet.resource.Get;
 import org.restlet.resource.ResourceException;
 import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.auth.CustomVerifier;
-import raubach.fricklweb.server.database.tables.pojos.Tags;
 import raubach.fricklweb.server.resource.PaginatedServerResource;
-import raubach.fricklweb.server.util.ServerProperty;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
-import static raubach.fricklweb.server.database.tables.Images.*;
+import static raubach.fricklweb.server.database.tables.Images.IMAGES;
 
 /**
  * @author Sebastian Raubach
@@ -62,7 +59,7 @@ public class AlbumPublicResource extends PaginatedServerResource
 	public void getJson()
 	{
 		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
-		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+		boolean auth = PropertyWatcher.authEnabled();
 
 		if (auth && StringUtils.isEmpty(user.getToken()))
 			throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
@@ -74,7 +71,7 @@ public class AlbumPublicResource extends PaginatedServerResource
 			 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
 		{
 			context.update(IMAGES)
-					.set(IMAGES.IS_PUBLIC, (byte)(publicParam ? 1 : 0))
+					.set(IMAGES.IS_PUBLIC, (byte) (publicParam ? 1 : 0))
 					.where(IMAGES.ALBUM_ID.eq(albumId))
 					.execute();
 		}

@@ -12,7 +12,6 @@ import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.database.tables.pojos.AlbumStats;
 import raubach.fricklweb.server.database.tables.pojos.Albums;
 import raubach.fricklweb.server.resource.PaginatedServerResource;
-import raubach.fricklweb.server.util.ServerProperty;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.sql.Connection;
@@ -60,7 +59,7 @@ public class AlbumResource extends PaginatedServerResource
 	public void patchJson(Albums album)
 	{
 		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
-		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+		boolean auth = PropertyWatcher.authEnabled();
 
 		if (auth && StringUtils.isEmpty(user.getToken()))
 			throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
@@ -91,7 +90,7 @@ public class AlbumResource extends PaginatedServerResource
 	public List<AlbumStats> getJson()
 	{
 		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
-		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+		boolean auth = PropertyWatcher.authEnabled();
 
 		try (Connection conn = Database.getConnection();
 			 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())

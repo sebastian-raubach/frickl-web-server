@@ -10,7 +10,6 @@ import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.database.tables.pojos.Images;
 import raubach.fricklweb.server.resource.PaginatedServerResource;
-import raubach.fricklweb.server.util.ServerProperty;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.sql.Connection;
@@ -27,7 +26,7 @@ public class ImageRandomResource extends PaginatedServerResource
 	public Images getJson()
 	{
 		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
-		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+		boolean auth = PropertyWatcher.authEnabled();
 
 		Images result = null;
 		try (Connection conn = Database.getConnection();

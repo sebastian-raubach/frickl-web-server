@@ -5,7 +5,6 @@ import org.jooq.SQLDialect;
 import org.jooq.SelectConditionStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
-import org.jooq.tools.StringUtils;
 import org.restlet.data.Disposition;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
@@ -18,7 +17,6 @@ import raubach.fricklweb.server.Frickl;
 import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.database.tables.pojos.Images;
 import raubach.fricklweb.server.resource.PaginatedServerResource;
-import raubach.fricklweb.server.util.ServerProperty;
 import raubach.fricklweb.server.util.ThumbnailUtils;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
@@ -37,7 +35,7 @@ import static raubach.fricklweb.server.database.tables.Images.IMAGES;
 public class ImageImageResource extends PaginatedServerResource
 {
 	public static final String PARAM_SIZE = "size";
-	public static final String PARAM_TOKEN      = "token";
+	public static final String PARAM_TOKEN = "token";
 
 	private Integer imageId = null;
 	private ThumbnailUtils.Size size = ThumbnailUtils.Size.ORIGINAL;
@@ -71,7 +69,7 @@ public class ImageImageResource extends PaginatedServerResource
 	public Representation getImage()
 	{
 		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
-		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+		boolean auth = PropertyWatcher.authEnabled();
 
 		FileRepresentation representation = null;
 

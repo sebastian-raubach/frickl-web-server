@@ -13,7 +13,6 @@ import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.database.tables.pojos.LatLngs;
 import raubach.fricklweb.server.resource.PaginatedServerResource;
-import raubach.fricklweb.server.util.ServerProperty;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.sql.Connection;
@@ -31,7 +30,7 @@ public class LocationResource extends PaginatedServerResource
 	public List<LatLngs> getJson()
 	{
 		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
-		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+		boolean auth = PropertyWatcher.authEnabled();
 
 		try (Connection conn = Database.getConnection();
 			 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())

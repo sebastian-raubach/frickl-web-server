@@ -26,11 +26,8 @@ import org.restlet.data.Status;
 import org.restlet.ext.servlet.ServletUtils;
 import org.restlet.resource.ResourceException;
 import org.restlet.security.Verifier;
-import raubach.fricklweb.server.util.CollectionUtils;
-import raubach.fricklweb.server.util.ServerProperty;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -220,7 +217,7 @@ public class CustomVerifier implements Verifier
 	@Override
 	public int verify(Request request, Response response)
 	{
-		boolean enabled = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+		boolean enabled = PropertyWatcher.authEnabled();
 		String method = request.getMethod().getName();
 
 		// If authentication is enabled and it's neither a POST nor a GET, then check credentials

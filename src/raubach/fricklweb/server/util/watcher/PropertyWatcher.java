@@ -108,6 +108,14 @@ public class PropertyWatcher
 		}
 	}
 
+	public static boolean authEnabled()
+	{
+		String username = get(ServerProperty.ADMIN_USERNAME);
+		String password = get(ServerProperty.ADMIN_PASSWORD);
+
+		return !StringUtils.isEmpty(username) && !StringUtils.isEmpty(password);
+	}
+
 	private static void loadProperties(boolean checkAndInit)
 	{
 		try (FileInputStream stream = new FileInputStream(config))
@@ -125,6 +133,14 @@ public class PropertyWatcher
 
 			Database.init(get(ServerProperty.DATABASE_SERVER), get(ServerProperty.DATABASE_NAME), get(ServerProperty.DATABASE_PORT), get(ServerProperty.DATABASE_USERNAME), get(ServerProperty.DATABASE_PASSWORD), true);
 		}
+
+		// Set properties if they are set in the environment variables
+		String username = System.getenv("FRICKL_USERNAME");
+		String password = System.getenv("FRICKL_PASSWORD");
+		if (!StringUtils.isEmpty(username))
+			set(ServerProperty.ADMIN_USERNAME, username);
+		if (!StringUtils.isEmpty(password))
+			set(ServerProperty.ADMIN_PASSWORD, password);
 	}
 
 	public static void stopFileWatcher()

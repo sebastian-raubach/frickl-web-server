@@ -14,7 +14,6 @@ import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.computed.TagCount;
 import raubach.fricklweb.server.database.tables.pojos.Tags;
 import raubach.fricklweb.server.resource.PaginatedServerResource;
-import raubach.fricklweb.server.util.ServerProperty;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.sql.Connection;
@@ -52,7 +51,7 @@ public class TagResource extends PaginatedServerResource
 	public List<TagCount> getJson()
 	{
 		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
-		boolean auth = PropertyWatcher.getBoolean(ServerProperty.AUTHENTICATION_ENABLED);
+		boolean auth = PropertyWatcher.authEnabled();
 
 		try (Connection conn = Database.getConnection();
 			 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
