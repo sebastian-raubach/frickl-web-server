@@ -28,6 +28,7 @@ import org.restlet.resource.ResourceException;
 import org.restlet.security.Verifier;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -193,13 +194,19 @@ public class CustomVerifier implements Verifier
 
 		if (!StringUtils.isEmpty(result))
 		{
-			result = URLDecoder.decode(result, StandardCharsets.UTF_8);
-
-			int index = result.lastIndexOf("/api");
-
-			if (index != -1)
+			try
 			{
-				result = result.substring(0, index + 4);
+				result = URLDecoder.decode(result, "UTF-8");
+
+				int index = result.lastIndexOf("/api");
+
+				if (index != -1)
+				{
+					result = result.substring(0, index + 4);
+				}
+			}
+			catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
 			}
 		}
 
