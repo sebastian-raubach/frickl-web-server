@@ -46,6 +46,8 @@
 	<target name="jar" depends="compile8">
 		<jar jarfile="${jar}">
 			<fileset dir="${cls}"/>
+			<fileset dir="${src}" includes="**/*.sql"/>
+
 			<manifest>
 				<attribute name="Main-Class" value="raubach.fricklweb.server.Frickl"/>
 				<attribute name="Class-Path" value="${jar.classpath}"/>
