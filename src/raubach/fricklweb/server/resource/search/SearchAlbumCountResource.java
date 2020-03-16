@@ -58,7 +58,7 @@ public class SearchAlbumCountResource extends PaginatedServerResource
 
 				return step.where(ALBUMS.NAME.like(searchTerm)
 						.or(ALBUMS.DESCRIPTION.like(searchTerm)))
-						.fetchOne(0, int.class);
+						.fetchAny(0, int.class);
 			}
 			catch (SQLException e)
 			{

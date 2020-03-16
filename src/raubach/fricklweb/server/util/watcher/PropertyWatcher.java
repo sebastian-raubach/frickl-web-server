@@ -30,6 +30,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * {@link PropertyWatcher} is a wrapper around {@link Properties} to readAll properties.
@@ -137,10 +139,12 @@ public class PropertyWatcher
 		// Set properties if they are set in the environment variables
 		String username = System.getenv("FRICKL_USERNAME");
 		String password = System.getenv("FRICKL_PASSWORD");
+		Logger.getLogger("").log(Level.INFO, "Setting env username: " + username);
 		if (!StringUtils.isEmpty(username))
 			set(ServerProperty.ADMIN_USERNAME, username);
 		if (!StringUtils.isEmpty(password))
 			set(ServerProperty.ADMIN_PASSWORD, password);
+		Logger.getLogger("").log(Level.INFO, "Set env username: " + get(ServerProperty.ADMIN_USERNAME));
 	}
 
 	public static void stopFileWatcher()

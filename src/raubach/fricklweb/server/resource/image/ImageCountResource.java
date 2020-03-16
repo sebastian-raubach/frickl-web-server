@@ -90,7 +90,7 @@ public class ImageCountResource extends PaginatedServerResource
 				if (auth && StringUtils.isEmpty(user.getToken()))
 					step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
 
-				return step.fetchOne(0, int.class);
+				return step.fetchAny(0, int.class);
 			}
 			catch (SQLException e)
 			{
@@ -111,7 +111,7 @@ public class ImageCountResource extends PaginatedServerResource
 				if (auth && StringUtils.isEmpty(user.getToken()))
 					step.where(IMAGES.IS_PUBLIC.eq((byte) 1));
 
-				return step.fetchOne(0, int.class);
+				return step.fetchAny(0, int.class);
 			}
 			catch (SQLException e)
 			{

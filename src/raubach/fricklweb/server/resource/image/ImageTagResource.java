@@ -73,7 +73,7 @@ public class ImageTagResource extends PaginatedServerResource
 			{
 				Images image = context.selectFrom(IMAGES)
 						.where(IMAGES.ID.eq(imageId))
-						.fetchOneInto(Images.class);
+						.fetchAnyInto(Images.class);
 
 				List<String> tagStrings = new ArrayList<>();
 				for (Tags tag : tags)
@@ -158,11 +158,11 @@ public class ImageTagResource extends PaginatedServerResource
 			{
 				Images image = context.selectFrom(IMAGES)
 						.where(IMAGES.ID.eq(imageId))
-						.fetchOneInto(Images.class);
+						.fetchAnyInto(Images.class);
 
 				Tags t = context.selectFrom(TAGS)
 						.where(TAGS.ID.eq(tag.getId()))
-						.fetchOneInto(Tags.class);
+						.fetchAnyInto(Tags.class);
 
 				if (t == null || image == null)
 					throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);

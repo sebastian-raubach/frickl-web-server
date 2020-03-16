@@ -58,7 +58,7 @@ public class SearchImageCountResource extends PaginatedServerResource
 
 				return step.where(TAGS.NAME.like(searchTerm)
 						.or(IMAGES.PATH.like(searchTerm)))
-						.fetchOne(0, int.class);
+						.fetchAny(0, int.class);
 			}
 			catch (SQLException e)
 			{

@@ -5,7 +5,6 @@ package raubach.fricklweb.server.util;
  */
 public enum ServerProperty
 {
-	AUTHENTICATION_ENABLED("authentication.enabled", "false", true),
 	CONFIG_PATH("config.file", null, false),
 	DATABASE_SERVER("database.server", null, true),
 	DATABASE_NAME("database.name", null, true),

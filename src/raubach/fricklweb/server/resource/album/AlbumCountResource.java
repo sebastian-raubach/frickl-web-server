@@ -88,7 +88,7 @@ public class AlbumCountResource extends PaginatedServerResource
 						.where(IMAGES.ALBUM_ID.eq(ALBUMS.ID)
 								.and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
 
-			return step.fetchOne(0, int.class);
+			return step.fetchAny(0, int.class);
 		}
 		catch (SQLException e)
 		{

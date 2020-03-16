@@ -41,7 +41,7 @@ public class ImageRandomResource extends PaginatedServerResource
 
 			result = step.orderBy(DSL.rand())
 					.limit(1)
-					.fetchOne()
+					.fetchAny()
 					.into(Images.class);
 		}
 		catch (SQLException | NullPointerException e)
@@ -62,7 +62,7 @@ public class ImageRandomResource extends PaginatedServerResource
 
 				result = step.orderBy(DSL.rand())
 						.limit(1)
-						.fetchOne()
+						.fetchAny()
 						.into(Images.class);
 			}
 			catch (SQLException e)

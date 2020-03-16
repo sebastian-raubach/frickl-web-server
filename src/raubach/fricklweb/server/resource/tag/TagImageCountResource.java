@@ -62,7 +62,7 @@ public class TagImageCountResource extends PaginatedServerResource
 					step.where(IMAGES.IS_PUBLIC.eq((byte) 1));
 
 				return step.where(TAGS.ID.eq(tagId))
-						.fetchOne(0, int.class);
+						.fetchAny(0, int.class);
 			}
 			catch (SQLException e)
 			{
