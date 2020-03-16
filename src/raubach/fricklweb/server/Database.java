@@ -113,6 +113,24 @@ public class Database
 				Logger.getLogger("").log(Level.INFO, "DATABASE EXISTS, NO NEED TO CREATE IT!");
 			}
 
+			// Run database update
+			try
+			{
+				Logger.getLogger("").log(Level.INFO, "RUNNING FLYWAY on: " + databaseName);
+				Flyway flyway = new Flyway();
+				flyway.setTable("schema_version");
+				flyway.setValidateOnMigrate(false);
+				flyway.setDataSource(getDatabaseUrl(), username, password);
+				flyway.setLocations("classpath:raubach.fricklweb.server.util.database.migration");
+				flyway.setBaselineOnMigrate(true);
+				flyway.migrate();
+				flyway.repair();
+			}
+			catch (FlywayException e)
+			{
+				e.printStackTrace();
+			}
+
 			// Add/update all the views
 			try
 			{
@@ -129,24 +147,6 @@ public class Database
 				}
 			}
 			catch (IOException | URISyntaxException e)
-			{
-				e.printStackTrace();
-			}
-
-			// Run database update
-			try
-			{
-				Logger.getLogger("").log(Level.INFO, "RUNNING FLYWAY on: " + databaseName);
-				Flyway flyway = new Flyway();
-				flyway.setTable("schema_version");
-				flyway.setValidateOnMigrate(false);
-				flyway.setDataSource(getDatabaseUrl(), username, password);
-				flyway.setLocations("classpath:raubach.fricklweb.server.util.database.migration");
-				flyway.setBaselineOnMigrate(true);
-				flyway.migrate();
-				flyway.repair();
-			}
-			catch (FlywayException e)
 			{
 				e.printStackTrace();
 			}
