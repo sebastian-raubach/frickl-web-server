@@ -10,6 +10,7 @@ import org.jooq.conf.Settings;
 import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 import raubach.fricklweb.server.database.Frickl;
+import raubach.fricklweb.server.database.tables.records.ImagesRecord;
 import raubach.fricklweb.server.util.ScriptRunner;
 
 import java.io.*;
@@ -50,6 +51,8 @@ public class Database
 		Database.username = username;
 		Database.password = password;
 
+		Logger.getLogger("").log(Level.INFO, "DB details: " + getDatabaseUrl());
+
 		try
 		{
 			// The newInstance() call is a work around for some
@@ -78,14 +81,21 @@ public class Database
 				 DSLContext context = getContext(conn))
 			{
 				// Try and see if the `images` table exists
-				context.selectFrom(IMAGES)
+				ImagesRecord image = context.selectFrom(IMAGES)
 						.fetchAny();
+
+				if (image == null)
+					Logger.getLogger("").log(Level.INFO, "NO IMAGES");
+				else
+					Logger.getLogger("").log(Level.INFO, image.toString());
 			}
 			catch (SQLException | DataAccessException e)
 			{
 				e.printStackTrace();
 				databaseExists = false;
 			}
+
+			Logger.getLogger("").log(Level.INFO, "Database exists: " + databaseExists);
 
 			if (!databaseExists)
 			{
