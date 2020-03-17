@@ -56,9 +56,9 @@ public class Database
 			// broken Java implementations
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 		}
-		catch (Exception ex)
+		catch (Exception e)
 		{
-			// handle the error
+			e.printStackTrace();
 		}
 
 		// Get an initial connection to try if it works
@@ -74,8 +74,8 @@ public class Database
 		if (initAndUpdate)
 		{
 			boolean databaseExists = true;
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = getConnection();
+				 DSLContext context = getContext(conn))
 			{
 				// Try and see if the `images` table exists
 				context.selectFrom(IMAGES)
@@ -83,6 +83,7 @@ public class Database
 			}
 			catch (SQLException | DataAccessException e)
 			{
+				e.printStackTrace();
 				databaseExists = false;
 			}
 
@@ -187,25 +188,5 @@ public class Database
 										.withOutput(databaseName)));
 
 		return DSL.using(connection, SQLDialect.MYSQL, settings);
-	}
-
-	public static String getDatabaseServer()
-	{
-		return databaseServer;
-	}
-
-	public static void setDatabaseServer(String databaseServer)
-	{
-		Database.databaseServer = databaseServer;
-	}
-
-	public static String getDatabaseName()
-	{
-		return databaseName;
-	}
-
-	public static void setDatabaseName(String databaseName)
-	{
-		Database.databaseName = databaseName;
 	}
 }
