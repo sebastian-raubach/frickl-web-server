@@ -61,6 +61,7 @@ public class Database
 		}
 		catch (Exception e)
 		{
+			Logger.getLogger("").log(Level.SEVERE, e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -71,6 +72,7 @@ public class Database
 		}
 		catch (SQLException e)
 		{
+			Logger.getLogger("").log(Level.SEVERE, e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -91,6 +93,7 @@ public class Database
 			}
 			catch (SQLException | DataAccessException e)
 			{
+				Logger.getLogger("").log(Level.SEVERE, e.getMessage());
 				e.printStackTrace();
 				databaseExists = false;
 			}
@@ -116,6 +119,7 @@ public class Database
 				}
 				catch (IOException | URISyntaxException e)
 				{
+					Logger.getLogger("").log(Level.SEVERE, e.getMessage());
 					e.printStackTrace();
 				}
 			}
@@ -139,6 +143,7 @@ public class Database
 			}
 			catch (FlywayException e)
 			{
+				Logger.getLogger("").log(Level.SEVERE, e.getMessage());
 				e.printStackTrace();
 			}
 
@@ -159,6 +164,7 @@ public class Database
 			}
 			catch (IOException | URISyntaxException e)
 			{
+				Logger.getLogger("").log(Level.SEVERE, e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -174,6 +180,7 @@ public class Database
 		}
 		catch (SQLException | IOException e)
 		{
+			Logger.getLogger("").log(Level.SEVERE, e.getMessage());
 			e.printStackTrace();
 		}
 	}

@@ -16,13 +16,6 @@ public class ApplicationListener implements ServletContextListener
 	{
 		PropertyWatcher.initialize();
 
-		Database.init(PropertyWatcher.get(ServerProperty.DATABASE_SERVER),
-				PropertyWatcher.get(ServerProperty.DATABASE_NAME),
-				PropertyWatcher.get(ServerProperty.DATABASE_PORT),
-				PropertyWatcher.get(ServerProperty.DATABASE_USERNAME),
-				PropertyWatcher.get(ServerProperty.DATABASE_PASSWORD),
-				true);
-
 		Frickl.BASE_PATH = PropertyWatcher.get(ServerProperty.BASE_PATH);
 
 		// Spin off a thread to run the initial data import/update

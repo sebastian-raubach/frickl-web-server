@@ -77,6 +77,7 @@ public class PropertyWatcher
 						if (potential.exists() && potential.isFile())
 						{
 							// Use it
+							Logger.getLogger("").log(Level.INFO, "Using external config.properties: " + potential.getAbsolutePath());
 							config = potential;
 						}
 					}
