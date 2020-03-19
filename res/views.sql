@@ -5,6 +5,7 @@ VIEW `album_stats` AS select
     `albums`.`description` AS `description`,
     `albums`.`path` AS `path`,
     `albums`.`banner_image_id` AS `banner_image_id`,
+    (select `id` from `images` where `images`.`album_id` = `albums`.`id` AND `images`.`is_public` = 1 limit 1) AS `banner_image_public_id`,
     `albums`.`parent_album_id` AS `parent_album_id`,
     `albums`.`created_on` AS `created_on`,
     `albums`.`updated_on` AS `updated_on`,
@@ -13,7 +14,13 @@ VIEW `album_stats` AS select
     from
         `images`
     where
-        (`images`.`album_id` = `albums`.`id`)) AS `count`
+        (`images`.`album_id` = `albums`.`id`)) AS `count`,
+     (
+         select count(1)
+     from
+         `images`
+     where
+         (`images`.`album_id` = `albums`.`id` AND `images`.`is_public`)) AS `count_public`
 from
     `albums`;
 
