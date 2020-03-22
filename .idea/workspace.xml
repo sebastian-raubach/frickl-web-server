@@ -3,42 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="0b41da56-1101-476e-ba7d-884db70611d5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/views.sql" beforeDir="false" afterPath="$PROJECT_DIR$/res/views.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/DefaultCatalog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/DefaultCatalog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/Frickl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/Frickl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/Indexes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/Indexes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/Keys.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/Keys.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/Tables.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/Tables.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/AlbumStats.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/AlbumStats.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/Albums.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/Albums.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/CalendarData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/CalendarData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/ImageTags.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/ImageTags.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/ImageTimeline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/ImageTimeline.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/Images.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/Images.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/LatLngs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/LatLngs.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/SchemaVersion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/SchemaVersion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/StatsCamera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/StatsCamera.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/Tags.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/Tags.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/AlbumStats.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/AlbumStats.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/Albums.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/Albums.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/CalendarData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/CalendarData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/ImageTags.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/ImageTags.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/ImageTimeline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/ImageTimeline.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/Images.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/Images.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/LatLngs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/LatLngs.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/SchemaVersion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/SchemaVersion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/StatsCamera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/StatsCamera.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/Tags.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/Tags.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/AlbumStatsRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/AlbumStatsRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/AlbumsRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/AlbumsRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/CalendarDataRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/CalendarDataRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/ImageTagsRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/ImageTagsRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/ImageTimelineRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/ImageTimelineRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/ImagesRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/ImagesRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/LatLngsRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/LatLngsRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/SchemaVersionRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/SchemaVersionRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/StatsCameraRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/StatsCameraRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/TagsRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/TagsRecord.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/StatusResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/StatusResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/image/ImageImageResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/image/ImageImageResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/scanner/ImageScanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/raubach/fricklweb/server/scanner/ImageScanner.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -53,42 +20,61 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="75">
-                <caret line="5" column="81" selection-start-line="5" selection-end-line="5" selection-end-column="81" />
-              </first_editor>
-              <second_editor />
+        <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/resource/image/ImageImageResource.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="870">
+              <caret line="85" column="49" selection-start-line="85" selection-start-column="49" selection-end-line="85" selection-end-column="49" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/scanner/ImageScanner.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="450">
+              <caret line="138" column="74" selection-start-line="138" selection-start-column="74" selection-end-line="138" selection-end-column="74" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/resource/StatusResource.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="14" column="23" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/computed/Status.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="5" column="12" selection-start-line="5" selection-start-column="12" selection-end-line="5" selection-end-column="12" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/res/views.sql">
+        <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/computed/DataScanResult.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-240">
-              <caret line="32" column="5" lean-forward="true" selection-start-line="32" selection-start-column="5" selection-end-line="32" selection-end-column="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/build.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="467">
-              <caret line="81" column="19" selection-start-line="81" selection-start-column="19" selection-end-line="81" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/resource/image/ImageResource.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-671">
-              <caret line="96" column="87" selection-start-line="96" selection-start-column="87" selection-end-line="96" selection-end-column="87" />
+            <state relative-caret-position="30">
+              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#185#186#0" expanded="true" />
+                <element signature="e#205#206#0" expanded="true" />
+                <element signature="e#247#248#0" expanded="true" />
+                <element signature="e#274#275#0" expanded="true" />
+                <element signature="e#311#312#0" expanded="true" />
+                <element signature="e#336#337#0" expanded="true" />
+                <element signature="e#389#390#0" expanded="true" />
+                <element signature="e#426#427#0" expanded="true" />
+                <element signature="e#576#577#0" expanded="true" />
+                <element signature="e#598#599#0" expanded="true" />
+                <element signature="e#461#462#0" expanded="true" />
+                <element signature="e#484#485#0" expanded="true" />
+                <element signature="e#533#534#0" expanded="true" />
+                <element signature="e#566#567#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -106,7 +92,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/Frickl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
+            <state relative-caret-position="1365">
               <caret line="121" column="54" selection-start-line="121" selection-start-column="54" selection-end-line="121" selection-end-column="54" />
             </state>
           </provider>
@@ -115,7 +101,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/resource/album/AlbumResource.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
+            <state relative-caret-position="1140">
               <caret line="97" column="67" selection-start-line="97" selection-start-column="67" selection-end-line="97" selection-end-column="67" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -127,17 +113,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/AlbumStats.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
+            <state relative-caret-position="270">
               <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/util/ThumbnailUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -207,8 +184,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/stats/StatsTimelineResource.java" />
-        <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/stats/StatsTimelineCountResource.java" />
         <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/util/TagUtils.java" />
         <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/Token.java" />
         <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/computed/Token.java" />
@@ -219,7 +194,6 @@
         <option value="$PROJECT_DIR$/build.properties" />
         <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/util/ThumbnailUtils.java" />
         <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/scanner/ImageScaler.java" />
-        <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/scanner/ImageScanner.java" />
         <option value="$PROJECT_DIR$/res/database.sql" />
         <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/util/database/migration/V1.20.02.23__update.sql" />
         <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/image/ImageTagResource.java" />
@@ -233,7 +207,6 @@
         <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/calendar/CalendarYearResource.java" />
         <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/computed/Settings.java" />
         <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/SettingsResource.java" />
-        <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/image/ImageImageResource.java" />
         <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/album/AlbumDownloadResource.java" />
         <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/album/AlbumTagResource.java" />
         <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/album/AlbumLocationResource.java" />
@@ -253,11 +226,15 @@
         <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/location/LocationResource.java" />
         <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/util/ServerProperty.java" />
         <option value="$PROJECT_DIR$/build.xml" />
-        <option value="$PROJECT_DIR$/config.properties" />
         <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/ApplicationListener.java" />
         <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/util/watcher/PropertyWatcher.java" />
         <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/Database.java" />
         <option value="$PROJECT_DIR$/res/views.sql" />
+        <option value="$PROJECT_DIR$/config.properties" />
+        <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/image/ImageImageResource.java" />
+        <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/computed/DataScanResult.java" />
+        <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/scanner/ImageScanner.java" />
+        <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/StatusResource.java" />
       </list>
     </option>
   </component>
@@ -273,6 +250,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -302,6 +280,13 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="server" type="462c0819:PsiDirectoryNode" />
               <item name="auth" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="frickl-web-server" type="b2602c69:ProjectViewProjectNode" />
+              <item name="frickl-web-server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="computed" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="frickl-web-server" type="b2602c69:ProjectViewProjectNode" />
@@ -407,7 +392,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -758,13 +742,20 @@
       <option name="project" value="LOCAL" />
       <updated>1584531270283</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="- CHG: Adjusted album view to support public views.">
+      <created>1584642336049</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1584642336049</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="39" width="1920" height="1040" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4989083" visible="true" weight="0.22417465" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4989083" visible="true" weight="0.2284345" />
       <window_info id="Structure" order="1" sideWeight="0.5010917" side_tool="true" weight="0.24972677" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -778,18 +769,18 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.22993493" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.22993493" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.3286026" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" sideWeight="0.4924078" weight="0.24920128" />
+      <window_info anchor="right" id="Ant Build" order="1" sideWeight="0.4913232" visible="true" weight="0.24920128" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="right" id="Maven" order="4" />
       <window_info anchor="right" id="Theme Preview" order="5" />
       <window_info anchor="right" id="Capture Analysis" order="6" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
-      <window_info anchor="right" id="Messages" order="8" sideWeight="0.5075922" side_tool="true" visible="true" weight="0.24920128" />
+      <window_info active="true" anchor="right" id="Messages" order="8" sideWeight="0.50867677" side_tool="true" visible="true" weight="0.24920128" />
     </layout>
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -805,7 +796,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="- ADD: Added javax.annotation library for Java11 compatibility." />
     <MESSAGE value="- ADD: Added timeline view." />
     <MESSAGE value="- DEL: Removed timeline endpoint." />
     <MESSAGE value="- CHG: Replaced jackson with gson.&#10;- ADD: Added tag endpoints for adding and deleting tags from albums and images." />
@@ -830,7 +820,8 @@
     <MESSAGE value="- FIX: Added more exception printing." />
     <MESSAGE value="- ADD: Added more database init logging." />
     <MESSAGE value="- FIX: Fixed database existence check." />
-    <option name="LAST_COMMIT_MESSAGE" value="- FIX: Fixed database existence check." />
+    <MESSAGE value="- CHG: Adjusted album view to support public views." />
+    <option name="LAST_COMMIT_MESSAGE" value="- CHG: Adjusted album view to support public views." />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="antWorkspaceConfiguration">
@@ -849,53 +840,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/LatLngsRecord.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-222">
-          <caret line="29" column="13" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/LatLngs.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="30" column="32" lean-forward="true" selection-start-line="30" selection-start-column="32" selection-end-line="30" selection-end-column="32" />
-          <folding>
-            <element signature="e#1408#1409#0" expanded="true" />
-            <element signature="e#1438#1439#0" expanded="true" />
-            <element signature="e#1475#1476#0" expanded="true" />
-            <element signature="e#1503#1504#0" expanded="true" />
-            <element signature="e#1534#1535#0" expanded="true" />
-            <element signature="e#1566#1567#0" expanded="true" />
-            <element signature="e#1606#1607#0" expanded="true" />
-            <element signature="e#1638#1639#0" expanded="true" />
-            <element signature="e#1673#1674#0" expanded="true" />
-            <element signature="e#1708#1709#0" expanded="true" />
-            <element signature="e#1755#1756#0" expanded="true" />
-            <element signature="e#1793#1794#0" expanded="true" />
-            <element signature="e#1826#1827#0" expanded="true" />
-            <element signature="e#1862#1863#0" expanded="true" />
-            <element signature="e#1908#1909#0" expanded="true" />
-            <element signature="e#1948#1949#0" expanded="true" />
-            <element signature="e#1987#1988#0" expanded="true" />
-            <element signature="e#2023#2024#0" expanded="true" />
-            <element signature="e#2075#2076#0" expanded="true" />
-            <element signature="e#2115#2116#0" expanded="true" />
-            <element signature="e#2155#2156#0" expanded="true" />
-            <element signature="e#2192#2193#0" expanded="true" />
-            <element signature="e#2246#2247#0" expanded="true" />
-            <element signature="e#2288#2289#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/resource/search/SearchAlbumCountResource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="422">
-          <caret line="54" column="75" lean-forward="true" selection-start-line="50" selection-start-column="16" selection-end-line="54" selection-end-column="75" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/StatsCamera.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="228">
@@ -1057,13 +1001,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/resource/image/ImageImageResource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="83" column="58" selection-start-line="83" selection-start-column="58" selection-end-line="83" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/resource/TokenResource.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="469">
@@ -1158,13 +1095,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="20" lean-forward="true" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/ApplicationListener.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -1172,13 +1102,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/scanner/ImageScanner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="51" column="11" selection-start-line="51" selection-start-column="11" selection-end-line="51" selection-end-column="11" />
         </state>
       </provider>
     </entry>
@@ -1209,27 +1132,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/database.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="37" selection-start-line="10" selection-start-column="37" selection-end-line="10" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/logging.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" selection-start-line="9" selection-end-line="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/AlbumStats.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -1240,26 +1142,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/Frickl.java">
+    <entry file="file://$PROJECT_DIR$/res/views.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="121" column="54" selection-start-line="121" selection-start-column="54" selection-end-line="121" selection-end-column="54" />
+        <state relative-caret-position="480">
+          <caret line="32" column="5" selection-start-line="32" selection-start-column="5" selection-end-line="32" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/resource/album/AlbumResource.java">
+    <entry file="file://$PROJECT_DIR$/config.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="97" column="67" selection-start-line="97" selection-start-column="67" selection-end-line="97" selection-end-column="67" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="150">
+          <caret line="10" column="20" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1215">
+          <caret line="81" column="19" selection-start-line="81" selection-start-column="19" selection-end-line="81" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/resource/image/ImageResource.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-671">
+        <state relative-caret-position="1140">
           <caret line="96" column="87" selection-start-line="96" selection-start-column="87" selection-end-line="96" selection-end-column="87" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1267,17 +1173,92 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.xml">
+    <entry file="file://$PROJECT_DIR$/logging.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="467">
-          <caret line="81" column="19" selection-start-line="81" selection-start-column="19" selection-end-line="81" selection-end-column="19" />
+        <state relative-caret-position="135">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/views.sql">
+    <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/Frickl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-240">
-          <caret line="32" column="5" lean-forward="true" selection-start-line="32" selection-start-column="5" selection-end-line="32" selection-end-column="5" />
+        <state relative-caret-position="1365">
+          <caret line="121" column="54" selection-start-line="121" selection-start-column="54" selection-end-line="121" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/resource/album/AlbumResource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1140">
+          <caret line="97" column="67" selection-start-line="97" selection-start-column="67" selection-end-line="97" selection-end-column="67" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/AlbumStats.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/database.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="37" selection-start-line="10" selection-start-column="37" selection-end-line="10" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/resource/image/ImageImageResource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="870">
+          <caret line="85" column="49" selection-start-line="85" selection-start-column="49" selection-end-line="85" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/computed/Status.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="12" selection-start-line="5" selection-start-column="12" selection-end-line="5" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/scanner/ImageScanner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="138" column="74" selection-start-line="138" selection-start-column="74" selection-end-line="138" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/resource/StatusResource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="14" column="23" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/computed/DataScanResult.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          <folding>
+            <element signature="e#185#186#0" expanded="true" />
+            <element signature="e#205#206#0" expanded="true" />
+            <element signature="e#247#248#0" expanded="true" />
+            <element signature="e#274#275#0" expanded="true" />
+            <element signature="e#311#312#0" expanded="true" />
+            <element signature="e#336#337#0" expanded="true" />
+            <element signature="e#389#390#0" expanded="true" />
+            <element signature="e#426#427#0" expanded="true" />
+            <element signature="e#576#577#0" expanded="true" />
+            <element signature="e#598#599#0" expanded="true" />
+            <element signature="e#461#462#0" expanded="true" />
+            <element signature="e#484#485#0" expanded="true" />
+            <element signature="e#533#534#0" expanded="true" />
+            <element signature="e#566#567#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

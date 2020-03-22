@@ -6,6 +6,7 @@ import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import org.restlet.data.MediaType;
 import raubach.fricklweb.server.Database;
+import raubach.fricklweb.server.computed.DataScanResult;
 import raubach.fricklweb.server.computed.Status;
 import raubach.fricklweb.server.database.tables.Albums;
 import raubach.fricklweb.server.database.tables.records.AlbumsRecord;
@@ -40,7 +41,7 @@ import static raubach.fricklweb.server.database.tables.Images.IMAGES;
  */
 public class ImageScanner
 {
-	public static Status STATUS = Status.UNKNOWN;
+	public static DataScanResult SCANRESULT = new DataScanResult();
 
 	private ThreadPoolExecutor executor;
 
@@ -81,7 +82,7 @@ public class ImageScanner
 			try (Connection conn = Database.getConnection();
 				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
 			{
-				STATUS = Status.IMPORTING;
+				SCANRESULT.setStatus(Status.IMPORTING);
 				// Get all existing albums and remember their path to id mapping
 				context.selectFrom(ALBUMS)
 						.stream()
@@ -135,6 +136,7 @@ public class ImageScanner
 				{
 					while (!executor.awaitTermination(10, TimeUnit.SECONDS))
 					{
+						SCANRESULT.setQueueSize(executor.getQueue().size());
 						// Wait here
 						Logger.getLogger("").log(Level.INFO, "Queue count: " + executor.getQueue().size());
 						Logger.getLogger("").log(Level.INFO, "Queue active: " + executor.getActiveCount());
@@ -148,7 +150,7 @@ public class ImageScanner
 					e.printStackTrace();
 				}
 
-				STATUS = Status.IDLE;
+				SCANRESULT.reset();
 			}
 			catch (SQLException e)
 			{
@@ -256,6 +258,8 @@ public class ImageScanner
 						executor.submit(new ImageScaler(imagesRecord, ThumbnailUtils.Size.SMALL));
 						executor.submit(new ImageScaler(imagesRecord, ThumbnailUtils.Size.MEDIUM));
 						executor.submit(new ImageExifReader(imagesRecord));
+
+						SCANRESULT.incrementTotalImages();
 					}
 				}
 				else
@@ -291,6 +295,8 @@ public class ImageScanner
 						{
 							executor.submit(new ImageScaler(imagesRecord, ThumbnailUtils.Size.MEDIUM));
 						}
+
+						SCANRESULT.incrementTotalImages();
 					}
 				}
 			}

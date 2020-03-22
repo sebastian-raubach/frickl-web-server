@@ -68,7 +68,6 @@ public class ImageImageResource extends PaginatedServerResource
 	@Get
 	public Representation getImage()
 	{
-		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
 		boolean auth = PropertyWatcher.authEnabled();
 
 		FileRepresentation representation = null;
