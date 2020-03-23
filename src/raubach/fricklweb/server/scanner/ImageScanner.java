@@ -82,7 +82,7 @@ public class ImageScanner
 			try (Connection conn = Database.getConnection();
 				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
 			{
-				SCANRESULT.setStatus(Status.IMPORTING);
+				SCANRESULT.setStatus(Status.SCANNING);
 				// Get all existing albums and remember their path to id mapping
 				context.selectFrom(ALBUMS)
 						.stream()
@@ -134,6 +134,8 @@ public class ImageScanner
 
 				try
 				{
+					SCANRESULT.setStatus(Status.IMPORTING);
+
 					while (!executor.awaitTermination(10, TimeUnit.SECONDS))
 					{
 						SCANRESULT.setQueueSize(executor.getQueue().size());

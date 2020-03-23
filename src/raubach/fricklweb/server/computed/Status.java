@@ -5,6 +5,7 @@ package raubach.fricklweb.server.computed;
  */
 public enum Status
 {
+	SCANNING,
 	IMPORTING,
 	IDLE,
 	UNKNOWN
