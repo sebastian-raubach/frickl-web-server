@@ -1,9 +1,10 @@
-# Frickl web server
+<p align="center">
+  <img src="https://raw.githubusercontent.com/sebastian-raubach/frickl-web/master/src/assets/frickl.svg?sanitize=true" width="200" alt="Logo">
+</p>
 
 ![GitHub](https://img.shields.io/github/license/sebastian-raubach/frickl-web-server)
 ![GitHub last commit](https://img.shields.io/github/last-commit/sebastian-raubach/frickl-web-server)
 
-## Code generation using JOOQ
-```
-java -cp "./lib/*:./lib/lib-dev/*" org.jooq.codegen.GenerationTool ./res/jooq.xml
-```
+# Frickl web server
+
+This is the server side implementation of Germinate. [Please visit the client repository for more details](https://github.com/sebastian-raubach/frickl-web).
