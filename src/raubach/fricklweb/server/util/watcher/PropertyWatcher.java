@@ -140,10 +140,13 @@ public class PropertyWatcher
 		// Set properties if they are set in the environment variables
 		String username = System.getenv("FRICKL_USERNAME");
 		String password = System.getenv("FRICKL_PASSWORD");
+		String googleAnalyticsKey = System.getenv("GOOGLE_ANALYTICS_KEY");
 		if (!StringUtils.isEmpty(username))
 			set(ServerProperty.ADMIN_USERNAME, username);
 		if (!StringUtils.isEmpty(password))
 			set(ServerProperty.ADMIN_PASSWORD, password);
+		if (!StringUtils.isEmpty(googleAnalyticsKey))
+			set(ServerProperty.GOOGLE_ANALYTICS_KEY, googleAnalyticsKey);
 	}
 
 	public static void stopFileWatcher()

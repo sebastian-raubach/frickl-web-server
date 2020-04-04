@@ -13,6 +13,7 @@ public enum ServerProperty
 	DATABASE_PORT("database.port", null, false),
 	ADMIN_USERNAME("admin.username", null, false),
 	ADMIN_PASSWORD("admin.password", null, false),
+	GOOGLE_ANALYTICS_KEY("google.analytics.key", null, false),
 	BASE_PATH("base.path", null, true),
 	API_VERSION("api.version", "1", false);
 
