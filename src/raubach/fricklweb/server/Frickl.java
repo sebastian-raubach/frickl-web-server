@@ -139,6 +139,8 @@ public class Frickl extends Application
 		attachToRouter(routerAuth, "/image/{imageId}", ImageResource.class);
 		attachToRouter(routerAuth, "/image/{imageId}/tag", ImageTagResource.class);
 		attachToRouter(routerUnauth, "/image/{imageId}/img", ImageImageResource.class);
+		// For social media sharing. They don't seem to like image URLs without extension.
+		attachToRouter(routerUnauth, "/image/{imageId}/img.jpg", ImageImageResource.class);
 
 		attachToRouter(routerAuth, "/location", LocationResource.class);
 
