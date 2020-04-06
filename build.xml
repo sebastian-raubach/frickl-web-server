@@ -65,6 +65,7 @@
 			<zipfileset dir="." includes="config.properties" prefix="WEB-INF/classes"/>
 			<zipfileset dir="." includes="logging.properties" prefix="WEB-INF/classes"/>
 			<zipfileset dir="${res}" includes="*.sql" prefix="WEB-INF/classes"/>
+			<zipfileset dir="${res}" includes="*.html" prefix="WEB-INF/classes"/>
 
 			<!-- Include the SQL update scripts for Flyway -->
 			<zipfileset dir="${src}" includes="**/*.sql" prefix="WEB-INF/classes"/>

@@ -2,9 +2,12 @@ package raubach.fricklweb.server.resource;
 
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
+import raubach.fricklweb.server.util.CollectionUtils;
 
+import java.io.File;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  * @author Sebastian Raubach
@@ -52,5 +55,19 @@ public class PaginatedServerResource extends ServerResource
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	protected File getTempDir(String fileOrSubFolder) {
+		List<String> segments = getReference().getSegments(true);
+		String path;
+		if (CollectionUtils.isEmpty(segments))
+			path = "frickl";
+		else
+			path = segments.get(0);
+
+		File folder = new File(System.getProperty("java.io.tmpdir"), path);
+		folder.mkdirs();
+
+		return new File(folder, fileOrSubFolder);
 	}
 }

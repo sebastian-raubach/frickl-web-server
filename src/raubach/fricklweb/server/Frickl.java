@@ -28,6 +28,7 @@ import raubach.fricklweb.server.resource.tag.TagImageCountResource;
 import raubach.fricklweb.server.resource.tag.TagImageResource;
 import raubach.fricklweb.server.resource.tag.TagResource;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -74,6 +75,18 @@ public class Frickl extends Application
 	{
 		router.attach(url, clazz);
 		router.attach(url + "/", clazz);
+	}
+
+	public static String getServerBase(HttpServletRequest request, boolean includeContext) {
+		String scheme = request.getScheme();
+		String serverName = request.getServerName();
+		int serverPort = request.getServerPort();
+		String contextPath = request.getContextPath();
+
+		if (serverPort == 80 || serverPort == 443)
+			return scheme + "://" + serverName + (includeContext ? contextPath : "");
+		else
+			return scheme + "://" + serverName + ":" + serverPort + (includeContext ? contextPath : "");
 	}
 
 	@Override
@@ -140,7 +153,7 @@ public class Frickl extends Application
 		attachToRouter(routerAuth, "/image/{imageId}/tag", ImageTagResource.class);
 		attachToRouter(routerUnauth, "/image/{imageId}/img", ImageImageResource.class);
 		// For social media sharing. They don't seem to like image URLs without extension.
-		attachToRouter(routerUnauth, "/image/{imageId}/img.jpg", ImageImageResource.class);
+		attachToRouter(routerUnauth, "/image/{imageId}/share", ImageShareResource.class);
 
 		attachToRouter(routerAuth, "/location", LocationResource.class);
 
