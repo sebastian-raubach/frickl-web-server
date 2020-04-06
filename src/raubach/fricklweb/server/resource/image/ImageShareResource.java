@@ -5,6 +5,7 @@ import org.jooq.SQLDialect;
 import org.jooq.SelectConditionStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
+import org.jooq.tools.StringUtils;
 import org.restlet.data.Disposition;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
@@ -80,27 +81,37 @@ public class ImageShareResource extends PaginatedServerResource
 
 				if (image != null)
 				{
-					URL url = Database.class.getClassLoader().getResource("index.html");
+					HttpServletRequest req = ServletUtils.getRequest(getRequest());
+					String userAgent = getRequest().getClientInfo().getAgent();
 
-					if (url != null)
+					boolean isBot = StringUtils.isEmpty(userAgent) || userAgent.toLowerCase().contains("bot") || userAgent.toLowerCase().contains("twitter") || userAgent.toLowerCase().contains("facebook");
+
+					if (isBot) {
+						URL url = Database.class.getClassLoader().getResource("index.html");
+
+						if (url != null)
+						{
+							String imageUrl = Frickl.getServerBase(req, true) + "/api/image/" + imageId + "/img?size=MEDIUM";
+
+							File targetFile = getTempDir(UUID.randomUUID().toString() + ".html");
+
+							String content = new String(Files.readAllBytes(new File(url.toURI()).toPath()), StandardCharsets.UTF_8);
+
+							content = content.replace("{{IMAGE}}", imageUrl);
+
+							Files.write(targetFile.toPath(), content.getBytes(StandardCharsets.UTF_8));
+
+							representation = new FileRepresentation(targetFile, MediaType.TEXT_HTML);
+							representation.setSize(targetFile.length());
+							representation.setAutoDeleting(true);
+							return representation;
+						}
+					}
+					else
 					{
-						HttpServletRequest req = ServletUtils.getRequest(getRequest());
-						String imageUrl = Frickl.getServerBase(req, true) + "/api/image/" + imageId + "/img?size=MEDIUM";
 						String pageUrl = Frickl.getServerBase(req, false) + "/#/images/" + imageId;
-
-						File targetFile = getTempDir(UUID.randomUUID().toString() + ".html");
-
-						String content = new String(Files.readAllBytes(new File(url.toURI()).toPath()), StandardCharsets.UTF_8);
-
-						content = content.replace("{{IMAGE}}", imageUrl)
-										.replace("{{URL}}", pageUrl);
-
-						Files.write(targetFile.toPath(), content.getBytes(StandardCharsets.UTF_8));
-
-						representation = new FileRepresentation(targetFile, MediaType.TEXT_HTML);
-						representation.setSize(targetFile.length());
-						representation.setAutoDeleting(true);
-						return representation;
+						redirectPermanent(pageUrl);
+						return null;
 					}
 				}
 			}
