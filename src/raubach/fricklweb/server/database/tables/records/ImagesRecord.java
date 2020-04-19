@@ -41,6 +41,13 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     /**
+     * Getter for <code>frickl.images.id</code>. Auto incremented id of this table.
+     */
+    public Integer getId() {
+        return (Integer) get(0);
+    }
+
+    /**
      * Create a detached, initialised ImagesRecord
      */
     public ImagesRecord(Integer id, String path, String name, Byte isFavorite, Exif exif, Integer albumId, Byte isPublic, Timestamp createdOn, Timestamp updatedOn) {
@@ -58,10 +65,10 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     /**
-     * Getter for <code>frickl.images.id</code>. Auto incremented id of this table.
+     * Getter for <code>frickl.images.path</code>. The path to the image relative to the base path of the setup.
      */
-    public Integer getId() {
-        return (Integer) get(0);
+    public String getPath() {
+        return (String) get(1);
     }
 
     /**
@@ -72,38 +79,10 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     /**
-     * Getter for <code>frickl.images.path</code>. The path to the image relative to the base path of the setup.
-     */
-    public String getPath() {
-        return (String) get(1);
-    }
-
-    /**
-     * Setter for <code>frickl.images.path</code>. The path to the image relative to the base path of the setup.
-     */
-    public void setPath(String value) {
-        set(1, value);
-    }
-
-    /**
      * Getter for <code>frickl.images.name</code>. The name of the image. This will be the filename.
      */
     public String getName() {
         return (String) get(2);
-    }
-
-    /**
-     * Setter for <code>frickl.images.name</code>. The name of the image. This will be the filename.
-     */
-    public void setName(String value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>frickl.images.is_favorite</code>. Boolean deciding if this image is one of the favorites.
-     */
-    public Byte getIsFavorite() {
-        return (Byte) get(3);
     }
 
     /**
@@ -114,10 +93,10 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     /**
-     * Getter for <code>frickl.images.exif</code>. Optional Exif information in JSON format.
+     * Setter for <code>frickl.images.path</code>. The path to the image relative to the base path of the setup.
      */
-    public Exif getExif() {
-        return (Exif) get(4);
+    public void setPath(String value) {
+        set(1, value);
     }
 
     /**
@@ -128,10 +107,10 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     /**
-     * Getter for <code>frickl.images.album_id</code>. The album this image belongs to. This will be the containing folder.
+     * Setter for <code>frickl.images.name</code>. The name of the image. This will be the filename.
      */
-    public Integer getAlbumId() {
-        return (Integer) get(5);
+    public void setName(String value) {
+        set(2, value);
     }
 
     /**
@@ -142,10 +121,10 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     /**
-     * Getter for <code>frickl.images.is_public</code>.
+     * Getter for <code>frickl.images.is_favorite</code>. Boolean deciding if this image is one of the favorites.
      */
-    public Byte getIsPublic() {
-        return (Byte) get(6);
+    public Byte getIsFavorite() {
+        return (Byte) get(3);
     }
 
     /**
@@ -156,6 +135,20 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     /**
+     * Getter for <code>frickl.images.exif</code>. Optional Exif information in JSON format.
+     */
+    public Exif getExif() {
+        return (Exif) get(4);
+    }
+
+    /**
+     * Getter for <code>frickl.images.album_id</code>. The album this image belongs to. This will be the containing folder.
+     */
+    public Integer getAlbumId() {
+        return (Integer) get(5);
+    }
+
+    /**
      * Getter for <code>frickl.images.created_on</code>. When this record has been created.
      */
     public Timestamp getCreatedOn() {
@@ -163,15 +156,11 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     /**
-     * Setter for <code>frickl.images.created_on</code>. When this record has been created.
+     * Getter for <code>frickl.images.is_public</code>.
      */
-    public void setCreatedOn(Timestamp value) {
-        set(7, value);
+    public Byte getIsPublic() {
+        return (Byte) get(6);
     }
-
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>frickl.images.updated_on</code>. When this record has last been updated.
@@ -181,15 +170,8 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     // -------------------------------------------------------------------------
-    // Record9 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>frickl.images.updated_on</code>. When this record has last been updated.
-     */
-    public void setUpdatedOn(Timestamp value) {
-        set(8, value);
-    }
 
     /**
      * {@inheritDoc}
@@ -198,6 +180,10 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     public Record1<Integer> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record9 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -503,10 +489,6 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -531,5 +513,23 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
         value8(value8);
         value9(value9);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>frickl.images.created_on</code>. When this record has been created.
+     */
+    public void setCreatedOn(Timestamp value) {
+        set(7, value);
+    }
+
+    /**
+     * Setter for <code>frickl.images.updated_on</code>. When this record has last been updated.
+     */
+    public void setUpdatedOn(Timestamp value) {
+        set(8, value);
     }
 }

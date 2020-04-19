@@ -40,6 +40,13 @@ public class SchemaVersionRecord extends UpdatableRecordImpl<SchemaVersionRecord
     }
 
     /**
+     * Getter for <code>frickl.schema_version.installed_rank</code>.
+     */
+    public Integer getInstalledRank() {
+        return (Integer) get(0);
+    }
+
+    /**
      * Create a detached, initialised SchemaVersionRecord
      */
     public SchemaVersionRecord(Integer installedRank, String version, String description, String type, String script, Integer checksum, String installedBy, Timestamp installedOn, Integer executionTime, Byte success) {
@@ -58,10 +65,10 @@ public class SchemaVersionRecord extends UpdatableRecordImpl<SchemaVersionRecord
     }
 
     /**
-     * Getter for <code>frickl.schema_version.installed_rank</code>.
+     * Getter for <code>frickl.schema_version.version</code>.
      */
-    public Integer getInstalledRank() {
-        return (Integer) get(0);
+    public String getVersion() {
+        return (String) get(1);
     }
 
     /**
@@ -72,38 +79,10 @@ public class SchemaVersionRecord extends UpdatableRecordImpl<SchemaVersionRecord
     }
 
     /**
-     * Getter for <code>frickl.schema_version.version</code>.
-     */
-    public String getVersion() {
-        return (String) get(1);
-    }
-
-    /**
-     * Setter for <code>frickl.schema_version.version</code>.
-     */
-    public void setVersion(String value) {
-        set(1, value);
-    }
-
-    /**
      * Getter for <code>frickl.schema_version.description</code>.
      */
     public String getDescription() {
         return (String) get(2);
-    }
-
-    /**
-     * Setter for <code>frickl.schema_version.description</code>.
-     */
-    public void setDescription(String value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>frickl.schema_version.type</code>.
-     */
-    public String getType() {
-        return (String) get(3);
     }
 
     /**
@@ -114,10 +93,10 @@ public class SchemaVersionRecord extends UpdatableRecordImpl<SchemaVersionRecord
     }
 
     /**
-     * Getter for <code>frickl.schema_version.script</code>.
+     * Setter for <code>frickl.schema_version.version</code>.
      */
-    public String getScript() {
-        return (String) get(4);
+    public void setVersion(String value) {
+        set(1, value);
     }
 
     /**
@@ -128,10 +107,10 @@ public class SchemaVersionRecord extends UpdatableRecordImpl<SchemaVersionRecord
     }
 
     /**
-     * Getter for <code>frickl.schema_version.checksum</code>.
+     * Setter for <code>frickl.schema_version.description</code>.
      */
-    public Integer getChecksum() {
-        return (Integer) get(5);
+    public void setDescription(String value) {
+        set(2, value);
     }
 
     /**
@@ -142,10 +121,10 @@ public class SchemaVersionRecord extends UpdatableRecordImpl<SchemaVersionRecord
     }
 
     /**
-     * Getter for <code>frickl.schema_version.installed_by</code>.
+     * Getter for <code>frickl.schema_version.type</code>.
      */
-    public String getInstalledBy() {
-        return (String) get(6);
+    public String getType() {
+        return (String) get(3);
     }
 
     /**
@@ -156,10 +135,10 @@ public class SchemaVersionRecord extends UpdatableRecordImpl<SchemaVersionRecord
     }
 
     /**
-     * Getter for <code>frickl.schema_version.installed_on</code>.
+     * Getter for <code>frickl.schema_version.script</code>.
      */
-    public Timestamp getInstalledOn() {
-        return (Timestamp) get(7);
+    public String getScript() {
+        return (String) get(4);
     }
 
     /**
@@ -170,6 +149,20 @@ public class SchemaVersionRecord extends UpdatableRecordImpl<SchemaVersionRecord
     }
 
     /**
+     * Getter for <code>frickl.schema_version.checksum</code>.
+     */
+    public Integer getChecksum() {
+        return (Integer) get(5);
+    }
+
+    /**
+     * Getter for <code>frickl.schema_version.installed_by</code>.
+     */
+    public String getInstalledBy() {
+        return (String) get(6);
+    }
+
+    /**
      * Getter for <code>frickl.schema_version.execution_time</code>.
      */
     public Integer getExecutionTime() {
@@ -177,15 +170,11 @@ public class SchemaVersionRecord extends UpdatableRecordImpl<SchemaVersionRecord
     }
 
     /**
-     * Setter for <code>frickl.schema_version.execution_time</code>.
+     * Getter for <code>frickl.schema_version.installed_on</code>.
      */
-    public void setExecutionTime(Integer value) {
-        set(8, value);
+    public Timestamp getInstalledOn() {
+        return (Timestamp) get(7);
     }
-
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>frickl.schema_version.success</code>.
@@ -195,15 +184,8 @@ public class SchemaVersionRecord extends UpdatableRecordImpl<SchemaVersionRecord
     }
 
     // -------------------------------------------------------------------------
-    // Record10 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>frickl.schema_version.success</code>.
-     */
-    public void setSuccess(Byte value) {
-        set(9, value);
-    }
 
     /**
      * {@inheritDoc}
@@ -212,6 +194,10 @@ public class SchemaVersionRecord extends UpdatableRecordImpl<SchemaVersionRecord
     public Record1<Integer> key() {
         return (Record1) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record10 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -550,10 +536,6 @@ public class SchemaVersionRecord extends UpdatableRecordImpl<SchemaVersionRecord
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -579,5 +561,23 @@ public class SchemaVersionRecord extends UpdatableRecordImpl<SchemaVersionRecord
         value9(value9);
         value10(value10);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Setter for <code>frickl.schema_version.execution_time</code>.
+     */
+    public void setExecutionTime(Integer value) {
+        set(8, value);
+    }
+
+    /**
+     * Setter for <code>frickl.schema_version.success</code>.
+     */
+    public void setSuccess(Byte value) {
+        set(9, value);
     }
 }

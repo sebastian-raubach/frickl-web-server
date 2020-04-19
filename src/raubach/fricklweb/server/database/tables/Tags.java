@@ -43,23 +43,36 @@ import raubach.fricklweb.server.database.tables.records.TagsRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tags extends TableImpl<TagsRecord> {
 
+    private static final long serialVersionUID = -144341892;
+
     /**
      * The reference instance of <code>frickl.tags</code>
      */
     public static final Tags TAGS = new Tags();
-    private static final long serialVersionUID = -144341892;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<TagsRecord> getRecordType() {
+        return TagsRecord.class;
+    }
+
     /**
      * The column <code>frickl.tags.id</code>. Auto incremented id of this table.
      */
     public final TableField<TagsRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "Auto incremented id of this table.");
+
     /**
      * The column <code>frickl.tags.name</code>. The name of this tag.
      */
     public final TableField<TagsRecord, String> NAME = createField("name", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "The name of this tag.");
+
     /**
      * The column <code>frickl.tags.created_on</code>. When this record has been created.
      */
     public final TableField<TagsRecord, Timestamp> CREATED_ON = createField("created_on", org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "When this record has been created.");
+
     /**
      * The column <code>frickl.tags.updated_on</code>. When this record has last been updated.
      */
@@ -96,14 +109,6 @@ public class Tags extends TableImpl<TagsRecord> {
 
     public <O extends Record> Tags(Table<O> child, ForeignKey<O, TagsRecord> key) {
         super(child, key, TAGS);
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<TagsRecord> getRecordType() {
-        return TagsRecord.class;
     }
 
     /**

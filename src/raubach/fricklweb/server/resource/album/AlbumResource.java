@@ -11,7 +11,7 @@ import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.database.tables.pojos.AlbumStats;
 import raubach.fricklweb.server.database.tables.pojos.Albums;
-import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.resource.AccessTokenResource;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.sql.Connection;
@@ -19,14 +19,16 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
+import static raubach.fricklweb.server.database.tables.AccessTokens.ACCESS_TOKENS;
 import static raubach.fricklweb.server.database.tables.AlbumStats.ALBUM_STATS;
+import static raubach.fricklweb.server.database.tables.AlbumTokens.ALBUM_TOKENS;
 import static raubach.fricklweb.server.database.tables.Albums.ALBUMS;
 import static raubach.fricklweb.server.database.tables.Images.IMAGES;
 
 /**
  * @author Sebastian Raubach
  */
-public class AlbumResource extends PaginatedServerResource
+public class AlbumResource extends AccessTokenResource
 {
 	public static final String PARAM_PARENT_ALBUM_ID = "parentAlbumId";
 
@@ -110,17 +112,25 @@ public class AlbumResource extends PaginatedServerResource
 			else
 			{
 				if (!auth || !StringUtils.isEmpty(user.getToken()))
-				{
 					step.where(ALBUM_STATS.PARENT_ALBUM_ID.isNull());
-				}
 			}
 
 			// Restrict to only albums containing at least one public image
-			if (auth && StringUtils.isEmpty(user.getToken()))
+			if (!StringUtils.isEmpty(accessToken))
+			{
+				step.where(DSL.exists(DSL.selectOne()
+						.from(ALBUM_TOKENS)
+						.leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
+						.where(ACCESS_TOKENS.TOKEN.eq(accessToken)
+								.and(ALBUM_TOKENS.ALBUM_ID.eq(ALBUM_STATS.ID)))));
+			}
+			else if (StringUtils.isEmpty(user.getToken()))
+			{
 				step.where(DSL.exists(DSL.selectOne()
 						.from(IMAGES)
 						.where(IMAGES.ALBUM_ID.eq(ALBUM_STATS.ID)
 								.and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
+			}
 
 			return step.orderBy(ALBUM_STATS.CREATED_ON.desc(), ALBUM_STATS.NAME.desc())
 					.limit(pageSize)

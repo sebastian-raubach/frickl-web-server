@@ -44,43 +44,61 @@ import raubach.fricklweb.server.database.tables.records.ImagesRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Images extends TableImpl<ImagesRecord> {
 
+    private static final long serialVersionUID = 720779035;
+
     /**
      * The reference instance of <code>frickl.images</code>
      */
     public static final Images IMAGES = new Images();
-    private static final long serialVersionUID = 720779035;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<ImagesRecord> getRecordType() {
+        return ImagesRecord.class;
+    }
+
     /**
      * The column <code>frickl.images.id</code>. Auto incremented id of this table.
      */
     public final TableField<ImagesRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "Auto incremented id of this table.");
+
     /**
      * The column <code>frickl.images.path</code>. The path to the image relative to the base path of the setup.
      */
     public final TableField<ImagesRecord, String> PATH = createField("path", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "The path to the image relative to the base path of the setup.");
+
     /**
      * The column <code>frickl.images.name</code>. The name of the image. This will be the filename.
      */
     public final TableField<ImagesRecord, String> NAME = createField("name", org.jooq.impl.SQLDataType.CLOB.nullable(false), this, "The name of the image. This will be the filename.");
+
     /**
      * The column <code>frickl.images.is_favorite</code>. Boolean deciding if this image is one of the favorites.
      */
     public final TableField<ImagesRecord, Byte> IS_FAVORITE = createField("is_favorite", org.jooq.impl.SQLDataType.TINYINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.TINYINT)), this, "Boolean deciding if this image is one of the favorites.");
+
     /**
      * The column <code>frickl.images.exif</code>. Optional Exif information in JSON format.
      */
     public final TableField<ImagesRecord, Exif> EXIF = createField("exif", org.jooq.impl.DefaultDataType.getDefaultDataType("\"frickl\".\"images_exif\""), this, "Optional Exif information in JSON format.", new JsonExifBinding());
+
     /**
      * The column <code>frickl.images.album_id</code>. The album this image belongs to. This will be the containing folder.
      */
     public final TableField<ImagesRecord, Integer> ALBUM_ID = createField("album_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "The album this image belongs to. This will be the containing folder.");
+
     /**
      * The column <code>frickl.images.is_public</code>.
      */
     public final TableField<ImagesRecord, Byte> IS_PUBLIC = createField("is_public", org.jooq.impl.SQLDataType.TINYINT.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.TINYINT)), this, "");
+
     /**
      * The column <code>frickl.images.created_on</code>. When this record has been created.
      */
     public final TableField<ImagesRecord, Timestamp> CREATED_ON = createField("created_on", org.jooq.impl.SQLDataType.TIMESTAMP, this, "When this record has been created.");
+
     /**
      * The column <code>frickl.images.updated_on</code>. When this record has last been updated.
      */
@@ -117,14 +135,6 @@ public class Images extends TableImpl<ImagesRecord> {
 
     public <O extends Record> Images(Table<O> child, ForeignKey<O, ImagesRecord> key) {
         super(child, key, IMAGES);
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<ImagesRecord> getRecordType() {
-        return ImagesRecord.class;
     }
 
     /**

@@ -18,7 +18,7 @@ import raubach.fricklweb.server.database.tables.pojos.Images;
 import raubach.fricklweb.server.database.tables.pojos.Tags;
 import raubach.fricklweb.server.database.tables.records.ImageTagsRecord;
 import raubach.fricklweb.server.database.tables.records.TagsRecord;
-import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.resource.AccessTokenResource;
 import raubach.fricklweb.server.util.TagUtils;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static raubach.fricklweb.server.database.tables.AccessTokens.ACCESS_TOKENS;
+import static raubach.fricklweb.server.database.tables.AlbumTokens.ALBUM_TOKENS;
 import static raubach.fricklweb.server.database.tables.Albums.ALBUMS;
 import static raubach.fricklweb.server.database.tables.ImageTags.IMAGE_TAGS;
 import static raubach.fricklweb.server.database.tables.Images.IMAGES;
@@ -40,7 +42,7 @@ import static raubach.fricklweb.server.database.tables.Tags.TAGS;
 /**
  * @author Sebastian Raubach
  */
-public class AlbumTagResource extends PaginatedServerResource
+public class AlbumTagResource extends AccessTokenResource
 {
 	private Integer albumId = null;
 
@@ -229,8 +231,18 @@ public class AlbumTagResource extends PaginatedServerResource
 						.where(ALBUMS.ID.eq(albumId));
 
 				// Restrict to only albums containing at least one public image
-				if (auth && StringUtils.isEmpty(user.getToken()))
+				if (!StringUtils.isEmpty(accessToken))
+				{
+					step.and(DSL.exists(DSL.selectOne()
+							.from(ALBUM_TOKENS)
+							.leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
+							.where(ACCESS_TOKENS.TOKEN.eq(accessToken)
+									.and(ALBUM_TOKENS.ALBUM_ID.eq(ALBUMS.ID)))));
+				}
+				else if (StringUtils.isEmpty(user.getToken()))
+				{
 					step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+				}
 
 				return step.orderBy(TAGS.NAME)
 						.offset(pageSize * currentPage)

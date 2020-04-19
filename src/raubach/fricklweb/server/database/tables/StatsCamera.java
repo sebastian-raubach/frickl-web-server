@@ -33,15 +33,26 @@ import raubach.fricklweb.server.database.tables.records.StatsCameraRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class StatsCamera extends TableImpl<StatsCameraRecord> {
 
+    private static final long serialVersionUID = 1851580117;
+
     /**
      * The reference instance of <code>frickl.stats_camera</code>
      */
     public static final StatsCamera STATS_CAMERA = new StatsCamera();
-    private static final long serialVersionUID = 1851580117;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<StatsCameraRecord> getRecordType() {
+        return StatsCameraRecord.class;
+    }
+
     /**
      * The column <code>frickl.stats_camera.camera</code>.
      */
     public final TableField<StatsCameraRecord, String> CAMERA = createField("camera", org.jooq.impl.SQLDataType.CLOB, this, "");
+
     /**
      * The column <code>frickl.stats_camera.count</code>.
      */
@@ -78,14 +89,6 @@ public class StatsCamera extends TableImpl<StatsCameraRecord> {
 
     public <O extends Record> StatsCamera(Table<O> child, ForeignKey<O, StatsCameraRecord> key) {
         super(child, key, STATS_CAMERA);
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<StatsCameraRecord> getRecordType() {
-        return StatsCameraRecord.class;
     }
 
     /**

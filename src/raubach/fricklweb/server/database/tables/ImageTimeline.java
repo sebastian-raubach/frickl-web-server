@@ -34,19 +34,31 @@ import raubach.fricklweb.server.database.tables.records.ImageTimelineRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ImageTimeline extends TableImpl<ImageTimelineRecord> {
 
+    private static final long serialVersionUID = -291521238;
+
     /**
      * The reference instance of <code>frickl.image_timeline</code>
      */
     public static final ImageTimeline IMAGE_TIMELINE = new ImageTimeline();
-    private static final long serialVersionUID = -291521238;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<ImageTimelineRecord> getRecordType() {
+        return ImageTimelineRecord.class;
+    }
+
     /**
      * The column <code>frickl.image_timeline.year</code>.
      */
     public final TableField<ImageTimelineRecord, UInteger> YEAR = createField("year", org.jooq.impl.SQLDataType.INTEGERUNSIGNED, this, "");
+
     /**
      * The column <code>frickl.image_timeline.month</code>.
      */
     public final TableField<ImageTimelineRecord, Integer> MONTH = createField("month", org.jooq.impl.SQLDataType.INTEGER, this, "");
+
     /**
      * @deprecated Unknown data type. Please define an explicit {@link org.jooq.Binding} to specify how this type should be handled. Deprecation can be turned off using {@literal <deprecationOnUnknownTypes/>} in your code generator configuration.
      */
@@ -84,14 +96,6 @@ public class ImageTimeline extends TableImpl<ImageTimelineRecord> {
 
     public <O extends Record> ImageTimeline(Table<O> child, ForeignKey<O, ImageTimelineRecord> key) {
         super(child, key, IMAGE_TIMELINE);
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<ImageTimelineRecord> getRecordType() {
-        return ImageTimelineRecord.class;
     }
 
     /**

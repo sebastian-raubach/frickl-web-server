@@ -18,7 +18,7 @@ import raubach.fricklweb.server.Frickl;
 import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.database.tables.pojos.Albums;
 import raubach.fricklweb.server.database.tables.pojos.Images;
-import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.resource.AccessTokenResource;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import javax.servlet.ServletContext;
@@ -34,13 +34,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static raubach.fricklweb.server.database.tables.AccessTokens.ACCESS_TOKENS;
+import static raubach.fricklweb.server.database.tables.AlbumTokens.ALBUM_TOKENS;
 import static raubach.fricklweb.server.database.tables.Albums.ALBUMS;
 import static raubach.fricklweb.server.database.tables.Images.IMAGES;
 
 /**
  * @author Sebastian Raubach
  */
-public class AlbumDownloadResource extends PaginatedServerResource
+public class AlbumDownloadResource extends AccessTokenResource
 {
 	private Integer albumId = null;
 
@@ -79,8 +81,22 @@ public class AlbumDownloadResource extends PaginatedServerResource
 				SelectConditionStep<Record> step = select.from(IMAGES)
 						.where(IMAGES.ALBUM_ID.eq(albumId));
 
-				if (auth && StringUtils.isEmpty(user.getToken()))
-					step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+				// Restrict to only albums containing at least one public image
+				if (!StringUtils.isEmpty(accessToken))
+				{
+					step.and(DSL.exists(DSL.selectOne()
+							.from(ALBUM_TOKENS)
+							.leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
+							.where(ACCESS_TOKENS.TOKEN.eq(accessToken)
+									.and(ALBUM_TOKENS.ALBUM_ID.eq(IMAGES.ALBUM_ID)))));
+				}
+				else if (StringUtils.isEmpty(user.getToken()))
+				{
+					step.and(DSL.exists(DSL.selectOne()
+							.from(IMAGES)
+							.where(IMAGES.ALBUM_ID.eq(ALBUMS.ID)
+									.and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
+				}
 
 				List<Images> images = step.fetchInto(Images.class);
 

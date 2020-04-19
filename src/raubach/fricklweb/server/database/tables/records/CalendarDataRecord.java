@@ -32,10 +32,24 @@ public class CalendarDataRecord extends TableRecordImpl<CalendarDataRecord> impl
     private static final long serialVersionUID = 15845332;
 
     /**
+     * Setter for <code>frickl.calendar_data.date</code>.
+     */
+    public void setDate(Date value) {
+        set(0, value);
+    }
+
+    /**
      * Create a detached CalendarDataRecord
      */
     public CalendarDataRecord() {
         super(CalendarData.CALENDAR_DATA);
+    }
+
+    /**
+     * Setter for <code>frickl.calendar_data.count</code>.
+     */
+    public void setCount(Long value) {
+        set(1, value);
     }
 
     /**
@@ -48,37 +62,9 @@ public class CalendarDataRecord extends TableRecordImpl<CalendarDataRecord> impl
         set(1, count);
     }
 
-    /**
-     * Getter for <code>frickl.calendar_data.date</code>.
-     */
-    public Date getDate() {
-        return (Date) get(0);
-    }
-
-    /**
-     * Setter for <code>frickl.calendar_data.date</code>.
-     */
-    public void setDate(Date value) {
-        set(0, value);
-    }
-
     // -------------------------------------------------------------------------
     // Record2 type implementation
     // -------------------------------------------------------------------------
-
-    /**
-     * Getter for <code>frickl.calendar_data.count</code>.
-     */
-    public Long getCount() {
-        return (Long) get(1);
-    }
-
-    /**
-     * Setter for <code>frickl.calendar_data.count</code>.
-     */
-    public void setCount(Long value) {
-        set(1, value);
-    }
 
     /**
      * {@inheritDoc}
@@ -153,10 +139,6 @@ public class CalendarDataRecord extends TableRecordImpl<CalendarDataRecord> impl
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -174,5 +156,23 @@ public class CalendarDataRecord extends TableRecordImpl<CalendarDataRecord> impl
         value1(value1);
         value2(value2);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Getter for <code>frickl.calendar_data.date</code>.
+     */
+    public Date getDate() {
+        return (Date) get(0);
+    }
+
+    /**
+     * Getter for <code>frickl.calendar_data.count</code>.
+     */
+    public Long getCount() {
+        return (Long) get(1);
     }
 }

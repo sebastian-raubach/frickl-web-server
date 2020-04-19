@@ -38,6 +38,20 @@ public class ImageTimelineRecord extends TableRecordImpl<ImageTimelineRecord> im
     }
 
     /**
+     * Getter for <code>frickl.image_timeline.year</code>.
+     */
+    public UInteger getYear() {
+        return (UInteger) get(0);
+    }
+
+    /**
+     * Setter for <code>frickl.image_timeline.month</code>.
+     */
+    public void setMonth(Integer value) {
+        set(1, value);
+    }
+
+    /**
      * Create a detached, initialised ImageTimelineRecord
      */
     public ImageTimelineRecord(UInteger year, Integer month, Object ids) {
@@ -49,10 +63,11 @@ public class ImageTimelineRecord extends TableRecordImpl<ImageTimelineRecord> im
     }
 
     /**
-     * Getter for <code>frickl.image_timeline.year</code>.
+     * @deprecated Unknown data type. Please define an explicit {@link org.jooq.Binding} to specify how this type should be handled. Deprecation can be turned off using {@literal <deprecationOnUnknownTypes/>} in your code generator configuration.
      */
-    public UInteger getYear() {
-        return (UInteger) get(0);
+    @java.lang.Deprecated
+    public void setIds(Object value) {
+        set(2, value);
     }
 
     /**
@@ -62,39 +77,9 @@ public class ImageTimelineRecord extends TableRecordImpl<ImageTimelineRecord> im
         set(0, value);
     }
 
-    /**
-     * Getter for <code>frickl.image_timeline.month</code>.
-     */
-    public Integer getMonth() {
-        return (Integer) get(1);
-    }
-
-    /**
-     * Setter for <code>frickl.image_timeline.month</code>.
-     */
-    public void setMonth(Integer value) {
-        set(1, value);
-    }
-
     // -------------------------------------------------------------------------
     // Record3 type implementation
     // -------------------------------------------------------------------------
-
-    /**
-     * @deprecated Unknown data type. Please define an explicit {@link org.jooq.Binding} to specify how this type should be handled. Deprecation can be turned off using {@literal <deprecationOnUnknownTypes/>} in your code generator configuration.
-     */
-    @java.lang.Deprecated
-    public Object getIds() {
-        return get(2);
-    }
-
-    /**
-     * @deprecated Unknown data type. Please define an explicit {@link org.jooq.Binding} to specify how this type should be handled. Deprecation can be turned off using {@literal <deprecationOnUnknownTypes/>} in your code generator configuration.
-     */
-    @java.lang.Deprecated
-    public void setIds(Object value) {
-        set(2, value);
-    }
 
     /**
      * {@inheritDoc}
@@ -205,10 +190,6 @@ public class ImageTimelineRecord extends TableRecordImpl<ImageTimelineRecord> im
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * @deprecated Unknown data type. Please define an explicit {@link org.jooq.Binding} to specify how this type should be handled. Deprecation can be turned off using {@literal <deprecationOnUnknownTypes/>} in your code generator configuration.
      */
@@ -228,5 +209,24 @@ public class ImageTimelineRecord extends TableRecordImpl<ImageTimelineRecord> im
         value2(value2);
         value3(value3);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Getter for <code>frickl.image_timeline.month</code>.
+     */
+    public Integer getMonth() {
+        return (Integer) get(1);
+    }
+
+    /**
+     * @deprecated Unknown data type. Please define an explicit {@link org.jooq.Binding} to specify how this type should be handled. Deprecation can be turned off using {@literal <deprecationOnUnknownTypes/>} in your code generator configuration.
+     */
+    @java.lang.Deprecated
+    public Object getIds() {
+        return get(2);
     }
 }

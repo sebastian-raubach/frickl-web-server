@@ -14,7 +14,9 @@ import org.jooq.Catalog;
 import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
 
+import raubach.fricklweb.server.database.tables.AccessTokens;
 import raubach.fricklweb.server.database.tables.AlbumStats;
+import raubach.fricklweb.server.database.tables.AlbumTokens;
 import raubach.fricklweb.server.database.tables.Albums;
 import raubach.fricklweb.server.database.tables.CalendarData;
 import raubach.fricklweb.server.database.tables.ImageTags;
@@ -39,15 +41,27 @@ import raubach.fricklweb.server.database.tables.Tags;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Frickl extends SchemaImpl {
 
+    private static final long serialVersionUID = -438785342;
+
     /**
      * The reference instance of <code>frickl</code>
      */
     public static final Frickl FRICKL = new Frickl();
-    private static final long serialVersionUID = 1143223609;
+
+    /**
+     * This table contains all tags that can be used to access folders that aren't public.
+     */
+    public final AccessTokens ACCESS_TOKENS = raubach.fricklweb.server.database.tables.AccessTokens.ACCESS_TOKENS;
+
     /**
      * VIEW
      */
     public final AlbumStats ALBUM_STATS = raubach.fricklweb.server.database.tables.AlbumStats.ALBUM_STATS;
+
+    /**
+     * This table contains the mapping between access tokens and albums.
+     */
+    public final AlbumTokens ALBUM_TOKENS = raubach.fricklweb.server.database.tables.AlbumTokens.ALBUM_TOKENS;
 
     /**
      * This table contains all albums in Frickl. Albums correspond to image folders on the file system.
@@ -119,7 +133,9 @@ public class Frickl extends SchemaImpl {
 
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
+            AccessTokens.ACCESS_TOKENS,
             AlbumStats.ALBUM_STATS,
+            AlbumTokens.ALBUM_TOKENS,
             Albums.ALBUMS,
             CalendarData.CALENDAR_DATA,
             ImageTags.IMAGE_TAGS,

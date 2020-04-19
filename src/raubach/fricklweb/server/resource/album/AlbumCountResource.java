@@ -11,19 +11,21 @@ import org.restlet.resource.Get;
 import org.restlet.resource.ResourceException;
 import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.auth.CustomVerifier;
-import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.resource.AccessTokenResource;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static raubach.fricklweb.server.database.tables.AccessTokens.ACCESS_TOKENS;
+import static raubach.fricklweb.server.database.tables.AlbumTokens.ALBUM_TOKENS;
 import static raubach.fricklweb.server.database.tables.Albums.ALBUMS;
 import static raubach.fricklweb.server.database.tables.Images.IMAGES;
 
 /**
  * @author Sebastian Raubach
  */
-public class AlbumCountResource extends PaginatedServerResource
+public class AlbumCountResource extends AccessTokenResource
 {
 	public static final String PARAM_PARENT_ALBUM_ID = "parentAlbumId";
 
@@ -82,11 +84,21 @@ public class AlbumCountResource extends PaginatedServerResource
 			}
 
 			// Restrict to only albums containing at least one public image
-			if (auth && StringUtils.isEmpty(user.getToken()))
+			if (!StringUtils.isEmpty(accessToken))
+			{
+				step.where(DSL.exists(DSL.selectOne()
+						.from(ALBUM_TOKENS)
+						.leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
+						.where(ACCESS_TOKENS.TOKEN.eq(accessToken)
+								.and(ALBUM_TOKENS.ALBUM_ID.eq(ALBUMS.ID)))));
+			}
+			else if (StringUtils.isEmpty(user.getToken()))
+			{
 				step.where(DSL.exists(DSL.selectOne()
 						.from(IMAGES)
 						.where(IMAGES.ALBUM_ID.eq(ALBUMS.ID)
 								.and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
+			}
 
 			return step.fetchAny(0, int.class);
 		}

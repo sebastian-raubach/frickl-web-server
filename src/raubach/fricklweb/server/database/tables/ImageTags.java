@@ -41,15 +41,26 @@ import raubach.fricklweb.server.database.tables.records.ImageTagsRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ImageTags extends TableImpl<ImageTagsRecord> {
 
+    private static final long serialVersionUID = -1752508118;
+
     /**
      * The reference instance of <code>frickl.image_tags</code>
      */
     public static final ImageTags IMAGE_TAGS = new ImageTags();
-    private static final long serialVersionUID = -1752508118;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<ImageTagsRecord> getRecordType() {
+        return ImageTagsRecord.class;
+    }
+
     /**
      * The column <code>frickl.image_tags.image_id</code>. The foreign key id of the referenced image.
      */
     public final TableField<ImageTagsRecord, Integer> IMAGE_ID = createField("image_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "The foreign key id of the referenced image.");
+
     /**
      * The column <code>frickl.image_tags.tag_id</code>. The foreign key id of the referenced tag.
      */
@@ -86,14 +97,6 @@ public class ImageTags extends TableImpl<ImageTagsRecord> {
 
     public <O extends Record> ImageTags(Table<O> child, ForeignKey<O, ImageTagsRecord> key) {
         super(child, key, IMAGE_TAGS);
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<ImageTagsRecord> getRecordType() {
-        return ImageTagsRecord.class;
     }
 
     /**

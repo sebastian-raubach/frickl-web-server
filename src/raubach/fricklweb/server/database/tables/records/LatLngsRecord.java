@@ -32,10 +32,24 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
     private static final long serialVersionUID = 1515248477;
 
     /**
+     * Setter for <code>frickl.lat_lngs.id</code>. Auto incremented id of this table.
+     */
+    public void setId(Integer value) {
+        set(0, value);
+    }
+
+    /**
      * Create a detached LatLngsRecord
      */
     public LatLngsRecord() {
         super(LatLngs.LAT_LNGS);
+    }
+
+    /**
+     * Setter for <code>frickl.lat_lngs.path</code>. The path to the image relative to the base path of the setup.
+     */
+    public void setPath(String value) {
+        set(1, value);
     }
 
     /**
@@ -53,41 +67,6 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
     }
 
     /**
-     * Getter for <code>frickl.lat_lngs.id</code>. Auto incremented id of this table.
-     */
-    public Integer getId() {
-        return (Integer) get(0);
-    }
-
-    /**
-     * Setter for <code>frickl.lat_lngs.id</code>. Auto incremented id of this table.
-     */
-    public void setId(Integer value) {
-        set(0, value);
-    }
-
-    /**
-     * Getter for <code>frickl.lat_lngs.path</code>. The path to the image relative to the base path of the setup.
-     */
-    public String getPath() {
-        return (String) get(1);
-    }
-
-    /**
-     * Setter for <code>frickl.lat_lngs.path</code>. The path to the image relative to the base path of the setup.
-     */
-    public void setPath(String value) {
-        set(1, value);
-    }
-
-    /**
-     * Getter for <code>frickl.lat_lngs.album_id</code>. The album this image belongs to. This will be the containing folder.
-     */
-    public Integer getAlbumId() {
-        return (Integer) get(2);
-    }
-
-    /**
      * Setter for <code>frickl.lat_lngs.album_id</code>. The album this image belongs to. This will be the containing folder.
      */
     public void setAlbumId(Integer value) {
@@ -95,10 +74,10 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
     }
 
     /**
-     * Getter for <code>frickl.lat_lngs.is_public</code>.
+     * Getter for <code>frickl.lat_lngs.id</code>. Auto incremented id of this table.
      */
-    public Byte getIsPublic() {
-        return (Byte) get(3);
+    public Integer getId() {
+        return (Integer) get(0);
     }
 
     /**
@@ -109,10 +88,10 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
     }
 
     /**
-     * Getter for <code>frickl.lat_lngs.latitude</code>.
+     * Getter for <code>frickl.lat_lngs.path</code>. The path to the image relative to the base path of the setup.
      */
-    public BigDecimal getLatitude() {
-        return (BigDecimal) get(4);
+    public String getPath() {
+        return (String) get(1);
     }
 
     /**
@@ -122,15 +101,11 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
         set(4, value);
     }
 
-    // -------------------------------------------------------------------------
-    // Record6 type implementation
-    // -------------------------------------------------------------------------
-
     /**
-     * Getter for <code>frickl.lat_lngs.longitude</code>.
+     * Getter for <code>frickl.lat_lngs.album_id</code>. The album this image belongs to. This will be the containing folder.
      */
-    public BigDecimal getLongitude() {
-        return (BigDecimal) get(5);
+    public Integer getAlbumId() {
+        return (Integer) get(2);
     }
 
     /**
@@ -139,6 +114,17 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
     public void setLongitude(BigDecimal value) {
         set(5, value);
     }
+
+    /**
+     * Getter for <code>frickl.lat_lngs.is_public</code>.
+     */
+    public Byte getIsPublic() {
+        return (Byte) get(3);
+    }
+
+    // -------------------------------------------------------------------------
+    // Record6 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -345,10 +331,6 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -370,5 +352,23 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
         value5(value5);
         value6(value6);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Getter for <code>frickl.lat_lngs.latitude</code>.
+     */
+    public BigDecimal getLatitude() {
+        return (BigDecimal) get(4);
+    }
+
+    /**
+     * Getter for <code>frickl.lat_lngs.longitude</code>.
+     */
+    public BigDecimal getLongitude() {
+        return (BigDecimal) get(5);
     }
 }

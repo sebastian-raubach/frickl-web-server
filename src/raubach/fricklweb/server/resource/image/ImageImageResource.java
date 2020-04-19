@@ -4,7 +4,9 @@ import org.jooq.Record;
 import org.jooq.SQLDialect;
 import org.jooq.SelectConditionStep;
 import org.jooq.SelectSelectStep;
+import org.jooq.conf.ParamType;
 import org.jooq.impl.DSL;
+import org.jooq.tools.StringUtils;
 import org.restlet.data.Disposition;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
@@ -16,7 +18,7 @@ import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.Frickl;
 import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.database.tables.pojos.Images;
-import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.resource.AccessTokenResource;
 import raubach.fricklweb.server.util.ThumbnailUtils;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
@@ -27,12 +29,14 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static raubach.fricklweb.server.database.tables.AccessTokens.ACCESS_TOKENS;
+import static raubach.fricklweb.server.database.tables.AlbumTokens.ALBUM_TOKENS;
 import static raubach.fricklweb.server.database.tables.Images.IMAGES;
 
 /**
  * @author Sebastian Raubach
  */
-public class ImageImageResource extends PaginatedServerResource
+public class ImageImageResource extends AccessTokenResource
 {
 	public static final String PARAM_SIZE = "size";
 	public static final String PARAM_TOKEN = "token";
@@ -80,8 +84,21 @@ public class ImageImageResource extends PaginatedServerResource
 				SelectConditionStep<Record> step = select.from(IMAGES)
 						.where(IMAGES.ID.eq(imageId));
 
-				if (auth && !CustomVerifier.isValidImageToken(token))
-					step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+				if (auth)
+				{
+					if (!StringUtils.isEmpty(accessToken))
+					{
+						step.and(DSL.exists(DSL.selectOne()
+								.from(ALBUM_TOKENS)
+								.leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
+								.where(ACCESS_TOKENS.TOKEN.eq(accessToken)
+										.and(ALBUM_TOKENS.ALBUM_ID.eq(IMAGES.ALBUM_ID)))));
+					}
+					else if (!CustomVerifier.isValidImageToken(token))
+					{
+						step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+					}
+				}
 
 				Images image = step.fetchAnyInto(Images.class);
 
@@ -123,6 +140,7 @@ public class ImageImageResource extends PaginatedServerResource
 					else
 					{
 						Logger.getLogger("").log(Level.WARNING, "File not found: " + file.getAbsolutePath());
+						throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
 					}
 				}
 			}

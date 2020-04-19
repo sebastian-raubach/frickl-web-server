@@ -3,6 +3,7 @@ package raubach.fricklweb.server.resource.image;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.SelectConditionStep;
+import org.jooq.conf.ParamType;
 import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
 import org.restlet.data.Status;
@@ -16,6 +17,7 @@ import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.database.tables.pojos.Images;
 import raubach.fricklweb.server.database.tables.pojos.Tags;
 import raubach.fricklweb.server.database.tables.records.TagsRecord;
+import raubach.fricklweb.server.resource.AccessTokenResource;
 import raubach.fricklweb.server.resource.PaginatedServerResource;
 import raubach.fricklweb.server.util.TagUtils;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
@@ -29,7 +31,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import static raubach.fricklweb.server.database.tables.AccessTokens.ACCESS_TOKENS;
+import static raubach.fricklweb.server.database.tables.AlbumTokens.ALBUM_TOKENS;
 import static raubach.fricklweb.server.database.tables.ImageTags.IMAGE_TAGS;
 import static raubach.fricklweb.server.database.tables.Images.IMAGES;
 import static raubach.fricklweb.server.database.tables.Tags.TAGS;
@@ -37,7 +43,7 @@ import static raubach.fricklweb.server.database.tables.Tags.TAGS;
 /**
  * @author Sebastian Raubach
  */
-public class ImageTagResource extends PaginatedServerResource
+public class ImageTagResource extends AccessTokenResource
 {
 	private Integer imageId = null;
 
@@ -215,8 +221,25 @@ public class ImageTagResource extends PaginatedServerResource
 								.leftJoin(IMAGES).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID)))
 						.where(IMAGES.ID.eq(imageId));
 
-				if (auth && StringUtils.isEmpty(user.getToken()))
-					step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+				if (auth)
+				{
+					if (!StringUtils.isEmpty(accessToken))
+					{
+						Logger.getLogger("").log(Level.INFO, "ACCESS TOKEN: " + accessToken);
+
+						step.and(DSL.exists(DSL.selectOne()
+								.from(ALBUM_TOKENS)
+								.leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
+								.where(ACCESS_TOKENS.TOKEN.eq(accessToken)
+										.and(ALBUM_TOKENS.ALBUM_ID.eq(IMAGES.ALBUM_ID)))));
+					}
+					else if (StringUtils.isEmpty(user.getToken()))
+					{
+						step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+					}
+				}
+
+				Logger.getLogger("").log(Level.INFO, step.getSQL(ParamType.INLINED));
 
 				return step.orderBy(TAGS.NAME)
 						.offset(pageSize * currentPage)

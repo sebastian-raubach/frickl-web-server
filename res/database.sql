@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `albums` (
   KEY `parent_album_id` (`parent_album_id`) USING BTREE,
   CONSTRAINT `albums_ibfk_1` FOREIGN KEY (`banner_image_id`) REFERENCES `images` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `albums_ibfk_2` FOREIGN KEY (`parent_album_id`) REFERENCES `albums` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC COMMENT='This table contains all albums in Frickl. Albums correspond to image folders on the file system.';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC COMMENT='This table contain  s all albums in Frickl. Albums correspond to image folders on the file system.';
 
 CREATE TABLE IF NOT EXISTS `tags` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Auto incremented id of this table.',

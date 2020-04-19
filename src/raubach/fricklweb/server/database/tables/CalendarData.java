@@ -35,15 +35,26 @@ import raubach.fricklweb.server.database.tables.records.CalendarDataRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CalendarData extends TableImpl<CalendarDataRecord> {
 
+    private static final long serialVersionUID = 1140774171;
+
     /**
      * The reference instance of <code>frickl.calendar_data</code>
      */
     public static final CalendarData CALENDAR_DATA = new CalendarData();
-    private static final long serialVersionUID = 1140774171;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<CalendarDataRecord> getRecordType() {
+        return CalendarDataRecord.class;
+    }
+
     /**
      * The column <code>frickl.calendar_data.date</code>.
      */
     public final TableField<CalendarDataRecord, Date> DATE = createField("date", org.jooq.impl.SQLDataType.DATE, this, "");
+
     /**
      * The column <code>frickl.calendar_data.count</code>.
      */
@@ -80,14 +91,6 @@ public class CalendarData extends TableImpl<CalendarDataRecord> {
 
     public <O extends Record> CalendarData(Table<O> child, ForeignKey<O, CalendarDataRecord> key) {
         super(child, key, CALENDAR_DATA);
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<CalendarDataRecord> getRecordType() {
-        return CalendarDataRecord.class;
     }
 
     /**
