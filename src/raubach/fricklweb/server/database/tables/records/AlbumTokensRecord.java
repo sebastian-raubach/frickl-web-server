@@ -40,6 +40,13 @@ public class AlbumTokensRecord extends UpdatableRecordImpl<AlbumTokensRecord> im
     }
 
     /**
+     * Getter for <code>frickl.album_tokens.album_id</code>. The album this token belongs to.
+     */
+    public Integer getAlbumId() {
+        return (Integer) get(0);
+    }
+
+    /**
      * Create a detached, initialised AlbumTokensRecord
      */
     public AlbumTokensRecord(Integer albumId, Integer accessTokenId, Timestamp createdOn, Timestamp updatedOn) {
@@ -52,10 +59,17 @@ public class AlbumTokensRecord extends UpdatableRecordImpl<AlbumTokensRecord> im
     }
 
     /**
-     * Getter for <code>frickl.album_tokens.album_id</code>. The album this token belongs to.
+     * Getter for <code>frickl.album_tokens.access_token_id</code>. The access token allowing access to this album.
      */
-    public Integer getAlbumId() {
-        return (Integer) get(0);
+    public Integer getAccessTokenId() {
+        return (Integer) get(1);
+    }
+
+    /**
+     * Setter for <code>frickl.album_tokens.created_on</code>. When this record has been created.
+     */
+    public void setCreatedOn(Timestamp value) {
+        set(2, value);
     }
 
     /**
@@ -66,36 +80,11 @@ public class AlbumTokensRecord extends UpdatableRecordImpl<AlbumTokensRecord> im
     }
 
     /**
-     * Getter for <code>frickl.album_tokens.access_token_id</code>. The access token allowing access to this album.
-     */
-    public Integer getAccessTokenId() {
-        return (Integer) get(1);
-    }
-
-    /**
      * Setter for <code>frickl.album_tokens.access_token_id</code>. The access token allowing access to this album.
      */
     public void setAccessTokenId(Integer value) {
         set(1, value);
     }
-
-    /**
-     * Getter for <code>frickl.album_tokens.created_on</code>. When this record has been created.
-     */
-    public Timestamp getCreatedOn() {
-        return (Timestamp) get(2);
-    }
-
-    /**
-     * Setter for <code>frickl.album_tokens.created_on</code>. When this record has been created.
-     */
-    public void setCreatedOn(Timestamp value) {
-        set(2, value);
-    }
-
-    // -------------------------------------------------------------------------
-    // Primary key information
-    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>frickl.album_tokens.updated_on</code>. When this record has last been updated.
@@ -105,15 +94,8 @@ public class AlbumTokensRecord extends UpdatableRecordImpl<AlbumTokensRecord> im
     }
 
     // -------------------------------------------------------------------------
-    // Record4 type implementation
+    // Primary key information
     // -------------------------------------------------------------------------
-
-    /**
-     * Setter for <code>frickl.album_tokens.updated_on</code>. When this record has last been updated.
-     */
-    public void setUpdatedOn(Timestamp value) {
-        set(3, value);
-    }
 
     /**
      * {@inheritDoc}
@@ -122,6 +104,10 @@ public class AlbumTokensRecord extends UpdatableRecordImpl<AlbumTokensRecord> im
     public Record2<Integer, Integer> key() {
         return (Record2) super.key();
     }
+
+    // -------------------------------------------------------------------------
+    // Record4 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -262,10 +248,6 @@ public class AlbumTokensRecord extends UpdatableRecordImpl<AlbumTokensRecord> im
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -285,5 +267,23 @@ public class AlbumTokensRecord extends UpdatableRecordImpl<AlbumTokensRecord> im
         value3(value3);
         value4(value4);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Getter for <code>frickl.album_tokens.created_on</code>. When this record has been created.
+     */
+    public Timestamp getCreatedOn() {
+        return (Timestamp) get(2);
+    }
+
+    /**
+     * Setter for <code>frickl.album_tokens.updated_on</code>. When this record has last been updated.
+     */
+    public void setUpdatedOn(Timestamp value) {
+        set(3, value);
     }
 }

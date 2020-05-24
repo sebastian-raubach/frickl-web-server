@@ -80,7 +80,7 @@ public class ImageScanner
 		if (folder != null && folder.exists() && folder.isDirectory())
 		{
 			try (Connection conn = Database.getConnection();
-				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
+				 DSLContext context = Database.getContext(conn))
 			{
 				SCANRESULT.setStatus(Status.SCANNING);
 				// Get all existing albums and remember their path to id mapping

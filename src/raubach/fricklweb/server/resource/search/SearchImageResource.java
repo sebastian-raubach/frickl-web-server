@@ -49,7 +49,7 @@ public class SearchImageResource extends PaginatedServerResource
 		{
 			searchTerm = "%" + searchTerm.replace(" ", "%") + "%";
 			try (Connection conn = Database.getConnection();
-				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
+				 DSLContext context = Database.getContext(conn))
 			{
 				SelectOnConditionStep<Record> step = context.select(IMAGES.asterisk()).from(IMAGES)
 						.leftJoin(IMAGE_TAGS).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID))

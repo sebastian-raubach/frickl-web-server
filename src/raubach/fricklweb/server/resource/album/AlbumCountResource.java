@@ -1,9 +1,6 @@
 package raubach.fricklweb.server.resource.album;
 
-import org.jooq.Record1;
-import org.jooq.SQLDialect;
-import org.jooq.SelectJoinStep;
-import org.jooq.SelectSelectStep;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
 import org.restlet.data.Status;
@@ -11,7 +8,7 @@ import org.restlet.resource.Get;
 import org.restlet.resource.ResourceException;
 import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.auth.CustomVerifier;
-import raubach.fricklweb.server.resource.AccessTokenResource;
+import raubach.fricklweb.server.resource.AbstractAccessTokenResource;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.sql.Connection;
@@ -25,7 +22,7 @@ import static raubach.fricklweb.server.database.tables.Images.IMAGES;
 /**
  * @author Sebastian Raubach
  */
-public class AlbumCountResource extends AccessTokenResource
+public class AlbumCountResource extends AbstractAccessTokenResource
 {
 	public static final String PARAM_PARENT_ALBUM_ID = "parentAlbumId";
 
@@ -61,9 +58,9 @@ public class AlbumCountResource extends AccessTokenResource
 		boolean auth = PropertyWatcher.authEnabled();
 
 		try (Connection conn = Database.getConnection();
-			 SelectSelectStep<Record1<Integer>> select = DSL.using(conn, SQLDialect.MYSQL).selectCount())
+			 DSLContext context = Database.getContext(conn))
 		{
-			SelectJoinStep<?> step = select.from(ALBUMS);
+			SelectJoinStep<?> step = context.selectCount().from(ALBUMS);
 
 
 			if (albumId != null)

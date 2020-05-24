@@ -93,34 +93,6 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     /**
-     * Setter for <code>frickl.images.path</code>. The path to the image relative to the base path of the setup.
-     */
-    public void setPath(String value) {
-        set(1, value);
-    }
-
-    /**
-     * Setter for <code>frickl.images.exif</code>. Optional Exif information in JSON format.
-     */
-    public void setExif(Exif value) {
-        set(4, value);
-    }
-
-    /**
-     * Setter for <code>frickl.images.name</code>. The name of the image. This will be the filename.
-     */
-    public void setName(String value) {
-        set(2, value);
-    }
-
-    /**
-     * Setter for <code>frickl.images.album_id</code>. The album this image belongs to. This will be the containing folder.
-     */
-    public void setAlbumId(Integer value) {
-        set(5, value);
-    }
-
-    /**
      * Getter for <code>frickl.images.is_favorite</code>. Boolean deciding if this image is one of the favorites.
      */
     public Byte getIsFavorite() {
@@ -128,10 +100,10 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     /**
-     * Setter for <code>frickl.images.is_public</code>.
+     * Setter for <code>frickl.images.path</code>. The path to the image relative to the base path of the setup.
      */
-    public void setIsPublic(Byte value) {
-        set(6, value);
+    public void setPath(String value) {
+        set(1, value);
     }
 
     /**
@@ -142,10 +114,38 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     /**
+     * Setter for <code>frickl.images.name</code>. The name of the image. This will be the filename.
+     */
+    public void setName(String value) {
+        set(2, value);
+    }
+
+    /**
      * Getter for <code>frickl.images.album_id</code>. The album this image belongs to. This will be the containing folder.
      */
     public Integer getAlbumId() {
         return (Integer) get(5);
+    }
+
+    /**
+     * Setter for <code>frickl.images.exif</code>. Optional Exif information in JSON format.
+     */
+    public void setExif(Exif value) {
+        set(4, value);
+    }
+
+    /**
+     * Setter for <code>frickl.images.album_id</code>. The album this image belongs to. This will be the containing folder.
+     */
+    public void setAlbumId(Integer value) {
+        set(5, value);
+    }
+
+    /**
+     * Getter for <code>frickl.images.is_public</code>.
+     */
+    public Byte getIsPublic() {
+        return (Byte) get(6);
     }
 
     /**
@@ -156,10 +156,10 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     /**
-     * Getter for <code>frickl.images.is_public</code>.
+     * Setter for <code>frickl.images.is_public</code>.
      */
-    public Byte getIsPublic() {
-        return (Byte) get(6);
+    public void setIsPublic(Byte value) {
+        set(6, value);
     }
 
     /**

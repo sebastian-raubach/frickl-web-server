@@ -107,7 +107,7 @@ public class ImageExifReader implements Runnable
 		}
 
 		try (Connection conn = Database.getConnection();
-			 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
+			 DSLContext context = Database.getContext(conn))
 		{
 			context.update(IMAGES)
 					.set(IMAGES.EXIF, exif.exif)

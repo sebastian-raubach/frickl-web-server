@@ -17,8 +17,7 @@ import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.database.tables.pojos.Images;
 import raubach.fricklweb.server.database.tables.pojos.Tags;
 import raubach.fricklweb.server.database.tables.records.TagsRecord;
-import raubach.fricklweb.server.resource.AccessTokenResource;
-import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.resource.AbstractAccessTokenResource;
 import raubach.fricklweb.server.util.TagUtils;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
@@ -43,7 +42,7 @@ import static raubach.fricklweb.server.database.tables.Tags.TAGS;
 /**
  * @author Sebastian Raubach
  */
-public class ImageTagResource extends AccessTokenResource
+public class ImageTagResource extends AbstractAccessTokenResource
 {
 	private Integer imageId = null;
 
@@ -75,7 +74,7 @@ public class ImageTagResource extends AccessTokenResource
 		if (tags != null && tags.length > 0 && imageId != null)
 		{
 			try (Connection conn = Database.getConnection();
-				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
+				 DSLContext context = Database.getContext(conn))
 			{
 				Images image = context.selectFrom(IMAGES)
 						.where(IMAGES.ID.eq(imageId))
@@ -160,7 +159,7 @@ public class ImageTagResource extends AccessTokenResource
 		if (imageId != null && tag != null)
 		{
 			try (Connection conn = Database.getConnection();
-				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
+				 DSLContext context = Database.getContext(conn))
 			{
 				Images image = context.selectFrom(IMAGES)
 						.where(IMAGES.ID.eq(imageId))
@@ -213,7 +212,7 @@ public class ImageTagResource extends AccessTokenResource
 		if (imageId != null)
 		{
 			try (Connection conn = Database.getConnection();
-				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
+				 DSLContext context = Database.getContext(conn))
 			{
 				SelectConditionStep<?> step = context.select(TAGS.ID, TAGS.NAME, TAGS.CREATED_ON, TAGS.UPDATED_ON)
 						.from(TAGS

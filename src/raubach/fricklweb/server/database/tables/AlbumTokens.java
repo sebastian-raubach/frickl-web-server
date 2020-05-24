@@ -41,23 +41,36 @@ import raubach.fricklweb.server.database.tables.records.AlbumTokensRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AlbumTokens extends TableImpl<AlbumTokensRecord> {
 
+    private static final long serialVersionUID = -1313804738;
+
     /**
      * The reference instance of <code>frickl.album_tokens</code>
      */
     public static final AlbumTokens ALBUM_TOKENS = new AlbumTokens();
-    private static final long serialVersionUID = -1313804738;
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<AlbumTokensRecord> getRecordType() {
+        return AlbumTokensRecord.class;
+    }
+
     /**
      * The column <code>frickl.album_tokens.album_id</code>. The album this token belongs to.
      */
     public final TableField<AlbumTokensRecord, Integer> ALBUM_ID = createField("album_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "The album this token belongs to.");
+
     /**
      * The column <code>frickl.album_tokens.access_token_id</code>. The access token allowing access to this album.
      */
     public final TableField<AlbumTokensRecord, Integer> ACCESS_TOKEN_ID = createField("access_token_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "The access token allowing access to this album.");
+
     /**
      * The column <code>frickl.album_tokens.created_on</code>. When this record has been created.
      */
     public final TableField<AlbumTokensRecord, Timestamp> CREATED_ON = createField("created_on", org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "When this record has been created.");
+
     /**
      * The column <code>frickl.album_tokens.updated_on</code>. When this record has last been updated.
      */
@@ -94,14 +107,6 @@ public class AlbumTokens extends TableImpl<AlbumTokensRecord> {
 
     public <O extends Record> AlbumTokens(Table<O> child, ForeignKey<O, AlbumTokensRecord> key) {
         super(child, key, ALBUM_TOKENS);
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<AlbumTokensRecord> getRecordType() {
-        return AlbumTokensRecord.class;
     }
 
     /**

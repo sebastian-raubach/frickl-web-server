@@ -9,8 +9,7 @@ import org.restlet.resource.ResourceException;
 import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.database.tables.pojos.Images;
-import raubach.fricklweb.server.resource.AccessTokenResource;
-import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.resource.AbstractAccessTokenResource;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.sql.Connection;
@@ -23,7 +22,7 @@ import static raubach.fricklweb.server.database.tables.Images.IMAGES;
 /**
  * @author Sebastian Raubach
  */
-public class ImageRandomResource extends AccessTokenResource
+public class ImageRandomResource extends AbstractAccessTokenResource
 {
 	@Get("json")
 	public Images getJson()
@@ -33,10 +32,9 @@ public class ImageRandomResource extends AccessTokenResource
 
 		Images result = null;
 		try (Connection conn = Database.getConnection();
-			 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
+			 DSLContext context = Database.getContext(conn))
 		{
-
-			SelectConditionStep<Record> step = select.from(IMAGES)
+			SelectConditionStep<Record> step = context.select().from(IMAGES)
 					.where(IMAGES.IS_FAVORITE.eq((byte) 1));
 
 			if (auth)
@@ -66,9 +64,9 @@ public class ImageRandomResource extends AccessTokenResource
 		if (result == null)
 		{
 			try (Connection conn = Database.getConnection();
-				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
+				 DSLContext context = Database.getContext(conn))
 			{
-				SelectJoinStep<Record> step = select.from(IMAGES);
+				SelectJoinStep<Record> step = context.select().from(IMAGES);
 
 				if (auth)
 				{

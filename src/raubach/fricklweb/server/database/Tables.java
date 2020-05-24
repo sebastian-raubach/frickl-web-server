@@ -7,6 +7,7 @@ package raubach.fricklweb.server.database;
 import javax.annotation.Generated;
 
 import raubach.fricklweb.server.database.tables.AccessTokens;
+import raubach.fricklweb.server.database.tables.AlbumAccessToken;
 import raubach.fricklweb.server.database.tables.AlbumStats;
 import raubach.fricklweb.server.database.tables.AlbumTokens;
 import raubach.fricklweb.server.database.tables.Albums;
@@ -37,6 +38,11 @@ public class Tables {
      * This table contains all tags that can be used to access folders that aren't public.
      */
     public static final AccessTokens ACCESS_TOKENS = raubach.fricklweb.server.database.tables.AccessTokens.ACCESS_TOKENS;
+
+    /**
+     * VIEW
+     */
+    public static final AlbumAccessToken ALBUM_ACCESS_TOKEN = raubach.fricklweb.server.database.tables.AlbumAccessToken.ALBUM_ACCESS_TOKEN;
 
     /**
      * VIEW

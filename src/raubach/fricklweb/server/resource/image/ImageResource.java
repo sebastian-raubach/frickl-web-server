@@ -10,7 +10,7 @@ import org.restlet.resource.ResourceException;
 import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.database.tables.pojos.Images;
-import raubach.fricklweb.server.resource.AccessTokenResource;
+import raubach.fricklweb.server.resource.AbstractAccessTokenResource;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.sql.Connection;
@@ -27,7 +27,7 @@ import static raubach.fricklweb.server.database.tables.Images.IMAGES;
 /**
  * @author Sebastian Raubach
  */
-public class ImageResource extends AccessTokenResource
+public class ImageResource extends AbstractAccessTokenResource
 {
 	public static final String PARAM_DATE = "date";
 	public static final String PARAM_FAV = "fav";
@@ -99,7 +99,7 @@ public class ImageResource extends AccessTokenResource
 		if (imageId != null && image != null && Objects.equals(image.getId(), imageId))
 		{
 			try (Connection conn = Database.getConnection();
-				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
+				 DSLContext context = Database.getContext(conn))
 			{
 				context.update(IMAGES)
 						.set(IMAGES.IS_FAVORITE, image.getIsFavorite())
@@ -128,9 +128,9 @@ public class ImageResource extends AccessTokenResource
 		if (albumId != null)
 		{
 			try (Connection conn = Database.getConnection();
-				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
+				 DSLContext context = Database.getContext(conn))
 			{
-				SelectConditionStep<Record> step = select.from(IMAGES)
+				SelectConditionStep<Record> step = context.select().from(IMAGES)
 						.where(IMAGES.ALBUM_ID.eq(albumId));
 
 				if (auth)
@@ -163,9 +163,9 @@ public class ImageResource extends AccessTokenResource
 		else if (imageId != null)
 		{
 			try (Connection conn = Database.getConnection();
-				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
+				 DSLContext context = Database.getContext(conn))
 			{
-				SelectConditionStep<Record> step = select.from(IMAGES)
+				SelectConditionStep<Record> step = context.select().from(IMAGES)
 						.where(IMAGES.ID.eq(imageId));
 
 				if (auth)
@@ -193,9 +193,9 @@ public class ImageResource extends AccessTokenResource
 		else
 		{
 			try (Connection conn = Database.getConnection();
-				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
+				 DSLContext context = Database.getContext(conn))
 			{
-				SelectJoinStep<Record> step = select.from(IMAGES);
+				SelectJoinStep<Record> step = context.select().from(IMAGES);
 
 				if (isFav != null && isFav)
 					step.where(IMAGES.IS_FAVORITE.eq((byte) 1));

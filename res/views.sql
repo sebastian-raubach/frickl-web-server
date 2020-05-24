@@ -87,3 +87,18 @@ group by
 order by
     `year` desc,
     `month` desc;
+
+CREATE OR REPLACE
+VIEW `album_access_token` AS SELECT
+    albums.id AS `album_id`,
+    albums.name AS `album_name`,
+    albums.description AS `album_description`,
+    access_tokens.id AS `token_id`,
+    access_tokens.token AS `token_token`,
+    access_tokens.expires_on AS `token_expires_on`
+ FROM
+    access_tokens
+ LEFT JOIN album_tokens ON
+    album_tokens.access_token_id = access_tokens.id
+ LEFT JOIN albums ON
+    albums.id = album_tokens.album_id;

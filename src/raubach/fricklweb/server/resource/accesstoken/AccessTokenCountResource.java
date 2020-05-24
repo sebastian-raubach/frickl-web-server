@@ -1,47 +1,45 @@
-package raubach.fricklweb.server.resource.location;
+package raubach.fricklweb.server.resource.accesstoken;
 
-import org.jooq.*;
-import org.jooq.impl.DSL;
+import org.jooq.DSLContext;
 import org.jooq.tools.StringUtils;
 import org.restlet.data.Status;
 import org.restlet.resource.Get;
 import org.restlet.resource.ResourceException;
 import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.auth.CustomVerifier;
-import raubach.fricklweb.server.database.tables.pojos.LatLngs;
-import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.resource.AbstractAccessTokenResource;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
-import static raubach.fricklweb.server.database.tables.LatLngs.LAT_LNGS;
+import static raubach.fricklweb.server.database.tables.AlbumAccessToken.ALBUM_ACCESS_TOKEN;
 
 /**
  * @author Sebastian Raubach
  */
-public class LocationResource extends PaginatedServerResource
+public class AccessTokenCountResource extends AbstractAccessTokenResource
 {
 	@Get("json")
-	public List<LatLngs> getJson()
+	public int getJson()
 	{
 		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
 		boolean auth = PropertyWatcher.authEnabled();
 
+		if (auth && StringUtils.isEmpty(user.getToken()))
+			throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
+
 		try (Connection conn = Database.getConnection();
 			 DSLContext context = Database.getContext(conn))
 		{
-			SelectJoinStep<Record> step = context.select().from(LAT_LNGS);
-
-			if (auth && StringUtils.isEmpty(user.getToken()))
-				step.where(LAT_LNGS.IS_PUBLIC.eq((byte) 1));
-
-			return step.fetchInto(LatLngs.class);
+			return context.selectCount()
+					.from(ALBUM_ACCESS_TOKEN)
+					.limit(pageSize)
+					.offset(pageSize * currentPage)
+					.fetchAny(0, int.class);
 		}
 		catch (SQLException e)
 		{
-			e.printStackTrace();
 			throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
 		}
 	}

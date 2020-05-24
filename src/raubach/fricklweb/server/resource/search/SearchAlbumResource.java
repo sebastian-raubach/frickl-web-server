@@ -48,7 +48,7 @@ public class SearchAlbumResource extends PaginatedServerResource
 		{
 			searchTerm = "%" + searchTerm.replace(" ", "%") + "%";
 			try (Connection conn = Database.getConnection();
-				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
+				 DSLContext context = Database.getContext(conn))
 			{
 				SelectWhereStep<AlbumsRecord> step = context.selectFrom(ALBUMS);
 

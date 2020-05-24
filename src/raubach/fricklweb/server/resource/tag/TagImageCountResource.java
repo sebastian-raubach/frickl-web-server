@@ -1,9 +1,6 @@
 package raubach.fricklweb.server.resource.tag;
 
-import org.jooq.Record1;
-import org.jooq.SQLDialect;
-import org.jooq.SelectJoinStep;
-import org.jooq.SelectSelectStep;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
 import org.restlet.data.Status;
@@ -11,8 +8,7 @@ import org.restlet.resource.Get;
 import org.restlet.resource.ResourceException;
 import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.auth.CustomVerifier;
-import raubach.fricklweb.server.resource.AccessTokenResource;
-import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.resource.AbstractAccessTokenResource;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.sql.Connection;
@@ -27,7 +23,7 @@ import static raubach.fricklweb.server.database.tables.Tags.TAGS;
 /**
  * @author Sebastian Raubach
  */
-public class TagImageCountResource extends AccessTokenResource
+public class TagImageCountResource extends AbstractAccessTokenResource
 {
 	private Integer tagId = null;
 
@@ -55,9 +51,9 @@ public class TagImageCountResource extends AccessTokenResource
 		if (tagId != null)
 		{
 			try (Connection conn = Database.getConnection();
-				 SelectSelectStep<Record1<Integer>> select = DSL.using(conn, SQLDialect.MYSQL).selectCount())
+				 DSLContext context = Database.getContext(conn))
 			{
-				SelectJoinStep<Record1<Integer>> step = select.from(TAGS
+				SelectJoinStep<Record1<Integer>> step = context.selectCount().from(TAGS
 						.leftJoin(IMAGE_TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))
 						.leftJoin(IMAGES).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID)));
 

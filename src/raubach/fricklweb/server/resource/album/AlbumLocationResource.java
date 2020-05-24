@@ -1,9 +1,6 @@
 package raubach.fricklweb.server.resource.album;
 
-import org.jooq.Record;
-import org.jooq.SQLDialect;
-import org.jooq.SelectJoinStep;
-import org.jooq.SelectSelectStep;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
 import org.restlet.data.Status;
@@ -12,7 +9,7 @@ import org.restlet.resource.ResourceException;
 import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.database.tables.pojos.LatLngs;
-import raubach.fricklweb.server.resource.AccessTokenResource;
+import raubach.fricklweb.server.resource.AbstractAccessTokenResource;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.sql.Connection;
@@ -27,7 +24,7 @@ import static raubach.fricklweb.server.database.tables.LatLngs.LAT_LNGS;
 /**
  * @author Sebastian Raubach
  */
-public class AlbumLocationResource extends AccessTokenResource
+public class AlbumLocationResource extends AbstractAccessTokenResource
 {
 	private Integer albumId = null;
 
@@ -55,9 +52,9 @@ public class AlbumLocationResource extends AccessTokenResource
 		if (albumId != null)
 		{
 			try (Connection conn = Database.getConnection();
-				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
+				 DSLContext context = Database.getContext(conn))
 			{
-				SelectJoinStep<Record> step = select.from(LAT_LNGS);
+				SelectJoinStep<Record> step = context.select().from(LAT_LNGS);
 
 				if (auth)
 				{

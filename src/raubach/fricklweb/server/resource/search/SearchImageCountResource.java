@@ -1,9 +1,6 @@
 package raubach.fricklweb.server.resource.search;
 
-import org.jooq.Record1;
-import org.jooq.SQLDialect;
-import org.jooq.SelectOnConditionStep;
-import org.jooq.SelectSelectStep;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
 import org.restlet.data.Status;
@@ -47,9 +44,9 @@ public class SearchImageCountResource extends PaginatedServerResource
 		{
 			searchTerm = "%" + searchTerm.replace(" ", "%") + "%";
 			try (Connection conn = Database.getConnection();
-				 SelectSelectStep<Record1<Integer>> select = DSL.using(conn, SQLDialect.MYSQL).selectCount())
+				 DSLContext context = Database.getContext(conn))
 			{
-				SelectOnConditionStep<Record1<Integer>> step = select.from(IMAGES)
+				SelectOnConditionStep<Record1<Integer>> step = context.selectCount().from(IMAGES)
 						.leftJoin(IMAGE_TAGS).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID))
 						.leftJoin(TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID));
 

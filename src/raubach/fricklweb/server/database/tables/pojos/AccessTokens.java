@@ -24,10 +24,11 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AccessTokens implements Serializable {
 
-    private static final long serialVersionUID = -1099074745;
+    private static final long serialVersionUID = 1426629822;
 
     private Integer   id;
     private String    token;
+    private Timestamp expiresOn;
     private Timestamp createdOn;
     private Timestamp updatedOn;
 
@@ -36,6 +37,7 @@ public class AccessTokens implements Serializable {
     public AccessTokens(AccessTokens value) {
         this.id = value.id;
         this.token = value.token;
+        this.expiresOn = value.expiresOn;
         this.createdOn = value.createdOn;
         this.updatedOn = value.updatedOn;
     }
@@ -43,11 +45,13 @@ public class AccessTokens implements Serializable {
     public AccessTokens(
         Integer   id,
         String    token,
+        Timestamp expiresOn,
         Timestamp createdOn,
         Timestamp updatedOn
     ) {
         this.id = id;
         this.token = token;
+        this.expiresOn = expiresOn;
         this.createdOn = createdOn;
         this.updatedOn = updatedOn;
     }
@@ -66,6 +70,14 @@ public class AccessTokens implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Timestamp getExpiresOn() {
+        return this.expiresOn;
+    }
+
+    public void setExpiresOn(Timestamp expiresOn) {
+        this.expiresOn = expiresOn;
     }
 
     public Timestamp getCreatedOn() {
@@ -90,6 +102,7 @@ public class AccessTokens implements Serializable {
 
         sb.append(id);
         sb.append(", ").append(token);
+        sb.append(", ").append(expiresOn);
         sb.append(", ").append(createdOn);
         sb.append(", ").append(updatedOn);
 

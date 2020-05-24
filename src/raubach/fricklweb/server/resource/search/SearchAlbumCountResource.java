@@ -1,9 +1,6 @@
 package raubach.fricklweb.server.resource.search;
 
-import org.jooq.Record1;
-import org.jooq.SQLDialect;
-import org.jooq.SelectJoinStep;
-import org.jooq.SelectSelectStep;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
 import org.restlet.data.Status;
@@ -46,9 +43,9 @@ public class SearchAlbumCountResource extends PaginatedServerResource
 		{
 			searchTerm = "%" + searchTerm.replace(" ", "%") + "%";
 			try (Connection conn = Database.getConnection();
-				 SelectSelectStep<Record1<Integer>> select = DSL.using(conn, SQLDialect.MYSQL).selectCount())
+				 DSLContext context = Database.getContext(conn))
 			{
-				SelectJoinStep<Record1<Integer>> step = select.from(ALBUMS);
+				SelectJoinStep<Record1<Integer>> step = context.selectCount().from(ALBUMS);
 
 				if (auth && StringUtils.isEmpty(user.getToken()))
 					step.where(DSL.exists(DSL.selectOne()

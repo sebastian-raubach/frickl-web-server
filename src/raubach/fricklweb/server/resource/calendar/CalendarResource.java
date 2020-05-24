@@ -1,9 +1,6 @@
 package raubach.fricklweb.server.resource.calendar;
 
-import org.jooq.Record;
-import org.jooq.SQLDialect;
-import org.jooq.SelectJoinStep;
-import org.jooq.SelectSelectStep;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
 import org.restlet.data.Status;
@@ -55,9 +52,9 @@ public class CalendarResource extends PaginatedServerResource
 			throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
 
 		try (Connection conn = Database.getConnection();
-			 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
+			 DSLContext context = Database.getContext(conn))
 		{
-			SelectJoinStep<Record> step = select.from(CALENDAR_DATA);
+			SelectJoinStep<Record> step = context.select().from(CALENDAR_DATA);
 
 			if (year != null)
 				step.where(DSL.year(CALENDAR_DATA.DATE).eq(year));

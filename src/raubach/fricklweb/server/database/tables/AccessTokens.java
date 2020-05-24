@@ -43,23 +43,40 @@ import raubach.fricklweb.server.database.tables.records.AccessTokensRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AccessTokens extends TableImpl<AccessTokensRecord> {
 
+    private static final long serialVersionUID = 892232480;
+
     /**
      * The reference instance of <code>frickl.access_tokens</code>
      */
     public static final AccessTokens ACCESS_TOKENS = new AccessTokens();
-    private static final long serialVersionUID = -273409926;
+    /**
+     * The column <code>frickl.access_tokens.expires_on</code>. When this token expires.
+     */
+    public final TableField<AccessTokensRecord, Timestamp> EXPIRES_ON = createField("expires_on", org.jooq.impl.SQLDataType.TIMESTAMP, this, "When this token expires.");
+
     /**
      * The column <code>frickl.access_tokens.id</code>. Auto incremented id of this table.
      */
     public final TableField<AccessTokensRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "Auto incremented id of this table.");
+
     /**
      * The column <code>frickl.access_tokens.token</code>. The access token.
      */
     public final TableField<AccessTokensRecord, String> TOKEN = createField("token", org.jooq.impl.SQLDataType.VARCHAR(36).nullable(false), this, "The access token.");
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<AccessTokensRecord> getRecordType() {
+        return AccessTokensRecord.class;
+    }
+
     /**
      * The column <code>frickl.access_tokens.created_on</code>. When this record has been created.
      */
     public final TableField<AccessTokensRecord, Timestamp> CREATED_ON = createField("created_on", org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "When this record has been created.");
+
     /**
      * The column <code>frickl.access_tokens.updated_on</code>. When this record has last been updated.
      */
@@ -96,14 +113,6 @@ public class AccessTokens extends TableImpl<AccessTokensRecord> {
 
     public <O extends Record> AccessTokens(Table<O> child, ForeignKey<O, AccessTokensRecord> key) {
         super(child, key, ACCESS_TOKENS);
-    }
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<AccessTokensRecord> getRecordType() {
-        return AccessTokensRecord.class;
     }
 
     /**

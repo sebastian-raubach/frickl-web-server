@@ -14,6 +14,8 @@ import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.resource.SettingsResource;
 import raubach.fricklweb.server.resource.StatusResource;
 import raubach.fricklweb.server.resource.TokenResource;
+import raubach.fricklweb.server.resource.accesstoken.AccessTokenCountResource;
+import raubach.fricklweb.server.resource.accesstoken.AccessTokenResource;
 import raubach.fricklweb.server.resource.album.*;
 import raubach.fricklweb.server.resource.calendar.CalendarResource;
 import raubach.fricklweb.server.resource.calendar.CalendarYearResource;
@@ -132,6 +134,10 @@ public class Frickl extends Application
 		corsFilter.setExposedHeaders(Collections.singleton("Content-Disposition"));
 
 		// Attach the url handlers
+		attachToRouter(routerAuth, "/accesstoken", AccessTokenResource.class);
+		attachToRouter(routerAuth, "/accesstoken/count", AccessTokenCountResource.class);
+		attachToRouter(routerAuth, "/accesstoken/{tokenId}", AccessTokenResource.class);
+
 		attachToRouter(routerAuth, "/album", AlbumResource.class);
 		attachToRouter(routerAuth, "/album/count", AlbumCountResource.class);
 		attachToRouter(routerAuth, "/album/{albumId}", AlbumResource.class);
@@ -142,6 +148,7 @@ public class Frickl extends Application
 		attachToRouter(routerAuth, "/album/{albumId}/image/count", ImageCountResource.class);
 		attachToRouter(routerAuth, "/album/{albumId}/tag", AlbumTagResource.class);
 		attachToRouter(routerAuth, "/album/{albumId}/public", AlbumPublicResource.class);
+		attachToRouter(routerAuth, "/album/{albumId}/accesstoken", AlbumAccessTokenResource.class);
 
 		attachToRouter(routerAuth, "/calendar", CalendarResource.class);
 		attachToRouter(routerAuth, "/calendar/year", CalendarYearResource.class);

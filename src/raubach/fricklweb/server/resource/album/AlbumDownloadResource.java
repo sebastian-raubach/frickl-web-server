@@ -1,9 +1,6 @@
 package raubach.fricklweb.server.resource.album;
 
-import org.jooq.Record;
-import org.jooq.SQLDialect;
-import org.jooq.SelectConditionStep;
-import org.jooq.SelectSelectStep;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
 import org.restlet.data.Disposition;
@@ -18,7 +15,7 @@ import raubach.fricklweb.server.Frickl;
 import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.database.tables.pojos.Albums;
 import raubach.fricklweb.server.database.tables.pojos.Images;
-import raubach.fricklweb.server.resource.AccessTokenResource;
+import raubach.fricklweb.server.resource.AbstractAccessTokenResource;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import javax.servlet.ServletContext;
@@ -42,7 +39,7 @@ import static raubach.fricklweb.server.database.tables.Images.IMAGES;
 /**
  * @author Sebastian Raubach
  */
-public class AlbumDownloadResource extends AccessTokenResource
+public class AlbumDownloadResource extends AbstractAccessTokenResource
 {
 	private Integer albumId = null;
 
@@ -72,13 +69,13 @@ public class AlbumDownloadResource extends AccessTokenResource
 		if (albumId != null)
 		{
 			try (Connection conn = Database.getConnection();
-				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
+				 DSLContext context = Database.getContext(conn))
 			{
-				Albums album = select.from(ALBUMS)
+				Albums album = context.select().from(ALBUMS)
 						.where(ALBUMS.ID.eq(albumId))
 						.fetchAnyInto(Albums.class);
 
-				SelectConditionStep<Record> step = select.from(IMAGES)
+				SelectConditionStep<Record> step = context.select().from(IMAGES)
 						.where(IMAGES.ALBUM_ID.eq(albumId));
 
 				// Restrict to only albums containing at least one public image

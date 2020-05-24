@@ -8,8 +8,7 @@ import org.restlet.resource.Get;
 import org.restlet.resource.ResourceException;
 import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.auth.CustomVerifier;
-import raubach.fricklweb.server.resource.AccessTokenResource;
-import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.resource.AbstractAccessTokenResource;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.sql.Connection;
@@ -24,7 +23,7 @@ import static raubach.fricklweb.server.database.tables.Images.IMAGES;
 /**
  * @author Sebastian Raubach
  */
-public class ImageCountResource extends AccessTokenResource
+public class ImageCountResource extends AbstractAccessTokenResource
 {
 	public static final String PARAM_DATE = "date";
 	public static final String PARAM_FAV = "fav";
@@ -85,9 +84,9 @@ public class ImageCountResource extends AccessTokenResource
 		if (albumId != null)
 		{
 			try (Connection conn = Database.getConnection();
-				 SelectSelectStep<Record1<Integer>> select = DSL.using(conn, SQLDialect.MYSQL).selectCount())
+				 DSLContext context = Database.getContext(conn))
 			{
-				SelectConditionStep<Record1<Integer>> step = select.from(IMAGES)
+				SelectConditionStep<Record1<Integer>> step = context.selectCount().from(IMAGES)
 						.where(IMAGES.ALBUM_ID.eq(albumId));
 
 				if (auth)
@@ -114,9 +113,9 @@ public class ImageCountResource extends AccessTokenResource
 		else
 		{
 			try (Connection conn = Database.getConnection();
-				 SelectSelectStep<Record1<Integer>> select = DSL.using(conn, SQLDialect.MYSQL).selectCount())
+				 DSLContext context = Database.getContext(conn))
 			{
-				SelectJoinStep<Record1<Integer>> step = select.from(IMAGES);
+				SelectJoinStep<Record1<Integer>> step = context.selectCount().from(IMAGES);
 
 				if (isFav != null && isFav)
 					step.where(IMAGES.IS_FAVORITE.eq((byte) 1));

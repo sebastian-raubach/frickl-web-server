@@ -1,9 +1,6 @@
 package raubach.fricklweb.server.resource.image;
 
-import org.jooq.Record;
-import org.jooq.SQLDialect;
-import org.jooq.SelectConditionStep;
-import org.jooq.SelectSelectStep;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
 import org.restlet.data.Disposition;
@@ -69,9 +66,9 @@ public class ImageShareResource extends PaginatedServerResource
 		if (imageId != null)
 		{
 			try (Connection conn = Database.getConnection();
-				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
+				 DSLContext context = Database.getContext(conn))
 			{
-				SelectConditionStep<Record> step = select.from(IMAGES)
+				SelectConditionStep<Record> step = context.select().from(IMAGES)
 						.where(IMAGES.ID.eq(imageId));
 
 				if (auth)

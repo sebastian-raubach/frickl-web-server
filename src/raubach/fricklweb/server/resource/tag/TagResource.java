@@ -13,8 +13,7 @@ import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.computed.TagCount;
 import raubach.fricklweb.server.database.tables.pojos.Tags;
-import raubach.fricklweb.server.resource.AccessTokenResource;
-import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.resource.AbstractAccessTokenResource;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.sql.Connection;
@@ -31,7 +30,7 @@ import static raubach.fricklweb.server.database.tables.Tags.TAGS;
 /**
  * @author Sebastian Raubach
  */
-public class TagResource extends AccessTokenResource
+public class TagResource extends AbstractAccessTokenResource
 {
 	private Integer tagId = null;
 
@@ -57,7 +56,7 @@ public class TagResource extends AccessTokenResource
 		boolean auth = PropertyWatcher.authEnabled();
 
 		try (Connection conn = Database.getConnection();
-			 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
+			 DSLContext context = Database.getContext(conn))
 		{
 			SelectJoinStep<Record> step = context.select(TAGS.asterisk(), DSL.count().as("count"))
 					.from(IMAGE_TAGS.leftJoin(TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))

@@ -15,6 +15,7 @@ import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
 
 import raubach.fricklweb.server.database.tables.AccessTokens;
+import raubach.fricklweb.server.database.tables.AlbumAccessToken;
 import raubach.fricklweb.server.database.tables.AlbumStats;
 import raubach.fricklweb.server.database.tables.AlbumTokens;
 import raubach.fricklweb.server.database.tables.Albums;
@@ -41,7 +42,7 @@ import raubach.fricklweb.server.database.tables.Tags;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Frickl extends SchemaImpl {
 
-    private static final long serialVersionUID = -438785342;
+    private static final long serialVersionUID = 215596308;
 
     /**
      * The reference instance of <code>frickl</code>
@@ -52,6 +53,11 @@ public class Frickl extends SchemaImpl {
      * This table contains all tags that can be used to access folders that aren't public.
      */
     public final AccessTokens ACCESS_TOKENS = raubach.fricklweb.server.database.tables.AccessTokens.ACCESS_TOKENS;
+
+    /**
+     * VIEW
+     */
+    public final AlbumAccessToken ALBUM_ACCESS_TOKEN = raubach.fricklweb.server.database.tables.AlbumAccessToken.ALBUM_ACCESS_TOKEN;
 
     /**
      * VIEW
@@ -134,6 +140,7 @@ public class Frickl extends SchemaImpl {
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
             AccessTokens.ACCESS_TOKENS,
+            AlbumAccessToken.ALBUM_ACCESS_TOKEN,
             AlbumStats.ALBUM_STATS,
             AlbumTokens.ALBUM_TOKENS,
             Albums.ALBUMS,

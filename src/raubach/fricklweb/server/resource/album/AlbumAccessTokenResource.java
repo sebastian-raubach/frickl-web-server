@@ -1,31 +1,31 @@
 package raubach.fricklweb.server.resource.album;
 
 import org.jooq.DSLContext;
-import org.jooq.SQLDialect;
-import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
 import org.restlet.data.Status;
-import org.restlet.resource.Get;
+import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.auth.CustomVerifier;
+import raubach.fricklweb.server.database.tables.pojos.AlbumAccessToken;
+import raubach.fricklweb.server.database.tables.records.AccessTokensRecord;
+import raubach.fricklweb.server.database.tables.records.AlbumTokensRecord;
 import raubach.fricklweb.server.resource.PaginatedServerResource;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.UUID;
 
-import static raubach.fricklweb.server.database.tables.Images.IMAGES;
+import static raubach.fricklweb.server.database.tables.AccessTokens.ACCESS_TOKENS;
+import static raubach.fricklweb.server.database.tables.AlbumTokens.ALBUM_TOKENS;
 
 /**
  * @author Sebastian Raubach
  */
-public class AlbumPublicResource extends PaginatedServerResource
+public class AlbumAccessTokenResource extends PaginatedServerResource
 {
-	public static final String PARAM_PUBLIC = "public";
-
 	private Integer albumId = null;
-	private Boolean publicParam = null;
 
 	@Override
 	protected void doInit()
@@ -40,23 +40,10 @@ public class AlbumPublicResource extends PaginatedServerResource
 		catch (Exception e)
 		{
 		}
-
-		String p = getQueryValue(PARAM_PUBLIC);
-
-		if (!StringUtils.isEmpty(p))
-		{
-			try
-			{
-				publicParam = Boolean.parseBoolean(p);
-			}
-			catch (Exception e)
-			{
-			}
-		}
 	}
 
-	@Get("json")
-	public void getJson()
+	@Post("json")
+	public boolean postJson(AlbumAccessToken accessToken)
 	{
 		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
 		boolean auth = PropertyWatcher.authEnabled();
@@ -64,16 +51,27 @@ public class AlbumPublicResource extends PaginatedServerResource
 		if (auth && StringUtils.isEmpty(user.getToken()))
 			throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
 
-		if (publicParam == null || albumId == null)
+		if (accessToken == null || StringUtils.isEmpty(accessToken.getTokenToken()) || albumId == null)
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
 
 		try (Connection conn = Database.getConnection();
 			 DSLContext context = Database.getContext(conn))
 		{
-			context.update(IMAGES)
-					.set(IMAGES.IS_PUBLIC, (byte) (publicParam ? 1 : 0))
-					.where(IMAGES.ALBUM_ID.eq(albumId))
-					.execute();
+			try {
+				UUID.fromString(accessToken.getTokenToken());
+			} catch (IllegalArgumentException | NullPointerException e) {
+				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
+			}
+
+			AccessTokensRecord token = context.newRecord(ACCESS_TOKENS);
+			token.setToken(accessToken.getTokenToken());
+			token.setExpiresOn(accessToken.getTokenExpiresOn());
+			token.store();
+
+			AlbumTokensRecord albumToken = context.newRecord(ALBUM_TOKENS);
+			albumToken.setAlbumId(albumId);
+			albumToken.setAccessTokenId(token.getId());
+			return albumToken.store() > 0;
 		}
 		catch (SQLException e)
 		{

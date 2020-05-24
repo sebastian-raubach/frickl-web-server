@@ -11,7 +11,7 @@ import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.database.tables.pojos.AlbumStats;
 import raubach.fricklweb.server.database.tables.pojos.Albums;
-import raubach.fricklweb.server.resource.AccessTokenResource;
+import raubach.fricklweb.server.resource.AbstractAccessTokenResource;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.sql.Connection;
@@ -28,7 +28,7 @@ import static raubach.fricklweb.server.database.tables.Images.IMAGES;
 /**
  * @author Sebastian Raubach
  */
-public class AlbumResource extends AccessTokenResource
+public class AlbumResource extends AbstractAccessTokenResource
 {
 	public static final String PARAM_PARENT_ALBUM_ID = "parentAlbumId";
 
@@ -69,7 +69,7 @@ public class AlbumResource extends AccessTokenResource
 		if (albumId != null && album != null && Objects.equals(album.getId(), albumId))
 		{
 			try (Connection conn = Database.getConnection();
-				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
+				 DSLContext context = Database.getContext(conn))
 			{
 				context.update(ALBUMS)
 						.set(ALBUMS.BANNER_IMAGE_ID, album.getBannerImageId())
@@ -95,9 +95,9 @@ public class AlbumResource extends AccessTokenResource
 		boolean auth = PropertyWatcher.authEnabled();
 
 		try (Connection conn = Database.getConnection();
-			 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
+			 DSLContext context = Database.getContext(conn))
 		{
-			SelectJoinStep<Record> step = select.from(ALBUM_STATS);
+			SelectJoinStep<Record> step = context.select().from(ALBUM_STATS);
 
 
 			if (albumId != null)

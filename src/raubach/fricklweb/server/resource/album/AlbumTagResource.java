@@ -18,7 +18,7 @@ import raubach.fricklweb.server.database.tables.pojos.Images;
 import raubach.fricklweb.server.database.tables.pojos.Tags;
 import raubach.fricklweb.server.database.tables.records.ImageTagsRecord;
 import raubach.fricklweb.server.database.tables.records.TagsRecord;
-import raubach.fricklweb.server.resource.AccessTokenResource;
+import raubach.fricklweb.server.resource.AbstractAccessTokenResource;
 import raubach.fricklweb.server.util.TagUtils;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
@@ -42,7 +42,7 @@ import static raubach.fricklweb.server.database.tables.Tags.TAGS;
 /**
  * @author Sebastian Raubach
  */
-public class AlbumTagResource extends AccessTokenResource
+public class AlbumTagResource extends AbstractAccessTokenResource
 {
 	private Integer albumId = null;
 
@@ -73,7 +73,7 @@ public class AlbumTagResource extends AccessTokenResource
 		if (albumId != null && tags != null && tags.length > 0)
 		{
 			try (Connection conn = Database.getConnection();
-				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
+				 DSLContext context = Database.getContext(conn))
 			{
 				List<Images> images = context.selectFrom(IMAGES)
 						.where(IMAGES.ALBUM_ID.eq(albumId))
@@ -139,7 +139,7 @@ public class AlbumTagResource extends AccessTokenResource
 		if (albumId != null && tags != null && tags.length > 0)
 		{
 			try (Connection conn = Database.getConnection();
-				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
+				 DSLContext context = Database.getContext(conn))
 			{
 				List<Images> images = context.selectFrom(IMAGES)
 						.where(IMAGES.ALBUM_ID.eq(albumId))
@@ -221,7 +221,7 @@ public class AlbumTagResource extends AccessTokenResource
 		if (albumId != null)
 		{
 			try (Connection conn = Database.getConnection();
-				 DSLContext context = DSL.using(conn, SQLDialect.MYSQL))
+				 DSLContext context = Database.getContext(conn))
 			{
 				SelectConditionStep<?> step = context.selectDistinct(TAGS.ID, TAGS.NAME, TAGS.CREATED_ON, TAGS.UPDATED_ON)
 						.from(TAGS

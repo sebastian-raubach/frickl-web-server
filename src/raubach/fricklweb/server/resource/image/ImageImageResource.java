@@ -1,10 +1,6 @@
 package raubach.fricklweb.server.resource.image;
 
-import org.jooq.Record;
-import org.jooq.SQLDialect;
-import org.jooq.SelectConditionStep;
-import org.jooq.SelectSelectStep;
-import org.jooq.conf.ParamType;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
 import org.restlet.data.Disposition;
@@ -18,7 +14,7 @@ import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.Frickl;
 import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.database.tables.pojos.Images;
-import raubach.fricklweb.server.resource.AccessTokenResource;
+import raubach.fricklweb.server.resource.AbstractAccessTokenResource;
 import raubach.fricklweb.server.util.ThumbnailUtils;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
@@ -36,7 +32,7 @@ import static raubach.fricklweb.server.database.tables.Images.IMAGES;
 /**
  * @author Sebastian Raubach
  */
-public class ImageImageResource extends AccessTokenResource
+public class ImageImageResource extends AbstractAccessTokenResource
 {
 	public static final String PARAM_SIZE = "size";
 	public static final String PARAM_TOKEN = "token";
@@ -79,9 +75,9 @@ public class ImageImageResource extends AccessTokenResource
 		if (imageId != null)
 		{
 			try (Connection conn = Database.getConnection();
-				 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
+				 DSLContext context = Database.getContext(conn))
 			{
-				SelectConditionStep<Record> step = select.from(IMAGES)
+				SelectConditionStep<Record> step = context.select().from(IMAGES)
 						.where(IMAGES.ID.eq(imageId));
 
 				if (auth)

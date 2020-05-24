@@ -1,5 +1,6 @@
 package raubach.fricklweb.server.resource.stats;
 
+import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.SQLDialect;
 import org.jooq.SelectSelectStep;
@@ -35,9 +36,9 @@ public class StatsCameraResource extends PaginatedServerResource
 			throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
 
 		try (Connection conn = Database.getConnection();
-			 SelectSelectStep<Record> select = DSL.using(conn, SQLDialect.MYSQL).select())
+			 DSLContext context = Database.getContext(conn))
 		{
-			return select.from(STATS_CAMERA)
+			return context.select().from(STATS_CAMERA)
 					.limit(10)
 					.fetch()
 					.into(StatsCamera.class);
