@@ -7,7 +7,7 @@ import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.auth.CustomVerifier;
-import raubach.fricklweb.server.database.tables.pojos.AlbumAccessToken;
+import raubach.fricklweb.server.computed.AccessToken;
 import raubach.fricklweb.server.database.tables.records.AccessTokensRecord;
 import raubach.fricklweb.server.database.tables.records.AlbumTokensRecord;
 import raubach.fricklweb.server.resource.PaginatedServerResource;
@@ -43,7 +43,7 @@ public class AlbumAccessTokenResource extends PaginatedServerResource
 	}
 
 	@Post("json")
-	public boolean postJson(AlbumAccessToken accessToken)
+	public boolean postJson(AccessToken accessToken)
 	{
 		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
 		boolean auth = PropertyWatcher.authEnabled();
@@ -51,21 +51,21 @@ public class AlbumAccessTokenResource extends PaginatedServerResource
 		if (auth && StringUtils.isEmpty(user.getToken()))
 			throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
 
-		if (accessToken == null || StringUtils.isEmpty(accessToken.getTokenToken()) || albumId == null)
+		if (accessToken == null || StringUtils.isEmpty(accessToken.getToken()) || albumId == null)
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
 
 		try (Connection conn = Database.getConnection();
 			 DSLContext context = Database.getContext(conn))
 		{
 			try {
-				UUID.fromString(accessToken.getTokenToken());
+				UUID.fromString(accessToken.getToken());
 			} catch (IllegalArgumentException | NullPointerException e) {
 				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
 			}
 
 			AccessTokensRecord token = context.newRecord(ACCESS_TOKENS);
-			token.setToken(accessToken.getTokenToken());
-			token.setExpiresOn(accessToken.getTokenExpiresOn());
+			token.setToken(accessToken.getToken());
+			token.setExpiresOn(accessToken.getExpiresOn());
 			token.store();
 
 			AlbumTokensRecord albumToken = context.newRecord(ALBUM_TOKENS);
