@@ -16,6 +16,8 @@ import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static raubach.fricklweb.server.database.tables.AccessTokens.ACCESS_TOKENS;
 import static raubach.fricklweb.server.database.tables.AlbumTokens.ALBUM_TOKENS;
@@ -62,6 +64,8 @@ public class AlbumAccessTokenResource extends PaginatedServerResource
 			} catch (IllegalArgumentException | NullPointerException e) {
 				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
 			}
+
+			Logger.getLogger("").log(Level.INFO, "TOKEN: " + accessToken.toString());
 
 			AccessTokensRecord token = context.newRecord(ACCESS_TOKENS);
 			token.setToken(accessToken.getToken());

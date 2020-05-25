@@ -26,4 +26,10 @@ public class AccessToken
 	{
 		this.expiresOn = expiresOn;
 	}
+
+	@Override
+	public String toString()
+	{
+		return super.toString();
+	}
 }
