@@ -39,10 +39,10 @@ public class CalendarDataRecord extends TableRecordImpl<CalendarDataRecord> impl
     }
 
     /**
-     * Create a detached CalendarDataRecord
+     * Getter for <code>frickl.calendar_data.date</code>.
      */
-    public CalendarDataRecord() {
-        super(CalendarData.CALENDAR_DATA);
+    public Date getDate() {
+        return (Date) get(0);
     }
 
     /**
@@ -53,13 +53,10 @@ public class CalendarDataRecord extends TableRecordImpl<CalendarDataRecord> impl
     }
 
     /**
-     * Create a detached, initialised CalendarDataRecord
+     * Getter for <code>frickl.calendar_data.count</code>.
      */
-    public CalendarDataRecord(Date date, Long count) {
-        super(CalendarData.CALENDAR_DATA);
-
-        set(0, date);
-        set(1, count);
+    public Long getCount() {
+        return (Long) get(1);
     }
 
     // -------------------------------------------------------------------------
@@ -163,16 +160,19 @@ public class CalendarDataRecord extends TableRecordImpl<CalendarDataRecord> impl
     // -------------------------------------------------------------------------
 
     /**
-     * Getter for <code>frickl.calendar_data.date</code>.
+     * Create a detached CalendarDataRecord
      */
-    public Date getDate() {
-        return (Date) get(0);
+    public CalendarDataRecord() {
+        super(CalendarData.CALENDAR_DATA);
     }
 
     /**
-     * Getter for <code>frickl.calendar_data.count</code>.
+     * Create a detached, initialised CalendarDataRecord
      */
-    public Long getCount() {
-        return (Long) get(1);
+    public CalendarDataRecord(Date date, Long count) {
+        super(CalendarData.CALENDAR_DATA);
+
+        set(0, date);
+        set(1, count);
     }
 }

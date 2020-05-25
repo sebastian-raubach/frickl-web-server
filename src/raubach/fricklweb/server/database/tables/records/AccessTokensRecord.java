@@ -41,33 +41,6 @@ public class AccessTokensRecord extends UpdatableRecordImpl<AccessTokensRecord> 
     }
 
     /**
-     * Create a detached AccessTokensRecord
-     */
-    public AccessTokensRecord() {
-        super(AccessTokens.ACCESS_TOKENS);
-    }
-
-    /**
-     * Create a detached, initialised AccessTokensRecord
-     */
-    public AccessTokensRecord(Integer id, String token, Timestamp expiresOn, Timestamp createdOn, Timestamp updatedOn) {
-        super(AccessTokens.ACCESS_TOKENS);
-
-        set(0, id);
-        set(1, token);
-        set(2, expiresOn);
-        set(3, createdOn);
-        set(4, updatedOn);
-    }
-
-    /**
-     * Getter for <code>frickl.access_tokens.token</code>. The access token.
-     */
-    public String getToken() {
-        return (String) get(1);
-    }
-
-    /**
      * Getter for <code>frickl.access_tokens.id</code>. Auto incremented id of this table.
      */
     public Integer getId() {
@@ -82,10 +55,10 @@ public class AccessTokensRecord extends UpdatableRecordImpl<AccessTokensRecord> 
     }
 
     /**
-     * Getter for <code>frickl.access_tokens.expires_on</code>. When this token expires.
+     * Getter for <code>frickl.access_tokens.token</code>. The access token.
      */
-    public Timestamp getExpiresOn() {
-        return (Timestamp) get(2);
+    public String getToken() {
+        return (String) get(1);
     }
 
     /**
@@ -96,10 +69,10 @@ public class AccessTokensRecord extends UpdatableRecordImpl<AccessTokensRecord> 
     }
 
     /**
-     * Getter for <code>frickl.access_tokens.created_on</code>. When this record has been created.
+     * Getter for <code>frickl.access_tokens.expires_on</code>. When this token expires.
      */
-    public Timestamp getCreatedOn() {
-        return (Timestamp) get(3);
+    public Timestamp getExpiresOn() {
+        return (Timestamp) get(2);
     }
 
     /**
@@ -107,6 +80,27 @@ public class AccessTokensRecord extends UpdatableRecordImpl<AccessTokensRecord> 
      */
     public void setCreatedOn(Timestamp value) {
         set(3, value);
+    }
+
+    /**
+     * Getter for <code>frickl.access_tokens.created_on</code>. When this record has been created.
+     */
+    public Timestamp getCreatedOn() {
+        return (Timestamp) get(3);
+    }
+
+    /**
+     * Setter for <code>frickl.access_tokens.updated_on</code>. When this record has last been updated.
+     */
+    public void setUpdatedOn(Timestamp value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>frickl.access_tokens.updated_on</code>. When this record has last been updated.
+     */
+    public Timestamp getUpdatedOn() {
+        return (Timestamp) get(4);
     }
 
     // -------------------------------------------------------------------------
@@ -126,17 +120,19 @@ public class AccessTokensRecord extends UpdatableRecordImpl<AccessTokensRecord> 
     // -------------------------------------------------------------------------
 
     /**
-     * Getter for <code>frickl.access_tokens.updated_on</code>. When this record has last been updated.
+     * {@inheritDoc}
      */
-    public Timestamp getUpdatedOn() {
-        return (Timestamp) get(4);
+    @Override
+    public Row5<Integer, String, Timestamp, Timestamp, Timestamp> fieldsRow() {
+        return (Row5) super.fieldsRow();
     }
 
     /**
-     * Setter for <code>frickl.access_tokens.updated_on</code>. When this record has last been updated.
+     * {@inheritDoc}
      */
-    public void setUpdatedOn(Timestamp value) {
-        set(4, value);
+    @Override
+    public Row5<Integer, String, Timestamp, Timestamp, Timestamp> valuesRow() {
+        return (Row5) super.valuesRow();
     }
 
     /**
@@ -159,40 +155,8 @@ public class AccessTokensRecord extends UpdatableRecordImpl<AccessTokensRecord> 
      * {@inheritDoc}
      */
     @Override
-    public Row5<Integer, String, Timestamp, Timestamp, Timestamp> fieldsRow() {
-        return (Row5) super.fieldsRow();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Row5<Integer, String, Timestamp, Timestamp, Timestamp> valuesRow() {
-        return (Row5) super.valuesRow();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Field<Timestamp> field3() {
         return AccessTokens.ACCESS_TOKENS.EXPIRES_ON;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Integer component1() {
-        return getId();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String component2() {
-        return getToken();
     }
 
     /**
@@ -215,15 +179,7 @@ public class AccessTokensRecord extends UpdatableRecordImpl<AccessTokensRecord> 
      * {@inheritDoc}
      */
     @Override
-    public Timestamp component3() {
-        return getExpiresOn();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Integer value1() {
+    public Integer component1() {
         return getId();
     }
 
@@ -231,8 +187,16 @@ public class AccessTokensRecord extends UpdatableRecordImpl<AccessTokensRecord> 
      * {@inheritDoc}
      */
     @Override
-    public String value2() {
+    public String component2() {
         return getToken();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Timestamp component3() {
+        return getExpiresOn();
     }
 
     /**
@@ -255,8 +219,40 @@ public class AccessTokensRecord extends UpdatableRecordImpl<AccessTokensRecord> 
      * {@inheritDoc}
      */
     @Override
+    public Integer value1() {
+        return getId();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String value2() {
+        return getToken();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Timestamp value3() {
         return getExpiresOn();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Timestamp value4() {
+        return getCreatedOn();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Timestamp value5() {
+        return getUpdatedOn();
     }
 
     /**
@@ -281,22 +277,6 @@ public class AccessTokensRecord extends UpdatableRecordImpl<AccessTokensRecord> 
      * {@inheritDoc}
      */
     @Override
-    public Timestamp value4() {
-        return getCreatedOn();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Timestamp value5() {
-        return getUpdatedOn();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public AccessTokensRecord value3(Timestamp value) {
         setExpiresOn(value);
         return this;
@@ -310,10 +290,6 @@ public class AccessTokensRecord extends UpdatableRecordImpl<AccessTokensRecord> 
         setCreatedOn(value);
         return this;
     }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -335,5 +311,29 @@ public class AccessTokensRecord extends UpdatableRecordImpl<AccessTokensRecord> 
         value4(value4);
         value5(value5);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Create a detached AccessTokensRecord
+     */
+    public AccessTokensRecord() {
+        super(AccessTokens.ACCESS_TOKENS);
+    }
+
+    /**
+     * Create a detached, initialised AccessTokensRecord
+     */
+    public AccessTokensRecord(Integer id, String token, Timestamp expiresOn, Timestamp createdOn, Timestamp updatedOn) {
+        super(AccessTokens.ACCESS_TOKENS);
+
+        set(0, id);
+        set(1, token);
+        set(2, expiresOn);
+        set(3, createdOn);
+        set(4, updatedOn);
     }
 }

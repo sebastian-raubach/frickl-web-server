@@ -31,10 +31,10 @@ public class ImageTimelineRecord extends TableRecordImpl<ImageTimelineRecord> im
     private static final long serialVersionUID = -1787040223;
 
     /**
-     * Create a detached ImageTimelineRecord
+     * Setter for <code>frickl.image_timeline.year</code>.
      */
-    public ImageTimelineRecord() {
-        super(ImageTimeline.IMAGE_TIMELINE);
+    public void setYear(UInteger value) {
+        set(0, value);
     }
 
     /**
@@ -52,14 +52,10 @@ public class ImageTimelineRecord extends TableRecordImpl<ImageTimelineRecord> im
     }
 
     /**
-     * Create a detached, initialised ImageTimelineRecord
+     * Getter for <code>frickl.image_timeline.month</code>.
      */
-    public ImageTimelineRecord(UInteger year, Integer month, Object ids) {
-        super(ImageTimeline.IMAGE_TIMELINE);
-
-        set(0, year);
-        set(1, month);
-        set(2, ids);
+    public Integer getMonth() {
+        return (Integer) get(1);
     }
 
     /**
@@ -71,10 +67,11 @@ public class ImageTimelineRecord extends TableRecordImpl<ImageTimelineRecord> im
     }
 
     /**
-     * Setter for <code>frickl.image_timeline.year</code>.
+     * @deprecated Unknown data type. Please define an explicit {@link org.jooq.Binding} to specify how this type should be handled. Deprecation can be turned off using {@literal <deprecationOnUnknownTypes/>} in your code generator configuration.
      */
-    public void setYear(UInteger value) {
-        set(0, value);
+    @java.lang.Deprecated
+    public Object getIds() {
+        return get(2);
     }
 
     // -------------------------------------------------------------------------
@@ -216,17 +213,20 @@ public class ImageTimelineRecord extends TableRecordImpl<ImageTimelineRecord> im
     // -------------------------------------------------------------------------
 
     /**
-     * Getter for <code>frickl.image_timeline.month</code>.
+     * Create a detached ImageTimelineRecord
      */
-    public Integer getMonth() {
-        return (Integer) get(1);
+    public ImageTimelineRecord() {
+        super(ImageTimeline.IMAGE_TIMELINE);
     }
 
     /**
-     * @deprecated Unknown data type. Please define an explicit {@link org.jooq.Binding} to specify how this type should be handled. Deprecation can be turned off using {@literal <deprecationOnUnknownTypes/>} in your code generator configuration.
+     * Create a detached, initialised ImageTimelineRecord
      */
-    @java.lang.Deprecated
-    public Object getIds() {
-        return get(2);
+    public ImageTimelineRecord(UInteger year, Integer month, Object ids) {
+        super(ImageTimeline.IMAGE_TIMELINE);
+
+        set(0, year);
+        set(1, month);
+        set(2, ids);
     }
 }

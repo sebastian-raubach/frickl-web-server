@@ -37,10 +37,10 @@ public class StatsCameraRecord extends TableRecordImpl<StatsCameraRecord> implem
     }
 
     /**
-     * Create a detached StatsCameraRecord
+     * Getter for <code>frickl.stats_camera.camera</code>.
      */
-    public StatsCameraRecord() {
-        super(StatsCamera.STATS_CAMERA);
+    public String getCamera() {
+        return (String) get(0);
     }
 
     /**
@@ -51,13 +51,10 @@ public class StatsCameraRecord extends TableRecordImpl<StatsCameraRecord> implem
     }
 
     /**
-     * Create a detached, initialised StatsCameraRecord
+     * Getter for <code>frickl.stats_camera.count</code>.
      */
-    public StatsCameraRecord(String camera, Long count) {
-        super(StatsCamera.STATS_CAMERA);
-
-        set(0, camera);
-        set(1, count);
+    public Long getCount() {
+        return (Long) get(1);
     }
 
     // -------------------------------------------------------------------------
@@ -161,16 +158,19 @@ public class StatsCameraRecord extends TableRecordImpl<StatsCameraRecord> implem
     // -------------------------------------------------------------------------
 
     /**
-     * Getter for <code>frickl.stats_camera.camera</code>.
+     * Create a detached StatsCameraRecord
      */
-    public String getCamera() {
-        return (String) get(0);
+    public StatsCameraRecord() {
+        super(StatsCamera.STATS_CAMERA);
     }
 
     /**
-     * Getter for <code>frickl.stats_camera.count</code>.
+     * Create a detached, initialised StatsCameraRecord
      */
-    public Long getCount() {
-        return (Long) get(1);
+    public StatsCameraRecord(String camera, Long count) {
+        super(StatsCamera.STATS_CAMERA);
+
+        set(0, camera);
+        set(1, count);
     }
 }

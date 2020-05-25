@@ -31,10 +31,10 @@ public class ImageTagsRecord extends UpdatableRecordImpl<ImageTagsRecord> implem
     private static final long serialVersionUID = -37226723;
 
     /**
-     * Create a detached ImageTagsRecord
+     * Setter for <code>frickl.image_tags.image_id</code>. The foreign key id of the referenced image.
      */
-    public ImageTagsRecord() {
-        super(ImageTags.IMAGE_TAGS);
+    public void setImageId(Integer value) {
+        set(0, value);
     }
 
     /**
@@ -45,13 +45,10 @@ public class ImageTagsRecord extends UpdatableRecordImpl<ImageTagsRecord> implem
     }
 
     /**
-     * Create a detached, initialised ImageTagsRecord
+     * Setter for <code>frickl.image_tags.tag_id</code>. The foreign key id of the referenced tag.
      */
-    public ImageTagsRecord(Integer imageId, Integer tagId) {
-        super(ImageTags.IMAGE_TAGS);
-
-        set(0, imageId);
-        set(1, tagId);
+    public void setTagId(Integer value) {
+        set(1, value);
     }
 
     /**
@@ -174,16 +171,19 @@ public class ImageTagsRecord extends UpdatableRecordImpl<ImageTagsRecord> implem
     // -------------------------------------------------------------------------
 
     /**
-     * Setter for <code>frickl.image_tags.image_id</code>. The foreign key id of the referenced image.
+     * Create a detached ImageTagsRecord
      */
-    public void setImageId(Integer value) {
-        set(0, value);
+    public ImageTagsRecord() {
+        super(ImageTags.IMAGE_TAGS);
     }
 
     /**
-     * Setter for <code>frickl.image_tags.tag_id</code>. The foreign key id of the referenced tag.
+     * Create a detached, initialised ImageTagsRecord
      */
-    public void setTagId(Integer value) {
-        set(1, value);
+    public ImageTagsRecord(Integer imageId, Integer tagId) {
+        super(ImageTags.IMAGE_TAGS);
+
+        set(0, imageId);
+        set(1, tagId);
     }
 }

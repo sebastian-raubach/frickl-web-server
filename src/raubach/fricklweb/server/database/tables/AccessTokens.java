@@ -49,10 +49,14 @@ public class AccessTokens extends TableImpl<AccessTokensRecord> {
      * The reference instance of <code>frickl.access_tokens</code>
      */
     public static final AccessTokens ACCESS_TOKENS = new AccessTokens();
+
     /**
-     * The column <code>frickl.access_tokens.expires_on</code>. When this token expires.
+     * The class holding records for this type
      */
-    public final TableField<AccessTokensRecord, Timestamp> EXPIRES_ON = createField("expires_on", org.jooq.impl.SQLDataType.TIMESTAMP, this, "When this token expires.");
+    @Override
+    public Class<AccessTokensRecord> getRecordType() {
+        return AccessTokensRecord.class;
+    }
 
     /**
      * The column <code>frickl.access_tokens.id</code>. Auto incremented id of this table.
@@ -65,12 +69,9 @@ public class AccessTokens extends TableImpl<AccessTokensRecord> {
     public final TableField<AccessTokensRecord, String> TOKEN = createField("token", org.jooq.impl.SQLDataType.VARCHAR(36).nullable(false), this, "The access token.");
 
     /**
-     * The class holding records for this type
+     * The column <code>frickl.access_tokens.expires_on</code>. When this token expires.
      */
-    @Override
-    public Class<AccessTokensRecord> getRecordType() {
-        return AccessTokensRecord.class;
-    }
+    public final TableField<AccessTokensRecord, Timestamp> EXPIRES_ON = createField("expires_on", org.jooq.impl.SQLDataType.TIMESTAMP, this, "When this token expires.");
 
     /**
      * The column <code>frickl.access_tokens.created_on</code>. When this record has been created.

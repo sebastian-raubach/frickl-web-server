@@ -34,10 +34,10 @@ public class TagsRecord extends UpdatableRecordImpl<TagsRecord> implements Recor
     private static final long serialVersionUID = -915284446;
 
     /**
-     * Create a detached TagsRecord
+     * Setter for <code>frickl.tags.id</code>. Auto incremented id of this table.
      */
-    public TagsRecord() {
-        super(Tags.TAGS);
+    public void setId(Integer value) {
+        set(0, value);
     }
 
     /**
@@ -48,15 +48,10 @@ public class TagsRecord extends UpdatableRecordImpl<TagsRecord> implements Recor
     }
 
     /**
-     * Create a detached, initialised TagsRecord
+     * Setter for <code>frickl.tags.name</code>. The name of this tag.
      */
-    public TagsRecord(Integer id, String name, Timestamp createdOn, Timestamp updatedOn) {
-        super(Tags.TAGS);
-
-        set(0, id);
-        set(1, name);
-        set(2, createdOn);
-        set(3, updatedOn);
+    public void setName(String value) {
+        set(1, value);
     }
 
     /**
@@ -74,17 +69,17 @@ public class TagsRecord extends UpdatableRecordImpl<TagsRecord> implements Recor
     }
 
     /**
-     * Setter for <code>frickl.tags.id</code>. Auto incremented id of this table.
+     * Getter for <code>frickl.tags.created_on</code>. When this record has been created.
      */
-    public void setId(Integer value) {
-        set(0, value);
+    public Timestamp getCreatedOn() {
+        return (Timestamp) get(2);
     }
 
     /**
-     * Setter for <code>frickl.tags.name</code>. The name of this tag.
+     * Setter for <code>frickl.tags.updated_on</code>. When this record has last been updated.
      */
-    public void setName(String value) {
-        set(1, value);
+    public void setUpdatedOn(Timestamp value) {
+        set(3, value);
     }
 
     /**
@@ -275,16 +270,21 @@ public class TagsRecord extends UpdatableRecordImpl<TagsRecord> implements Recor
     // -------------------------------------------------------------------------
 
     /**
-     * Getter for <code>frickl.tags.created_on</code>. When this record has been created.
+     * Create a detached TagsRecord
      */
-    public Timestamp getCreatedOn() {
-        return (Timestamp) get(2);
+    public TagsRecord() {
+        super(Tags.TAGS);
     }
 
     /**
-     * Setter for <code>frickl.tags.updated_on</code>. When this record has last been updated.
+     * Create a detached, initialised TagsRecord
      */
-    public void setUpdatedOn(Timestamp value) {
-        set(3, value);
+    public TagsRecord(Integer id, String name, Timestamp createdOn, Timestamp updatedOn) {
+        super(Tags.TAGS);
+
+        set(0, id);
+        set(1, name);
+        set(2, createdOn);
+        set(3, updatedOn);
     }
 }

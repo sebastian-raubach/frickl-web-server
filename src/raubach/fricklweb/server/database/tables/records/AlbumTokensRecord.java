@@ -33,10 +33,10 @@ public class AlbumTokensRecord extends UpdatableRecordImpl<AlbumTokensRecord> im
     private static final long serialVersionUID = 89118807;
 
     /**
-     * Create a detached AlbumTokensRecord
+     * Setter for <code>frickl.album_tokens.album_id</code>. The album this token belongs to.
      */
-    public AlbumTokensRecord() {
-        super(AlbumTokens.ALBUM_TOKENS);
+    public void setAlbumId(Integer value) {
+        set(0, value);
     }
 
     /**
@@ -47,15 +47,10 @@ public class AlbumTokensRecord extends UpdatableRecordImpl<AlbumTokensRecord> im
     }
 
     /**
-     * Create a detached, initialised AlbumTokensRecord
+     * Setter for <code>frickl.album_tokens.access_token_id</code>. The access token allowing access to this album.
      */
-    public AlbumTokensRecord(Integer albumId, Integer accessTokenId, Timestamp createdOn, Timestamp updatedOn) {
-        super(AlbumTokens.ALBUM_TOKENS);
-
-        set(0, albumId);
-        set(1, accessTokenId);
-        set(2, createdOn);
-        set(3, updatedOn);
+    public void setAccessTokenId(Integer value) {
+        set(1, value);
     }
 
     /**
@@ -73,17 +68,17 @@ public class AlbumTokensRecord extends UpdatableRecordImpl<AlbumTokensRecord> im
     }
 
     /**
-     * Setter for <code>frickl.album_tokens.album_id</code>. The album this token belongs to.
+     * Getter for <code>frickl.album_tokens.created_on</code>. When this record has been created.
      */
-    public void setAlbumId(Integer value) {
-        set(0, value);
+    public Timestamp getCreatedOn() {
+        return (Timestamp) get(2);
     }
 
     /**
-     * Setter for <code>frickl.album_tokens.access_token_id</code>. The access token allowing access to this album.
+     * Setter for <code>frickl.album_tokens.updated_on</code>. When this record has last been updated.
      */
-    public void setAccessTokenId(Integer value) {
-        set(1, value);
+    public void setUpdatedOn(Timestamp value) {
+        set(3, value);
     }
 
     /**
@@ -274,16 +269,21 @@ public class AlbumTokensRecord extends UpdatableRecordImpl<AlbumTokensRecord> im
     // -------------------------------------------------------------------------
 
     /**
-     * Getter for <code>frickl.album_tokens.created_on</code>. When this record has been created.
+     * Create a detached AlbumTokensRecord
      */
-    public Timestamp getCreatedOn() {
-        return (Timestamp) get(2);
+    public AlbumTokensRecord() {
+        super(AlbumTokens.ALBUM_TOKENS);
     }
 
     /**
-     * Setter for <code>frickl.album_tokens.updated_on</code>. When this record has last been updated.
+     * Create a detached, initialised AlbumTokensRecord
      */
-    public void setUpdatedOn(Timestamp value) {
-        set(3, value);
+    public AlbumTokensRecord(Integer albumId, Integer accessTokenId, Timestamp createdOn, Timestamp updatedOn) {
+        super(AlbumTokens.ALBUM_TOKENS);
+
+        set(0, albumId);
+        set(1, accessTokenId);
+        set(2, createdOn);
+        set(3, updatedOn);
     }
 }

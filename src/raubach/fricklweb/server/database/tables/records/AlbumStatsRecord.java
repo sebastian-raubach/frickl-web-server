@@ -39,10 +39,10 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
     }
 
     /**
-     * Create a detached AlbumStatsRecord
+     * Getter for <code>frickl.album_stats.id</code>. Auto incremented id of this table.
      */
-    public AlbumStatsRecord() {
-        super(AlbumStats.ALBUM_STATS);
+    public Integer getId() {
+        return (Integer) get(0);
     }
 
     /**
@@ -53,22 +53,10 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
     }
 
     /**
-     * Create a detached, initialised AlbumStatsRecord
+     * Getter for <code>frickl.album_stats.name</code>. The name of the album. Should ideally be relatively short.
      */
-    public AlbumStatsRecord(Integer id, String name, String description, String path, Integer bannerImageId, Long bannerImagePublicId, Integer parentAlbumId, Timestamp createdOn, Timestamp updatedOn, Long count, Long countPublic) {
-        super(AlbumStats.ALBUM_STATS);
-
-        set(0, id);
-        set(1, name);
-        set(2, description);
-        set(3, path);
-        set(4, bannerImageId);
-        set(5, bannerImagePublicId);
-        set(6, parentAlbumId);
-        set(7, createdOn);
-        set(8, updatedOn);
-        set(9, count);
-        set(10, countPublic);
+    public String getName() {
+        return (String) get(1);
     }
 
     /**
@@ -79,10 +67,10 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
     }
 
     /**
-     * Getter for <code>frickl.album_stats.id</code>. Auto incremented id of this table.
+     * Getter for <code>frickl.album_stats.description</code>. Optional description of the album.
      */
-    public Integer getId() {
-        return (Integer) get(0);
+    public String getDescription() {
+        return (String) get(2);
     }
 
     /**
@@ -93,10 +81,10 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
     }
 
     /**
-     * Getter for <code>frickl.album_stats.name</code>. The name of the album. Should ideally be relatively short.
+     * Getter for <code>frickl.album_stats.path</code>. The path to the album relative to the base path of the setup.
      */
-    public String getName() {
-        return (String) get(1);
+    public String getPath() {
+        return (String) get(3);
     }
 
     /**
@@ -107,10 +95,10 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
     }
 
     /**
-     * Getter for <code>frickl.album_stats.description</code>. Optional description of the album.
+     * Getter for <code>frickl.album_stats.banner_image_id</code>. Optional banner image id. This image will be shown to visually represent this album.
      */
-    public String getDescription() {
-        return (String) get(2);
+    public Integer getBannerImageId() {
+        return (Integer) get(4);
     }
 
     /**
@@ -121,10 +109,10 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
     }
 
     /**
-     * Getter for <code>frickl.album_stats.path</code>. The path to the album relative to the base path of the setup.
+     * Getter for <code>frickl.album_stats.banner_image_public_id</code>.
      */
-    public String getPath() {
-        return (String) get(3);
+    public Long getBannerImagePublicId() {
+        return (Long) get(5);
     }
 
     /**
@@ -135,10 +123,10 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
     }
 
     /**
-     * Getter for <code>frickl.album_stats.banner_image_id</code>. Optional banner image id. This image will be shown to visually represent this album.
+     * Getter for <code>frickl.album_stats.parent_album_id</code>. Optional parent album id. If this album is a sub-album of another album, this parent album can be defined here.
      */
-    public Integer getBannerImageId() {
-        return (Integer) get(4);
+    public Integer getParentAlbumId() {
+        return (Integer) get(6);
     }
 
     /**
@@ -149,10 +137,10 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
     }
 
     /**
-     * Getter for <code>frickl.album_stats.banner_image_public_id</code>.
+     * Getter for <code>frickl.album_stats.created_on</code>. When this record has been created.
      */
-    public Long getBannerImagePublicId() {
-        return (Long) get(5);
+    public Timestamp getCreatedOn() {
+        return (Timestamp) get(7);
     }
 
     /**
@@ -163,10 +151,10 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
     }
 
     /**
-     * Getter for <code>frickl.album_stats.parent_album_id</code>. Optional parent album id. If this album is a sub-album of another album, this parent album can be defined here.
+     * Getter for <code>frickl.album_stats.updated_on</code>. When this record has last been updated.
      */
-    public Integer getParentAlbumId() {
-        return (Integer) get(6);
+    public Timestamp getUpdatedOn() {
+        return (Timestamp) get(8);
     }
 
     /**
@@ -177,10 +165,10 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
     }
 
     /**
-     * Getter for <code>frickl.album_stats.created_on</code>. When this record has been created.
+     * Getter for <code>frickl.album_stats.count</code>.
      */
-    public Timestamp getCreatedOn() {
-        return (Timestamp) get(7);
+    public Long getCount() {
+        return (Long) get(9);
     }
 
     /**
@@ -191,10 +179,10 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
     }
 
     /**
-     * Getter for <code>frickl.album_stats.updated_on</code>. When this record has last been updated.
+     * Getter for <code>frickl.album_stats.count_public</code>.
      */
-    public Timestamp getUpdatedOn() {
-        return (Timestamp) get(8);
+    public Long getCountPublic() {
+        return (Long) get(10);
     }
 
     // -------------------------------------------------------------------------
@@ -604,16 +592,28 @@ public class AlbumStatsRecord extends TableRecordImpl<AlbumStatsRecord> implemen
     // -------------------------------------------------------------------------
 
     /**
-     * Getter for <code>frickl.album_stats.count</code>.
+     * Create a detached AlbumStatsRecord
      */
-    public Long getCount() {
-        return (Long) get(9);
+    public AlbumStatsRecord() {
+        super(AlbumStats.ALBUM_STATS);
     }
 
     /**
-     * Getter for <code>frickl.album_stats.count_public</code>.
+     * Create a detached, initialised AlbumStatsRecord
      */
-    public Long getCountPublic() {
-        return (Long) get(10);
+    public AlbumStatsRecord(Integer id, String name, String description, String path, Integer bannerImageId, Long bannerImagePublicId, Integer parentAlbumId, Timestamp createdOn, Timestamp updatedOn, Long count, Long countPublic) {
+        super(AlbumStats.ALBUM_STATS);
+
+        set(0, id);
+        set(1, name);
+        set(2, description);
+        set(3, path);
+        set(4, bannerImageId);
+        set(5, bannerImagePublicId);
+        set(6, parentAlbumId);
+        set(7, createdOn);
+        set(8, updatedOn);
+        set(9, count);
+        set(10, countPublic);
     }
 }

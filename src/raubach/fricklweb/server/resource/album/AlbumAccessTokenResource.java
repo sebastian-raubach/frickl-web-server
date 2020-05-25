@@ -70,6 +70,8 @@ public class AlbumAccessTokenResource extends PaginatedServerResource
 			AccessTokensRecord token = context.newRecord(ACCESS_TOKENS);
 			token.setToken(accessToken.getToken());
 			token.setExpiresOn(accessToken.getExpiresOn());
+
+			Logger.getLogger("").log(Level.INFO, "RECORD: " + token.toString());
 			token.store();
 
 			AlbumTokensRecord albumToken = context.newRecord(ALBUM_TOKENS);

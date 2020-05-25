@@ -34,10 +34,10 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     private static final long serialVersionUID = 537646640;
 
     /**
-     * Create a detached ImagesRecord
+     * Setter for <code>frickl.images.id</code>. Auto incremented id of this table.
      */
-    public ImagesRecord() {
-        super(Images.IMAGES);
+    public void setId(Integer value) {
+        set(0, value);
     }
 
     /**
@@ -48,20 +48,10 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     /**
-     * Create a detached, initialised ImagesRecord
+     * Setter for <code>frickl.images.path</code>. The path to the image relative to the base path of the setup.
      */
-    public ImagesRecord(Integer id, String path, String name, Byte isFavorite, Exif exif, Integer albumId, Byte isPublic, Timestamp createdOn, Timestamp updatedOn) {
-        super(Images.IMAGES);
-
-        set(0, id);
-        set(1, path);
-        set(2, name);
-        set(3, isFavorite);
-        set(4, exif);
-        set(5, albumId);
-        set(6, isPublic);
-        set(7, createdOn);
-        set(8, updatedOn);
+    public void setPath(String value) {
+        set(1, value);
     }
 
     /**
@@ -72,10 +62,10 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     /**
-     * Setter for <code>frickl.images.id</code>. Auto incremented id of this table.
+     * Setter for <code>frickl.images.name</code>. The name of the image. This will be the filename.
      */
-    public void setId(Integer value) {
-        set(0, value);
+    public void setName(String value) {
+        set(2, value);
     }
 
     /**
@@ -100,10 +90,10 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     /**
-     * Setter for <code>frickl.images.path</code>. The path to the image relative to the base path of the setup.
+     * Setter for <code>frickl.images.exif</code>. Optional Exif information in JSON format.
      */
-    public void setPath(String value) {
-        set(1, value);
+    public void setExif(Exif value) {
+        set(4, value);
     }
 
     /**
@@ -114,10 +104,10 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     /**
-     * Setter for <code>frickl.images.name</code>. The name of the image. This will be the filename.
+     * Setter for <code>frickl.images.album_id</code>. The album this image belongs to. This will be the containing folder.
      */
-    public void setName(String value) {
-        set(2, value);
+    public void setAlbumId(Integer value) {
+        set(5, value);
     }
 
     /**
@@ -128,17 +118,10 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     /**
-     * Setter for <code>frickl.images.exif</code>. Optional Exif information in JSON format.
+     * Setter for <code>frickl.images.is_public</code>.
      */
-    public void setExif(Exif value) {
-        set(4, value);
-    }
-
-    /**
-     * Setter for <code>frickl.images.album_id</code>. The album this image belongs to. This will be the containing folder.
-     */
-    public void setAlbumId(Integer value) {
-        set(5, value);
+    public void setIsPublic(Byte value) {
+        set(6, value);
     }
 
     /**
@@ -149,6 +132,13 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     /**
+     * Setter for <code>frickl.images.created_on</code>. When this record has been created.
+     */
+    public void setCreatedOn(Timestamp value) {
+        set(7, value);
+    }
+
+    /**
      * Getter for <code>frickl.images.created_on</code>. When this record has been created.
      */
     public Timestamp getCreatedOn() {
@@ -156,10 +146,10 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     /**
-     * Setter for <code>frickl.images.is_public</code>.
+     * Setter for <code>frickl.images.updated_on</code>. When this record has last been updated.
      */
-    public void setIsPublic(Byte value) {
-        set(6, value);
+    public void setUpdatedOn(Timestamp value) {
+        set(8, value);
     }
 
     /**
@@ -520,16 +510,26 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     // -------------------------------------------------------------------------
 
     /**
-     * Setter for <code>frickl.images.created_on</code>. When this record has been created.
+     * Create a detached ImagesRecord
      */
-    public void setCreatedOn(Timestamp value) {
-        set(7, value);
+    public ImagesRecord() {
+        super(Images.IMAGES);
     }
 
     /**
-     * Setter for <code>frickl.images.updated_on</code>. When this record has last been updated.
+     * Create a detached, initialised ImagesRecord
      */
-    public void setUpdatedOn(Timestamp value) {
-        set(8, value);
+    public ImagesRecord(Integer id, String path, String name, Byte isFavorite, Exif exif, Integer albumId, Byte isPublic, Timestamp createdOn, Timestamp updatedOn) {
+        super(Images.IMAGES);
+
+        set(0, id);
+        set(1, path);
+        set(2, name);
+        set(3, isFavorite);
+        set(4, exif);
+        set(5, albumId);
+        set(6, isPublic);
+        set(7, createdOn);
+        set(8, updatedOn);
     }
 }

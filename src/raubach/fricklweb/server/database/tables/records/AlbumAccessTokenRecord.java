@@ -32,24 +32,10 @@ public class AlbumAccessTokenRecord extends TableRecordImpl<AlbumAccessTokenReco
     private static final long serialVersionUID = -1919127605;
 
     /**
-     * Create a detached AlbumAccessTokenRecord
+     * Setter for <code>frickl.album_access_token.album_id</code>. Auto incremented id of this table.
      */
-    public AlbumAccessTokenRecord() {
-        super(AlbumAccessToken.ALBUM_ACCESS_TOKEN);
-    }
-
-    /**
-     * Create a detached, initialised AlbumAccessTokenRecord
-     */
-    public AlbumAccessTokenRecord(Integer albumId, String albumName, String albumDescription, Integer tokenId, String tokenToken, Timestamp tokenExpiresOn) {
-        super(AlbumAccessToken.ALBUM_ACCESS_TOKEN);
-
-        set(0, albumId);
-        set(1, albumName);
-        set(2, albumDescription);
-        set(3, tokenId);
-        set(4, tokenToken);
-        set(5, tokenExpiresOn);
+    public void setAlbumId(Integer value) {
+        set(0, value);
     }
 
     /**
@@ -60,10 +46,10 @@ public class AlbumAccessTokenRecord extends TableRecordImpl<AlbumAccessTokenReco
     }
 
     /**
-     * Setter for <code>frickl.album_access_token.album_id</code>. Auto incremented id of this table.
+     * Setter for <code>frickl.album_access_token.album_name</code>. The name of the album. Should ideally be relatively short.
      */
-    public void setAlbumId(Integer value) {
-        set(0, value);
+    public void setAlbumName(String value) {
+        set(1, value);
     }
 
     /**
@@ -74,10 +60,10 @@ public class AlbumAccessTokenRecord extends TableRecordImpl<AlbumAccessTokenReco
     }
 
     /**
-     * Setter for <code>frickl.album_access_token.album_name</code>. The name of the album. Should ideally be relatively short.
+     * Setter for <code>frickl.album_access_token.album_description</code>. Optional description of the album.
      */
-    public void setAlbumName(String value) {
-        set(1, value);
+    public void setAlbumDescription(String value) {
+        set(2, value);
     }
 
     /**
@@ -88,10 +74,10 @@ public class AlbumAccessTokenRecord extends TableRecordImpl<AlbumAccessTokenReco
     }
 
     /**
-     * Setter for <code>frickl.album_access_token.album_description</code>. Optional description of the album.
+     * Setter for <code>frickl.album_access_token.token_id</code>. Auto incremented id of this table.
      */
-    public void setAlbumDescription(String value) {
-        set(2, value);
+    public void setTokenId(Integer value) {
+        set(3, value);
     }
 
     /**
@@ -102,10 +88,10 @@ public class AlbumAccessTokenRecord extends TableRecordImpl<AlbumAccessTokenReco
     }
 
     /**
-     * Setter for <code>frickl.album_access_token.token_id</code>. Auto incremented id of this table.
+     * Setter for <code>frickl.album_access_token.token_token</code>. The access token.
      */
-    public void setTokenId(Integer value) {
-        set(3, value);
+    public void setTokenToken(String value) {
+        set(4, value);
     }
 
     /**
@@ -116,15 +102,11 @@ public class AlbumAccessTokenRecord extends TableRecordImpl<AlbumAccessTokenReco
     }
 
     /**
-     * Setter for <code>frickl.album_access_token.token_token</code>. The access token.
+     * Setter for <code>frickl.album_access_token.token_expires_on</code>. When this token expires.
      */
-    public void setTokenToken(String value) {
-        set(4, value);
+    public void setTokenExpiresOn(Timestamp value) {
+        set(5, value);
     }
-
-    // -------------------------------------------------------------------------
-    // Record6 type implementation
-    // -------------------------------------------------------------------------
 
     /**
      * Getter for <code>frickl.album_access_token.token_expires_on</code>. When this token expires.
@@ -133,12 +115,9 @@ public class AlbumAccessTokenRecord extends TableRecordImpl<AlbumAccessTokenReco
         return (Timestamp) get(5);
     }
 
-    /**
-     * Setter for <code>frickl.album_access_token.token_expires_on</code>. When this token expires.
-     */
-    public void setTokenExpiresOn(Timestamp value) {
-        set(5, value);
-    }
+    // -------------------------------------------------------------------------
+    // Record6 type implementation
+    // -------------------------------------------------------------------------
 
     /**
      * {@inheritDoc}
@@ -345,10 +324,6 @@ public class AlbumAccessTokenRecord extends TableRecordImpl<AlbumAccessTokenReco
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
     /**
      * {@inheritDoc}
      */
@@ -370,5 +345,30 @@ public class AlbumAccessTokenRecord extends TableRecordImpl<AlbumAccessTokenReco
         value5(value5);
         value6(value6);
         return this;
+    }
+
+    // -------------------------------------------------------------------------
+    // Constructors
+    // -------------------------------------------------------------------------
+
+    /**
+     * Create a detached AlbumAccessTokenRecord
+     */
+    public AlbumAccessTokenRecord() {
+        super(AlbumAccessToken.ALBUM_ACCESS_TOKEN);
+    }
+
+    /**
+     * Create a detached, initialised AlbumAccessTokenRecord
+     */
+    public AlbumAccessTokenRecord(Integer albumId, String albumName, String albumDescription, Integer tokenId, String tokenToken, Timestamp tokenExpiresOn) {
+        super(AlbumAccessToken.ALBUM_ACCESS_TOKEN);
+
+        set(0, albumId);
+        set(1, albumName);
+        set(2, albumDescription);
+        set(3, tokenId);
+        set(4, tokenToken);
+        set(5, tokenExpiresOn);
     }
 }
