@@ -30,6 +30,9 @@ public class AccessToken
 	@Override
 	public String toString()
 	{
-		return super.toString();
+		return "AccessToken{" +
+				"token='" + token + '\'' +
+				", expiresOn=" + expiresOn +
+				'}';
 	}
 }
