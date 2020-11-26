@@ -99,7 +99,7 @@ public class ImageExifReader implements Runnable
 			else
 				date = null;
 		}
-		catch (IOException | ImageProcessingException e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 			exif = null;
@@ -118,7 +118,7 @@ public class ImageExifReader implements Runnable
 			if (exif.keyword.size() > 0)
 				processKeywords(context, image, exif.keyword);
 		}
-		catch (SQLException e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}

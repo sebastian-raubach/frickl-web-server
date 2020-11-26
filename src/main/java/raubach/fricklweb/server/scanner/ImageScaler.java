@@ -2,6 +2,7 @@ package raubach.fricklweb.server.scanner;
 
 import org.restlet.data.MediaType;
 import raubach.fricklweb.server.Frickl;
+import raubach.fricklweb.server.database.enums.ImagesDataType;
 import raubach.fricklweb.server.database.tables.records.ImagesRecord;
 import raubach.fricklweb.server.util.ThumbnailUtils;
 
@@ -32,7 +33,7 @@ public class ImageScaler implements Runnable
 		{
 			MediaType type;
 
-			if (file.getName().toLowerCase().endsWith(".jpg"))
+			if (file.getName().toLowerCase().endsWith(".jpg") || image.getDataType() == ImagesDataType.video)
 				type = MediaType.IMAGE_JPEG;
 			else if (file.getName().toLowerCase().endsWith(".png"))
 				type = MediaType.IMAGE_PNG;
@@ -41,7 +42,7 @@ public class ImageScaler implements Runnable
 
 			ThumbnailUtils.getOrCreateThumbnail(type, image.getId(), image.getDataType(), file, size);
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}

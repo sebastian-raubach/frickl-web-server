@@ -2,158 +2,46 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0b41da56-1101-476e-ba7d-884db70611d5" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ant.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/commons-io-2.6.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/converter-gson-2.5.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/flyway-core-4.0.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/gson-2.8.5.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/icafe-1.1-20171216.043736-99.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/javax.annotation-api-1.3.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/joda-time-2.10.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/jooq-3.11.10.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/jooq-checker-3.11.10.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/jooq-codegen-3.11.10.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/jooq-codegen-maven-3.11.10.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/jooq-meta-3.11.10.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/jooq-meta-extensions-3.11.10.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/jooq-scala_2.12-3.11.10.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/lib-dev/activation-1.1.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/lib-dev/catalina-ant.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/lib-dev/converter-jackson-2.4.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/lib-dev/istack-commons-runtime-3.0.10.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/lib-dev/jackson-annotations-2.9.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/lib-dev/jackson-core-2.9.7.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/lib-dev/jackson-databind-2.9.7.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/lib-dev/jaxb-api-2.3.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/lib-dev/jaxb-runtime-2.3.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/lib-dev/servlet-api.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/lib-dev/tomcat-util.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/log4j-1.2.17.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/metadata-extractor-2.11.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/mysql-connector-java-8.0.16.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/org.json.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/org.restlet.ext.apispark.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/org.restlet.ext.gson.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/org.restlet.ext.json.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/org.restlet.ext.servlet.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/org.restlet.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/slf4j-api-1.7.12.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/slf4j-log4j12-1.7.12.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/thumbnailator-0.4.8.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/_lib/xmpcore-5.1.3.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.template.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frickl-web.iml" beforeDir="false" afterPath="$PROJECT_DIR$/frickl-web.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/database.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/raubach/fricklweb/server/util/database/database.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/jooq.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/jooq.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/views.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/raubach/fricklweb/server/util/database/views.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/ApplicationListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/Database.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/Frickl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/auth/CustomVerifier.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/binding/JsonExifBinding.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/computed/AccessToken.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/computed/DataScanResult.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/computed/Exif.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/computed/LoginDetails.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/computed/Settings.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/computed/Status.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/computed/StatusMessage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/computed/TagCount.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/computed/Token.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/DefaultCatalog.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/Frickl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/Indexes.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/Keys.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/Tables.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/AccessTokens.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/AlbumAccessToken.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/AlbumStats.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/AlbumTokens.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/Albums.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/CalendarData.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/ImageTags.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/ImageTimeline.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/Images.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/LatLngs.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/SchemaVersion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/StatsCamera.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/Tags.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/AccessTokens.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/AlbumAccessToken.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/AlbumStats.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/AlbumTokens.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/Albums.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/CalendarData.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/ImageTags.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/ImageTimeline.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/Images.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/LatLngs.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/SchemaVersion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/StatsCamera.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/pojos/Tags.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/AccessTokensRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/AlbumAccessTokenRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/AlbumStatsRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/AlbumTokensRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/AlbumsRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/CalendarDataRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/ImageTagsRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/ImageTimelineRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/ImagesRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/LatLngsRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/SchemaVersionRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/StatsCameraRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/database/tables/records/TagsRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/AbstractAccessTokenResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/PaginatedServerResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/SettingsResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/StatusResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/TokenResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/accesstoken/AccessTokenCountResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/accesstoken/AccessTokenResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/album/AlbumAccessTokenResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/album/AlbumCountResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/album/AlbumDownloadResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/album/AlbumLocationResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/album/AlbumPublicResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/album/AlbumResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/album/AlbumTagResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/calendar/CalendarResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/calendar/CalendarYearResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/image/ImageCountResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/image/ImageImageResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/image/ImageRandomResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/image/ImageResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/image/ImageShareResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/image/ImageTagResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/location/LocationResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/search/SearchAlbumCountResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/search/SearchAlbumResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/search/SearchImageCountResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/search/SearchImageResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/stats/StatsCameraResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/tag/TagImageCountResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/tag/TagImageResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/tag/TagResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/scanner/ImageExifReader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/scanner/ImageScaler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/scanner/ImageScanner.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/util/CollectionUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/util/FlywayChecksumGenerator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/util/ScriptRunner.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/util/ServerProperty.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/util/TagUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/util/ThumbnailUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/util/database/migration/V1.20.02.23__update.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/util/database/migration/V1.20.04.11__update.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/util/task/AccessTokenDeleteTask.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/raubach/fricklweb/server/util/watcher/PropertyWatcher.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/WEB-INF/web.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/commons-io-2.6.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/converter-gson-2.5.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/flyway-core-4.0.2.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/gson-2.8.5.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/javax.annotation-api-1.3.2.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/joda-time-2.10.2.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/jooq-3.11.10.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/jooq-checker-3.11.10.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/jooq-codegen-3.11.10.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/jooq-codegen-maven-3.11.10.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/jooq-meta-3.11.10.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/jooq-meta-extensions-3.11.10.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/jooq-scala_2.12-3.11.10.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/lib-dev/activation-1.1.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/lib-dev/catalina-ant.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/lib-dev/converter-jackson-2.4.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/lib-dev/istack-commons-runtime-3.0.10.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/lib-dev/jackson-annotations-2.9.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/lib-dev/jackson-core-2.9.7.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/lib-dev/jackson-databind-2.9.7.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/lib-dev/jaxb-api-2.3.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/lib-dev/jaxb-runtime-2.3.2.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/lib-dev/servlet-api.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/lib-dev/tomcat-util.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/log4j-1.2.17.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/metadata-extractor-2.11.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/mysql-connector-java-8.0.16.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/org.json.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/org.restlet.ext.apispark.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/org.restlet.ext.gson.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/org.restlet.ext.json.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/org.restlet.ext.servlet.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/org.restlet.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/slf4j-api-1.7.12.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/slf4j-log4j12-1.7.12.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/thumbnailator-0.4.8.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/xmpcore-5.1.3.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageExifReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageExifReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageScaler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageScaler.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -238,26 +126,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageScaler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="41" column="42" selection-start-line="41" selection-start-column="42" selection-end-line="41" selection-end-column="42" />
+            <state relative-caret-position="540">
+              <caret line="43" column="9" lean-forward="true" selection-start-line="43" selection-start-column="9" selection-end-line="43" selection-end-column="9" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/AbstractAccessTokenResource.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/ThumbnailUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/image/ImageTagResource.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
-              <caret line="72" lean-forward="true" selection-start-line="72" selection-end-line="72" />
+            <state relative-caret-position="614">
+              <caret line="61" column="24" selection-start-line="61" selection-start-column="16" selection-end-line="61" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -283,8 +162,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="41" column="40" selection-start-line="41" selection-start-column="40" selection-end-line="41" selection-end-column="40" />
+            <state relative-caret-position="259">
+              <caret line="92" column="5" selection-start-line="92" selection-start-column="5" selection-end-line="92" selection-end-column="5" />
               <folding>
                 <element signature="e#0#54#0" expanded="true" />
               </folding>
@@ -295,10 +174,23 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageScanner.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1770">
-              <caret line="157" column="97" selection-start-line="157" selection-start-column="97" selection-end-line="157" selection-end-column="97" />
+            <state relative-caret-position="649">
+              <caret line="286" column="54" selection-start-line="286" selection-start-column="54" selection-end-line="286" selection-end-column="54" />
               <folding>
                 <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageExifReader.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="480">
+              <caret line="121" column="9" lean-forward="true" selection-start-line="121" selection-start-column="9" selection-end-line="121" selection-end-column="9" />
+              <folding>
+                <element signature="e#1312#1313#0" expanded="true" />
+                <element signature="e#1337#1338#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -316,8 +208,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/Frickl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="495">
-              <caret line="159" column="65" lean-forward="true" selection-start-line="159" selection-start-column="65" selection-end-line="159" selection-end-column="65" />
+            <state relative-caret-position="1890">
+              <caret line="159" column="65" selection-start-line="159" selection-start-column="65" selection-end-line="159" selection-end-column="65" />
             </state>
           </provider>
         </entry>
@@ -342,8 +234,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>userDetails</find>
-      <find>.sql</find>
       <find>getToken</find>
       <find>lat_lngs</find>
       <find>stats</find>
@@ -372,6 +262,8 @@
       <find>dataType</find>
       <find>SCANRESULT</find>
       <find>SCANRESULT.setStatus</find>
+      <find>BAD_REQUEST</find>
+      <find>ImageScaler</find>
     </findStrings>
     <replaceStrings>
       <replace>JsonArray</replace>
@@ -387,7 +279,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/album/AlbumTagResource.java" />
         <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/calendar/CalendarResource.java" />
         <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/calendar/CalendarYearResource.java" />
         <option value="$PROJECT_DIR$/src/raubach/fricklweb/server/resource/image/ImageCountResource.java" />
@@ -429,7 +320,6 @@
         <option value="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/computed/Exif.java" />
         <option value="$PROJECT_DIR$/config.properties" />
         <option value="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/image/ImageImageResource.java" />
-        <option value="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageScaler.java" />
         <option value="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/ThumbnailUtils.java" />
         <option value="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/TagUtils.java" />
         <option value="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/album/AlbumTagResource.java" />
@@ -438,6 +328,8 @@
         <option value="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/Frickl.java" />
         <option value="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/image/ImageVideoResource.java" />
         <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageScaler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageExifReader.java" />
       </list>
     </option>
   </component>
@@ -460,7 +352,6 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -506,44 +397,6 @@
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="computed" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="frickl-web-server" type="b2602c69:ProjectViewProjectNode" />
-              <item name="frickl-web-server" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="resource" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="frickl-web-server" type="b2602c69:ProjectViewProjectNode" />
-              <item name="frickl-web-server" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="resource" type="462c0819:PsiDirectoryNode" />
-              <item name="album" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="frickl-web-server" type="b2602c69:ProjectViewProjectNode" />
-              <item name="frickl-web-server" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="resource" type="462c0819:PsiDirectoryNode" />
-              <item name="image" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="frickl-web-server" type="b2602c69:ProjectViewProjectNode" />
-              <item name="frickl-web-server" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
               <item name="scanner" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -563,6 +416,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -716,13 +570,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1558543167839</updated>
-    </task>
-    <task id="LOCAL-00002" summary="- CHG: Added image count to album object (AlbumStats).&#10;- FIX: Updated readme and fixed an issue with the code generation command on linux.">
-      <created>1559417822324</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1559417822324</updated>
     </task>
     <task id="LOCAL-00003" summary="- ADD: Added an image search endpoint.">
       <created>1560609453702</created>
@@ -1060,13 +907,21 @@
       <option name="project" value="LOCAL" />
       <updated>1590406319510</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="- CHG: Moved build system from Ant to Gradle.&#10;- ADD: Added initial support for videos (ffmpeg required!).">
+      <created>1605978407811</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1605978407815</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="39" width="1920" height="1040" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4989083" visible="true" weight="0.19595315" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4989083" visible="true" weight="0.19808307" />
       <window_info id="Structure" order="1" sideWeight="0.5010917" side_tool="true" weight="0.24972677" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -1109,7 +964,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="- CHG: Adjusted number of CPU cores used for data import." />
     <MESSAGE value="- CHG: Changed deploy path." />
     <MESSAGE value="- FIX: Fixed an issue where tags were created that already existed." />
     <MESSAGE value="- ADD: Added download functionality to albums (download all images in an album as a zip)." />
@@ -1134,14 +988,14 @@
     <MESSAGE value="- ADD: Added redirect for non-bots from image share URL to client." />
     <MESSAGE value="- ADD: Added support for access tokens generated to share with other people who can then access specific folders without being logged in and without these folder being public." />
     <MESSAGE value="- ADD: Finalised support for access tokens generated to share with other people who can then access specific folders without being logged in and without these folder being public." />
-    <option name="LAST_COMMIT_MESSAGE" value="- ADD: Finalised support for access tokens generated to share with other people who can then access specific folders without being logged in and without these folder being public." />
+    <MESSAGE value="- CHG: Moved build system from Ant to Gradle.&#10;- ADD: Added initial support for videos (ffmpeg required!)." />
+    <option name="LAST_COMMIT_MESSAGE" value="- CHG: Moved build system from Ant to Gradle.&#10;- ADD: Added initial support for videos (ffmpeg required!)." />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/ApplicationListener.java" />
     <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/scanner/ImageScanner.java" />
     <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/Frickl.java" />
     <entry file="file://$PROJECT_DIR$/src/raubach/fricklweb/server/resource/StatusResource.java" />
@@ -1230,13 +1084,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/ThumbnailUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="52" selection-start-line="52" selection-end-line="52" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/computed/Exif.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -1306,13 +1153,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageScaler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="41" column="42" selection-start-line="41" selection-start-column="42" selection-end-line="41" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/AbstractAccessTokenResource.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -1320,27 +1160,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageScanner.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/image/ImageTagResource.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1770">
-          <caret line="157" column="97" selection-start-line="157" selection-start-column="97" selection-end-line="157" selection-end-column="97" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/computed/DataScanResult.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/StatusResource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="15" column="34" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
+        <state relative-caret-position="510">
+          <caret line="72" selection-start-line="72" selection-end-line="72" />
         </state>
       </provider>
     </entry>
@@ -1358,27 +1181,69 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/computed/DataScanResult.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/Frickl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1890">
+          <caret line="159" column="65" selection-start-line="159" selection-start-column="65" selection-end-line="159" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/StatusResource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="15" column="34" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="41" column="40" selection-start-line="41" selection-start-column="40" selection-end-line="41" selection-end-column="40" />
+        <state relative-caret-position="259">
+          <caret line="92" column="5" selection-start-line="92" selection-start-column="5" selection-end-line="92" selection-end-column="5" />
           <folding>
             <element signature="e#0#54#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/Frickl.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/ThumbnailUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="159" column="65" lean-forward="true" selection-start-line="159" selection-start-column="65" selection-end-line="159" selection-end-column="65" />
+        <state relative-caret-position="614">
+          <caret line="61" column="24" selection-start-line="61" selection-start-column="16" selection-end-line="61" selection-end-column="24" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/image/ImageTagResource.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageScanner.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="72" lean-forward="true" selection-start-line="72" selection-end-line="72" />
+        <state relative-caret-position="649">
+          <caret line="286" column="54" selection-start-line="286" selection-start-column="54" selection-end-line="286" selection-end-column="54" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageScaler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="43" column="9" lean-forward="true" selection-start-line="43" selection-start-column="9" selection-end-line="43" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageExifReader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="121" column="9" lean-forward="true" selection-start-line="121" selection-start-column="9" selection-end-line="121" selection-end-column="9" />
+          <folding>
+            <element signature="e#1312#1313#0" expanded="true" />
+            <element signature="e#1337#1338#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
