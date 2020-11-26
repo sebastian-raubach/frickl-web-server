@@ -156,7 +156,16 @@ public class ImageScanner
 						Logger.getLogger("").log(Level.INFO, "Queue active: " + executor.getActiveCount());
 
 						if (executor.getQueue().size() < 1 /* && executor.getActiveCount() < 1 */)
+						{
 							executor.shutdownNow();
+						}
+						else
+						{
+							Runnable runnable = executor.getQueue().peek();
+
+							if (runnable instanceof ImageRecordRunnable)
+								Logger.getLogger("").log(Level.INFO, "TOP RUNNABLE: " + ((ImageRecordRunnable) runnable).getId());
+						}
 					}
 				}
 				catch (InterruptedException e)

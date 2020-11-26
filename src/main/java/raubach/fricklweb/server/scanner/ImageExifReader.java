@@ -31,15 +31,13 @@ import static raubach.fricklweb.server.database.tables.Tags.TAGS;
 /**
  * @author Sebastian Raubach
  */
-public class ImageExifReader implements Runnable
+public class ImageExifReader extends ImageRecordRunnable
 {
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
 
-	private ImagesRecord image;
-
 	public ImageExifReader(ImagesRecord image)
 	{
-		this.image = image;
+		super(image);
 	}
 
 	private static synchronized void processKeywords(DSLContext context, ImagesRecord image, List<String> keywords)

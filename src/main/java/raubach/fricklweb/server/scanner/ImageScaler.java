@@ -12,14 +12,14 @@ import java.io.IOException;
 /**
  * @author Sebastian Raubach
  */
-public class ImageScaler implements Runnable
+public class ImageScaler extends ImageRecordRunnable
 {
 	private ImagesRecord image;
 	private ThumbnailUtils.Size size;
 
 	public ImageScaler(ImagesRecord image, ThumbnailUtils.Size size)
 	{
-		this.image = image;
+		super(image);
 		this.size = size;
 	}
 
