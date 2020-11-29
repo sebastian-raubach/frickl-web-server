@@ -155,7 +155,7 @@ public class ImageScanner
 						Logger.getLogger("").log(Level.INFO, "Queue count: " + executor.getQueue().size());
 						Logger.getLogger("").log(Level.INFO, "Queue active: " + executor.getActiveCount());
 
-						if (executor.getQueue().size() < 1 /* && executor.getActiveCount() < 1 */)
+						if (executor.getQueue().size() < 1 && executor.getActiveCount() < 1)
 						{
 							executor.shutdownNow();
 						}
