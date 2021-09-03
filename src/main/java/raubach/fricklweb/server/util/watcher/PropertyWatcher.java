@@ -69,17 +69,12 @@ public class PropertyWatcher
 				String path = get(ServerProperty.CONFIG_PATH);
 				if (!StringUtils.isEmpty(path))
 				{
-					File folder = new File(path);
-					if (folder.exists() && folder.isDirectory())
+					File potential = new File(path);
+					if (potential.exists() && potential.isFile())
 					{
-						File potential = new File(folder, PROPERTIES_FILE);
-
-						if (potential.exists() && potential.isFile())
-						{
-							// Use it
-							Logger.getLogger("").log(Level.INFO, "Using external config.properties: " + potential.getAbsolutePath());
-							config = potential;
-						}
+						// Use it
+						Logger.getLogger("").log(Level.INFO, "Using external config.properties: " + potential.getAbsolutePath());
+						config = potential;
 					}
 				}
 
@@ -220,7 +215,7 @@ public class PropertyWatcher
 	 */
 	private static void throwException(ServerProperty property)
 	{
-		throw new RuntimeException("Germinate failed to start: Non-optional property not set: '" + property.getKey() + "'");
+		throw new RuntimeException("Frickl failed to start: Non-optional property not set: '" + property.getKey() + "'");
 	}
 
 	/**
