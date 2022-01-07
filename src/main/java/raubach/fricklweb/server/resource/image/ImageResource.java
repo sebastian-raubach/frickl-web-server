@@ -149,7 +149,7 @@ public class ImageResource extends AbstractAccessTokenResource
 					}
 				}
 
-				return step.orderBy(IMAGES.CREATED_ON.desc())
+				return step.orderBy(IMAGES.CREATED_ON.desc(), IMAGES.ID.desc())
 						.offset(pageSize * currentPage)
 						.limit(pageSize)
 						.fetch()
@@ -216,7 +216,7 @@ public class ImageResource extends AbstractAccessTokenResource
 					}
 				}
 
-				return step.orderBy(IMAGES.CREATED_ON.desc())
+				return step.orderBy(IMAGES.CREATED_ON.desc(), IMAGES.ID.desc())
 						.offset(pageSize * currentPage)
 						.limit(pageSize)
 						.fetch()
