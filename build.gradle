@@ -39,13 +39,11 @@ repositories {
 dependencies {
     compile fileTree(dir: 'lib', include: ['*.jar'])
 
-    implementation 'org.slf4j:slf4j-api:1.7.30'
-
-
     implementation 'org.restlet.jee:org.restlet:2.4.0'
     implementation 'org.restlet.jee:org.restlet.ext.servlet:2.4.0'
     implementation 'org.restlet.jee:org.restlet.ext.json:2.4.0'
     implementation 'org.restlet.jee:org.restlet.ext.gson:2.3.6'
+    implementation 'org.restlet.jee:org.restlet.ext.fileupload:2.4.0'
     implementation 'org.json:json:20160212'
 
     implementation 'org.flywaydb:flyway-core:4.0.2'
@@ -60,6 +58,7 @@ dependencies {
     implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.2'
 
     implementation 'commons-io:commons-io:2.6'
+    implementation 'commons-fileupload:commons-fileupload:1.4'
     implementation 'joda-time:joda-time:2.10.2'
     implementation 'com.drewnoakes:metadata-extractor:2.11.0'
     implementation 'com.adobe.xmp:xmpcore:5.1.3'

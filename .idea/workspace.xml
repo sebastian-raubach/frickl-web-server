@@ -4,15 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0b41da56-1101-476e-ba7d-884db70611d5" name="Default Changelist" comment="- FIX: Attempt at fixing stuck import runnables.">
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+    <list default="true" id="0b41da56-1101-476e-ba7d-884db70611d5" name="Default Changelist" comment="- FIX: Fixed issue with default sort order of images.">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.7/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.7/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frickl-web.iml" beforeDir="false" afterPath="$PROJECT_DIR$/frickl-web.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/album/AlbumResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/album/AlbumResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/image/ImageResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/image/ImageResource.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -42,6 +45,23 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="frickl-web-server" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="frickl-web-server" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="frickl-web-server" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="frickl-web-server" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="deployment" type="c8890929:TasksNode$1" />
               </path>
             </expand>
             <select />
@@ -100,6 +120,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -367,11 +395,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.frickl-web-server [deployTomcat]" />
         <item itemvalue="Gradle.frickl-web-server [clean]" />
         <item itemvalue="Gradle.frickl-web-server [codegen]" />
         <item itemvalue="Application.Exif" />
         <item itemvalue="Gradle.frickl-web-server [war]" />
-        <item itemvalue="Gradle.frickl-web-server [deployTomcat]" />
       </list>
     </recent_temporary>
   </component>
@@ -386,13 +414,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1558543167839</updated>
-    </task>
-    <task id="LOCAL-00006" summary="- FIX: Fixed issue with wrong paths in the ScriptRunner.">
-      <created>1561142138094</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1561142138094</updated>
     </task>
     <task id="LOCAL-00007" summary="- ADD: Added javax.annotation library for Java11 compatibility.">
       <created>1561213171525</created>
@@ -730,7 +751,14 @@
       <option name="project" value="LOCAL" />
       <updated>1630686317013</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="- FIX: Fixed issue with default sort order of images.">
+      <created>1641542704427</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1641542704428</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -792,7 +820,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="- FIX: Fixed timezone issues." />
     <MESSAGE value="- ADD: Added additional image size. Now SMALL, MEDIUM and ORIGINAL are supported. Medium has a height of 1080 pixels." />
     <MESSAGE value="- ADD: Added authentication.&#10;- ADD: Added public images that can be shared with people even if Frickl is set to use authentication.&#10;-" />
     <MESSAGE value="- ADD: Added support for environmental variables to set admin username and password." />
@@ -817,7 +844,8 @@
     <MESSAGE value="- FIX: Fixed issues with thumbnail creation for videos." />
     <MESSAGE value="- FIX: Attempt at fixing stuck import runnables." />
     <MESSAGE value="- FIX: Fixed wrong config file check." />
-    <option name="LAST_COMMIT_MESSAGE" value="- FIX: Fixed wrong config file check." />
+    <MESSAGE value="- FIX: Fixed issue with default sort order of images." />
+    <option name="LAST_COMMIT_MESSAGE" value="- FIX: Fixed issue with default sort order of images." />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />

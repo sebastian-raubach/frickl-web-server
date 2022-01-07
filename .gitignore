@@ -8,6 +8,7 @@
 *.ear
 
 /out/
+/build/
 /classes/
 /bin/
 /web/WEB-INF/classes/
@@ -21,3 +22,6 @@ hs_err_pid*
 /config.properties
 /web/context.xml
 /*.jar
+
+gradle.properties
+config.properties

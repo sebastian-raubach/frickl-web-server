@@ -4,26 +4,23 @@ import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
 import org.restlet.data.Status;
-import org.restlet.resource.Get;
-import org.restlet.resource.Patch;
-import org.restlet.resource.ResourceException;
-import raubach.fricklweb.server.Database;
+import org.restlet.resource.*;
+import raubach.fricklweb.server.*;
 import raubach.fricklweb.server.auth.CustomVerifier;
-import raubach.fricklweb.server.database.tables.pojos.AlbumStats;
-import raubach.fricklweb.server.database.tables.pojos.Albums;
+import raubach.fricklweb.server.database.tables.pojos.*;
+import raubach.fricklweb.server.database.tables.records.AlbumsRecord;
 import raubach.fricklweb.server.resource.AbstractAccessTokenResource;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Objects;
+import java.io.File;
+import java.sql.*;
+import java.util.*;
 
-import static raubach.fricklweb.server.database.tables.AccessTokens.ACCESS_TOKENS;
-import static raubach.fricklweb.server.database.tables.AlbumStats.ALBUM_STATS;
-import static raubach.fricklweb.server.database.tables.AlbumTokens.ALBUM_TOKENS;
-import static raubach.fricklweb.server.database.tables.Albums.ALBUMS;
-import static raubach.fricklweb.server.database.tables.Images.IMAGES;
+import static raubach.fricklweb.server.database.tables.AccessTokens.*;
+import static raubach.fricklweb.server.database.tables.AlbumStats.*;
+import static raubach.fricklweb.server.database.tables.AlbumTokens.*;
+import static raubach.fricklweb.server.database.tables.Albums.*;
+import static raubach.fricklweb.server.database.tables.Images.*;
 
 /**
  * @author Sebastian Raubach
@@ -32,12 +29,12 @@ public class AlbumResource extends AbstractAccessTokenResource
 {
 	public static final String PARAM_PARENT_ALBUM_ID = "parentAlbumId";
 
-	private Integer albumId = null;
+	private Integer albumId       = null;
 	private Integer parentAlbumId = null;
 
 	@Override
 	protected void doInit()
-			throws ResourceException
+		throws ResourceException
 	{
 		super.doInit();
 
@@ -57,6 +54,56 @@ public class AlbumResource extends AbstractAccessTokenResource
 		}
 	}
 
+	@Post("json")
+	public boolean postAlbum(Albums album)
+	{
+		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
+		boolean auth = PropertyWatcher.authEnabled();
+
+		if (auth && StringUtils.isEmpty(user.getToken()))
+			throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
+
+		if (album == null || StringUtils.isEmpty(album.getName()))
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
+
+		try (Connection conn = Database.getConnection();
+			 DSLContext context = Database.getContext(conn))
+		{
+			File base = new File(Frickl.BASE_PATH);
+			File location = new File(Frickl.BASE_PATH);
+			// Check the parent album exists
+			if (album.getParentAlbumId() != null)
+			{
+				AlbumsRecord parent = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(album.getParentAlbumId())).fetchAny();
+
+				if (parent == null)
+				{
+					throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
+				}
+
+				location = new File(location, parent.getPath());
+			}
+
+			location = new File(location, album.getName());
+
+			if (location.exists()) {
+				throw new ResourceException(Status.CLIENT_ERROR_CONFLICT);
+			}
+
+			location.mkdirs();
+
+			AlbumsRecord record = context.newRecord(ALBUMS, album);
+			record.setPath(base.toURI().relativize(location.toURI()).getPath());
+			record.setCreatedOn(new Timestamp(System.currentTimeMillis()));
+			return record.store() > 0;
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+			throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+		}
+	}
+
 	@Patch("json")
 	public void patchJson(Albums album)
 	{
@@ -72,9 +119,9 @@ public class AlbumResource extends AbstractAccessTokenResource
 				 DSLContext context = Database.getContext(conn))
 			{
 				context.update(ALBUMS)
-						.set(ALBUMS.BANNER_IMAGE_ID, album.getBannerImageId())
-						.where(ALBUMS.ID.eq(albumId))
-						.execute();
+					   .set(ALBUMS.BANNER_IMAGE_ID, album.getBannerImageId())
+					   .where(ALBUMS.ID.eq(albumId))
+					   .execute();
 			}
 			catch (SQLException e)
 			{
@@ -119,24 +166,24 @@ public class AlbumResource extends AbstractAccessTokenResource
 			if (!StringUtils.isEmpty(accessToken))
 			{
 				step.where(DSL.exists(DSL.selectOne()
-						.from(ALBUM_TOKENS)
-						.leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
-						.where(ACCESS_TOKENS.TOKEN.eq(accessToken)
-								.and(ALBUM_TOKENS.ALBUM_ID.eq(ALBUM_STATS.ID)))));
+										 .from(ALBUM_TOKENS)
+										 .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
+										 .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
+																   .and(ALBUM_TOKENS.ALBUM_ID.eq(ALBUM_STATS.ID)))));
 			}
 			else if (StringUtils.isEmpty(user.getToken()))
 			{
 				step.where(DSL.exists(DSL.selectOne()
-						.from(IMAGES)
-						.where(IMAGES.ALBUM_ID.eq(ALBUM_STATS.ID)
-								.and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
+										 .from(IMAGES)
+										 .where(IMAGES.ALBUM_ID.eq(ALBUM_STATS.ID)
+															   .and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
 			}
 
 			return step.orderBy(ALBUM_STATS.CREATED_ON.desc(), ALBUM_STATS.NAME.desc())
-					.limit(pageSize)
-					.offset(pageSize * currentPage)
-					.fetch()
-					.into(AlbumStats.class);
+					   .limit(pageSize)
+					   .offset(pageSize * currentPage)
+					   .fetch()
+					   .into(AlbumStats.class);
 		}
 		catch (SQLException e)
 		{
