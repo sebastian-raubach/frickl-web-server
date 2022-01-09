@@ -7,7 +7,7 @@ VIEW `album_stats` AS select
     `albums`.`banner_image_id` AS `banner_image_id`,
     (select `id` from `images` where `images`.`album_id` = `albums`.`id` AND `images`.`is_public` = 1 limit 1) AS `banner_image_public_id`,
     `albums`.`parent_album_id` AS `parent_album_id`,
-    `albums`.`created_on` AS `created_on`,
+    (SELECT MAX(`images`.`created_on`) from `images` where `images`.`album_id` = `albums`.`id`) AS `created_on`,
     `albums`.`updated_on` AS `updated_on`,
     (
         select count(1)

@@ -156,6 +156,7 @@ public class Frickl extends Application
 		attachToRouter(routerAuth, "/image", ImageResource.class);
 		attachToRouter(routerAuth, "/image/count", ImageCountResource.class);
 		attachToRouter(routerAuth, "/image/fav/random", ImageRandomResource.class);
+		attachToRouter(routerAuth, "/image/xago", ImageXAgoResource.class);
 		attachToRouter(routerAuth, "/image/{imageId}", ImageResource.class);
 		attachToRouter(routerAuth, "/image/{imageId}/tag", ImageTagResource.class);
 		attachToRouter(routerUnauth, "/image/{imageId}/img", ImageImageResource.class);

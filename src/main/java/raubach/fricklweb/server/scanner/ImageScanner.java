@@ -264,6 +264,7 @@ public class ImageScanner
 			}
 			else
 			{
+				AlbumsRecord album = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(albumId)).fetchAny();
 				if (imageId == null)
 				{
 					// If the image doesn't exist, import it
@@ -296,6 +297,11 @@ public class ImageScanner
 							executor.submit(new ImageExifReader(imagesRecord));
 
 						SCANRESULT.incrementTotalImages();
+
+						if (imagesRecord.getCreatedOn().getTime() > album.getCreatedOn().getTime()) {
+							album.setCreatedOn(imagesRecord.getCreatedOn());
+							album.store(ALBUMS.CREATED_ON);
+						}
 					}
 				}
 				else
@@ -327,6 +333,11 @@ public class ImageScanner
 							executor.submit(new ImageScaler(imagesRecord, ThumbnailUtils.Size.MEDIUM));
 
 						SCANRESULT.incrementTotalImages();
+
+						if (imagesRecord.getCreatedOn().getTime() > album.getCreatedOn().getTime()) {
+							album.setCreatedOn(imagesRecord.getCreatedOn());
+							album.store(ALBUMS.CREATED_ON);
+						}
 					}
 				}
 			}

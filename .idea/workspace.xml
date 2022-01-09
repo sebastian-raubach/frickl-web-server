@@ -4,19 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0b41da56-1101-476e-ba7d-884db70611d5" name="Default Changelist" comment="- FIX: Fixed issue with default sort order of images.">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.7/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.7/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+    <list default="true" id="0b41da56-1101-476e-ba7d-884db70611d5" name="Default Changelist" comment="- ADD: Added endpoint for image upload.&#10;- ADD: Added endpoint for album c reation.&#10;-">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/album/AlbumResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/album/AlbumResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/image/ImageResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/image/ImageResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/Frickl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/Frickl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageScanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageScanner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/raubach/fricklweb/server/util/database/views.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/raubach/fricklweb/server/util/database/views.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -415,13 +407,6 @@
       <option name="presentableId" value="Default" />
       <updated>1558543167839</updated>
     </task>
-    <task id="LOCAL-00007" summary="- ADD: Added javax.annotation library for Java11 compatibility.">
-      <created>1561213171525</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1561213171526</updated>
-    </task>
     <task id="LOCAL-00008" summary="- ADD: Added timeline view.">
       <created>1561309559183</created>
       <option name="number" value="00008" />
@@ -758,7 +743,14 @@
       <option name="project" value="LOCAL" />
       <updated>1641542704428</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="- ADD: Added endpoint for image upload.&#10;- ADD: Added endpoint for album c reation.&#10;-">
+      <created>1641575795488</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1641575795489</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -820,7 +812,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="- ADD: Added additional image size. Now SMALL, MEDIUM and ORIGINAL are supported. Medium has a height of 1080 pixels." />
     <MESSAGE value="- ADD: Added authentication.&#10;- ADD: Added public images that can be shared with people even if Frickl is set to use authentication.&#10;-" />
     <MESSAGE value="- ADD: Added support for environmental variables to set admin username and password." />
     <MESSAGE value="- FIX: Fixed issues with compilation on Java 8." />
@@ -845,7 +836,8 @@
     <MESSAGE value="- FIX: Attempt at fixing stuck import runnables." />
     <MESSAGE value="- FIX: Fixed wrong config file check." />
     <MESSAGE value="- FIX: Fixed issue with default sort order of images." />
-    <option name="LAST_COMMIT_MESSAGE" value="- FIX: Fixed issue with default sort order of images." />
+    <MESSAGE value="- ADD: Added endpoint for image upload.&#10;- ADD: Added endpoint for album c reation.&#10;-" />
+    <option name="LAST_COMMIT_MESSAGE" value="- ADD: Added endpoint for image upload.&#10;- ADD: Added endpoint for album c reation.&#10;-" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
