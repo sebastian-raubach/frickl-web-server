@@ -47,7 +47,7 @@ public class ImageScanner
 
 	private File basePath;
 	private File folder;
-	private Map<String, Integer> albumPathToId = new HashMap<>();
+	private Map<String, AlbumsRecord> albumPathToId = new HashMap<>();
 	private Map<String, Integer> imagePathToId = new HashMap<>();
 
 	public ImageScanner(File basePath, File folder)
@@ -86,7 +86,7 @@ public class ImageScanner
 				// Get all existing albums and remember their path to id mapping
 				context.selectFrom(ALBUMS)
 						.stream()
-						.forEach(a -> albumPathToId.put(unrelativize(a.getPath()), a.getId()));
+						.forEach(a -> albumPathToId.put(unrelativize(a.getPath()), a));
 
 				// Get all existing images and remember their path to id mapping
 				context.selectFrom(IMAGES)
@@ -185,7 +185,7 @@ public class ImageScanner
 	private void setAlbumBanner(DSLContext context, Path dir)
 	{
 		String path = dir.toFile().getAbsolutePath();
-		Integer id = albumPathToId.get(path);
+		AlbumsRecord id = albumPathToId.get(path);
 
 		if (id != null)
 		{
@@ -193,7 +193,7 @@ public class ImageScanner
 			context.update(ALBUMS)
 					.set(ALBUMS.BANNER_IMAGE_ID, context.select(IMAGES.ID).from(IMAGES).where(IMAGES.ALBUM_ID.eq(ALBUMS.ID)).limit(1))
 					.where(ALBUMS.BANNER_IMAGE_ID.isNull())
-					.and(ALBUMS.ID.eq(id))
+					.and(ALBUMS.ID.eq(id.getId()))
 					.execute();
 
 			Albums parent = ALBUMS.as("parent");
@@ -203,7 +203,7 @@ public class ImageScanner
 					.on(parent.ID.eq(child.PARENT_ALBUM_ID)))
 					.set(parent.BANNER_IMAGE_ID, child.BANNER_IMAGE_ID)
 					.where(parent.BANNER_IMAGE_ID.isNull())
-					.and(parent.ID.eq(id))
+					.and(parent.ID.eq(id.getId()))
 					.execute();
 		}
 	}
@@ -222,9 +222,9 @@ public class ImageScanner
 		}
 
 		String path = file.toFile().getAbsolutePath();
-		Integer albumId = albumPathToId.get(path);
+		AlbumsRecord albumId = albumPathToId.get(path);
 		String parentPath = file.getParent().toFile().getAbsolutePath();
-		Integer parentAlbumId = albumPathToId.get(parentPath);
+		AlbumsRecord parentAlbumId = albumPathToId.get(parentPath);
 
 		if (albumId == null)
 		{
@@ -234,13 +234,13 @@ public class ImageScanner
 					.set(ALBUMS.NAME, file.toFile().getName());
 
 			if (parentAlbumId != null)
-				insertStep.set(ALBUMS.PARENT_ALBUM_ID, parentAlbumId);
+				insertStep.set(ALBUMS.PARENT_ALBUM_ID, parentAlbumId.getId());
 
 
 			insertStep.onDuplicateKeyIgnore()
 					.returning()
 					.fetchOptional()
-					.ifPresent(albumsRecord -> albumPathToId.put(path, albumsRecord.getId()));
+					.ifPresent(albumsRecord -> albumPathToId.put(path, albumsRecord));
 		}
 	}
 
@@ -250,7 +250,7 @@ public class ImageScanner
 		String path = file.toFile().getAbsolutePath();
 		String parentPath = file.getParent().toFile().getAbsolutePath();
 		Integer imageId = imagePathToId.get(path);
-		Integer albumId = albumPathToId.get(parentPath);
+		AlbumsRecord album = albumPathToId.get(parentPath);
 
 		String mimeType = URLConnection.guessContentTypeFromName(path);
 
@@ -258,13 +258,12 @@ public class ImageScanner
 
 		if (path.toLowerCase().endsWith(".jpg") || path.toLowerCase().endsWith(".jpeg") || isVideo)
 		{
-			if (albumId == null)
+			if (album == null)
 			{
 				throw new IOException("Album with path not found: " + parentPath);
 			}
 			else
 			{
-				AlbumsRecord album = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(albumId)).fetchAny();
 				if (imageId == null)
 				{
 					// If the image doesn't exist, import it
@@ -273,7 +272,7 @@ public class ImageScanner
 					BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
 
 					Optional<ImagesRecord> newImage = context.insertInto(IMAGES, IMAGES.ALBUM_ID, IMAGES.PATH, IMAGES.NAME, IMAGES.DATA_TYPE, IMAGES.CREATED_ON)
-							.values(albumId, relativePath, file.toFile().getName(), isVideo ? ImagesDataType.video : ImagesDataType.image, attr != null ? new Timestamp(attr.creationTime().toMillis()) : null)
+							.values(album.getId(), relativePath, file.toFile().getName(), isVideo ? ImagesDataType.video : ImagesDataType.image, attr != null ? new Timestamp(attr.creationTime().toMillis()) : null)
 							.onDuplicateKeyIgnore()
 							.returning()
 							.fetchOptional();
