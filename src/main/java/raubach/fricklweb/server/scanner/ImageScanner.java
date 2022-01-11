@@ -132,6 +132,7 @@ public class ImageScanner
 					{
 						// Set the album cover now that all images (and sub-albums) have been processed
 						setAlbumBanner(context, dir);
+						Logger.getLogger("").info("Finished scanning directory: " + dir.toFile().getAbsolutePath());
 						return FileVisitResult.CONTINUE;
 					}
 				});
