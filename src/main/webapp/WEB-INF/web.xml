@@ -22,9 +22,4 @@
 		<url-pattern>/api/*</url-pattern>
 	</servlet-mapping>
 
-	<!-- LISTENERS -->
-	<listener>
-		<listener-class>raubach.fricklweb.server.ApplicationListener</listener-class>
-	</listener>
-
 </web-app>

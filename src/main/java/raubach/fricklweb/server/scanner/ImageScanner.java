@@ -111,7 +111,6 @@ public class ImageScanner
 						}
 						catch (IOException e)
 						{
-							Logger.getLogger("").severe(e.getMessage());
 							e.printStackTrace();
 						}
 
@@ -123,7 +122,6 @@ public class ImageScanner
 					{
 						// Something went wrong, print exception
 						e.printStackTrace();
-						Logger.getLogger("").severe(e.getMessage());
 						return FileVisitResult.CONTINUE;
 					}
 
@@ -132,7 +130,6 @@ public class ImageScanner
 					{
 						// Set the album cover now that all images (and sub-albums) have been processed
 						setAlbumBanner(context, dir);
-						Logger.getLogger("").info("Finished scanning directory: " + dir.toFile().getAbsolutePath());
 						return FileVisitResult.CONTINUE;
 					}
 				});
@@ -245,6 +242,17 @@ public class ImageScanner
 		}
 	}
 
+	public static void main(String[] args)
+		throws IOException
+	{
+		Database.init("localhost", "frickl", null, "root", null, true);
+
+		File file = new File("C:\\Users\\sr41756\\Photos");
+
+		new ImageScanner(file, file)
+			.run();
+	}
+
 	private void processFile(DSLContext context, Path file)
 		throws IOException
 	{
@@ -299,10 +307,13 @@ public class ImageScanner
 
 						SCANRESULT.incrementTotalImages();
 
-						if (imagesRecord.getCreatedOn().getTime() > album.getCreatedOn().getTime())
+						if (imagesRecord.getCreatedOn() != null)
 						{
-							album.setCreatedOn(imagesRecord.getCreatedOn());
-							album.store(ALBUMS.CREATED_ON);
+							if (album.getCreatedOn() == null || imagesRecord.getCreatedOn().getTime() > album.getCreatedOn().getTime())
+							{
+								album.setCreatedOn(imagesRecord.getCreatedOn());
+								album.store(ALBUMS.CREATED_ON);
+							}
 						}
 					}
 				}
@@ -328,10 +339,13 @@ public class ImageScanner
 
 					SCANRESULT.incrementTotalImages();
 
-					if (image.getCreatedOn().getTime() > album.getCreatedOn().getTime())
+					if (image.getCreatedOn() != null)
 					{
-						album.setCreatedOn(image.getCreatedOn());
-						album.store(ALBUMS.CREATED_ON);
+						if (album.getCreatedOn() == null || image.getCreatedOn().getTime() > album.getCreatedOn().getTime())
+						{
+							album.setCreatedOn(image.getCreatedOn());
+							album.store(ALBUMS.CREATED_ON);
+						}
 					}
 				}
 			}

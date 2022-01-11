@@ -7,6 +7,7 @@ import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.*;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -15,7 +16,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
+@WebListener
 public class ApplicationListener implements ServletContextListener
 {
 	private static ScheduledExecutorService backgroundScheduler;
@@ -23,12 +26,14 @@ public class ApplicationListener implements ServletContextListener
 	@Override
 	public void contextInitialized(ServletContextEvent sce)
 	{
+		Logger.getLogger("").info("APPLICATION LISTENER");
 		PropertyWatcher.initialize();
 
 		Frickl.BASE_PATH = PropertyWatcher.get(ServerProperty.BASE_PATH);
 
 		// Spin off a thread to run the initial data import/update
 		new Thread(() -> {
+			Logger.getLogger("").info("IMAGE SCANNER THREAD");
 			File file = new File(Frickl.BASE_PATH);
 			try
 			{
