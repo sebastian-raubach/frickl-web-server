@@ -48,7 +48,7 @@ public class ImageScanner
 	private File basePath;
 	private File folder;
 	private Map<String, AlbumsRecord> albumPathToId = new HashMap<>();
-	private Map<String, Integer> imagePathToId = new HashMap<>();
+	private Map<String, ImagesRecord> imagePathToId = new HashMap<>();
 
 	public ImageScanner(File basePath, File folder)
 	{
@@ -92,7 +92,7 @@ public class ImageScanner
 				context.selectFrom(IMAGES)
 						.stream()
 						.forEach(i -> {
-							imagePathToId.put(unrelativize(i.getPath()), i.getId());
+							imagePathToId.put(unrelativize(i.getPath()), i);
 
 							// For videos, add their representative images as well
 							if (i.getDataType() == ImagesDataType.video)
@@ -101,7 +101,7 @@ public class ImageScanner
 
 								path = path.substring(0, path.lastIndexOf(".")) + ".jpg";
 
-								imagePathToId.put(path, i.getId());
+								imagePathToId.put(path, i);
 							}
 						});
 
@@ -249,7 +249,7 @@ public class ImageScanner
 	{
 		String path = file.toFile().getAbsolutePath();
 		String parentPath = file.getParent().toFile().getAbsolutePath();
-		Integer imageId = imagePathToId.get(path);
+		ImagesRecord image = imagePathToId.get(path);
 		AlbumsRecord album = albumPathToId.get(parentPath);
 
 		String mimeType = URLConnection.guessContentTypeFromName(path);
@@ -264,7 +264,7 @@ public class ImageScanner
 			}
 			else
 			{
-				if (imageId == null)
+				if (image == null)
 				{
 					// If the image doesn't exist, import it
 					String relativePath = basePath.toURI().relativize(new File(path).toURI()).getPath();
@@ -280,13 +280,13 @@ public class ImageScanner
 					if (newImage.isPresent())
 					{
 						ImagesRecord imagesRecord = newImage.get();
-						imagePathToId.put(path, imagesRecord.getId());
+						imagePathToId.put(path, imagesRecord);
 
 						if (isVideo) {
 							// If it's a video, add the newly created thumbnail as well, because we want to ignore those
 							String imagePath = relativePath.substring(0, relativePath.lastIndexOf(".")) + ".jpg";
 
-							imagePathToId.put(imagePath, imagesRecord.getId());
+							imagePathToId.put(imagePath, imagesRecord);
 						}
 
 						executor.submit(new ImageScaler(imagesRecord, ThumbnailUtils.Size.SMALL));
@@ -305,38 +305,29 @@ public class ImageScanner
 				}
 				else
 				{
-					// If it exists, get it and then check if exif is missing.
-					ImagesRecord imagesRecord = context.select()
-							.from(IMAGES)
-							.where(IMAGES.ID.eq(imageId))
-							.fetchSingleInto(ImagesRecord.class);
+					if (image.getExif() == null && image.getDataType() == ImagesDataType.image)
+						executor.submit(new ImageExifReader(image));
 
-					if (imagesRecord != null)
-					{
-						if (imagesRecord.getExif() == null && imagesRecord.getDataType() == ImagesDataType.image)
-							executor.submit(new ImageExifReader(imagesRecord));
+					MediaType type;
 
-						MediaType type;
+					if (file.toFile().getName().toLowerCase().endsWith(".jpg") || image.getDataType() == ImagesDataType.video)
+						type = MediaType.IMAGE_JPEG;
+					else if (file.toFile().getName().toLowerCase().endsWith(".png"))
+						type = MediaType.IMAGE_PNG;
+					else
+						type = MediaType.IMAGE_ALL;
 
-						if (file.toFile().getName().toLowerCase().endsWith(".jpg") || imagesRecord.getDataType() == ImagesDataType.video)
-							type = MediaType.IMAGE_JPEG;
-						else if (file.toFile().getName().toLowerCase().endsWith(".png"))
-							type = MediaType.IMAGE_PNG;
-						else
-							type = MediaType.IMAGE_ALL;
+					if (!ThumbnailUtils.thumbnailExists(type, image, file.toFile(), ThumbnailUtils.Size.SMALL))
+						executor.submit(new ImageScaler(image, ThumbnailUtils.Size.SMALL));
 
-						if (!ThumbnailUtils.thumbnailExists(type, imagesRecord, file.toFile(), ThumbnailUtils.Size.SMALL))
-							executor.submit(new ImageScaler(imagesRecord, ThumbnailUtils.Size.SMALL));
+					if (!ThumbnailUtils.thumbnailExists(type, image, file.toFile(), ThumbnailUtils.Size.MEDIUM))
+						executor.submit(new ImageScaler(image, ThumbnailUtils.Size.MEDIUM));
 
-						if (!ThumbnailUtils.thumbnailExists(type, imagesRecord, file.toFile(), ThumbnailUtils.Size.MEDIUM))
-							executor.submit(new ImageScaler(imagesRecord, ThumbnailUtils.Size.MEDIUM));
+					SCANRESULT.incrementTotalImages();
 
-						SCANRESULT.incrementTotalImages();
-
-						if (imagesRecord.getCreatedOn().getTime() > album.getCreatedOn().getTime()) {
-							album.setCreatedOn(imagesRecord.getCreatedOn());
-							album.store(ALBUMS.CREATED_ON);
-						}
+					if (image.getCreatedOn().getTime() > album.getCreatedOn().getTime()) {
+						album.setCreatedOn(image.getCreatedOn());
+						album.store(ALBUMS.CREATED_ON);
 					}
 				}
 			}
