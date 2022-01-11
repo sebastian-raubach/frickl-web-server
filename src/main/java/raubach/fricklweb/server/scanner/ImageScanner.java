@@ -1,39 +1,25 @@
 package raubach.fricklweb.server.scanner;
 
-import org.jooq.DSLContext;
-import org.jooq.InsertSetMoreStep;
+import org.jooq.*;
 import org.restlet.data.MediaType;
 import raubach.fricklweb.server.Database;
-import raubach.fricklweb.server.computed.DataScanResult;
-import raubach.fricklweb.server.computed.Status;
+import raubach.fricklweb.server.computed.*;
 import raubach.fricklweb.server.database.enums.ImagesDataType;
 import raubach.fricklweb.server.database.tables.Albums;
-import raubach.fricklweb.server.database.tables.records.AlbumsRecord;
-import raubach.fricklweb.server.database.tables.records.ImagesRecord;
+import raubach.fricklweb.server.database.tables.records.*;
 import raubach.fricklweb.server.util.ThumbnailUtils;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URLConnection;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.logging.*;
 
-import static raubach.fricklweb.server.database.tables.Albums.ALBUMS;
-import static raubach.fricklweb.server.database.tables.Images.IMAGES;
+import static raubach.fricklweb.server.database.tables.Albums.*;
+import static raubach.fricklweb.server.database.tables.Images.*;
 
 /**
  * Image scanner class that recursively walks through the base directory and imports all images that haven't been there before.
@@ -45,8 +31,8 @@ public class ImageScanner
 
 	private ThreadPoolExecutor executor;
 
-	private File basePath;
-	private File folder;
+	private File                      basePath;
+	private File                      folder;
 	private Map<String, AlbumsRecord> albumPathToId = new HashMap<>();
 	private Map<String, ImagesRecord> imagePathToId = new HashMap<>();
 
@@ -75,7 +61,7 @@ public class ImageScanner
 	}
 
 	public void run()
-			throws IOException
+		throws IOException
 	{
 		if (folder != null && folder.exists() && folder.isDirectory())
 		{
@@ -85,31 +71,32 @@ public class ImageScanner
 				SCANRESULT.setStatus(Status.SCANNING);
 				// Get all existing albums and remember their path to id mapping
 				context.selectFrom(ALBUMS)
-						.stream()
-						.forEach(a -> albumPathToId.put(unrelativize(a.getPath()), a));
+					   .stream()
+					   .forEach(a -> albumPathToId.put(unrelativize(a.getPath()), a));
 
 				// Get all existing images and remember their path to id mapping
 				context.selectFrom(IMAGES)
-						.stream()
-						.forEach(i -> {
-							imagePathToId.put(unrelativize(i.getPath()), i);
+					   .stream()
+					   .forEach(i -> {
+						   imagePathToId.put(unrelativize(i.getPath()), i);
 
-							// For videos, add their representative images as well
-							if (i.getDataType() == ImagesDataType.video)
-							{
-								String path = unrelativize(i.getPath());
+						   // For videos, add their representative images as well
+						   if (i.getDataType() == ImagesDataType.video)
+						   {
+							   String path = unrelativize(i.getPath());
 
-								path = path.substring(0, path.lastIndexOf(".")) + ".jpg";
+							   path = path.substring(0, path.lastIndexOf(".")) + ".jpg";
 
-								imagePathToId.put(path, i);
-							}
-						});
+							   imagePathToId.put(path, i);
+						   }
+					   });
 
 				Files.walkFileTree(folder.toPath(), new FileVisitor<Path>()
 				{
 					@Override
 					public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
 					{
+						// Process the album
 						processDirectory(context, dir, attrs);
 						return FileVisitResult.CONTINUE;
 					}
@@ -119,10 +106,12 @@ public class ImageScanner
 					{
 						try
 						{
+							// Process the image
 							processFile(context, file);
 						}
 						catch (IOException e)
 						{
+							Logger.getLogger("").severe(e.getMessage());
 							e.printStackTrace();
 						}
 
@@ -130,15 +119,18 @@ public class ImageScanner
 					}
 
 					@Override
-					public FileVisitResult visitFileFailed(Path file, IOException exc)
+					public FileVisitResult visitFileFailed(Path file, IOException e)
 					{
-						exc.printStackTrace();
+						// Something went wrong, print exception
+						e.printStackTrace();
+						Logger.getLogger("").severe(e.getMessage());
 						return FileVisitResult.CONTINUE;
 					}
 
 					@Override
 					public FileVisitResult postVisitDirectory(Path dir, IOException exc)
 					{
+						// Set the album cover now that all images (and sub-albums) have been processed
 						setAlbumBanner(context, dir);
 						return FileVisitResult.CONTINUE;
 					}
@@ -185,26 +177,33 @@ public class ImageScanner
 	private void setAlbumBanner(DSLContext context, Path dir)
 	{
 		String path = dir.toFile().getAbsolutePath();
-		AlbumsRecord id = albumPathToId.get(path);
+		AlbumsRecord album = albumPathToId.get(path);
 
-		if (id != null)
+		if (album != null)
 		{
-			// For albums without banner image, select the first image within the album and use that as the initial banner image
-			context.update(ALBUMS)
-					.set(ALBUMS.BANNER_IMAGE_ID, context.select(IMAGES.ID).from(IMAGES).where(IMAGES.ALBUM_ID.eq(ALBUMS.ID)).limit(1))
-					.where(ALBUMS.BANNER_IMAGE_ID.isNull())
-					.and(ALBUMS.ID.eq(id.getId()))
-					.execute();
+			if (album.getBannerImageId() == null)
+			{
+				// For albums without banner image, select the first image within the album and use that as the initial banner image
+				Integer imageId = context.select(IMAGES.ID).from(IMAGES).where(IMAGES.ALBUM_ID.eq(ALBUMS.ID)).limit(1).fetchAnyInto(Integer.class);
+				if (imageId != null)
+				{
+					album.setBannerImageId(imageId);
+					album.store(ALBUMS.BANNER_IMAGE_ID);
+				}
+				else
+				{
+					// For albums that only contain other albums and no images, use the image of the first album within the album and use that as the initial banner image
+					Albums parent = ALBUMS.as("parent");
+					Albums child = ALBUMS.as("child");
+					imageId = context.select(child.BANNER_IMAGE_ID).from(child.leftJoin(parent).on(parent.ID.eq(child.PARENT_ALBUM_ID))).limit(1).fetchAnyInto(Integer.class);
 
-			Albums parent = ALBUMS.as("parent");
-			Albums child = ALBUMS.as("child");
-			// For albums that only contain other albums and no images, use the image of the first album within the album and use that as the initial banner image
-			context.update(parent.innerJoin(child)
-					.on(parent.ID.eq(child.PARENT_ALBUM_ID)))
-					.set(parent.BANNER_IMAGE_ID, child.BANNER_IMAGE_ID)
-					.where(parent.BANNER_IMAGE_ID.isNull())
-					.and(parent.ID.eq(id.getId()))
-					.execute();
+					if (imageId != null)
+					{
+						album.setBannerImageId(imageId);
+						album.store(ALBUMS.BANNER_IMAGE_ID);
+					}
+				}
+			}
 		}
 	}
 
@@ -223,47 +222,48 @@ public class ImageScanner
 
 		String path = file.toFile().getAbsolutePath();
 		AlbumsRecord albumId = albumPathToId.get(path);
-		String parentPath = file.getParent().toFile().getAbsolutePath();
-		AlbumsRecord parentAlbumId = albumPathToId.get(parentPath);
 
 		if (albumId == null)
 		{
+			String parentPath = file.getParent().toFile().getAbsolutePath();
+			AlbumsRecord parentAlbumId = albumPathToId.get(parentPath);
+
 			String relativePath = relativize(path);
 			InsertSetMoreStep<AlbumsRecord> insertStep = context.insertInto(ALBUMS)
-					.set(ALBUMS.PATH, relativePath)
-					.set(ALBUMS.NAME, file.toFile().getName());
+																.set(ALBUMS.PATH, relativePath)
+																.set(ALBUMS.NAME, file.toFile().getName());
 
 			if (parentAlbumId != null)
 				insertStep.set(ALBUMS.PARENT_ALBUM_ID, parentAlbumId.getId());
 
 
 			insertStep.onDuplicateKeyIgnore()
-					.returning()
-					.fetchOptional()
-					.ifPresent(albumsRecord -> albumPathToId.put(path, albumsRecord));
+					  .returning()
+					  .fetchOptional()
+					  .ifPresent(albumsRecord -> albumPathToId.put(path, albumsRecord));
 		}
 	}
 
 	private void processFile(DSLContext context, Path file)
-			throws IOException
+		throws IOException
 	{
 		String path = file.toFile().getAbsolutePath();
-		String parentPath = file.getParent().toFile().getAbsolutePath();
-		ImagesRecord image = imagePathToId.get(path);
-		AlbumsRecord album = albumPathToId.get(parentPath);
-
 		String mimeType = URLConnection.guessContentTypeFromName(path);
-
 		boolean isVideo = mimeType != null && mimeType.startsWith("video");
 
 		if (path.toLowerCase().endsWith(".jpg") || path.toLowerCase().endsWith(".jpeg") || isVideo)
 		{
+			String parentPath = file.getParent().toFile().getAbsolutePath();
+			AlbumsRecord album = albumPathToId.get(parentPath);
+
 			if (album == null)
 			{
 				throw new IOException("Album with path not found: " + parentPath);
 			}
 			else
 			{
+				ImagesRecord image = imagePathToId.get(path);
+
 				if (image == null)
 				{
 					// If the image doesn't exist, import it
@@ -272,17 +272,18 @@ public class ImageScanner
 					BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
 
 					Optional<ImagesRecord> newImage = context.insertInto(IMAGES, IMAGES.ALBUM_ID, IMAGES.PATH, IMAGES.NAME, IMAGES.DATA_TYPE, IMAGES.CREATED_ON)
-							.values(album.getId(), relativePath, file.toFile().getName(), isVideo ? ImagesDataType.video : ImagesDataType.image, attr != null ? new Timestamp(attr.creationTime().toMillis()) : null)
-							.onDuplicateKeyIgnore()
-							.returning()
-							.fetchOptional();
+															 .values(album.getId(), relativePath, file.toFile().getName(), isVideo ? ImagesDataType.video : ImagesDataType.image, attr != null ? new Timestamp(attr.creationTime().toMillis()) : null)
+															 .onDuplicateKeyIgnore()
+															 .returning()
+															 .fetchOptional();
 
 					if (newImage.isPresent())
 					{
 						ImagesRecord imagesRecord = newImage.get();
 						imagePathToId.put(path, imagesRecord);
 
-						if (isVideo) {
+						if (isVideo)
+						{
 							// If it's a video, add the newly created thumbnail as well, because we want to ignore those
 							String imagePath = relativePath.substring(0, relativePath.lastIndexOf(".")) + ".jpg";
 
@@ -297,7 +298,8 @@ public class ImageScanner
 
 						SCANRESULT.incrementTotalImages();
 
-						if (imagesRecord.getCreatedOn().getTime() > album.getCreatedOn().getTime()) {
+						if (imagesRecord.getCreatedOn().getTime() > album.getCreatedOn().getTime())
+						{
 							album.setCreatedOn(imagesRecord.getCreatedOn());
 							album.store(ALBUMS.CREATED_ON);
 						}
@@ -305,9 +307,6 @@ public class ImageScanner
 				}
 				else
 				{
-					if (image.getExif() == null && image.getDataType() == ImagesDataType.image)
-						executor.submit(new ImageExifReader(image));
-
 					MediaType type;
 
 					if (file.toFile().getName().toLowerCase().endsWith(".jpg") || image.getDataType() == ImagesDataType.video)
@@ -317,6 +316,9 @@ public class ImageScanner
 					else
 						type = MediaType.IMAGE_ALL;
 
+					if (image.getExif() == null && image.getDataType() == ImagesDataType.image)
+						executor.submit(new ImageExifReader(image));
+
 					if (!ThumbnailUtils.thumbnailExists(type, image, file.toFile(), ThumbnailUtils.Size.SMALL))
 						executor.submit(new ImageScaler(image, ThumbnailUtils.Size.SMALL));
 
@@ -325,7 +327,8 @@ public class ImageScanner
 
 					SCANRESULT.incrementTotalImages();
 
-					if (image.getCreatedOn().getTime() > album.getCreatedOn().getTime()) {
+					if (image.getCreatedOn().getTime() > album.getCreatedOn().getTime())
+					{
 						album.setCreatedOn(image.getCreatedOn());
 						album.store(ALBUMS.CREATED_ON);
 					}
