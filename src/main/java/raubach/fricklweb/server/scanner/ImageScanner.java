@@ -25,16 +25,16 @@ import static raubach.fricklweb.server.database.tables.Images.*;
  * Image scanner class that recursively walks through the base directory and imports all images that haven't been there before.
  * Also reads and imports their EXIF data and existing tags.
  */
-public class ImageScanner
+public class ImageScanner implements Runnable
 {
 	public static DataScanResult SCANRESULT = new DataScanResult();
 
-	private ThreadPoolExecutor executor;
+	private final ThreadPoolExecutor executor;
 
-	private File                      basePath;
-	private File                      folder;
-	private Map<String, AlbumsRecord> albumPathToId = new HashMap<>();
-	private Map<String, ImagesRecord> imagePathToId = new HashMap<>();
+	private final File                      basePath;
+	private final File                      folder;
+	private final Map<String, AlbumsRecord> albumPathToId = new HashMap<>();
+	private final Map<String, ImagesRecord> imagePathToId = new HashMap<>();
 
 	public ImageScanner(File basePath, File folder)
 	{
@@ -61,7 +61,6 @@ public class ImageScanner
 	}
 
 	public void run()
-		throws IOException
 	{
 		if (folder != null && folder.exists() && folder.isDirectory())
 		{
@@ -91,51 +90,63 @@ public class ImageScanner
 						   }
 					   });
 
-				Files.walkFileTree(folder.toPath(), new FileVisitor<Path>()
-				{
-					@Override
-					public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
-					{
-						// Process the album
-						processDirectory(context, dir, attrs);
-						return FileVisitResult.CONTINUE;
-					}
-
-					@Override
-					public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
-					{
-						try
-						{
-							// Process the image
-							processFile(context, file);
-						}
-						catch (IOException e)
-						{
-							e.printStackTrace();
-						}
-
-						return FileVisitResult.CONTINUE;
-					}
-
-					@Override
-					public FileVisitResult visitFileFailed(Path file, IOException e)
-					{
-						// Something went wrong, print exception
-						e.printStackTrace();
-						return FileVisitResult.CONTINUE;
-					}
-
-					@Override
-					public FileVisitResult postVisitDirectory(Path dir, IOException exc)
-					{
-						// Set the album cover now that all images (and sub-albums) have been processed
-						setAlbumBanner(context, dir);
-						return FileVisitResult.CONTINUE;
-					}
-				});
-
 				try
 				{
+					Files.walkFileTree(folder.toPath(), new FileVisitor<Path>()
+					{
+						@Override
+						public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
+						{
+							// Process the album
+							processDirectory(context, dir, attrs);
+							return FileVisitResult.CONTINUE;
+						}
+
+						@Override
+						public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+						{
+							try
+							{
+								// Process the image
+								processFile(context, file);
+							}
+							catch (IOException e)
+							{
+								Logger.getLogger("").severe(e.getMessage());
+								e.printStackTrace();
+							}
+
+							return FileVisitResult.CONTINUE;
+						}
+
+						@Override
+						public FileVisitResult visitFileFailed(Path file, IOException e)
+						{
+							// Something went wrong, print exception
+							if (e != null)
+							{
+								e.printStackTrace();
+								Logger.getLogger("").severe(e.getMessage());
+							}
+							return FileVisitResult.CONTINUE;
+						}
+
+						@Override
+						public FileVisitResult postVisitDirectory(Path dir, IOException e)
+						{
+							// Something went wrong, print exception
+							if (e != null)
+							{
+								e.printStackTrace();
+								Logger.getLogger("").severe(e.getMessage());
+							}
+
+							// Set the album cover now that all images (and sub-albums) have been processed
+							setAlbumBanner(context, dir);
+							return FileVisitResult.CONTINUE;
+						}
+					});
+
 					SCANRESULT.setStatus(Status.IMPORTING);
 
 					while (!executor.awaitTermination(10, TimeUnit.SECONDS))
@@ -158,8 +169,9 @@ public class ImageScanner
 						}
 					}
 				}
-				catch (InterruptedException e)
+				catch (IOException | InterruptedException e)
 				{
+					Logger.getLogger("").severe(e.getMessage());
 					e.printStackTrace();
 				}
 
@@ -167,6 +179,7 @@ public class ImageScanner
 			}
 			catch (SQLException e)
 			{
+				Logger.getLogger("").severe(e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -214,6 +227,7 @@ public class ImageScanner
 		}
 		catch (IOException e)
 		{
+			Logger.getLogger("").severe(e.getMessage());
 			e.printStackTrace();
 			return;
 		}
@@ -240,17 +254,6 @@ public class ImageScanner
 					  .fetchOptional()
 					  .ifPresent(albumsRecord -> albumPathToId.put(path, albumsRecord));
 		}
-	}
-
-	public static void main(String[] args)
-		throws IOException
-	{
-		Database.init("localhost", "frickl", null, "root", null, true);
-
-		File file = new File("C:\\Users\\sr41756\\Photos");
-
-		new ImageScanner(file, file)
-			.run();
 	}
 
 	private void processFile(DSLContext context, Path file)

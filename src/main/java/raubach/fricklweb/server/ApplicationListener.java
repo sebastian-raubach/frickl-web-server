@@ -31,24 +31,13 @@ public class ApplicationListener implements ServletContextListener
 
 		Frickl.BASE_PATH = PropertyWatcher.get(ServerProperty.BASE_PATH);
 
-		// Spin off a thread to run the initial data import/update
-		new Thread(() -> {
-			Logger.getLogger("").info("IMAGE SCANNER THREAD");
-			File file = new File(Frickl.BASE_PATH);
-			try
-			{
-				new ImageScanner(file, file)
-						.run();
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		}).start();
+		File file = new File(Frickl.BASE_PATH);
 
 		backgroundScheduler = Executors.newSingleThreadScheduledExecutor();
 		// Run it now
 		backgroundScheduler.schedule(new AccessTokenDeleteTask(), 0, TimeUnit.SECONDS);
+		// Spin off a thread to run the initial data import/update
+		backgroundScheduler.schedule(new ImageScanner(file, file), 10, TimeUnit.SECONDS);
 		// Then at midnight each day
 		long midnight = LocalDateTime.now().until(LocalDate.now().plusDays(1).atStartOfDay(), ChronoUnit.MINUTES);
 		backgroundScheduler.scheduleAtFixedRate(new AccessTokenDeleteTask(), midnight, TimeUnit.DAYS.toMinutes(1), TimeUnit.MINUTES);

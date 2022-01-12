@@ -24,7 +24,7 @@ import static raubach.fricklweb.server.database.tables.Tags.TAGS;
  */
 public class ImageExifReader extends ImageRecordRunnable
 {
-	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
+	private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
 
 	public ImageExifReader(ImagesRecord image)
 	{
@@ -95,36 +95,39 @@ public class ImageExifReader extends ImageRecordRunnable
 			date = null;
 		}
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		if (exif != null)
 		{
-			context.update(IMAGES)
-				   .set(IMAGES.EXIF, exif.exif)
-				   .set(IMAGES.CREATED_ON, date)
-				   .where(IMAGES.ID.eq(image.getId()))
-				   .execute();
-
-			// Update the album creation date
-			if (date != null)
+			try (Connection conn = Database.getConnection();
+				 DSLContext context = Database.getContext(conn))
 			{
-				AlbumsRecord album = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(image.getAlbumId())).fetchAny();
+				context.update(IMAGES)
+					   .set(IMAGES.EXIF, exif.exif)
+					   .set(IMAGES.CREATED_ON, date)
+					   .where(IMAGES.ID.eq(image.getId()))
+					   .execute();
 
-				if (album != null)
+				// Update the album creation date
+				if (date != null)
 				{
-					if (album.getCreatedOn() == null || date.getTime() > album.getCreatedOn().getTime())
+					AlbumsRecord album = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(image.getAlbumId())).fetchAny();
+
+					if (album != null)
 					{
-						album.setCreatedOn(date);
-						album.store(ALBUMS.CREATED_ON);
+						if (album.getCreatedOn() == null || date.getTime() > album.getCreatedOn().getTime())
+						{
+							album.setCreatedOn(date);
+							album.store(ALBUMS.CREATED_ON);
+						}
 					}
 				}
-			}
 
-			if (exif.keyword.size() > 0)
-				processKeywords(context, image, exif.keyword);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
+				if (exif.keyword.size() > 0)
+					processKeywords(context, image, exif.keyword);
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -154,15 +157,12 @@ public class ImageExifReader extends ImageRecordRunnable
 		}
 
 		Iterable<Directory> directories = metadata.getDirectories();
-		Iterator<Directory> iterator = directories.iterator();
-		while (iterator.hasNext())
+		for (Directory dir : directories)
 		{
-			Directory dir = iterator.next();
-
 			if (dir.getName().contains("PrintIM"))
 				continue;
 
-			Collection<com.drew.metadata.Tag> tags = dir.getTags();
+			Collection<Tag> tags = dir.getTags();
 			for (Tag tag : tags)
 			{
 				try
@@ -323,8 +323,8 @@ public class ImageExifReader extends ImageRecordRunnable
 
 	private static class ExifResult
 	{
-		private Exif         exif;
-		private List<String> keyword;
+		private final Exif         exif;
+		private final List<String> keyword;
 
 		public ExifResult(Exif exif, List<String> keyword)
 		{
