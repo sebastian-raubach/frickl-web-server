@@ -3,11 +3,11 @@ import com.bmuschko.gradle.cargo.tasks.remote.CargoRedeployRemote
 
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
-        classpath 'com.bmuschko:gradle-cargo-plugin:2.7.0'
+        classpath 'com.bmuschko:gradle-cargo-plugin:2.8.0'
     }
 }
 
