@@ -168,12 +168,16 @@ public class ImageResource extends AbstractAccessTokenResource
 				image.setCreatedOn(ts);
 				counter += image.store() > 0 ? 1 : 0;
 
-				if (needsBannerImage) {
+				if (needsBannerImage)
+				{
 					album.setBannerImageId(image.getId());
 					album.store(ALBUMS.BANNER_IMAGE_ID);
 					needsBannerImage = false;
 				}
 			}
+
+			ApplicationListener.startImageScanner(folder);
+
 			return counter > 0;
 		}
 		catch (SQLException e)

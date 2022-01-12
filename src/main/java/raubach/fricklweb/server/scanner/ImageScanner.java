@@ -47,6 +47,8 @@ public class ImageScanner implements Runnable
 		if (cores > 2)
 			cores--;
 
+		Logger.getLogger("").info("RUNNING IMAGE SCANNER WITH " + cores + " CORES.");
+
 		executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cores);
 	}
 
@@ -60,8 +62,10 @@ public class ImageScanner implements Runnable
 		return new File(basePath, input).getAbsolutePath();
 	}
 
+	@Override
 	public void run()
 	{
+		Logger.getLogger("").info("IMAGE SCANNER PROCESSING: " + folder);
 		if (folder != null && folder.exists() && folder.isDirectory())
 		{
 			try (Connection conn = Database.getConnection();
@@ -98,6 +102,7 @@ public class ImageScanner implements Runnable
 						public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
 						{
 							// Process the album
+							Logger.getLogger("").info("PROCESSING FOLDER: " + dir.toFile().getAbsolutePath());
 							processDirectory(context, dir, attrs);
 							return FileVisitResult.CONTINUE;
 						}
@@ -177,7 +182,7 @@ public class ImageScanner implements Runnable
 
 				SCANRESULT.reset();
 			}
-			catch (SQLException e)
+			catch (Exception e)
 			{
 				Logger.getLogger("").severe(e.getMessage());
 				e.printStackTrace();
@@ -194,8 +199,9 @@ public class ImageScanner implements Runnable
 		{
 			if (album.getBannerImageId() == null)
 			{
+				Logger.getLogger("").info("SETTING BANNER IMAGE FOR ALBUM: " + album.getId());
 				// For albums without banner image, select the first image within the album and use that as the initial banner image
-				Integer imageId = context.select(IMAGES.ID).from(IMAGES).where(IMAGES.ALBUM_ID.eq(ALBUMS.ID)).limit(1).fetchAnyInto(Integer.class);
+				Integer imageId = context.select(IMAGES.ID).from(IMAGES).where(IMAGES.ALBUM_ID.eq(album.getId())).limit(1).fetchAnyInto(Integer.class);
 				if (imageId != null)
 				{
 					album.setBannerImageId(imageId);

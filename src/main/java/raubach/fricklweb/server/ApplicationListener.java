@@ -1,27 +1,32 @@
 package raubach.fricklweb.server;
 
+import raubach.fricklweb.server.computed.Status;
 import raubach.fricklweb.server.scanner.ImageScanner;
 import raubach.fricklweb.server.util.ServerProperty;
 import raubach.fricklweb.server.util.task.AccessTokenDeleteTask;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.*;
+import javax.servlet.*;
+import javax.servlet.annotation.WebListener;
 import java.io.File;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.time.temporal.ChronoUnit;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.logging.Logger;
 
 @WebListener
 public class ApplicationListener implements ServletContextListener
 {
 	private static ScheduledExecutorService backgroundScheduler;
+
+	public static void startImageScanner(File file)
+	{
+		if (ImageScanner.SCANRESULT.getStatus() == Status.IDLE)
+		{
+			// Spin off a thread to run the initial data import/update
+			backgroundScheduler.schedule(new ImageScanner(new File(Frickl.BASE_PATH), file), 0, TimeUnit.SECONDS);
+		}
+	}
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce)
@@ -31,16 +36,15 @@ public class ApplicationListener implements ServletContextListener
 
 		Frickl.BASE_PATH = PropertyWatcher.get(ServerProperty.BASE_PATH);
 
-		File file = new File(Frickl.BASE_PATH);
 
 		backgroundScheduler = Executors.newSingleThreadScheduledExecutor();
 		// Run it now
 		backgroundScheduler.schedule(new AccessTokenDeleteTask(), 0, TimeUnit.SECONDS);
-		// Spin off a thread to run the initial data import/update
-		backgroundScheduler.schedule(new ImageScanner(file, file), 10, TimeUnit.SECONDS);
 		// Then at midnight each day
 		long midnight = LocalDateTime.now().until(LocalDate.now().plusDays(1).atStartOfDay(), ChronoUnit.MINUTES);
 		backgroundScheduler.scheduleAtFixedRate(new AccessTokenDeleteTask(), midnight, TimeUnit.DAYS.toMinutes(1), TimeUnit.MINUTES);
+
+		startImageScanner(new File(Frickl.BASE_PATH));
 	}
 
 	@Override

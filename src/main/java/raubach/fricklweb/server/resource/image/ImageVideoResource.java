@@ -1,35 +1,25 @@
 package raubach.fricklweb.server.resource.image;
 
-import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.SelectConditionStep;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
-import org.restlet.data.Disposition;
-import org.restlet.data.MediaType;
 import org.restlet.data.Status;
-import org.restlet.representation.FileRepresentation;
-import org.restlet.representation.Representation;
-import org.restlet.resource.Get;
-import org.restlet.resource.ResourceException;
-import raubach.fricklweb.server.Database;
-import raubach.fricklweb.server.Frickl;
+import org.restlet.data.*;
+import org.restlet.representation.*;
+import org.restlet.resource.*;
+import raubach.fricklweb.server.*;
 import raubach.fricklweb.server.auth.CustomVerifier;
 import raubach.fricklweb.server.database.tables.pojos.Images;
 import raubach.fricklweb.server.resource.AbstractAccessTokenResource;
-import raubach.fricklweb.server.util.ThumbnailUtils;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.io.File;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.*;
+import java.util.logging.*;
 
-import static raubach.fricklweb.server.database.tables.AccessTokens.ACCESS_TOKENS;
-import static raubach.fricklweb.server.database.tables.AlbumTokens.ALBUM_TOKENS;
-import static raubach.fricklweb.server.database.tables.Images.IMAGES;
+import static raubach.fricklweb.server.database.tables.AccessTokens.*;
+import static raubach.fricklweb.server.database.tables.AlbumTokens.*;
+import static raubach.fricklweb.server.database.tables.Images.*;
 
 /**
  * @author Sebastian Raubach
@@ -39,11 +29,11 @@ public class ImageVideoResource extends AbstractAccessTokenResource
 	public static final String PARAM_TOKEN = "token";
 
 	private Integer imageId = null;
-	private String token;
+	private String  token;
 
 	@Override
 	protected void doInit()
-			throws ResourceException
+		throws ResourceException
 	{
 		super.doInit();
 
@@ -70,17 +60,17 @@ public class ImageVideoResource extends AbstractAccessTokenResource
 				 DSLContext context = Database.getContext(conn))
 			{
 				SelectConditionStep<Record> step = context.select().from(IMAGES)
-						.where(IMAGES.ID.eq(imageId));
+														  .where(IMAGES.ID.eq(imageId));
 
 				if (auth)
 				{
 					if (!StringUtils.isEmpty(accessToken))
 					{
 						step.and(DSL.exists(DSL.selectOne()
-								.from(ALBUM_TOKENS)
-								.leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
-								.where(ACCESS_TOKENS.TOKEN.eq(accessToken)
-										.and(ALBUM_TOKENS.ALBUM_ID.eq(IMAGES.ALBUM_ID)))));
+											   .from(ALBUM_TOKENS)
+											   .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
+											   .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
+																		 .and(ALBUM_TOKENS.ALBUM_ID.eq(IMAGES.ALBUM_ID)))));
 					}
 					else if (!CustomVerifier.isValidImageToken(token))
 					{
@@ -104,6 +94,8 @@ public class ImageVideoResource extends AbstractAccessTokenResource
 						type = MediaType.VIDEO_MPEG;
 					else if (file.getName().toLowerCase().endsWith(".wmv"))
 						type = MediaType.VIDEO_WMV;
+					else if (file.getName().toLowerCase().endsWith(".mov"))
+						type = MediaType.VIDEO_QUICKTIME;
 					else
 						type = MediaType.VIDEO_ALL;
 
