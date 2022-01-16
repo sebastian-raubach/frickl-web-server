@@ -24,8 +24,7 @@ package raubach.fricklweb.server.util;/*
 import java.io.*;
 import java.sql.*;
 import java.text.SimpleDateFormat;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.regex.*;
 
 /**
  * Tool to run database scripts
@@ -37,20 +36,20 @@ public class ScriptRunner
 	 * regex to detect delimiter.
 	 * ignores spaces, allows delimiter in comment, allows an equals-sign
 	 */
-	public static final Pattern delimP = Pattern.compile("^\\s*(--)?\\s*delimiter\\s*=?\\s*([^\\s]+)+\\s*.*$", Pattern.CASE_INSENSITIVE);
-	private static final String DEFAULT_DELIMITER = ";";
-	private static final Pattern SOURCE_COMMAND = Pattern.compile("^\\s*SOURCE\\s+(.*?)\\s*$", Pattern.CASE_INSENSITIVE);
-	private final Connection connection;
+	public static final  Pattern    delimP            = Pattern.compile("^\\s*(--)?\\s*delimiter\\s*=?\\s*([^\\s]+)+\\s*.*$", Pattern.CASE_INSENSITIVE);
+	private static final String     DEFAULT_DELIMITER = ";";
+	private static final Pattern    SOURCE_COMMAND    = Pattern.compile("^\\s*SOURCE\\s+(.*?)\\s*$", Pattern.CASE_INSENSITIVE);
+	private final        Connection connection;
 
 	private final boolean stopOnError;
 	private final boolean autoCommit;
 
 	@SuppressWarnings("UseOfSystemOutOrSystemErr")
-	private PrintWriter logWriter = null;
+	private PrintWriter logWriter      = null;
 	@SuppressWarnings("UseOfSystemOutOrSystemErr")
 	private PrintWriter errorLogWriter = null;
 
-	private String delimiter = DEFAULT_DELIMITER;
+	private String  delimiter         = DEFAULT_DELIMITER;
 	private boolean fullLineDelimiter = false;
 
 	private String userDirectory = System.getProperty("user.dir");
@@ -140,7 +139,8 @@ public class ScriptRunner
 	 *
 	 * @param filepath - the filepath of the script to run. May be relative to the userDirectory.
 	 */
-	public void runScript(String filepath) throws IOException, SQLException
+	public void runScript(String filepath)
+		throws IOException, SQLException
 	{
 		File file = new File(userDirectory, filepath);
 		this.runScript(new BufferedReader(new FileReader(file)));
@@ -151,7 +151,8 @@ public class ScriptRunner
 	 *
 	 * @param reader - the source of the script
 	 */
-	public void runScript(Reader reader) throws IOException, SQLException
+	public void runScript(Reader reader)
+		throws IOException, SQLException
 	{
 		try
 		{
@@ -188,8 +189,9 @@ public class ScriptRunner
 	 * @throws SQLException if any SQL errors occur
 	 * @throws IOException  if there is an error reading from the Reader
 	 */
-	private void runScript(Connection conn, Reader reader) throws IOException,
-			SQLException
+	private void runScript(Connection conn, Reader reader)
+		throws IOException,
+		SQLException
 	{
 		StringBuffer command = null;
 		try
@@ -205,7 +207,7 @@ public class ScriptRunner
 				String trimmedLine = line.trim();
 				final Matcher delimMatch = delimP.matcher(trimmedLine);
 				if (trimmedLine.length() < 1
-						|| trimmedLine.startsWith("//"))
+					|| trimmedLine.startsWith("//"))
 				{
 					// Do nothing
 				}
@@ -218,17 +220,17 @@ public class ScriptRunner
 					println(trimmedLine);
 				}
 				else if (trimmedLine.length() < 1
-						|| trimmedLine.startsWith("--"))
+					|| trimmedLine.startsWith("--"))
 				{
 					// Do nothing
 				}
 				else if (!fullLineDelimiter
-						&& trimmedLine.endsWith(getDelimiter())
-						|| fullLineDelimiter
-						&& trimmedLine.equals(getDelimiter()))
+					&& trimmedLine.endsWith(getDelimiter())
+					|| fullLineDelimiter
+					&& trimmedLine.equals(getDelimiter()))
 				{
-					command.append(line.substring(0, line
-							.lastIndexOf(getDelimiter())));
+					command.append(line, 0, line
+						.lastIndexOf(getDelimiter()));
 					command.append(" ");
 					this.execCommand(conn, command, lineReader);
 					command = null;
@@ -260,7 +262,8 @@ public class ScriptRunner
 	}
 
 	private void execCommand(Connection conn, StringBuffer command,
-							 LineNumberReader lineReader) throws IOException, SQLException
+							 LineNumberReader lineReader)
+		throws IOException, SQLException
 	{
 
 		if (command.length() == 0)
@@ -278,14 +281,16 @@ public class ScriptRunner
 		this.execSqlCommand(conn, command, lineReader);
 	}
 
-	private void runScriptFile(Connection conn, String filepath) throws IOException, SQLException
+	private void runScriptFile(Connection conn, String filepath)
+		throws IOException, SQLException
 	{
 		File file = new File(userDirectory, filepath);
 		this.runScript(conn, new BufferedReader(new FileReader(file)));
 	}
 
 	private void execSqlCommand(Connection conn, StringBuffer command,
-								LineNumberReader lineReader) throws SQLException
+								LineNumberReader lineReader)
+		throws SQLException
 	{
 
 		Statement statement = conn.createStatement();
@@ -300,7 +305,7 @@ public class ScriptRunner
 		catch (SQLException e)
 		{
 			final String errText = String.format("Error executing '%s' (line %d): %s",
-					command, lineReader.getLineNumber(), e.getMessage());
+				command, lineReader.getLineNumber(), e.getMessage());
 			printlnError(errText);
 			System.err.println(errText);
 			if (stopOnError)

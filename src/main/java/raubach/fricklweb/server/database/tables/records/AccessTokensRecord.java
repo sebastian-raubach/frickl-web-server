@@ -18,8 +18,8 @@ import raubach.fricklweb.server.database.tables.AccessTokens;
 
 
 /**
- * This table contains all tags that can be used to access folders that aren't 
- * public.
+ * This table contains all tokens that can be used to access folders that 
+ * aren't public.
  */
 @Generated(
     value = {
@@ -31,7 +31,7 @@ import raubach.fricklweb.server.database.tables.AccessTokens;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AccessTokensRecord extends UpdatableRecordImpl<AccessTokensRecord> implements Record5<Integer, String, Timestamp, Timestamp, Timestamp> {
 
-    private static final long serialVersionUID = -1769856234;
+    private static final long serialVersionUID = -930561075;
 
     /**
      * Setter for <code>frickl.access_tokens.id</code>. Auto incremented id of this table.

@@ -23,7 +23,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AlbumStats implements Serializable {
 
-    private static final long serialVersionUID = 902564300;
+    private static final long serialVersionUID = 41969103;
 
     private Integer   id;
     private String    name;
@@ -32,6 +32,7 @@ public class AlbumStats implements Serializable {
     private Integer   bannerImageId;
     private Long      bannerImagePublicId;
     private Integer   parentAlbumId;
+    private Timestamp newestImage;
     private Timestamp createdOn;
     private Timestamp updatedOn;
     private Long      count;
@@ -47,6 +48,7 @@ public class AlbumStats implements Serializable {
         this.bannerImageId = value.bannerImageId;
         this.bannerImagePublicId = value.bannerImagePublicId;
         this.parentAlbumId = value.parentAlbumId;
+        this.newestImage = value.newestImage;
         this.createdOn = value.createdOn;
         this.updatedOn = value.updatedOn;
         this.count = value.count;
@@ -61,6 +63,7 @@ public class AlbumStats implements Serializable {
         Integer   bannerImageId,
         Long      bannerImagePublicId,
         Integer   parentAlbumId,
+        Timestamp newestImage,
         Timestamp createdOn,
         Timestamp updatedOn,
         Long      count,
@@ -73,6 +76,7 @@ public class AlbumStats implements Serializable {
         this.bannerImageId = bannerImageId;
         this.bannerImagePublicId = bannerImagePublicId;
         this.parentAlbumId = parentAlbumId;
+        this.newestImage = newestImage;
         this.createdOn = createdOn;
         this.updatedOn = updatedOn;
         this.count = count;
@@ -135,6 +139,14 @@ public class AlbumStats implements Serializable {
         this.parentAlbumId = parentAlbumId;
     }
 
+    public Timestamp getNewestImage() {
+        return this.newestImage;
+    }
+
+    public void setNewestImage(Timestamp newestImage) {
+        this.newestImage = newestImage;
+    }
+
     public Timestamp getCreatedOn() {
         return this.createdOn;
     }
@@ -178,6 +190,7 @@ public class AlbumStats implements Serializable {
         sb.append(", ").append(bannerImageId);
         sb.append(", ").append(bannerImagePublicId);
         sb.append(", ").append(parentAlbumId);
+        sb.append(", ").append(newestImage);
         sb.append(", ").append(createdOn);
         sb.append(", ").append(updatedOn);
         sb.append(", ").append(count);

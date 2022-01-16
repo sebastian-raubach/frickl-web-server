@@ -17,8 +17,8 @@ public enum ServerProperty
 	BASE_PATH("base.path", null, true),
 	API_VERSION("api.version", "1", false);
 
-	String key;
-	String defaultValue;
+	String  key;
+	String  defaultValue;
 	boolean required;
 
 	ServerProperty(String key, String defaultValue, boolean required)

@@ -30,8 +30,8 @@ import raubach.fricklweb.server.database.tables.records.AlbumsRecord;
 
 
 /**
- * This table contains all albums in Frickl. Albums correspond to image folders 
- * on the file system.
+ * This table contain  s all albums in Frickl. Albums correspond to image 
+ * folders on the file system.
  */
 @Generated(
     value = {
@@ -43,7 +43,7 @@ import raubach.fricklweb.server.database.tables.records.AlbumsRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Albums extends TableImpl<AlbumsRecord> {
 
-    private static final long serialVersionUID = 81644035;
+    private static final long serialVersionUID = -1271881853;
 
     /**
      * The reference instance of <code>frickl.albums</code>
@@ -124,7 +124,7 @@ public class Albums extends TableImpl<AlbumsRecord> {
     }
 
     private Albums(Name alias, Table<AlbumsRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment("This table contains all albums in Frickl. Albums correspond to image folders on the file system."));
+        super(alias, null, aliased, parameters, DSL.comment("This table contain  s all albums in Frickl. Albums correspond to image folders on the file system."));
     }
 
     public <O extends Record> Albums(Table<O> child, ForeignKey<O, AlbumsRecord> key) {

@@ -35,7 +35,7 @@ import raubach.fricklweb.server.database.tables.records.AlbumStatsRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AlbumStats extends TableImpl<AlbumStatsRecord> {
 
-    private static final long serialVersionUID = -1633900757;
+    private static final long serialVersionUID = -2139420918;
 
     /**
      * The reference instance of <code>frickl.album_stats</code>
@@ -86,6 +86,11 @@ public class AlbumStats extends TableImpl<AlbumStatsRecord> {
     public final TableField<AlbumStatsRecord, Integer> PARENT_ALBUM_ID = createField("parent_album_id", org.jooq.impl.SQLDataType.INTEGER, this, "Optional parent album id. If this album is a sub-album of another album, this parent album can be defined here.");
 
     /**
+     * The column <code>frickl.album_stats.newest_image</code>.
+     */
+    public final TableField<AlbumStatsRecord, Timestamp> NEWEST_IMAGE = createField("newest_image", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+
+    /**
      * The column <code>frickl.album_stats.created_on</code>. When this record has been created.
      */
     public final TableField<AlbumStatsRecord, Timestamp> CREATED_ON = createField("created_on", org.jooq.impl.SQLDataType.TIMESTAMP, this, "When this record has been created.");
@@ -93,7 +98,7 @@ public class AlbumStats extends TableImpl<AlbumStatsRecord> {
     /**
      * The column <code>frickl.album_stats.updated_on</code>. When this record has last been updated.
      */
-    public final TableField<AlbumStatsRecord, Timestamp> UPDATED_ON = createField("updated_on", org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "When this record has last been updated.");
+    public final TableField<AlbumStatsRecord, Timestamp> UPDATED_ON = createField("updated_on", org.jooq.impl.SQLDataType.TIMESTAMP, this, "When this record has last been updated.");
 
     /**
      * The column <code>frickl.album_stats.count</code>.

@@ -2,84 +2,98 @@ package raubach.fricklweb.server.resource.accesstoken;
 
 import org.jooq.DSLContext;
 import org.jooq.tools.StringUtils;
-import org.restlet.data.Status;
-import org.restlet.resource.Delete;
-import org.restlet.resource.Get;
-import org.restlet.resource.ResourceException;
 import raubach.fricklweb.server.Database;
-import raubach.fricklweb.server.auth.CustomVerifier;
+import raubach.fricklweb.server.auth.*;
 import raubach.fricklweb.server.database.tables.pojos.AlbumAccessToken;
 import raubach.fricklweb.server.resource.PaginatedServerResource;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Objects;
+import javax.annotation.security.PermitAll;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+import java.io.IOException;
+import java.sql.*;
+import java.util.*;
 
-import static raubach.fricklweb.server.database.tables.AccessTokens.ACCESS_TOKENS;
-import static raubach.fricklweb.server.database.tables.AlbumAccessToken.ALBUM_ACCESS_TOKEN;
+import static raubach.fricklweb.server.database.tables.AccessTokens.*;
+import static raubach.fricklweb.server.database.tables.AlbumAccessToken.*;
 
+@Path("accesstoken")
+@Secured
 public class AccessTokenResource extends PaginatedServerResource
 {
-	private Integer tokenId;
-
-	@Override
-	protected void doInit() throws ResourceException
+	@DELETE
+	@Path("/{tokenId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean deleteAccessToken(@PathParam("tokenId") Integer tokenId, AlbumAccessToken token)
+		throws IOException, SQLException
 	{
-		super.doInit();
-
-		try
+		if (tokenId == null || token == null || token.getTokenId() == null || !Objects.equals(tokenId, token.getTokenId()))
 		{
-			this.tokenId = Integer.parseInt(getRequestAttributes().get("tokenId").toString());
+			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
+			return false;
 		}
-		catch (Exception e)
-		{
-		}
-	}
-
-	@Delete("json")
-	public boolean deleteJson(AlbumAccessToken token)
-	{
-		if (this.tokenId == null || token == null || token.getTokenId() == null || !Objects.equals(tokenId, token.getTokenId()))
-			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
 
 		try (Connection conn = Database.getConnection();
 			 DSLContext context = Database.getContext(conn))
 		{
 			return context.deleteFrom(ACCESS_TOKENS)
-				.where(ACCESS_TOKENS.ID.eq(tokenId))
-				.execute() > 0;
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-			throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+						  .where(ACCESS_TOKENS.ID.eq(tokenId))
+						  .execute() > 0;
 		}
 	}
 
-	@Get("json")
-	public List<AlbumAccessToken> getJson()
+	@GET
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<AlbumAccessToken> getAccessTokens()
+		throws IOException, SQLException
 	{
-		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
+		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
-		if (auth && StringUtils.isEmpty(user.getToken()))
-			throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
+		if (auth && StringUtils.isEmpty(userDetails.getToken()))
+		{
+			resp.sendError(Response.Status.FORBIDDEN.getStatusCode());
+			return null;
+		}
 
 		try (Connection conn = Database.getConnection();
 			 DSLContext context = Database.getContext(conn))
 		{
 			return context.selectFrom(ALBUM_ACCESS_TOKEN)
-					.limit(pageSize)
-					.offset(pageSize * currentPage)
-					.fetch()
-					.into(AlbumAccessToken.class);
+						  .limit(pageSize)
+						  .offset(pageSize * currentPage)
+						  .fetch()
+						  .into(AlbumAccessToken.class);
 		}
-		catch (SQLException e)
+	}
+
+	@Path("/count")
+	@GET
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public int getAccessTokenCount()
+		throws IOException, SQLException
+	{
+		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
+		boolean auth = PropertyWatcher.authEnabled();
+
+		if (auth && StringUtils.isEmpty(userDetails.getToken()))
 		{
-			e.printStackTrace();
-			throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+			resp.sendError(Response.Status.FORBIDDEN.getStatusCode());
+			return 0;
+		}
+
+		try (Connection conn = Database.getConnection();
+			 DSLContext context = Database.getContext(conn))
+		{
+			return context.selectCount()
+						  .from(ALBUM_ACCESS_TOKEN)
+						  .limit(pageSize)
+						  .offset(pageSize * currentPage)
+						  .fetchAny(0, int.class);
 		}
 	}
 }

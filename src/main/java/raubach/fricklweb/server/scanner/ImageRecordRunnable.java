@@ -11,7 +11,8 @@ public abstract class ImageRecordRunnable implements Runnable
 		this.image = image;
 	}
 
-	public String getId() {
+	public String getId()
+	{
 		return Integer.toString(image.getId());
 	}
 }

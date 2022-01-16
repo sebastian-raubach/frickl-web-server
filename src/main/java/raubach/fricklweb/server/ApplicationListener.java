@@ -1,5 +1,6 @@
 package raubach.fricklweb.server;
 
+import com.thetransactioncompany.cors.*;
 import raubach.fricklweb.server.computed.Status;
 import raubach.fricklweb.server.scanner.ImageScanner;
 import raubach.fricklweb.server.util.ServerProperty;
@@ -11,6 +12,7 @@ import javax.servlet.annotation.WebListener;
 import java.io.File;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
+import java.util.Properties;
 import java.util.concurrent.*;
 import java.util.logging.Logger;
 
@@ -31,6 +33,19 @@ public class ApplicationListener implements ServletContextListener
 	@Override
 	public void contextInitialized(ServletContextEvent sce)
 	{
+		try
+		{
+			Properties props = new Properties();
+			props.setProperty("cors.supportedMethods", "GET, POST, HEAD, OPTIONS, PATCH, DELETE, PUT");
+			final FilterRegistration.Dynamic corsFilter = sce.getServletContext().addFilter("CORS", new CORSFilter(new CORSConfiguration(props)));
+			corsFilter.setInitParameter("cors.supportedMethods", "GET, POST, HEAD, OPTIONS, PATCH, DELETE, PUT");
+			corsFilter.addMappingForUrlPatterns(null, false, "/*");
+		}
+		catch (CORSConfigurationException e)
+		{
+			e.printStackTrace();
+		}
+
 		Logger.getLogger("").info("APPLICATION LISTENER");
 		PropertyWatcher.initialize();
 

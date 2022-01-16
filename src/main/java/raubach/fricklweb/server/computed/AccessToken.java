@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class AccessToken
 {
-	private String token;
+	private String    token;
 	private Timestamp expiresOn;
 
 	public String getToken()
@@ -31,8 +31,8 @@ public class AccessToken
 	public String toString()
 	{
 		return "AccessToken{" +
-				"token='" + token + '\'' +
-				", expiresOn=" + expiresOn +
-				'}';
+			"token='" + token + '\'' +
+			", expiresOn=" + expiresOn +
+			'}';
 	}
 }

@@ -11,8 +11,8 @@ import javax.annotation.Generated;
 
 
 /**
- * This table contains all tags that can be used to access folders that aren't 
- * public.
+ * This table contains all tokens that can be used to access folders that 
+ * aren't public.
  */
 @Generated(
     value = {
@@ -24,7 +24,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AccessTokens implements Serializable {
 
-    private static final long serialVersionUID = 1426629822;
+    private static final long serialVersionUID = 1409336551;
 
     private Integer   id;
     private String    token;

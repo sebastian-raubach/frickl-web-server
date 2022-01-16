@@ -8,8 +8,6 @@ import java.io.Serializable;
 
 import javax.annotation.Generated;
 
-import org.jooq.types.UInteger;
-
 
 /**
  * VIEW
@@ -24,11 +22,11 @@ import org.jooq.types.UInteger;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ImageTimeline implements Serializable {
 
-    private static final long serialVersionUID = -370120438;
+    private static final long serialVersionUID = 1343903109;
 
-    private UInteger year;
-    private Integer  month;
-    private Object   ids;
+    private Integer year;
+    private Integer month;
+    private Object  ids;
 
     public ImageTimeline() {}
 
@@ -39,20 +37,20 @@ public class ImageTimeline implements Serializable {
     }
 
     public ImageTimeline(
-        UInteger year,
-        Integer  month,
-        Object   ids
+        Integer year,
+        Integer month,
+        Object  ids
     ) {
         this.year = year;
         this.month = month;
         this.ids = ids;
     }
 
-    public UInteger getYear() {
+    public Integer getYear() {
         return this.year;
     }
 
-    public void setYear(UInteger year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 

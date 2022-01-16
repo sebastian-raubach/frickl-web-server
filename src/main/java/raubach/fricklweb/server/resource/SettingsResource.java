@@ -1,15 +1,19 @@
 package raubach.fricklweb.server.resource;
 
-import org.restlet.resource.Get;
-import org.restlet.resource.ServerResource;
 import raubach.fricklweb.server.computed.Settings;
 import raubach.fricklweb.server.util.ServerProperty;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-public class SettingsResource extends ServerResource
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+
+@Path("settings")
+public class SettingsResource extends ContextResource
 {
-	@Get("json")
-	public Settings getJson()
+	@GET
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Settings getSettings()
 	{
 		Settings settings = new Settings();
 		settings.setAuthEnabled(PropertyWatcher.authEnabled());

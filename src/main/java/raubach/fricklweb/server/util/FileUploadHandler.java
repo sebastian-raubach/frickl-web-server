@@ -1,13 +1,11 @@
 package raubach.fricklweb.server.util;
 
-import org.apache.commons.fileupload.*;
+import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.io.FileUtils;
-import org.restlet.data.*;
-import org.restlet.ext.fileupload.RestletFileUpload;
-import org.restlet.representation.Representation;
-import org.restlet.resource.ResourceException;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import javax.servlet.http.*;
+import javax.ws.rs.core.Response;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -16,74 +14,61 @@ public class FileUploadHandler
 {
 	private static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 
-	public static synchronized List<String> handleMultiple(Representation entity, String formIdentifier, File folder)
+	public static synchronized List<String> handleMultiple(HttpServletRequest req, HttpServletResponse resp, String formIdentifier, File folder)
+		throws IOException
 	{
-		if (entity != null)
+		//checks whether there is a file upload request or not
+		if (ServletFileUpload.isMultipartContent(req))
 		{
-			if (MediaType.MULTIPART_FORM_DATA.equals(entity.getMediaType(), true))
+			final ServletFileUpload fileUpload = new ServletFileUpload(new DiskFileItemFactory());
+			try
 			{
-				// 1. Create a factory for disk-based file items
-				DiskFileItemFactory factory = new DiskFileItemFactory();
-				factory.setSizeThreshold(1000240);
+				List<String> filenames = new ArrayList<>();
 
-				// 2. Create a new file upload handler based on the Restlet FileUpload extension that will parse Restlet requests and generates FileItems.
-				RestletFileUpload upload = new RestletFileUpload(factory);
+				final List<FileItem> items = fileUpload.parseRequest(req);
 
-				try
+				if (!CollectionUtils.isEmpty(items))
 				{
-					// 3. Request is parsed by the handler which generates a list of FileItems
-					FileItemIterator fileIterator = upload.getItemIterator(entity);
-
-					List<String> filenames = new ArrayList<>();
-					// Process only the uploaded item with the given name and return back
-					while (fileIterator.hasNext())
+					for (FileItem item : items)
 					{
-						FileItemStream fi = fileIterator.next();
-						if (fi.getFieldName().equals(formIdentifier))
+						final String itemName = item.getName();
+
+						if (!item.isFormField() && Objects.equals(item.getFieldName(), formIdentifier))
 						{
 							// consume the stream immediately, otherwise the stream
 							// will be closed.
-							String filename = fi.getName();
+							String filename = item.getName();
 							String name = filename.substring(0, filename.lastIndexOf("."));
-							String extension = filename.substring(filename.lastIndexOf(".") + 1);
+							// Convert extension to lower case to prevent issues with uppercase videos and the player library
+							String extension = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase(Locale.ENGLISH);
 
 							File target = new File(folder, name + "." + extension);
 
 							// Make sure it's unique
-							while (target.exists()) {
+							while (target.exists())
+							{
 								target = new File(folder, name + "-" + SDF.format(new Date()) + "." + extension);
 							}
 
-							FileUtils.copyInputStreamToFile(fi.openStream(), target);
+							item.write(target);
 							filenames.add(target.getName());
 						}
 					}
+				}
 
-					if (filenames.size() < 1)
-					{
-						// If we get here, the file wasn't found
-						throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
-					}
-					else
-					{
-						return filenames;
-					}
-				}
-				catch (IOException | FileUploadException e)
-				{
-					e.printStackTrace();
-					throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
-				}
+				return filenames;
 			}
-			else
+			catch (Exception e)
 			{
-				// POST request with no entity.
-				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
+				e.printStackTrace();
+				resp.sendError(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), e.getMessage());
+				return null;
 			}
 		}
 		else
 		{
-			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
+			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
+			return null;
 		}
 	}
 }

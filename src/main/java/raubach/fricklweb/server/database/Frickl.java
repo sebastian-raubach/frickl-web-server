@@ -42,7 +42,7 @@ import raubach.fricklweb.server.database.tables.Tags;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Frickl extends SchemaImpl {
 
-    private static final long serialVersionUID = 215596308;
+    private static final long serialVersionUID = -940971307;
 
     /**
      * The reference instance of <code>frickl</code>
@@ -50,9 +50,14 @@ public class Frickl extends SchemaImpl {
     public static final Frickl FRICKL = new Frickl();
 
     /**
-     * This table contains all tags that can be used to access folders that aren't public.
+     * This table contains all tokens that can be used to access folders that aren't public.
      */
     public final AccessTokens ACCESS_TOKENS = raubach.fricklweb.server.database.tables.AccessTokens.ACCESS_TOKENS;
+
+    /**
+     * This table contain  s all albums in Frickl. Albums correspond to image folders on the file system.
+     */
+    public final Albums ALBUMS = raubach.fricklweb.server.database.tables.Albums.ALBUMS;
 
     /**
      * VIEW
@@ -70,14 +75,14 @@ public class Frickl extends SchemaImpl {
     public final AlbumTokens ALBUM_TOKENS = raubach.fricklweb.server.database.tables.AlbumTokens.ALBUM_TOKENS;
 
     /**
-     * This table contains all albums in Frickl. Albums correspond to image folders on the file system.
-     */
-    public final Albums ALBUMS = raubach.fricklweb.server.database.tables.Albums.ALBUMS;
-
-    /**
      * VIEW
      */
     public final CalendarData CALENDAR_DATA = raubach.fricklweb.server.database.tables.CalendarData.CALENDAR_DATA;
+
+    /**
+     * This table contains images from the file system.
+     */
+    public final Images IMAGES = raubach.fricklweb.server.database.tables.Images.IMAGES;
 
     /**
      * This table joins `images` and `tags` and therefore defines which tags an image is tagged with.
@@ -88,11 +93,6 @@ public class Frickl extends SchemaImpl {
      * VIEW
      */
     public final ImageTimeline IMAGE_TIMELINE = raubach.fricklweb.server.database.tables.ImageTimeline.IMAGE_TIMELINE;
-
-    /**
-     * This table contains images from the file system.
-     */
-    public final Images IMAGES = raubach.fricklweb.server.database.tables.Images.IMAGES;
 
     /**
      * VIEW
@@ -140,14 +140,14 @@ public class Frickl extends SchemaImpl {
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
             AccessTokens.ACCESS_TOKENS,
+            Albums.ALBUMS,
             AlbumAccessToken.ALBUM_ACCESS_TOKEN,
             AlbumStats.ALBUM_STATS,
             AlbumTokens.ALBUM_TOKENS,
-            Albums.ALBUMS,
             CalendarData.CALENDAR_DATA,
+            Images.IMAGES,
             ImageTags.IMAGE_TAGS,
             ImageTimeline.IMAGE_TIMELINE,
-            Images.IMAGES,
             LatLngs.LAT_LNGS,
             SchemaVersion.SCHEMA_VERSION,
             StatsCamera.STATS_CAMERA,

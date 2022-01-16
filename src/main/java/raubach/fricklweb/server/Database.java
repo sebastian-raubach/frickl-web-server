@@ -2,28 +2,21 @@ package raubach.fricklweb.server;
 
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.FlywayException;
-import org.jooq.DSLContext;
-import org.jooq.SQLDialect;
-import org.jooq.conf.MappedSchema;
-import org.jooq.conf.RenderMapping;
-import org.jooq.conf.Settings;
+import org.jooq.*;
+import org.jooq.conf.*;
 import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 import raubach.fricklweb.server.database.Frickl;
 import raubach.fricklweb.server.util.ScriptRunner;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.TimeZone;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
-import static raubach.fricklweb.server.database.tables.Images.IMAGES;
+import static raubach.fricklweb.server.database.tables.Images.*;
 
 /**
  * @author Sebastian Raubach
@@ -36,7 +29,7 @@ public class Database
 	private static String username;
 	private static String password;
 
-	private static String utc = TimeZone.getDefault().getID();
+	private static final String utc = TimeZone.getDefault().getID();
 
 	public static void init(String databaseServer, String databaseName, String databasePort, String username, String password, boolean initAndUpdate)
 	{
@@ -79,8 +72,8 @@ public class Database
 			{
 				// Try and see if the `images` table exists
 				context.selectOne()
-						.from(IMAGES)
-						.fetchAny();
+					   .from(IMAGES)
+					   .fetchAny();
 			}
 			catch (SQLException | DataAccessException e)
 			{
@@ -182,7 +175,7 @@ public class Database
 	}
 
 	public static Connection getConnection()
-			throws SQLException
+		throws SQLException
 	{
 		return DriverManager.getConnection(getDatabaseUrl(), username, password);
 	}
@@ -190,10 +183,10 @@ public class Database
 	public static DSLContext getContext(Connection connection)
 	{
 		Settings settings = new Settings()
-				.withRenderMapping(new RenderMapping()
-						.withSchemata(
-								new MappedSchema().withInput(Frickl.FRICKL.getQualifiedName().first())
-										.withOutput(databaseName)));
+			.withRenderMapping(new RenderMapping()
+				.withSchemata(
+					new MappedSchema().withInput(Frickl.FRICKL.getQualifiedName().first())
+									  .withOutput(databaseName)));
 
 		return DSL.using(connection, SQLDialect.MYSQL, settings);
 	}

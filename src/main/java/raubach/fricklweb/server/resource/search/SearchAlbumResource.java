@@ -1,47 +1,44 @@
 package raubach.fricklweb.server.resource.search;
 
-import org.jooq.DSLContext;
-import org.jooq.SQLDialect;
-import org.jooq.SelectWhereStep;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
-import org.restlet.data.Status;
-import org.restlet.resource.Get;
-import org.restlet.resource.ResourceException;
 import raubach.fricklweb.server.Database;
-import raubach.fricklweb.server.auth.CustomVerifier;
+import raubach.fricklweb.server.auth.*;
 import raubach.fricklweb.server.database.tables.pojos.Albums;
 import raubach.fricklweb.server.database.tables.records.AlbumsRecord;
 import raubach.fricklweb.server.resource.PaginatedServerResource;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import javax.annotation.security.PermitAll;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+import java.io.IOException;
+import java.sql.*;
 import java.util.List;
 
-import static raubach.fricklweb.server.database.tables.Albums.ALBUMS;
-import static raubach.fricklweb.server.database.tables.Images.IMAGES;
+import static raubach.fricklweb.server.database.tables.Albums.*;
+import static raubach.fricklweb.server.database.tables.Images.*;
 
 /**
  * @author Sebastian Raubach
  */
+@Path("search/{searchTerm}")
+@Secured
+@PermitAll
 public class SearchAlbumResource extends PaginatedServerResource
 {
-	private String searchTerm = null;
+	@PathParam("searchTerm")
+	String searchTerm;
 
-	@Override
-	protected void doInit()
-			throws ResourceException
+	@GET
+	@Path("/album")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Albums> getAlbums()
+		throws SQLException, IOException
 	{
-		super.doInit();
-
-		searchTerm = getRequestAttributeAsString("searchTerm");
-	}
-
-	@Get("json")
-	public List<Albums> getJson()
-	{
-		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
+		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
 		if (searchTerm != null)
@@ -52,27 +49,60 @@ public class SearchAlbumResource extends PaginatedServerResource
 			{
 				SelectWhereStep<AlbumsRecord> step = context.selectFrom(ALBUMS);
 
-				if (auth && StringUtils.isEmpty(user.getToken()))
+				if (auth && StringUtils.isEmpty(userDetails.getToken()))
 					step.where(DSL.exists(DSL.selectOne()
-							.from(IMAGES)
-							.where(IMAGES.ALBUM_ID.eq(ALBUMS.ID)
-									.and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
+											 .from(IMAGES)
+											 .where(IMAGES.ALBUM_ID.eq(ALBUMS.ID)
+																   .and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
 
 				return step.where(ALBUMS.NAME.like(searchTerm)
-						.or(ALBUMS.DESCRIPTION.like(searchTerm)))
-						.offset(pageSize * currentPage)
-						.limit(pageSize)
-						.fetch()
-						.into(Albums.class);
-			}
-			catch (SQLException e)
-			{
-				throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+											 .or(ALBUMS.DESCRIPTION.like(searchTerm)))
+						   .offset(pageSize * currentPage)
+						   .limit(pageSize)
+						   .fetch()
+						   .into(Albums.class);
 			}
 		}
 		else
 		{
-			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
+			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
+			return null;
+		}
+	}
+
+	@GET
+	@Path("/album/count")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public int getAlbumCount()
+		throws SQLException, IOException
+	{
+		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
+		boolean auth = PropertyWatcher.authEnabled();
+
+		if (searchTerm != null)
+		{
+			searchTerm = "%" + searchTerm.replace(" ", "%") + "%";
+			try (Connection conn = Database.getConnection();
+				 DSLContext context = Database.getContext(conn))
+			{
+				SelectJoinStep<Record1<Integer>> step = context.selectCount().from(ALBUMS);
+
+				if (auth && StringUtils.isEmpty(userDetails.getToken()))
+					step.where(DSL.exists(DSL.selectOne()
+											 .from(IMAGES)
+											 .where(IMAGES.ALBUM_ID.eq(ALBUMS.ID)
+																   .and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
+
+				return step.where(ALBUMS.NAME.like(searchTerm)
+											 .or(ALBUMS.DESCRIPTION.like(searchTerm)))
+						   .fetchAny(0, int.class);
+			}
+		}
+		else
+		{
+			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
+			return 0;
 		}
 	}
 }

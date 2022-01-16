@@ -1,16 +1,20 @@
 package raubach.fricklweb.server.resource;
 
-import org.restlet.resource.Get;
-import org.restlet.resource.ServerResource;
 import raubach.fricklweb.server.computed.DataScanResult;
 import raubach.fricklweb.server.scanner.ImageScanner;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 
 /**
  * @author Sebastian Raubach
  */
-public class StatusResource extends ServerResource
+@Path("status")
+public class StatusResource
 {
-	@Get("json")
+	@GET
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public DataScanResult getJson()
 	{
 		return ImageScanner.SCANRESULT;

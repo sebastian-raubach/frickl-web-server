@@ -1,7 +1,6 @@
 package raubach.fricklweb.server.scanner;
 
 import org.jooq.*;
-import org.restlet.data.MediaType;
 import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.computed.*;
 import raubach.fricklweb.server.database.enums.ImagesDataType;
@@ -210,9 +209,7 @@ public class ImageScanner implements Runnable
 				else
 				{
 					// For albums that only contain other albums and no images, use the image of the first album within the album and use that as the initial banner image
-					Albums parent = ALBUMS.as("parent");
-					Albums child = ALBUMS.as("child");
-					imageId = context.select(child.BANNER_IMAGE_ID).from(child.leftJoin(parent).on(parent.ID.eq(child.PARENT_ALBUM_ID))).limit(1).fetchAnyInto(Integer.class);
+					imageId = context.select(ALBUMS.BANNER_IMAGE_ID).from(ALBUMS).where(ALBUMS.PARENT_ALBUM_ID.eq(album.getId())).limit(1).fetchAnyInto(Integer.class);
 
 					if (imageId != null)
 					{
@@ -328,14 +325,14 @@ public class ImageScanner implements Runnable
 				}
 				else
 				{
-					MediaType type;
+					String type;
 
 					if (file.toFile().getName().toLowerCase().endsWith(".jpg") || image.getDataType() == ImagesDataType.video)
-						type = MediaType.IMAGE_JPEG;
+						type = "image/jpeg";
 					else if (file.toFile().getName().toLowerCase().endsWith(".png"))
-						type = MediaType.IMAGE_PNG;
+						type = "image/png";
 					else
-						type = MediaType.IMAGE_ALL;
+						type = "image/*";
 
 					if (image.getExif() == null && image.getDataType() == ImagesDataType.image)
 						executor.submit(new ImageExifReader(image));

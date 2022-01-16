@@ -17,49 +17,57 @@
 package raubach.fricklweb.server.resource;
 
 import org.jooq.tools.StringUtils;
-import org.restlet.data.Status;
-import org.restlet.resource.Delete;
-import org.restlet.resource.Post;
-import org.restlet.resource.ResourceException;
-import org.restlet.resource.ServerResource;
-import raubach.fricklweb.server.auth.CustomVerifier;
-import raubach.fricklweb.server.computed.LoginDetails;
-import raubach.fricklweb.server.computed.StatusMessage;
-import raubach.fricklweb.server.computed.Token;
+import raubach.fricklweb.server.auth.*;
+import raubach.fricklweb.server.computed.*;
 import raubach.fricklweb.server.util.ServerProperty;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import java.util.Objects;
-import java.util.UUID;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+import java.io.IOException;
+import java.util.*;
 
 /**
- * {@link ServerResource} handling {@link TokenResource} requests.
- *
  * @author Sebastian Raubach
  */
-public class TokenResource extends ServerResource
+@Path("token")
+public class TokenResource extends ContextResource
 {
-	@Delete("json")
-	public boolean deleteJson(LoginDetails user)
+	@DELETE
+	@Secured
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean deleteToken(LoginDetails user)
+		throws IOException
 	{
 		boolean enabled = PropertyWatcher.authEnabled();
 
 		if (!enabled)
-			throw new ResourceException(Status.SERVER_ERROR_SERVICE_UNAVAILABLE);
+		{
+			resp.sendError(Response.Status.SERVICE_UNAVAILABLE.getStatusCode());
+			return false;
+		}
 
 		if (user == null)
-			throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND, StatusMessage.NOT_FOUND_TOKEN);
+		{
+			resp.sendError(Response.Status.NOT_FOUND.getStatusCode(), StatusMessage.NOT_FOUND_TOKEN);
+			return false;
+		}
 
-		CustomVerifier.UserDetails sessionUser = CustomVerifier.getFromSession(getRequest(), getResponse());
+		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 
-		if (sessionUser == null || !Objects.equals(sessionUser.getToken(), user.getPassword()))
-			throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN, StatusMessage.FORBIDDEN_ACCESS_TO_OTHER_USER);
+		if (userDetails == null || !Objects.equals(userDetails.getToken(), user.getPassword()))
+		{
+			resp.sendError(Response.Status.FORBIDDEN.getStatusCode(), StatusMessage.FORBIDDEN_ACCESS_TO_OTHER_USER);
+			return false;
+		}
 
 		try
 		{
 			// Try and see if it's a valid UUID
 			UUID.fromString(user.getPassword());
-			return CustomVerifier.removeToken(user.getPassword(), getRequest(), getResponse());
+			AuthenticationFilter.removeToken(user.getPassword(), req, resp);
+			return true;
 		}
 		catch (Exception e)
 		{
@@ -68,13 +76,19 @@ public class TokenResource extends ServerResource
 		}
 	}
 
-	@Post("json")
-	public Token postJson(LoginDetails request)
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Token postToken(LoginDetails request)
+		throws IOException
 	{
 		boolean enabled = PropertyWatcher.authEnabled();
 
 		if (!enabled)
-			throw new ResourceException(Status.SERVER_ERROR_SERVICE_UNAVAILABLE);
+		{
+			resp.sendError(Response.Status.SERVICE_UNAVAILABLE.getStatusCode());
+			return null;
+		}
 
 		String username = PropertyWatcher.get(ServerProperty.ADMIN_USERNAME);
 		String password = PropertyWatcher.get(ServerProperty.ADMIN_PASSWORD);
@@ -88,13 +102,14 @@ public class TokenResource extends ServerResource
 		{
 			token = UUID.randomUUID().toString();
 			imageToken = UUID.randomUUID().toString();
-			CustomVerifier.addToken(getRequest(), getResponse(), token, imageToken);
+			AuthenticationFilter.addToken(req, resp, token, imageToken);
 		}
 		else
 		{
-			throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN, StatusMessage.FORBIDDEN_INVALID_CREDENTIALS);
+			resp.sendError(Response.Status.FORBIDDEN.getStatusCode(), StatusMessage.FORBIDDEN_INVALID_CREDENTIALS);
+			return null;
 		}
 
-		return new Token(token, imageToken, CustomVerifier.AGE, System.currentTimeMillis());
+		return new Token(token, imageToken, AuthenticationFilter.AGE, System.currentTimeMillis());
 	}
 }

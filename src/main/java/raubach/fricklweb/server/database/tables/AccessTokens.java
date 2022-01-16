@@ -30,8 +30,8 @@ import raubach.fricklweb.server.database.tables.records.AccessTokensRecord;
 
 
 /**
- * This table contains all tags that can be used to access folders that aren't 
- * public.
+ * This table contains all tokens that can be used to access folders that 
+ * aren't public.
  */
 @Generated(
     value = {
@@ -43,7 +43,7 @@ import raubach.fricklweb.server.database.tables.records.AccessTokensRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AccessTokens extends TableImpl<AccessTokensRecord> {
 
-    private static final long serialVersionUID = 892232480;
+    private static final long serialVersionUID = 325639848;
 
     /**
      * The reference instance of <code>frickl.access_tokens</code>
@@ -109,7 +109,7 @@ public class AccessTokens extends TableImpl<AccessTokensRecord> {
     }
 
     private AccessTokens(Name alias, Table<AccessTokensRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment("This table contains all tags that can be used to access folders that aren't public."));
+        super(alias, null, aliased, parameters, DSL.comment("This table contains all tokens that can be used to access folders that aren't public."));
     }
 
     public <O extends Record> AccessTokens(Table<O> child, ForeignKey<O, AccessTokensRecord> key) {

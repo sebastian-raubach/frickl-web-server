@@ -2,11 +2,12 @@ package raubach.fricklweb.server.computed;
 
 public class DataScanResult
 {
-	private Status status = Status.IDLE;
-	private int totalImages = 0;
-	private int queueSize = 0;
+	private Status status      = Status.IDLE;
+	private int    totalImages = 0;
+	private int    queueSize   = 0;
 
-	public void reset() {
+	public void reset()
+	{
 		status = Status.IDLE;
 		totalImages = 0;
 		queueSize = 0;
@@ -32,7 +33,8 @@ public class DataScanResult
 		this.totalImages = totalImages;
 	}
 
-	public void incrementTotalImages() {
+	public void incrementTotalImages()
+	{
 		this.totalImages++;
 	}
 

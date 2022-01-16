@@ -1,51 +1,52 @@
 package raubach.fricklweb.server.resource.stats;
 
 import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.SQLDialect;
-import org.jooq.SelectSelectStep;
-import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
-import org.restlet.data.Status;
-import org.restlet.resource.Get;
-import org.restlet.resource.ResourceException;
 import raubach.fricklweb.server.Database;
-import raubach.fricklweb.server.auth.CustomVerifier;
+import raubach.fricklweb.server.auth.*;
 import raubach.fricklweb.server.database.tables.pojos.StatsCamera;
 import raubach.fricklweb.server.resource.PaginatedServerResource;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import javax.annotation.security.PermitAll;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+import java.io.IOException;
+import java.sql.*;
 import java.util.List;
 
-import static raubach.fricklweb.server.database.tables.StatsCamera.STATS_CAMERA;
+import static raubach.fricklweb.server.database.tables.StatsCamera.*;
 
 /**
  * @author Sebastian Raubach
  */
+@Path("stats/camera")
+@Secured
+@PermitAll
 public class StatsCameraResource extends PaginatedServerResource
 {
-	@Get("json")
+	@GET
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public List<StatsCamera> getJson()
+		throws IOException, SQLException
 	{
-		CustomVerifier.UserDetails user = CustomVerifier.getFromSession(getRequest(), getResponse());
+		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
-		if (auth && StringUtils.isEmpty(user.getToken()))
-			throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
+		if (auth && StringUtils.isEmpty(userDetails.getToken()))
+		{
+			resp.sendError(Response.Status.FORBIDDEN.getStatusCode());
+			return null;
+		}
 
 		try (Connection conn = Database.getConnection();
 			 DSLContext context = Database.getContext(conn))
 		{
 			return context.select().from(STATS_CAMERA)
-					.limit(10)
-					.fetch()
-					.into(StatsCamera.class);
-		}
-		catch (SQLException e)
-		{
-			throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+						  .limit(15)
+						  .fetch()
+						  .into(StatsCamera.class);
 		}
 	}
 }

@@ -1,18 +1,9 @@
 package raubach.fricklweb.server.resource;
 
-import org.restlet.resource.ResourceException;
+import javax.ws.rs.QueryParam;
 
 public abstract class AbstractAccessTokenResource extends PaginatedServerResource
 {
-	public static final String PARAM_ACCESS_TOKEN = "accesstoken";
-
+	@QueryParam("accesstoken")
 	protected String accessToken = null;
-
-	@Override
-	protected void doInit() throws ResourceException
-	{
-		super.doInit();
-
-		this.accessToken = getQueryValue(PARAM_ACCESS_TOKEN);
-	}
 }

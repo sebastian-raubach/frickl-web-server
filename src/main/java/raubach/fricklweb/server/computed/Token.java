@@ -23,8 +23,8 @@ public class Token
 {
 	private String token;
 	private String imageToken;
-	private Long lifetime;
-	private Long createdOn;
+	private Long   lifetime;
+	private Long   createdOn;
 
 	public Token()
 	{

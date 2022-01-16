@@ -18,8 +18,8 @@ import raubach.fricklweb.server.database.tables.Albums;
 
 
 /**
- * This table contains all albums in Frickl. Albums correspond to image folders 
- * on the file system.
+ * This table contain  s all albums in Frickl. Albums correspond to image 
+ * folders on the file system.
  */
 @Generated(
     value = {
@@ -31,7 +31,7 @@ import raubach.fricklweb.server.database.tables.Albums;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements Record8<Integer, String, String, String, Integer, Integer, Timestamp, Timestamp> {
 
-    private static final long serialVersionUID = 659399391;
+    private static final long serialVersionUID = -574072737;
 
     /**
      * Setter for <code>frickl.albums.id</code>. Auto incremented id of this table.

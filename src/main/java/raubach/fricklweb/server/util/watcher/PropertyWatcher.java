@@ -17,21 +17,15 @@
 
 package raubach.fricklweb.server.util.watcher;
 
-import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
-import org.apache.commons.io.monitor.FileAlterationMonitor;
-import org.apache.commons.io.monitor.FileAlterationObserver;
+import org.apache.commons.io.monitor.*;
 import org.jooq.tools.StringUtils;
 import raubach.fricklweb.server.Database;
-import raubach.fricklweb.server.util.CollectionUtils;
-import raubach.fricklweb.server.util.ServerProperty;
+import raubach.fricklweb.server.util.*;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 /**
  * {@link PropertyWatcher} is a wrapper around {@link Properties} to readAll properties.
@@ -45,10 +39,10 @@ public class PropertyWatcher
 	 */
 	private static final String PROPERTIES_FILE = "config.properties";
 
-	private static Properties properties = new Properties();
+	private static final Properties properties = new Properties();
 
 	private static FileAlterationMonitor monitor;
-	private static File config = null;
+	private static File                  config = null;
 
 	/**
 	 * Attempts to reads the properties file and then checks the required properties.

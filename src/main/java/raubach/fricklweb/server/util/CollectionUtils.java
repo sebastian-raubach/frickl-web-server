@@ -70,7 +70,7 @@ public class CollectionUtils
 
 		for (int i = 1; i < input.length; i++)
 			builder.append(delimiter)
-					.append(input[i]);
+				   .append(input[i]);
 
 		return builder.toString();
 	}

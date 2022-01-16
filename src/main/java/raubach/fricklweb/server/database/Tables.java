@@ -35,9 +35,14 @@ import raubach.fricklweb.server.database.tables.Tags;
 public class Tables {
 
     /**
-     * This table contains all tags that can be used to access folders that aren't public.
+     * This table contains all tokens that can be used to access folders that aren't public.
      */
     public static final AccessTokens ACCESS_TOKENS = raubach.fricklweb.server.database.tables.AccessTokens.ACCESS_TOKENS;
+
+    /**
+     * This table contain  s all albums in Frickl. Albums correspond to image folders on the file system.
+     */
+    public static final Albums ALBUMS = raubach.fricklweb.server.database.tables.Albums.ALBUMS;
 
     /**
      * VIEW
@@ -55,14 +60,14 @@ public class Tables {
     public static final AlbumTokens ALBUM_TOKENS = raubach.fricklweb.server.database.tables.AlbumTokens.ALBUM_TOKENS;
 
     /**
-     * This table contains all albums in Frickl. Albums correspond to image folders on the file system.
-     */
-    public static final Albums ALBUMS = raubach.fricklweb.server.database.tables.Albums.ALBUMS;
-
-    /**
      * VIEW
      */
     public static final CalendarData CALENDAR_DATA = raubach.fricklweb.server.database.tables.CalendarData.CALENDAR_DATA;
+
+    /**
+     * This table contains images from the file system.
+     */
+    public static final Images IMAGES = raubach.fricklweb.server.database.tables.Images.IMAGES;
 
     /**
      * This table joins `images` and `tags` and therefore defines which tags an image is tagged with.
@@ -73,11 +78,6 @@ public class Tables {
      * VIEW
      */
     public static final ImageTimeline IMAGE_TIMELINE = raubach.fricklweb.server.database.tables.ImageTimeline.IMAGE_TIMELINE;
-
-    /**
-     * This table contains images from the file system.
-     */
-    public static final Images IMAGES = raubach.fricklweb.server.database.tables.Images.IMAGES;
 
     /**
      * VIEW

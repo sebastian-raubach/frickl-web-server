@@ -7,7 +7,7 @@ import raubach.fricklweb.server.database.tables.pojos.Tags;
  */
 public class TagCount
 {
-	private Tags tag;
+	private Tags    tag;
 	private Integer count;
 
 	public TagCount()

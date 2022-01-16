@@ -11,8 +11,8 @@ import javax.annotation.Generated;
 
 
 /**
- * This table contains all albums in Frickl. Albums correspond to image folders 
- * on the file system.
+ * This table contain  s all albums in Frickl. Albums correspond to image 
+ * folders on the file system.
  */
 @Generated(
     value = {
@@ -24,7 +24,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Albums implements Serializable {
 
-    private static final long serialVersionUID = -22887782;
+    private static final long serialVersionUID = 1672636762;
 
     private Integer   id;
     private String    name;

@@ -1,18 +1,12 @@
 package raubach.fricklweb.server.util;
 
-import com.icafe4j.image.meta.Metadata;
-import com.icafe4j.image.meta.MetadataType;
-import com.icafe4j.image.meta.iptc.IPTC;
-import com.icafe4j.image.meta.iptc.IPTCApplicationTag;
-import com.icafe4j.image.meta.iptc.IPTCDataSet;
+import com.icafe4j.image.meta.*;
+import com.icafe4j.image.meta.iptc.*;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.nio.file.*;
+import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -21,7 +15,7 @@ import java.util.stream.Collectors;
 public class TagUtils
 {
 	public static synchronized void deleteTagFromImage(File file, List<String> tags)
-			throws IOException
+		throws IOException
 	{
 		Map<MetadataType, Metadata> metadataMap = Metadata.readMetadata(file);
 		IPTC iptc = (IPTC) metadataMap.get(MetadataType.IPTC);
@@ -38,15 +32,19 @@ public class TagUtils
 			// If any exist
 			if (datasets != null)
 			{
+				Logger.getLogger("").info("DELETING TAGS: " + tags + " FROM " + datasets.stream().map(IPTCDataSet::getDataAsString).collect(Collectors.joining(", ")));
+
 				// Remove the ones that matches the given tags
 				boolean toRemove = datasets.removeIf(ds -> tags.contains(ds.getDataAsString()));
+
+				Logger.getLogger("").info("REMAINING TAGS: " + datasets.stream().map(IPTCDataSet::getDataAsString).collect(Collectors.joining(", ")));
 
 				if (toRemove)
 				{
 					// Write the file to temp, then move to overwrite
 					File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-temp");
 					folder.mkdirs();
-					File target = new File(folder, UUID.randomUUID().toString() + ".jpg");
+					File target = new File(folder, UUID.randomUUID() + ".jpg");
 					try (InputStream in = new FileInputStream(file);
 						 OutputStream out = new FileOutputStream(target))
 					{
@@ -58,8 +56,18 @@ public class TagUtils
 		}
 	}
 
+	public static void main(String[] args)
+		throws IOException
+	{
+		File file = new File("C:/Users/sr41756/Photos/wallpapers/03832_blandfordroad_3440x1440.jpg");
+
+		addTagToImage(file, new ArrayList<>(Arrays.asList("testing", "a", "b")));
+
+		deleteTagFromImage(file, new ArrayList<>(Arrays.asList("testing", "a", "b")));
+	}
+
 	public static synchronized void addTagToImage(File file, List<String> tags)
-			throws IOException
+		throws IOException
 	{
 		Map<MetadataType, Metadata> metadataMap = Metadata.readMetadata(file);
 		IPTC iptc = (IPTC) metadataMap.get(MetadataType.IPTC);
@@ -80,9 +88,8 @@ public class TagUtils
 
 		// Remove the ones that are already there
 		List<String> tagStrings = datasets.stream()
-				.map(IPTCDataSet::getDataAsString)
-				.collect(Collectors.toList());
-
+										  .map(IPTCDataSet::getDataAsString)
+										  .collect(Collectors.toList());
 		tags.removeAll(tagStrings);
 
 		if (tags.size() > 0)
@@ -94,7 +101,7 @@ public class TagUtils
 			// Write the file to temp, then move to overwrite
 			File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-temp");
 			folder.mkdirs();
-			File target = new File(folder, UUID.randomUUID().toString() + ".jpg");
+			File target = new File(folder, UUID.randomUUID() + ".jpg");
 			try (InputStream in = new FileInputStream(file);
 				 OutputStream out = new FileOutputStream(target))
 			{

@@ -15,7 +15,6 @@ import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.impl.DSL;
 import org.jooq.impl.TableImpl;
-import org.jooq.types.UInteger;
 
 import raubach.fricklweb.server.database.Frickl;
 import raubach.fricklweb.server.database.tables.records.ImageTimelineRecord;
@@ -34,7 +33,7 @@ import raubach.fricklweb.server.database.tables.records.ImageTimelineRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ImageTimeline extends TableImpl<ImageTimelineRecord> {
 
-    private static final long serialVersionUID = -291521238;
+    private static final long serialVersionUID = 1523171147;
 
     /**
      * The reference instance of <code>frickl.image_timeline</code>
@@ -52,7 +51,7 @@ public class ImageTimeline extends TableImpl<ImageTimelineRecord> {
     /**
      * The column <code>frickl.image_timeline.year</code>.
      */
-    public final TableField<ImageTimelineRecord, UInteger> YEAR = createField("year", org.jooq.impl.SQLDataType.INTEGERUNSIGNED, this, "");
+    public final TableField<ImageTimelineRecord, Integer> YEAR = createField("year", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
     /**
      * The column <code>frickl.image_timeline.month</code>.

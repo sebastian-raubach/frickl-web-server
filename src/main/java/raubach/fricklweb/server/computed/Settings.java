@@ -3,7 +3,7 @@ package raubach.fricklweb.server.computed;
 public class Settings
 {
 	private boolean authEnabled;
-	private String googleAnalyticsKey;
+	private String  googleAnalyticsKey;
 
 	public Settings()
 	{
