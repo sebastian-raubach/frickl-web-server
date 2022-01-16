@@ -19,6 +19,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.io.*;
 import java.net.*;
+import java.nio.file.FileSystem;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.sql.*;
@@ -874,6 +875,32 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 		}
 	}
 
+	@GET
+	@Path("/{albumId}/scan")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void startImageScanner(@PathParam("albumId") Integer albumId)
+		throws IOException, SQLException
+	{
+		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
+		boolean auth = PropertyWatcher.authEnabled();
+
+		if (auth && StringUtils.isEmpty(userDetails.getToken()))
+		{
+			resp.sendError(Response.Status.FORBIDDEN.getStatusCode());
+			return;
+		}
+
+		try (Connection conn = Database.getConnection();
+			 DSLContext context = Database.getContext(conn))
+		{
+			AlbumsRecord album = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(albumId)).fetchAny();
+			File basePath = new File(Frickl.BASE_PATH);
+			File folder = new File(basePath, album.getPath());
+			ApplicationListener.startImageScanner(folder);
+		}
+	}
+
 	@POST
 	@Path("/{albumId}/image")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -881,6 +908,15 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	public boolean postImages(@PathParam("albumId") Integer albumId)
 		throws IOException, SQLException
 	{
+		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
+		boolean auth = PropertyWatcher.authEnabled();
+
+		if (auth && StringUtils.isEmpty(userDetails.getToken()))
+		{
+			resp.sendError(Response.Status.FORBIDDEN.getStatusCode());
+			return false;
+		}
+
 		if (albumId == null)
 		{
 			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
@@ -941,8 +977,6 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 						needsBannerImage = false;
 					}
 				}
-
-				ApplicationListener.startImageScanner(folder);
 
 				return counter > 0;
 			}

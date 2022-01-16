@@ -42,7 +42,8 @@ public class ImageScaler extends ImageRecordRunnable
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			// Silently fail
+//			e.printStackTrace();
 		}
 	}
 }

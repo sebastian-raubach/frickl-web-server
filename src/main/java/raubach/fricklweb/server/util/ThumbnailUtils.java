@@ -65,6 +65,7 @@ public class ThumbnailUtils
 			Thumbnails.of(file)
 					  .height(size.height)
 					  .keepAspectRatio(true)
+					  .outputQuality(0.8)
 					  .toFile(target);
 
 			result = target;
