@@ -6,14 +6,15 @@ import raubach.fricklweb.server.database.tables.records.ImagesRecord;
 import raubach.fricklweb.server.util.ThumbnailUtils;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 /**
  * @author Sebastian Raubach
  */
-public class ImageScaler extends ImageRecordRunnable
+public class ImageScaler extends ImageRecordRunnable<File>
 {
-	private       ImagesRecord        image;
 	private final ThumbnailUtils.Size size;
+	private       File                target = null;
 
 	public ImageScaler(ImagesRecord image, ThumbnailUtils.Size size)
 	{
@@ -22,7 +23,7 @@ public class ImageScaler extends ImageRecordRunnable
 	}
 
 	@Override
-	public void run()
+	public File call()
 	{
 		File file = new File(Frickl.BASE_PATH, image.getPath());
 
@@ -38,12 +39,15 @@ public class ImageScaler extends ImageRecordRunnable
 			else
 				type = "image/*";
 
-			ThumbnailUtils.getOrCreateThumbnail(type, image.getId(), image.getDataType(), file, size);
+			target = ThumbnailUtils.getOrCreateThumbnail(type, image.getId(), image.getDataType(), file, size);
 		}
 		catch (Exception e)
 		{
 			// Silently fail
-//			e.printStackTrace();
+			Logger.getLogger("").severe(e.getMessage());
+			e.printStackTrace();
 		}
+
+		return target;
 	}
 }

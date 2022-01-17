@@ -22,7 +22,6 @@ import java.net.*;
 import java.nio.channels.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.sql.*;
 import java.util.Date;
 import java.util.*;
@@ -30,7 +29,6 @@ import java.util.logging.*;
 
 import static raubach.fricklweb.server.database.tables.AccessTokens.*;
 import static raubach.fricklweb.server.database.tables.AlbumTokens.*;
-import static raubach.fricklweb.server.database.tables.Albums.*;
 import static raubach.fricklweb.server.database.tables.ImageTags.*;
 import static raubach.fricklweb.server.database.tables.Images.*;
 import static raubach.fricklweb.server.database.tables.Tags.*;
@@ -400,7 +398,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 					}
 				}
 
-				Images image = step.fetchAnyInto(Images.class);
+				ImagesRecord image = step.fetchAnyInto(ImagesRecord.class);
 
 				if (image != null)
 				{
@@ -419,12 +417,17 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 					{
 						try
 						{
-							file = ThumbnailUtils.getOrCreateThumbnail(type, image.getId(), image.getDataType(), file, size);
+							file = ThumbnailUtils.getOrCreateThreaded(type, image, file, size);
 						}
 						catch (IOException e)
 						{
 							e.printStackTrace();
 						}
+					}
+
+					if (file == null) {
+						resp.sendError(Response.Status.NOT_FOUND.getStatusCode());
+						return null;
 					}
 
 					// Set it again

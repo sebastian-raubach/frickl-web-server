@@ -1,20 +1,33 @@
 package raubach.fricklweb.server.util;
 
-import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.IOUtils;
 import raubach.fricklweb.server.database.enums.ImagesDataType;
 import raubach.fricklweb.server.database.tables.records.ImagesRecord;
+import raubach.fricklweb.server.scanner.ImageScaler;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Objects;
+import java.util.concurrent.*;
 
 /**
  * @author Sebastian Raubach
  */
 public class ThumbnailUtils
 {
+	private static ThreadPoolExecutor executor;
+
+	static
+	{
+		int cores = Runtime.getRuntime().availableProcessors();
+
+		if (cores > 2)
+			cores--;
+
+		executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cores);
+	}
+
 	public static boolean thumbnailExists(String type, ImagesRecord image, File file, Size size)
 	{
 		String version = PropertyWatcher.get(ServerProperty.API_VERSION);
@@ -33,10 +46,51 @@ public class ThumbnailUtils
 		return target.exists();
 	}
 
-	public static File getOrCreateThumbnail(String type, Integer imageId, ImagesDataType dataType, File file, Size size)
+	public static File getOrCreateThreaded(String type, ImagesRecord image, File file, Size size)
 		throws IOException
 	{
 		File result;
+		String version = PropertyWatcher.get(ServerProperty.API_VERSION);
+		File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-thumbnails" + "-" + version);
+		folder.mkdirs();
+
+		String extension = Objects.equals(type, "image/png") ? ".png" : ".jpg";
+
+		File target = new File(folder, image.getId() + size.getSuffix() + extension);
+
+		// Delete the thumbnail if it's older than the source image
+		if (target.lastModified() < file.lastModified())
+			target.delete();
+
+		// If it exists, fine, just return it
+		if (target.exists())
+		{
+			result = target;
+		}
+		// If not, create a new thumbnail
+		else
+		{
+			ImageScaler is = new ImageScaler(image, size);
+			Future<File> future = executor.submit(is);
+			try
+			{
+				result = future.get();
+			}
+			catch (InterruptedException | ExecutionException e)
+			{
+				e.printStackTrace();
+				result = null;
+			}
+
+		}
+
+		return result;
+	}
+
+	public static File getOrCreateThumbnail(String type, Integer imageId, ImagesDataType dataType, File file, Size size)
+		throws IOException
+	{
+		File result = null;
 		String version = PropertyWatcher.get(ServerProperty.API_VERSION);
 		File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-thumbnails" + "-" + version);
 		folder.mkdirs();
@@ -62,16 +116,35 @@ public class ThumbnailUtils
 				file = createVideoImage(file);
 			}
 
-			Thumbnails.of(file)
-					  .height(size.height)
-					  .keepAspectRatio(true)
-					  .outputQuality(0.8)
-					  .toFile(target);
+			if (file != null)
+			{
+				createThumb(file, target, size);
+//				Thumbnails.of(file)
+//						  .height(size.height)
+//						  .keepAspectRatio(true)
+//						  .outputQuality(0.8)
+//						  .toFile(target);
 
-			result = target;
+				result = target;
+			}
 		}
 
 		return result;
+	}
+
+	private static void createThumb(File source, File target, Size size)
+	{
+		try
+		{
+			String[] commands = {"convert", "-auto-orient", "-geometry", "x" + size.height, source.getAbsolutePath(), target.getAbsolutePath()};
+			Process p = new ProcessBuilder(commands).start();
+			String output = IOUtils.toString(p.getInputStream(), Charset.defaultCharset());
+			p.waitFor();
+		}
+		catch (IOException | InterruptedException e)
+		{
+			// Fail silently
+		}
 	}
 
 	private static File createVideoImage(File video)
@@ -95,7 +168,7 @@ public class ThumbnailUtils
 				e.printStackTrace();
 			}
 
-			commands = new String[]{"ffmpeg", "-ss", Integer.toString(timePoint), "-i", video.getAbsolutePath(), "-vframes", "1", "-q:v", "2", videoImage.getAbsolutePath()};
+			commands = new String[]{"ffmpeg", "-y", "-ss", Integer.toString(timePoint), "-i", video.getAbsolutePath(), "-vframes", "1", "-q:v", "2", videoImage.getAbsolutePath()};
 
 			p = new ProcessBuilder(commands).start();
 			p.waitFor();

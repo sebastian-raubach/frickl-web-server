@@ -1,10 +1,9 @@
 package raubach.fricklweb.server.scanner;
 
 import org.jooq.*;
-import raubach.fricklweb.server.Database;
+import raubach.fricklweb.server.*;
 import raubach.fricklweb.server.computed.*;
 import raubach.fricklweb.server.database.enums.ImagesDataType;
-import raubach.fricklweb.server.database.tables.Albums;
 import raubach.fricklweb.server.database.tables.records.*;
 import raubach.fricklweb.server.util.ThumbnailUtils;
 
@@ -157,19 +156,11 @@ public class ImageScanner implements Runnable
 					{
 						SCANRESULT.setQueueSize(executor.getQueue().size());
 						// Wait here
-						Logger.getLogger("").log(Level.INFO, "Queue count: " + executor.getQueue().size());
-						Logger.getLogger("").log(Level.INFO, "Queue active: " + executor.getActiveCount());
+						Logger.getLogger("").log(Level.INFO, "Queue active/count: " + executor.getActiveCount() + "/" + executor.getQueue().size());
 
 						if (executor.getQueue().size() < 1 && executor.getActiveCount() < 1)
 						{
 							executor.shutdownNow();
-						}
-						else
-						{
-							Runnable runnable = executor.getQueue().peek();
-
-							if (runnable instanceof ImageRecordRunnable)
-								Logger.getLogger("").log(Level.INFO, "TOP RUNNABLE: " + ((ImageRecordRunnable) runnable).getId());
 						}
 					}
 				}
@@ -306,10 +297,12 @@ public class ImageScanner implements Runnable
 						}
 
 						executor.submit(new ImageScaler(imagesRecord, ThumbnailUtils.Size.SMALL));
-						executor.submit(new ImageScaler(imagesRecord, ThumbnailUtils.Size.MEDIUM));
 
 						if (!isVideo)
+						{
+							executor.submit(new ImageScaler(imagesRecord, ThumbnailUtils.Size.MEDIUM));
 							executor.submit(new ImageExifReader(imagesRecord));
+						}
 
 						SCANRESULT.incrementTotalImages();
 
@@ -334,14 +327,15 @@ public class ImageScanner implements Runnable
 					else
 						type = "image/*";
 
-					if (image.getExif() == null && image.getDataType() == ImagesDataType.image)
-						executor.submit(new ImageExifReader(image));
-
 					if (!ThumbnailUtils.thumbnailExists(type, image, file.toFile(), ThumbnailUtils.Size.SMALL))
 						executor.submit(new ImageScaler(image, ThumbnailUtils.Size.SMALL));
 
-					if (!ThumbnailUtils.thumbnailExists(type, image, file.toFile(), ThumbnailUtils.Size.MEDIUM))
-						executor.submit(new ImageScaler(image, ThumbnailUtils.Size.MEDIUM));
+					if (!isVideo) {
+						if (!ThumbnailUtils.thumbnailExists(type, image, file.toFile(), ThumbnailUtils.Size.MEDIUM))
+							executor.submit(new ImageScaler(image, ThumbnailUtils.Size.MEDIUM));
+						if (image.getExif() == null)
+							executor.submit(new ImageExifReader(image));
+					}
 
 					SCANRESULT.incrementTotalImages();
 

@@ -22,7 +22,7 @@ import static raubach.fricklweb.server.database.tables.Tags.TAGS;
 /**
  * @author Sebastian Raubach
  */
-public class ImageExifReader extends ImageRecordRunnable
+public class ImageExifReader extends ImageRecordRunnable<ImageExifReader.ExifResult>
 {
 	private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
 
@@ -69,7 +69,7 @@ public class ImageExifReader extends ImageRecordRunnable
 	}
 
 	@Override
-	public void run()
+	public ExifResult call()
 	{
 		ExifResult exif;
 		Timestamp date;
@@ -129,6 +129,8 @@ public class ImageExifReader extends ImageRecordRunnable
 				e.printStackTrace();
 			}
 		}
+
+		return exif;
 	}
 
 	private ExifResult getExif(File image)
@@ -321,7 +323,7 @@ public class ImageExifReader extends ImageRecordRunnable
 		return new ExifResult(exif, keywords);
 	}
 
-	private static class ExifResult
+	public static class ExifResult
 	{
 		private final Exif         exif;
 		private final List<String> keyword;
