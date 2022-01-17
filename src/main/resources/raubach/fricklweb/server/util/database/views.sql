@@ -1,5 +1,5 @@
-CREATE OR REPLACE
-VIEW `album_stats` AS select
+DROP VIEW IF EXISTS `album_stats`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `album_stats` AS select
     `albums`.`id` AS `id`,
     `albums`.`name` AS `name`,
     `albums`.`description` AS `description`,
@@ -7,7 +7,7 @@ VIEW `album_stats` AS select
     `albums`.`banner_image_id` AS `banner_image_id`,
     (select `id` from `images` where `images`.`album_id` = `albums`.`id` AND `images`.`is_public` = 1 limit 1) AS `banner_image_public_id`,
     `albums`.`parent_album_id` AS `parent_album_id`,
-    (SELECT MAX(`images`.`created_on`) from `images` where `images`.`album_id` = `albums`.`id`) AS `newest_image`,
+    (SELECT MAX(`images`.`created_on`) from `images` where `images`.`album_id` = `albums`.`id` and `images`.`data_type` = 'image'`) AS `newest_image`,
     `albums`.`created_on` AS `created_on`,
     `albums`.`updated_on` AS `updated_on`,
     (
@@ -25,8 +25,8 @@ VIEW `album_stats` AS select
 from
     `albums`;
 
-CREATE OR REPLACE
-VIEW `calendar_data` AS select
+DROP VIEW IF EXISTS `calendar_data`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `calendar_data` AS select
     cast(`images`.`created_on` as date) AS `date`,
     count(1) AS `count`
 from
@@ -38,8 +38,8 @@ group by
 order by
     `date` desc;
 
-CREATE OR REPLACE
-VIEW `lat_lngs` AS select
+DROP VIEW IF EXISTS `lat_lngs`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `lat_lngs` AS select
     `images`.`id` AS `id`,
     `images`.`path` AS `path`,
     `images`.`album_id` AS `album_id`,
@@ -58,8 +58,8 @@ where
     and (json_unquote(json_extract(`images`.`exif`,
     '$.gpsLongitude')) is not null));
 
-CREATE OR REPLACE
-VIEW `stats_camera` AS select
+DROP VIEW IF EXISTS `stats_camera`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `stats_camera` AS select
     concat(json_unquote(json_extract(`images`.`exif`, '$.cameraMake')), ' ', json_unquote(json_extract(`images`.`exif`, '$.cameraModel'))) AS `camera`,
     count(1) AS `count`
 from
@@ -72,8 +72,8 @@ group by
 order by
     `count` desc;
 
-CREATE OR REPLACE
-VIEW `image_timeline` AS select
+DROP VIEW IF EXISTS `image_timeline`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `image_timeline` AS select
     year(`images`.`created_on`) AS `year`,
     month(`images`.`created_on`) AS `month`,
     json_arrayagg(`images`.`id`) AS `ids`
@@ -89,8 +89,8 @@ order by
     `year` desc,
     `month` desc;
 
-CREATE OR REPLACE
-VIEW `album_access_token` AS SELECT
+DROP VIEW IF EXISTS `album_access_token`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `album_access_token` AS SELECT
     albums.id AS `album_id`,
     albums.name AS `album_name`,
     albums.description AS `album_description`,

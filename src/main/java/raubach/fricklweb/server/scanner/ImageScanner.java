@@ -287,7 +287,7 @@ public class ImageScanner implements Runnable
 					BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
 
 					Optional<ImagesRecord> newImage = context.insertInto(IMAGES, IMAGES.ALBUM_ID, IMAGES.PATH, IMAGES.NAME, IMAGES.DATA_TYPE, IMAGES.CREATED_ON)
-															 .values(album.getId(), relativePath, file.toFile().getName(), isVideo ? ImagesDataType.video : ImagesDataType.image, attr != null ? new Timestamp(attr.creationTime().toMillis()) : null)
+															 .values(album.getId(), relativePath, file.toFile().getName(), isVideo ? ImagesDataType.video : ImagesDataType.image, attr != null ? new Timestamp(attr.lastModifiedTime().toMillis()) : null)
 															 .onDuplicateKeyIgnore()
 															 .returning()
 															 .fetchOptional();
