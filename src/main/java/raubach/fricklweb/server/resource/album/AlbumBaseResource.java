@@ -984,4 +984,52 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 
 		return false;
 	}
+
+	@GET
+	@Path("/xago")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@PermitAll
+	public List<AlbumStats> getImagesXago(@QueryParam("year") Integer year)
+		throws SQLException
+	{
+		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
+		boolean auth = PropertyWatcher.authEnabled();
+
+		try (Connection conn = Database.getConnection();
+			 DSLContext context = Database.getContext(conn))
+		{
+			SelectJoinStep<Record> step = context.select().from(ALBUM_STATS);
+
+			Field<Serializable> date = DSL.greatest(DSL.coalesce(ALBUM_STATS.NEWEST_IMAGE, 0), DSL.coalesce(ALBUM_STATS.CREATED_ON, 0));
+
+			Field<Integer> woyI = DSL.field("weekofyear(?)", Integer.class, date);
+			Field<Integer> woyN = DSL.field("weekofyear(?)", Integer.class, DSL.now());
+
+			step.where(woyI.eq(woyN)).and(DSL.year(date).eq(DSL.year(DSL.now()).minus(year)));
+
+			// Restrict to only albums containing at least one public image
+			if (!StringUtils.isEmpty(accessToken))
+			{
+				step.where(DSL.exists(DSL.selectOne()
+										 .from(ALBUM_TOKENS)
+										 .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
+										 .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
+																   .and(ALBUM_TOKENS.ALBUM_ID.eq(ALBUM_STATS.ID)))));
+			}
+			else if (StringUtils.isEmpty(userDetails.getToken()))
+			{
+				step.where(DSL.exists(DSL.selectOne()
+										 .from(IMAGES)
+										 .where(IMAGES.ALBUM_ID.eq(ALBUM_STATS.ID)
+															   .and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
+			}
+
+			return step.orderBy(date.desc(), ALBUM_STATS.NAME.desc())
+					   .limit(pageSize)
+					   .offset(pageSize * currentPage)
+					   .fetch()
+					   .into(AlbumStats.class);
+		}
+	}
 }

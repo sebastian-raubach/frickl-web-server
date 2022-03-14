@@ -35,7 +35,7 @@ import raubach.fricklweb.server.database.tables.records.AlbumStatsRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AlbumStats extends TableImpl<AlbumStatsRecord> {
 
-    private static final long serialVersionUID = -2139420918;
+    private static final long serialVersionUID = 890300721;
 
     /**
      * The reference instance of <code>frickl.album_stats</code>
@@ -89,6 +89,11 @@ public class AlbumStats extends TableImpl<AlbumStatsRecord> {
      * The column <code>frickl.album_stats.newest_image</code>.
      */
     public final TableField<AlbumStatsRecord, Timestamp> NEWEST_IMAGE = createField("newest_image", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+
+    /**
+     * The column <code>frickl.album_stats.oldest_image</code>.
+     */
+    public final TableField<AlbumStatsRecord, Timestamp> OLDEST_IMAGE = createField("oldest_image", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
 
     /**
      * The column <code>frickl.album_stats.created_on</code>. When this record has been created.

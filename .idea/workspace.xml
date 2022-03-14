@@ -4,10 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0b41da56-1101-476e-ba7d-884db70611d5" name="Default Changelist" comment="- ADD: Added endpoint for image upload.&#10;- ADD: Added endpoint for album c reation.&#10;-">
+    <list default="true" id="0b41da56-1101-476e-ba7d-884db70611d5" name="Default Changelist" comment="- CHG: Replaced Thumbnailator with ImageMagick for thumbnail creation.&#10;- CHG: Changed image thumbnail endpoint to use a threaded pool for thumbnail creation to keep CPU load on the Pi low.&#10;-">
+      <change beforePath="$PROJECT_DIR$/.gradle/6.7/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.7/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.7/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.7/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.7/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.7/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.7/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.7/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/javaCompile/taskHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/Frickl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/Frickl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageScanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageScanner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/album/AlbumBaseResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/album/AlbumBaseResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/raubach/fricklweb/server/util/database/views.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/raubach/fricklweb/server/util/database/views.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -54,6 +67,17 @@
                 <item name="frickl-web-server" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="deployment" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="frickl-web-server" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="execution" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="frickl-web-server" type="f1a62948:ProjectNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
               </path>
             </expand>
             <select />
@@ -260,7 +284,7 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Global Libraries" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
@@ -280,20 +304,20 @@
       <recent name="$PROJECT_DIR$/lib" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="raubach.fricklweb.server.computed" />
+      <recent name="raubach.fricklweb.server.util" />
+      <recent name="raubach.fricklweb.server.resource" />
+      <recent name="raubach.fricklweb.server.auth" />
       <recent name="raubach.fricklweb.server.resource.image" />
-      <recent name="raubach.fricklweb.server.resource.album" />
-      <recent name="raubach.fricklweb.server.resource.accesstoken" />
-      <recent name="raubach.fricklweb.server.resource.stats" />
-      <recent name="raubach.fricklweb.server.binding" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.frickl-web-server [deployTomcat]">
-    <configuration name="Exif" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="raubach.fricklweb.server.computed.Exif" />
+  <component name="RunManager" selected="Gradle.frickl-web-server [codegen]">
+    <configuration name="ImageScanner" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="raubach.fricklweb.server.scanner.ImageScanner" />
       <module name="frickl-web-server.main" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="raubach.fricklweb.server.computed.*" />
+          <option name="PATTERN" value="raubach.fricklweb.server.scanner.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -387,11 +411,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.frickl-web-server [codegen]" />
         <item itemvalue="Gradle.frickl-web-server [deployTomcat]" />
         <item itemvalue="Gradle.frickl-web-server [clean]" />
-        <item itemvalue="Gradle.frickl-web-server [codegen]" />
-        <item itemvalue="Application.Exif" />
         <item itemvalue="Gradle.frickl-web-server [war]" />
+        <item itemvalue="Application.ImageScanner" />
       </list>
     </recent_temporary>
   </component>
@@ -406,90 +430,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1558543167839</updated>
-    </task>
-    <task id="LOCAL-00008" summary="- ADD: Added timeline view.">
-      <created>1561309559183</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1561309559183</updated>
-    </task>
-    <task id="LOCAL-00009" summary="- DEL: Removed timeline endpoint.">
-      <created>1561875777089</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1561875777090</updated>
-    </task>
-    <task id="LOCAL-00010" summary="- CHG: Replaced jackson with gson.&#10;- ADD: Added tag endpoints for adding and deleting tags from albums and images.">
-      <created>1561909094441</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1561909094441</updated>
-    </task>
-    <task id="LOCAL-00011" summary="- CHG: Use file creation date as initial version for &quot;created_on&quot; on images. This makes sure that the images show up in the correct order even when the EXIF information hasn't been parsed yet.">
-      <created>1562221334670</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1562221334670</updated>
-    </task>
-    <task id="LOCAL-00012" summary="- CHG: Made actual image file XMP tagging asynchronous. That means that the call can return to the client, but the images are still being processed in another thread.&#10;- FIX: Fixed an issue where tags that have no images associated with them would show up with a count of &quot;1&quot; on the tags page.">
-      <created>1562262821779</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1562262821780</updated>
-    </task>
-    <task id="LOCAL-00013" summary="- ADD: Added (optional) inclusion of /dist/ directory from Vue.js client into the .war file.">
-      <created>1562352572420</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1562352572420</updated>
-    </task>
-    <task id="LOCAL-00014" summary="- ADD: Added (optional) inclusion of /dist/ directory from Vue.js client into the .war file.">
-      <created>1562353679658</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1562353679658</updated>
-    </task>
-    <task id="LOCAL-00015" summary="- FIX: Fixed an error with the random image endpoint.">
-      <created>1562689460073</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1562689460073</updated>
-    </task>
-    <task id="LOCAL-00016" summary="- FIX: Fixed an error with the random image endpoint.">
-      <created>1562739136831</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1562739136832</updated>
-    </task>
-    <task id="LOCAL-00017" summary="- CHG: Made small changes to automatically include the web application if placed under web/dist.">
-      <created>1563632518536</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1563632518536</updated>
-    </task>
-    <task id="LOCAL-00018" summary="- ADD: Added logging to image scaling process.&#10;- FIX: Fixed an issue where thumbnails were created outside the image scaler.">
-      <created>1564298859962</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1564298859962</updated>
-    </task>
-    <task id="LOCAL-00019" summary="- CHG: Adjusted number of CPU cores used for data import.">
-      <created>1564320391866</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1564320391866</updated>
     </task>
     <task id="LOCAL-00020" summary="- CHG: Changed deploy path.">
       <created>1564601448726</created>
@@ -750,7 +690,91 @@
       <option name="project" value="LOCAL" />
       <updated>1641575795489</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="- FIX: Fixed wrong ordering of albums if not created in date order.">
+      <created>1641750421351</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1641750421352</updated>
+    </task>
+    <task id="LOCAL-00058" summary="- CHG: Made image scanner more efficient.">
+      <created>1641856819204</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1641856819205</updated>
+    </task>
+    <task id="LOCAL-00059" summary="- CHG: Made image scanner more efficient.">
+      <created>1641909095458</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1641909095459</updated>
+    </task>
+    <task id="LOCAL-00060" summary="- CHG: Made image scanner more efficient.">
+      <created>1641915596893</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1641915596893</updated>
+    </task>
+    <task id="LOCAL-00061" summary="- CHG: Made image scanner more efficient.">
+      <created>1641918781761</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1641918781762</updated>
+    </task>
+    <task id="LOCAL-00062" summary="- FIX: Attempt to fix image scanner.">
+      <created>1641979387833</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1641979387834</updated>
+    </task>
+    <task id="LOCAL-00063" summary="- FIX: Fixed issues with image scanner.&#10;- CHG: When new images are uploaded, the image scanner automatically starts running for this new folder.">
+      <created>1642002732985</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1642002732985</updated>
+    </task>
+    <task id="LOCAL-00064" summary="- FIX: Fixed build issues.">
+      <created>1642005102640</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1642005102640</updated>
+    </task>
+    <task id="LOCAL-00065" summary="- CHG: Replaced Restlet with Jax-RS.&#10;- FIX: Issues in image scanner.&#10;- FIX: Issues with image tagging.&#10;-">
+      <created>1642348445621</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1642348445622</updated>
+    </task>
+    <task id="LOCAL-00066" summary="- CHG: Removed automatic folder scanning after each image upload and added a new dedicated endpoint.&#10;- CHG: Updated Thumbnailator and reduced thumbnail quality.">
+      <created>1642357123341</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1642357123341</updated>
+    </task>
+    <task id="LOCAL-00067" summary="- FIX: Fixed view creation script.&#10;- CHG: Use last modified date of uploaded files rather than creation date (because this will be when the file was uploaded).">
+      <created>1642408895809</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1642408895810</updated>
+    </task>
+    <task id="LOCAL-00068" summary="- CHG: Replaced Thumbnailator with ImageMagick for thumbnail creation.&#10;- CHG: Changed image thumbnail endpoint to use a threaded pool for thumbnail creation to keep CPU load on the Pi low.&#10;-">
+      <created>1642441831506</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1642441831506</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -812,15 +836,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="- ADD: Added authentication.&#10;- ADD: Added public images that can be shared with people even if Frickl is set to use authentication.&#10;-" />
-    <MESSAGE value="- ADD: Added support for environmental variables to set admin username and password." />
-    <MESSAGE value="- FIX: Fixed issues with compilation on Java 8." />
-    <MESSAGE value="- FIX: Replaced fetchOne with fetchAny." />
-    <MESSAGE value="- FIX: Included .sql files for database upgrades in .jar file." />
-    <MESSAGE value="- FIX: Fixed wrong order of database upgrade and SQL view creation." />
-    <MESSAGE value="- FIX: Added more exception printing." />
-    <MESSAGE value="- ADD: Added more database init logging." />
-    <MESSAGE value="- FIX: Fixed database existence check." />
     <MESSAGE value="- CHG: Adjusted album view to support public views." />
     <MESSAGE value="- CHG: Changed status call to return number of processed images and totals." />
     <MESSAGE value="- CHG: Added new image scanner status of &quot;scanning&quot; to indicate the first part of the import process." />
@@ -837,7 +852,37 @@
     <MESSAGE value="- FIX: Fixed wrong config file check." />
     <MESSAGE value="- FIX: Fixed issue with default sort order of images." />
     <MESSAGE value="- ADD: Added endpoint for image upload.&#10;- ADD: Added endpoint for album c reation.&#10;-" />
-    <option name="LAST_COMMIT_MESSAGE" value="- ADD: Added endpoint for image upload.&#10;- ADD: Added endpoint for album c reation.&#10;-" />
+    <MESSAGE value="- FIX: Fixed wrong ordering of albums if not created in date order." />
+    <MESSAGE value="- CHG: Made image scanner more efficient." />
+    <MESSAGE value="- FIX: Attempt to fix image scanner." />
+    <MESSAGE value="- FIX: Fixed issues with image scanner.&#10;- CHG: When new images are uploaded, the image scanner automatically starts running for this new folder." />
+    <MESSAGE value="- FIX: Fixed build issues." />
+    <MESSAGE value="- CHG: Replaced Restlet with Jax-RS.&#10;- FIX: Issues in image scanner.&#10;- FIX: Issues with image tagging.&#10;-" />
+    <MESSAGE value="- CHG: Removed automatic folder scanning after each image upload and added a new dedicated endpoint.&#10;- CHG: Updated Thumbnailator and reduced thumbnail quality." />
+    <MESSAGE value="- FIX: Fixed view creation script.&#10;- CHG: Use last modified date of uploaded files rather than creation date (because this will be when the file was uploaded)." />
+    <MESSAGE value="- CHG: Replaced Thumbnailator with ImageMagick for thumbnail creation.&#10;- CHG: Changed image thumbnail endpoint to use a threaded pool for thumbnail creation to keep CPU load on the Pi low.&#10;-" />
+    <option name="LAST_COMMIT_MESSAGE" value="- CHG: Replaced Thumbnailator with ImageMagick for thumbnail creation.&#10;- CHG: Changed image thumbnail endpoint to use a threaded pool for thumbnail creation to keep CPU load on the Pi low.&#10;-" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/TagUtils.java</url>
+          <line>61</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/TagUtils.java</url>
+          <line>92</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageScaler.java</url>
+          <line>27</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
