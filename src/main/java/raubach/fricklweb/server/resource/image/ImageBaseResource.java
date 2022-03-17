@@ -131,6 +131,12 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 		try (Connection conn = Database.getConnection();
 			 DSLContext context = Database.getContext(conn))
 		{
+			// Update the view count
+			context.update(IMAGES)
+				   .set(IMAGES.VIEW_COUNT, IMAGES.VIEW_COUNT.plus(1))
+				   .where(IMAGES.ID.eq(imageId))
+				   .execute();
+
 			SelectConditionStep<Record> step = context.select().from(IMAGES)
 													  .where(IMAGES.ID.eq(imageId));
 
@@ -425,7 +431,8 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 						}
 					}
 
-					if (file == null) {
+					if (file == null)
+					{
 						resp.sendError(Response.Status.NOT_FOUND.getStatusCode());
 						return null;
 					}
@@ -441,6 +448,9 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 					// Check if the image exists
 					if (file.exists() && file.isFile())
 					{
+						image.setViewCount(image.getViewCount() + 1);
+						image.store(IMAGES.VIEW_COUNT);
+
 						byte[] bytes = IOUtils.toByteArray(file.toURI());
 
 						return Response.ok(new ByteArrayInputStream(bytes))
@@ -747,30 +757,18 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 					}
 				}
 
-				Images image = step.fetchAnyInto(Images.class);
+				ImagesRecord image = step.fetchAnyInto(ImagesRecord.class);
 
 				if (image != null)
 				{
 					File file = new File(Frickl.BASE_PATH, image.getPath());
-					String filename = file.getName();
-					String type;
-
-					if (file.getName().toLowerCase().endsWith(".mp4"))
-						type = "video/mp4";
-					else if (file.getName().toLowerCase().endsWith(".avi"))
-						type = "video/x-msvideo";
-					else if (file.getName().toLowerCase().endsWith(".mpg") || file.getName().toLowerCase().endsWith(".mpeg"))
-						type = "video/mpeg";
-					else if (file.getName().toLowerCase().endsWith(".wmv"))
-						type = "video/x-ms-wmv";
-					else if (file.getName().toLowerCase().endsWith(".mov"))
-						type = "video/quicktime";
-					else
-						type = "video/*";
 
 					// Check if the image exists
 					if (file.exists() && file.isFile())
 					{
+						image.setViewCount(image.getViewCount() + 1);
+						image.store(IMAGES.VIEW_COUNT);
+
 						if (isHead)
 						{
 							return Response.ok()
