@@ -448,8 +448,11 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 					// Check if the image exists
 					if (file.exists() && file.isFile())
 					{
-						image.setViewCount(image.getViewCount() + 1);
-						image.store(IMAGES.VIEW_COUNT);
+						if (size == ThumbnailUtils.Size.ORIGINAL)
+						{
+							image.setViewCount(image.getViewCount() + 1);
+							image.store(IMAGES.VIEW_COUNT);
+						}
 
 						byte[] bytes = IOUtils.toByteArray(file.toURI());
 
