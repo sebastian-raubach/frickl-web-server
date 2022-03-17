@@ -5,6 +5,7 @@ package raubach.fricklweb.server.database.tables.pojos;
 
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 
 import javax.annotation.Generated;
@@ -23,21 +24,22 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AlbumStats implements Serializable {
 
-    private static final long serialVersionUID = 672067679;
+    private static final long serialVersionUID = -1230047580;
 
-    private Integer   id;
-    private String    name;
-    private String    description;
-    private String    path;
-    private Integer   bannerImageId;
-    private Long      bannerImagePublicId;
-    private Integer   parentAlbumId;
-    private Timestamp newestImage;
-    private Timestamp oldestImage;
-    private Timestamp createdOn;
-    private Timestamp updatedOn;
-    private Long      count;
-    private Long      countPublic;
+    private Integer    id;
+    private String     name;
+    private String     description;
+    private String     path;
+    private Integer    bannerImageId;
+    private Long       bannerImagePublicId;
+    private Integer    parentAlbumId;
+    private Timestamp  newestImage;
+    private Timestamp  oldestImage;
+    private BigInteger imageViewCount;
+    private Timestamp  createdOn;
+    private Timestamp  updatedOn;
+    private Long       count;
+    private Long       countPublic;
 
     public AlbumStats() {}
 
@@ -51,6 +53,7 @@ public class AlbumStats implements Serializable {
         this.parentAlbumId = value.parentAlbumId;
         this.newestImage = value.newestImage;
         this.oldestImage = value.oldestImage;
+        this.imageViewCount = value.imageViewCount;
         this.createdOn = value.createdOn;
         this.updatedOn = value.updatedOn;
         this.count = value.count;
@@ -58,19 +61,20 @@ public class AlbumStats implements Serializable {
     }
 
     public AlbumStats(
-        Integer   id,
-        String    name,
-        String    description,
-        String    path,
-        Integer   bannerImageId,
-        Long      bannerImagePublicId,
-        Integer   parentAlbumId,
-        Timestamp newestImage,
-        Timestamp oldestImage,
-        Timestamp createdOn,
-        Timestamp updatedOn,
-        Long      count,
-        Long      countPublic
+        Integer    id,
+        String     name,
+        String     description,
+        String     path,
+        Integer    bannerImageId,
+        Long       bannerImagePublicId,
+        Integer    parentAlbumId,
+        Timestamp  newestImage,
+        Timestamp  oldestImage,
+        BigInteger imageViewCount,
+        Timestamp  createdOn,
+        Timestamp  updatedOn,
+        Long       count,
+        Long       countPublic
     ) {
         this.id = id;
         this.name = name;
@@ -81,6 +85,7 @@ public class AlbumStats implements Serializable {
         this.parentAlbumId = parentAlbumId;
         this.newestImage = newestImage;
         this.oldestImage = oldestImage;
+        this.imageViewCount = imageViewCount;
         this.createdOn = createdOn;
         this.updatedOn = updatedOn;
         this.count = count;
@@ -159,6 +164,14 @@ public class AlbumStats implements Serializable {
         this.oldestImage = oldestImage;
     }
 
+    public BigInteger getImageViewCount() {
+        return this.imageViewCount;
+    }
+
+    public void setImageViewCount(BigInteger imageViewCount) {
+        this.imageViewCount = imageViewCount;
+    }
+
     public Timestamp getCreatedOn() {
         return this.createdOn;
     }
@@ -204,6 +217,7 @@ public class AlbumStats implements Serializable {
         sb.append(", ").append(parentAlbumId);
         sb.append(", ").append(newestImage);
         sb.append(", ").append(oldestImage);
+        sb.append(", ").append(imageViewCount);
         sb.append(", ").append(createdOn);
         sb.append(", ").append(updatedOn);
         sb.append(", ").append(count);

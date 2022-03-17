@@ -26,7 +26,7 @@ import raubach.fricklweb.server.database.enums.ImagesDataType;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Images implements Serializable {
 
-    private static final long serialVersionUID = -1408304963;
+    private static final long serialVersionUID = 1649627641;
 
     private Integer        id;
     private String         path;
@@ -35,6 +35,7 @@ public class Images implements Serializable {
     private Exif           exif;
     private Integer        albumId;
     private Byte           isPublic;
+    private Integer        viewCount;
     private ImagesDataType dataType;
     private Timestamp      createdOn;
     private Timestamp      updatedOn;
@@ -49,6 +50,7 @@ public class Images implements Serializable {
         this.exif = value.exif;
         this.albumId = value.albumId;
         this.isPublic = value.isPublic;
+        this.viewCount = value.viewCount;
         this.dataType = value.dataType;
         this.createdOn = value.createdOn;
         this.updatedOn = value.updatedOn;
@@ -62,6 +64,7 @@ public class Images implements Serializable {
         Exif           exif,
         Integer        albumId,
         Byte           isPublic,
+        Integer        viewCount,
         ImagesDataType dataType,
         Timestamp      createdOn,
         Timestamp      updatedOn
@@ -73,6 +76,7 @@ public class Images implements Serializable {
         this.exif = exif;
         this.albumId = albumId;
         this.isPublic = isPublic;
+        this.viewCount = viewCount;
         this.dataType = dataType;
         this.createdOn = createdOn;
         this.updatedOn = updatedOn;
@@ -134,6 +138,14 @@ public class Images implements Serializable {
         this.isPublic = isPublic;
     }
 
+    public Integer getViewCount() {
+        return this.viewCount;
+    }
+
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
+    }
+
     public ImagesDataType getDataType() {
         return this.dataType;
     }
@@ -169,6 +181,7 @@ public class Images implements Serializable {
         sb.append(", ").append(exif);
         sb.append(", ").append(albumId);
         sb.append(", ").append(isPublic);
+        sb.append(", ").append(viewCount);
         sb.append(", ").append(dataType);
         sb.append(", ").append(createdOn);
         sb.append(", ").append(updatedOn);

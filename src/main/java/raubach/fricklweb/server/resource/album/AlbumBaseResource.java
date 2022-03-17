@@ -88,7 +88,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 															   .and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
 			}
 
-			return step.orderBy(DSL.greatest(DSL.coalesce(ALBUM_STATS.NEWEST_IMAGE, 0).desc(), DSL.coalesce(ALBUM_STATS.CREATED_ON, 0)).desc(), ALBUM_STATS.NAME.desc())
+			return step.orderBy(DSL.coalesce(ALBUM_STATS.NEWEST_IMAGE, 0).desc(), DSL.coalesce(ALBUM_STATS.CREATED_ON, 0).desc(), ALBUM_STATS.NAME.desc())
 					   .limit(pageSize)
 					   .offset(pageSize * currentPage)
 					   .fetch()

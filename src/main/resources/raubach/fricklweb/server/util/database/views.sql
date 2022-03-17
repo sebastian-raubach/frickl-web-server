@@ -9,6 +9,7 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `album_stats` AS select
     `albums`.`parent_album_id` AS `parent_album_id`,
     (SELECT MAX(`images`.`created_on`) from `images` where `images`.`album_id` = `albums`.`id` and `images`.`data_type` = 'image') AS `newest_image`,
     (SELECT MIN(`images`.`created_on`) from `images` where `images`.`album_id` = `albums`.`id` and `images`.`data_type` = 'image') AS `oldest_image`,
+    (SELECT SUM(`images`.`view_count`) from `images` where `images`.`album_id` = `albums`.`id` and `images`.`data_type` = 'image') AS `image_view_count`,
     `albums`.`created_on` AS `created_on`,
     `albums`.`updated_on` AS `updated_on`,
     (

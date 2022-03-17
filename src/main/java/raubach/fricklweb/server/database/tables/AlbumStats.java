@@ -4,6 +4,7 @@
 package raubach.fricklweb.server.database.tables;
 
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 
 import javax.annotation.Generated;
@@ -35,7 +36,7 @@ import raubach.fricklweb.server.database.tables.records.AlbumStatsRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AlbumStats extends TableImpl<AlbumStatsRecord> {
 
-    private static final long serialVersionUID = 890300721;
+    private static final long serialVersionUID = 1695028494;
 
     /**
      * The reference instance of <code>frickl.album_stats</code>
@@ -94,6 +95,11 @@ public class AlbumStats extends TableImpl<AlbumStatsRecord> {
      * The column <code>frickl.album_stats.oldest_image</code>.
      */
     public final TableField<AlbumStatsRecord, Timestamp> OLDEST_IMAGE = createField("oldest_image", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+
+    /**
+     * The column <code>frickl.album_stats.image_view_count</code>.
+     */
+    public final TableField<AlbumStatsRecord, BigInteger> IMAGE_VIEW_COUNT = createField("image_view_count", org.jooq.impl.SQLDataType.DECIMAL_INTEGER.precision(32), this, "");
 
     /**
      * The column <code>frickl.album_stats.created_on</code>. When this record has been created.

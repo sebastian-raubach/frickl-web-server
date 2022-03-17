@@ -45,7 +45,7 @@ import raubach.fricklweb.server.database.tables.records.ImagesRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Images extends TableImpl<ImagesRecord> {
 
-    private static final long serialVersionUID = 354470088;
+    private static final long serialVersionUID = 1208410387;
 
     /**
      * The reference instance of <code>frickl.images</code>
@@ -94,6 +94,11 @@ public class Images extends TableImpl<ImagesRecord> {
      * The column <code>frickl.images.is_public</code>.
      */
     public final TableField<ImagesRecord, Byte> IS_PUBLIC = createField("is_public", org.jooq.impl.SQLDataType.TINYINT.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.TINYINT)), this, "");
+
+    /**
+     * The column <code>frickl.images.view_count</code>.
+     */
+    public final TableField<ImagesRecord, Integer> VIEW_COUNT = createField("view_count", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>frickl.images.data_type</code>.
