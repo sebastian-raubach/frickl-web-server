@@ -46,7 +46,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
 	public List<AlbumStats> getAlbumById(@PathParam("albumId") Integer albumId, @QueryParam("parentAlbumId") Integer parentAlbumId)
-		throws IOException, SQLException
+		throws SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
@@ -88,7 +88,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 															   .and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
 			}
 
-			return step.orderBy(DSL.greatest(DSL.coalesce(ALBUM_STATS.NEWEST_IMAGE, 0), DSL.coalesce(ALBUM_STATS.CREATED_ON, 0)).desc(), ALBUM_STATS.NAME.desc())
+			return step.orderBy(DSL.greatest(DSL.coalesce(ALBUM_STATS.NEWEST_IMAGE, 0).desc(), DSL.coalesce(ALBUM_STATS.CREATED_ON, 0)).desc(), ALBUM_STATS.NAME.desc())
 					   .limit(pageSize)
 					   .offset(pageSize * currentPage)
 					   .fetch()
