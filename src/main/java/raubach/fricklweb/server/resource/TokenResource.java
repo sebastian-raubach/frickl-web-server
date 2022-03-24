@@ -22,8 +22,8 @@ import raubach.fricklweb.server.computed.*;
 import raubach.fricklweb.server.util.ServerProperty;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.*;
 import java.io.IOException;
 import java.util.*;
 

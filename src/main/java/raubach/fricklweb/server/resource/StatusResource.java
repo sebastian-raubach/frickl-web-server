@@ -3,8 +3,8 @@ package raubach.fricklweb.server.resource;
 import raubach.fricklweb.server.computed.DataScanResult;
 import raubach.fricklweb.server.scanner.ImageScanner;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 
 /**
  * @author Sebastian Raubach

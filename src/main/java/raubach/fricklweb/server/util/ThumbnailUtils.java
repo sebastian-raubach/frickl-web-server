@@ -1,5 +1,6 @@
 package raubach.fricklweb.server.util;
 
+import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.IOUtils;
 import raubach.fricklweb.server.database.enums.ImagesDataType;
 import raubach.fricklweb.server.database.tables.records.ImagesRecord;
@@ -10,6 +11,7 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Objects;
 import java.util.concurrent.*;
+import java.util.logging.Logger;
 
 /**
  * @author Sebastian Raubach
@@ -59,7 +61,7 @@ public class ThumbnailUtils
 		File target = new File(folder, image.getId() + size.getSuffix() + extension);
 
 		// Delete the thumbnail if it's older than the source image
-		if (target.lastModified() < file.lastModified())
+		if (target.exists() && target.lastModified() < file.lastModified())
 			target.delete();
 
 		// If it exists, fine, just return it
@@ -78,6 +80,7 @@ public class ThumbnailUtils
 			}
 			catch (InterruptedException | ExecutionException e)
 			{
+				Logger.getLogger("").severe(e.getMessage());
 				e.printStackTrace();
 				result = null;
 			}
@@ -119,12 +122,6 @@ public class ThumbnailUtils
 			if (file != null)
 			{
 				createThumb(file, target, size);
-//				Thumbnails.of(file)
-//						  .height(size.height)
-//						  .keepAspectRatio(true)
-//						  .outputQuality(0.8)
-//						  .toFile(target);
-
 				result = target;
 			}
 		}
@@ -134,16 +131,35 @@ public class ThumbnailUtils
 
 	private static void createThumb(File source, File target, Size size)
 	{
+		int result = -1;
 		try
 		{
 			String[] commands = {"convert", "-auto-orient", "-geometry", "x" + size.height, source.getAbsolutePath(), target.getAbsolutePath()};
 			Process p = new ProcessBuilder(commands).start();
 			String output = IOUtils.toString(p.getInputStream(), Charset.defaultCharset());
-			p.waitFor();
+			result = p.waitFor();
 		}
 		catch (IOException | InterruptedException e)
 		{
 			// Fail silently
+		}
+		finally
+		{
+			if (result != 0)
+			{
+				try
+				{
+					Thumbnails.of(source)
+							  .height(size.height)
+							  .keepAspectRatio(true)
+							  .outputQuality(0.8)
+							  .toFile(target);
+				}
+				catch (IOException ex)
+				{
+					// Fail silently
+				}
+			}
 		}
 	}
 

@@ -5,8 +5,8 @@ import org.jooq.tools.StringUtils;
 import raubach.fricklweb.server.resource.ContextResource;
 import raubach.fricklweb.server.util.ResourceUtils;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.*;
 import java.io.*;
 import java.nio.file.Files;
 

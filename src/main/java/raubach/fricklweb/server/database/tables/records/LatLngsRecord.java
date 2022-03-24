@@ -6,7 +6,7 @@ package raubach.fricklweb.server.database.tables.records;
 
 import java.math.BigDecimal;
 
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.Record6;

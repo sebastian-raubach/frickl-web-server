@@ -4,8 +4,8 @@ import raubach.fricklweb.server.computed.Settings;
 import raubach.fricklweb.server.util.ServerProperty;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 
 @Path("settings")
 public class SettingsResource extends ContextResource

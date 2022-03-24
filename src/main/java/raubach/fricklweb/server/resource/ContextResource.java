@@ -3,8 +3,8 @@ package raubach.fricklweb.server.resource;
 import raubach.fricklweb.server.util.ServerProperty;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import javax.servlet.http.*;
-import javax.ws.rs.core.*;
+import jakarta.servlet.http.*;
+import jakarta.ws.rs.core.*;
 import java.io.File;
 
 public class ContextResource

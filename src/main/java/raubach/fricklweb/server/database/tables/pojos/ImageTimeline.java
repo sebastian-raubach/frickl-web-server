@@ -6,7 +6,7 @@ package raubach.fricklweb.server.database.tables.pojos;
 
 import java.io.Serializable;
 
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
 
 /**

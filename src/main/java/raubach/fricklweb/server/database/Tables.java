@@ -4,7 +4,7 @@
 package raubach.fricklweb.server.database;
 
 
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
 import raubach.fricklweb.server.database.tables.AccessTokens;
 import raubach.fricklweb.server.database.tables.AlbumAccessToken;

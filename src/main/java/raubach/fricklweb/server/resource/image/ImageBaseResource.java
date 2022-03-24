@@ -14,9 +14,9 @@ import raubach.fricklweb.server.resource.AbstractAccessTokenResource;
 import raubach.fricklweb.server.util.*;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import javax.annotation.security.PermitAll;
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import jakarta.annotation.security.PermitAll;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.*;
 import java.io.*;
 import java.net.*;
 import java.nio.channels.*;
@@ -87,7 +87,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Path("/{imageId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void patchImage(@PathParam("imageId") Integer imageId, Images image)
+	public boolean patchImage(@PathParam("imageId") Integer imageId, Images image)
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -96,7 +96,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
 		{
 			resp.sendError(Response.Status.UNAUTHORIZED.getStatusCode());
-			return;
+			return false;
 		}
 
 		if (imageId != null && image != null && Objects.equals(image.getId(), imageId))
@@ -114,7 +114,10 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 		else
 		{
 			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
+			return false;
 		}
+
+		return true;
 	}
 
 	@GET
@@ -563,8 +566,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 
 			result = step.orderBy(DSL.rand())
 						 .limit(1)
-						 .fetchAny()
-						 .into(Images.class);
+						 .fetchAnyInto(Images.class);
 		}
 		catch (SQLException | NullPointerException e)
 		{
@@ -596,8 +598,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 
 				result = step.orderBy(DSL.rand())
 							 .limit(1)
-							 .fetchAny()
-							 .into(Images.class);
+							 .fetchAnyInto(Images.class);
 			}
 			catch (NullPointerException e)
 			{

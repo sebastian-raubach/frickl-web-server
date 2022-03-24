@@ -7,7 +7,7 @@ package raubach.fricklweb.server.database.tables.records;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.Record14;

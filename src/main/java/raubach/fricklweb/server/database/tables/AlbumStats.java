@@ -7,7 +7,7 @@ package raubach.fricklweb.server.database.tables;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;

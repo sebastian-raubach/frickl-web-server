@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
 
 /**

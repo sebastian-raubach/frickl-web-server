@@ -8,8 +8,8 @@ import raubach.fricklweb.server.database.tables.pojos.Images;
 import raubach.fricklweb.server.resource.PaginatedServerResource;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.*;
 import java.io.IOException;
 import java.sql.*;
 import java.util.List;

@@ -1,7 +1,7 @@
 package raubach.fricklweb.server.resource.image;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.StreamingOutput;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.StreamingOutput;
 import java.io.*;
 
 public class MediaStreamer implements StreamingOutput

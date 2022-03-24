@@ -1,9 +1,10 @@
 package raubach.fricklweb.server;
 
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.ApplicationPath;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.ApplicationPath;
 
 /**
  * @author Sebastian Raubach
@@ -17,6 +18,7 @@ public class Frickl extends ResourceConfig
 	public Frickl()
 	{
 		packages("raubach.fricklweb.server");
+		register(MultiPartFeature.class);
 
 		INSTANCE = this;
 	}

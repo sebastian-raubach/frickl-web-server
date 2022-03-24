@@ -4,7 +4,7 @@
 package raubach.fricklweb.server.database.enums;
 
 
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
 import org.jooq.Catalog;
 import org.jooq.EnumType;

@@ -1,6 +1,6 @@
 package raubach.fricklweb.server.resource;
 
-import javax.ws.rs.*;
+import jakarta.ws.rs.*;
 
 /**
  * @author Sebastian Raubach
