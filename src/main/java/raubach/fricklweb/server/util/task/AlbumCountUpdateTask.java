@@ -15,9 +15,15 @@ import static raubach.fricklweb.server.database.Tables.*;
 
 public class AlbumCountUpdateTask implements Runnable
 {
+	private static boolean RUNNING = false;
+
 	@Override
 	public void run()
 	{
+		if (RUNNING)
+			return;
+
+		RUNNING = true;
 		Logger.getLogger("").info("STARTING ALBUM COUNT UPDATER");
 
 		try (Connection conn = Database.getConnection();
@@ -53,7 +59,25 @@ public class AlbumCountUpdateTask implements Runnable
 						   Integer ic = r.get(icField);
 						   Integer ac = r.get(acField);
 						   Integer icp = r.get(icpField);
-						   Integer icv = r.get(icvField).intValue();
+						   Integer icv = 0;
+
+						   try
+						   {
+							   icv = r.get(icvField).intValue();
+						   }
+						   catch (Exception e)
+						   {
+							   // Ignore
+						   }
+
+						   if (ic == null)
+							   ic = 0;
+						   if (ac == null)
+							   ac = 0;
+						   if (icp == null)
+							   icp = 0;
+						   if (icv == null)
+							   icp = 0;
 
 						   albumIds.add(albumId);
 
@@ -144,5 +168,7 @@ public class AlbumCountUpdateTask implements Runnable
 			Logger.getLogger("").severe(e.getMessage());
 			e.printStackTrace();
 		}
+
+		RUNNING = false;
 	}
 }
