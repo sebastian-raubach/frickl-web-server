@@ -1,5 +1,9 @@
 package raubach.fricklweb.server.resource.album;
 
+import jakarta.annotation.security.PermitAll;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.*;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
@@ -13,12 +17,8 @@ import raubach.fricklweb.server.resource.AbstractAccessTokenResource;
 import raubach.fricklweb.server.util.*;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import jakarta.annotation.security.PermitAll;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.*;
 import java.io.*;
-import java.net.*;
+import java.net.URI;
 import java.nio.file.FileSystem;
 import java.nio.file.*;
 import java.sql.*;
@@ -63,6 +63,10 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 			{
 				if (parentAlbumId != -1)
 					step.where(ALBUM_STATS.PARENT_ALBUM_ID.eq(parentAlbumId));
+			}
+			else
+			{
+				step.where(ALBUM_STATS.PARENT_ALBUM_ID.isNull());
 			}
 
 			if (auth)
@@ -243,6 +247,10 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 			{
 				if (parentAlbumId != -1)
 					step.where(ALBUMS.PARENT_ALBUM_ID.eq(parentAlbumId));
+			}
+			else
+			{
+				step.where(ALBUM_STATS.PARENT_ALBUM_ID.isNull());
 			}
 
 			if (auth)
