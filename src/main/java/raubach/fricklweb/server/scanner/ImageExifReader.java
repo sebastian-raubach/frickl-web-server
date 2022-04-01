@@ -79,12 +79,13 @@ public class ImageExifReader extends ImageRecordRunnable<ImageExifReader.ExifRes
 			File file = new File(Frickl.BASE_PATH, image.getPath());
 			exif = getExif(file);
 
-			if (exif.exif.getDateTime() != null)
-				date = new Timestamp(exif.exif.getDateTime().getTime());
-			else if (exif.exif.getDateTimeOriginal() != null)
+
+			if (exif.exif.getDateTimeOriginal() != null)
 				date = new Timestamp(exif.exif.getDateTimeOriginal().getTime());
 			else if (exif.exif.getDateTimeDigitized() != null)
 				date = new Timestamp(exif.exif.getDateTimeDigitized().getTime());
+			else if (exif.exif.getDateTime() != null)
+				date = new Timestamp(exif.exif.getDateTime().getTime());
 			else
 				date = null;
 		}
