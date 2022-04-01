@@ -112,17 +112,20 @@ public class TagResource extends AbstractAccessTokenResource
 					.leftJoin(IMAGE_TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))
 					.leftJoin(IMAGES).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID)));
 
-				if (!StringUtils.isEmpty(accessToken))
+				if (auth)
 				{
-					step.where(DSL.exists(DSL.selectOne()
-											 .from(ALBUM_TOKENS)
-											 .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
-											 .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
-																	   .and(ALBUM_TOKENS.ALBUM_ID.eq(IMAGES.ALBUM_ID)))));
-				}
-				else if (StringUtils.isEmpty(userDetails.getToken()))
-				{
-					step.where(IMAGES.IS_PUBLIC.eq((byte) 1));
+					if (!StringUtils.isEmpty(accessToken))
+					{
+						step.where(DSL.exists(DSL.selectOne()
+												 .from(ALBUM_TOKENS)
+												 .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
+												 .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
+																		   .and(ALBUM_TOKENS.ALBUM_ID.eq(IMAGES.ALBUM_ID)))));
+					}
+					else if (StringUtils.isEmpty(userDetails.getToken()))
+					{
+						step.where(IMAGES.IS_PUBLIC.eq((byte) 1));
+					}
 				}
 
 				return step.where(TAGS.ID.eq(tagId))
