@@ -64,11 +64,6 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 				if (parentAlbumId != -1)
 					step.where(ALBUM_STATS.PARENT_ALBUM_ID.eq(parentAlbumId));
 			}
-			else
-			{
-				if (!auth || !StringUtils.isEmpty(userDetails.getToken()))
-					step.where(ALBUM_STATS.PARENT_ALBUM_ID.isNull());
-			}
 
 			// Restrict to only albums containing at least one public image
 			if (!StringUtils.isEmpty(accessToken))
@@ -245,13 +240,6 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 			{
 				if (parentAlbumId != -1)
 					step.where(ALBUMS.PARENT_ALBUM_ID.eq(parentAlbumId));
-			}
-			else
-			{
-				if (!auth || !StringUtils.isEmpty(userDetails.getToken()))
-				{
-					step.where(ALBUMS.PARENT_ALBUM_ID.isNull());
-				}
 			}
 
 			// Restrict to only albums containing at least one public image
