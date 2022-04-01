@@ -4,10 +4,9 @@
 package raubach.fricklweb.server.database.tables;
 
 
-import java.math.BigInteger;
 import java.sql.Timestamp;
 
-import jakarta.annotation.Generated;
+import javax.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
@@ -36,7 +35,7 @@ import raubach.fricklweb.server.database.tables.records.AlbumStatsRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AlbumStats extends TableImpl<AlbumStatsRecord> {
 
-    private static final long serialVersionUID = 1695028494;
+    private static final long serialVersionUID = 2097249970;
 
     /**
      * The reference instance of <code>frickl.album_stats</code>
@@ -97,11 +96,6 @@ public class AlbumStats extends TableImpl<AlbumStatsRecord> {
     public final TableField<AlbumStatsRecord, Timestamp> OLDEST_IMAGE = createField("oldest_image", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
 
     /**
-     * The column <code>frickl.album_stats.image_view_count</code>.
-     */
-    public final TableField<AlbumStatsRecord, BigInteger> IMAGE_VIEW_COUNT = createField("image_view_count", org.jooq.impl.SQLDataType.DECIMAL_INTEGER.precision(32), this, "");
-
-    /**
      * The column <code>frickl.album_stats.created_on</code>. When this record has been created.
      */
     public final TableField<AlbumStatsRecord, Timestamp> CREATED_ON = createField("created_on", org.jooq.impl.SQLDataType.TIMESTAMP, this, "When this record has been created.");
@@ -112,14 +106,29 @@ public class AlbumStats extends TableImpl<AlbumStatsRecord> {
     public final TableField<AlbumStatsRecord, Timestamp> UPDATED_ON = createField("updated_on", org.jooq.impl.SQLDataType.TIMESTAMP, this, "When this record has last been updated.");
 
     /**
-     * The column <code>frickl.album_stats.count</code>.
+     * The column <code>frickl.album_stats.album_id</code>.
      */
-    public final TableField<AlbumStatsRecord, Long> COUNT = createField("count", org.jooq.impl.SQLDataType.BIGINT, this, "");
+    public final TableField<AlbumStatsRecord, Integer> ALBUM_ID = createField("album_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
     /**
-     * The column <code>frickl.album_stats.count_public</code>.
+     * The column <code>frickl.album_stats.image_count</code>.
      */
-    public final TableField<AlbumStatsRecord, Long> COUNT_PUBLIC = createField("count_public", org.jooq.impl.SQLDataType.BIGINT, this, "");
+    public final TableField<AlbumStatsRecord, Integer> IMAGE_COUNT = createField("image_count", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>frickl.album_stats.image_count_public</code>.
+     */
+    public final TableField<AlbumStatsRecord, Integer> IMAGE_COUNT_PUBLIC = createField("image_count_public", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>frickl.album_stats.album_count</code>.
+     */
+    public final TableField<AlbumStatsRecord, Integer> ALBUM_COUNT = createField("album_count", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>frickl.album_stats.image_view_count</code>.
+     */
+    public final TableField<AlbumStatsRecord, Integer> IMAGE_VIEW_COUNT = createField("image_view_count", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
      * Create a <code>frickl.album_stats</code> table reference

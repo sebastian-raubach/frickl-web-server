@@ -5,10 +5,9 @@ package raubach.fricklweb.server.database.tables.pojos;
 
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.sql.Timestamp;
 
-import jakarta.annotation.Generated;
+import javax.annotation.Generated;
 
 
 /**
@@ -24,22 +23,24 @@ import jakarta.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AlbumStats implements Serializable {
 
-    private static final long serialVersionUID = -1230047580;
+    private static final long serialVersionUID = -207327620;
 
-    private Integer    id;
-    private String     name;
-    private String     description;
-    private String     path;
-    private Integer    bannerImageId;
-    private Long       bannerImagePublicId;
-    private Integer    parentAlbumId;
-    private Timestamp  newestImage;
-    private Timestamp  oldestImage;
-    private BigInteger imageViewCount;
-    private Timestamp  createdOn;
-    private Timestamp  updatedOn;
-    private Long       count;
-    private Long       countPublic;
+    private Integer   id;
+    private String    name;
+    private String    description;
+    private String    path;
+    private Integer   bannerImageId;
+    private Long      bannerImagePublicId;
+    private Integer   parentAlbumId;
+    private Timestamp newestImage;
+    private Timestamp oldestImage;
+    private Timestamp createdOn;
+    private Timestamp updatedOn;
+    private Integer   albumId;
+    private Integer   imageCount;
+    private Integer   imageCountPublic;
+    private Integer   albumCount;
+    private Integer   imageViewCount;
 
     public AlbumStats() {}
 
@@ -53,28 +54,32 @@ public class AlbumStats implements Serializable {
         this.parentAlbumId = value.parentAlbumId;
         this.newestImage = value.newestImage;
         this.oldestImage = value.oldestImage;
-        this.imageViewCount = value.imageViewCount;
         this.createdOn = value.createdOn;
         this.updatedOn = value.updatedOn;
-        this.count = value.count;
-        this.countPublic = value.countPublic;
+        this.albumId = value.albumId;
+        this.imageCount = value.imageCount;
+        this.imageCountPublic = value.imageCountPublic;
+        this.albumCount = value.albumCount;
+        this.imageViewCount = value.imageViewCount;
     }
 
     public AlbumStats(
-        Integer    id,
-        String     name,
-        String     description,
-        String     path,
-        Integer    bannerImageId,
-        Long       bannerImagePublicId,
-        Integer    parentAlbumId,
-        Timestamp  newestImage,
-        Timestamp  oldestImage,
-        BigInteger imageViewCount,
-        Timestamp  createdOn,
-        Timestamp  updatedOn,
-        Long       count,
-        Long       countPublic
+        Integer   id,
+        String    name,
+        String    description,
+        String    path,
+        Integer   bannerImageId,
+        Long      bannerImagePublicId,
+        Integer   parentAlbumId,
+        Timestamp newestImage,
+        Timestamp oldestImage,
+        Timestamp createdOn,
+        Timestamp updatedOn,
+        Integer   albumId,
+        Integer   imageCount,
+        Integer   imageCountPublic,
+        Integer   albumCount,
+        Integer   imageViewCount
     ) {
         this.id = id;
         this.name = name;
@@ -85,11 +90,13 @@ public class AlbumStats implements Serializable {
         this.parentAlbumId = parentAlbumId;
         this.newestImage = newestImage;
         this.oldestImage = oldestImage;
-        this.imageViewCount = imageViewCount;
         this.createdOn = createdOn;
         this.updatedOn = updatedOn;
-        this.count = count;
-        this.countPublic = countPublic;
+        this.albumId = albumId;
+        this.imageCount = imageCount;
+        this.imageCountPublic = imageCountPublic;
+        this.albumCount = albumCount;
+        this.imageViewCount = imageViewCount;
     }
 
     public Integer getId() {
@@ -164,14 +171,6 @@ public class AlbumStats implements Serializable {
         this.oldestImage = oldestImage;
     }
 
-    public BigInteger getImageViewCount() {
-        return this.imageViewCount;
-    }
-
-    public void setImageViewCount(BigInteger imageViewCount) {
-        this.imageViewCount = imageViewCount;
-    }
-
     public Timestamp getCreatedOn() {
         return this.createdOn;
     }
@@ -188,20 +187,44 @@ public class AlbumStats implements Serializable {
         this.updatedOn = updatedOn;
     }
 
-    public Long getCount() {
-        return this.count;
+    public Integer getAlbumId() {
+        return this.albumId;
     }
 
-    public void setCount(Long count) {
-        this.count = count;
+    public void setAlbumId(Integer albumId) {
+        this.albumId = albumId;
     }
 
-    public Long getCountPublic() {
-        return this.countPublic;
+    public Integer getImageCount() {
+        return this.imageCount;
     }
 
-    public void setCountPublic(Long countPublic) {
-        this.countPublic = countPublic;
+    public void setImageCount(Integer imageCount) {
+        this.imageCount = imageCount;
+    }
+
+    public Integer getImageCountPublic() {
+        return this.imageCountPublic;
+    }
+
+    public void setImageCountPublic(Integer imageCountPublic) {
+        this.imageCountPublic = imageCountPublic;
+    }
+
+    public Integer getAlbumCount() {
+        return this.albumCount;
+    }
+
+    public void setAlbumCount(Integer albumCount) {
+        this.albumCount = albumCount;
+    }
+
+    public Integer getImageViewCount() {
+        return this.imageViewCount;
+    }
+
+    public void setImageViewCount(Integer imageViewCount) {
+        this.imageViewCount = imageViewCount;
     }
 
     @Override
@@ -217,11 +240,13 @@ public class AlbumStats implements Serializable {
         sb.append(", ").append(parentAlbumId);
         sb.append(", ").append(newestImage);
         sb.append(", ").append(oldestImage);
-        sb.append(", ").append(imageViewCount);
         sb.append(", ").append(createdOn);
         sb.append(", ").append(updatedOn);
-        sb.append(", ").append(count);
-        sb.append(", ").append(countPublic);
+        sb.append(", ").append(albumId);
+        sb.append(", ").append(imageCount);
+        sb.append(", ").append(imageCountPublic);
+        sb.append(", ").append(albumCount);
+        sb.append(", ").append(imageViewCount);
 
         sb.append(")");
         return sb.toString();

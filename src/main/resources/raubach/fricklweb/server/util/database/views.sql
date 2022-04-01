@@ -9,23 +9,11 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `album_stats` AS select
     `albums`.`parent_album_id` AS `parent_album_id`,
     (SELECT MAX(`images`.`created_on`) from `images` where `images`.`album_id` = `albums`.`id` and `images`.`data_type` = 'image') AS `newest_image`,
     (SELECT MIN(`images`.`created_on`) from `images` where `images`.`album_id` = `albums`.`id` and `images`.`data_type` = 'image') AS `oldest_image`,
-    (SELECT COALESCE(SUM(`images`.`view_count`), 0) from `images` where `images`.`album_id` = `albums`.`id` and `images`.`data_type` = 'image') AS `image_view_count`,
     `albums`.`created_on` AS `created_on`,
     `albums`.`updated_on` AS `updated_on`,
-    (
-        select count(1)
-    from
-        `images`
-    where
-        (`images`.`album_id` = `albums`.`id`)) AS `count`,
-     (
-         select count(1)
-     from
-         `images`
-     where
-         (`images`.`album_id` = `albums`.`id` AND `images`.`is_public`)) AS `count_public`
+    `album_counts`.*
 from
-    `albums`;
+    `albums` LEFT JOIN `album_counts` ON `albums`.`id` = `album_counts`.`album_id`;
 
 DROP VIEW IF EXISTS `calendar_data`;
 CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `calendar_data` AS select

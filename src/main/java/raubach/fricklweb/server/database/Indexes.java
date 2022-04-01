@@ -4,13 +4,14 @@
 package raubach.fricklweb.server.database;
 
 
-import jakarta.annotation.Generated;
+import javax.annotation.Generated;
 
 import org.jooq.Index;
 import org.jooq.OrderField;
 import org.jooq.impl.Internal;
 
 import raubach.fricklweb.server.database.tables.AccessTokens;
+import raubach.fricklweb.server.database.tables.AlbumCounts;
 import raubach.fricklweb.server.database.tables.AlbumTokens;
 import raubach.fricklweb.server.database.tables.Albums;
 import raubach.fricklweb.server.database.tables.ImageTags;
@@ -41,6 +42,7 @@ public class Indexes {
     public static final Index ALBUMS_BANNER_IMAGE_ID = Indexes0.ALBUMS_BANNER_IMAGE_ID;
     public static final Index ALBUMS_PARENT_ALBUM_ID = Indexes0.ALBUMS_PARENT_ALBUM_ID;
     public static final Index ALBUMS_PRIMARY = Indexes0.ALBUMS_PRIMARY;
+    public static final Index ALBUM_COUNTS_PRIMARY = Indexes0.ALBUM_COUNTS_PRIMARY;
     public static final Index ALBUM_TOKENS_ALBUM_TOKENS_IBFK_1 = Indexes0.ALBUM_TOKENS_ALBUM_TOKENS_IBFK_1;
     public static final Index ALBUM_TOKENS_ALBUM_TOKENS_IBFK_2 = Indexes0.ALBUM_TOKENS_ALBUM_TOKENS_IBFK_2;
     public static final Index ALBUM_TOKENS_PRIMARY = Indexes0.ALBUM_TOKENS_PRIMARY;
@@ -64,6 +66,7 @@ public class Indexes {
         public static Index ALBUMS_BANNER_IMAGE_ID = Internal.createIndex("banner_image_id", Albums.ALBUMS, new OrderField[] { Albums.ALBUMS.BANNER_IMAGE_ID }, false);
         public static Index ALBUMS_PARENT_ALBUM_ID = Internal.createIndex("parent_album_id", Albums.ALBUMS, new OrderField[] { Albums.ALBUMS.PARENT_ALBUM_ID }, false);
         public static Index ALBUMS_PRIMARY = Internal.createIndex("PRIMARY", Albums.ALBUMS, new OrderField[] { Albums.ALBUMS.ID }, true);
+        public static Index ALBUM_COUNTS_PRIMARY = Internal.createIndex("PRIMARY", AlbumCounts.ALBUM_COUNTS, new OrderField[] { AlbumCounts.ALBUM_COUNTS.ALBUM_ID }, true);
         public static Index ALBUM_TOKENS_ALBUM_TOKENS_IBFK_1 = Internal.createIndex("album_tokens_ibfk_1", AlbumTokens.ALBUM_TOKENS, new OrderField[] { AlbumTokens.ALBUM_TOKENS.ALBUM_ID }, false);
         public static Index ALBUM_TOKENS_ALBUM_TOKENS_IBFK_2 = Internal.createIndex("album_tokens_ibfk_2", AlbumTokens.ALBUM_TOKENS, new OrderField[] { AlbumTokens.ALBUM_TOKENS.ACCESS_TOKEN_ID }, false);
         public static Index ALBUM_TOKENS_PRIMARY = Internal.createIndex("PRIMARY", AlbumTokens.ALBUM_TOKENS, new OrderField[] { AlbumTokens.ALBUM_TOKENS.ALBUM_ID, AlbumTokens.ALBUM_TOKENS.ACCESS_TOKEN_ID }, true);

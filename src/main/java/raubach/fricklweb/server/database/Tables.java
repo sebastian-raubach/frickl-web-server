@@ -4,10 +4,11 @@
 package raubach.fricklweb.server.database;
 
 
-import jakarta.annotation.Generated;
+import javax.annotation.Generated;
 
 import raubach.fricklweb.server.database.tables.AccessTokens;
 import raubach.fricklweb.server.database.tables.AlbumAccessToken;
+import raubach.fricklweb.server.database.tables.AlbumCounts;
 import raubach.fricklweb.server.database.tables.AlbumStats;
 import raubach.fricklweb.server.database.tables.AlbumTokens;
 import raubach.fricklweb.server.database.tables.Albums;
@@ -48,6 +49,11 @@ public class Tables {
      * VIEW
      */
     public static final AlbumAccessToken ALBUM_ACCESS_TOKEN = raubach.fricklweb.server.database.tables.AlbumAccessToken.ALBUM_ACCESS_TOKEN;
+
+    /**
+     * The table <code>frickl.album_counts</code>.
+     */
+    public static final AlbumCounts ALBUM_COUNTS = raubach.fricklweb.server.database.tables.AlbumCounts.ALBUM_COUNTS;
 
     /**
      * VIEW

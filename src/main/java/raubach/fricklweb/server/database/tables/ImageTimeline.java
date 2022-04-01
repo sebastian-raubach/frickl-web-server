@@ -4,7 +4,7 @@
 package raubach.fricklweb.server.database.tables;
 
 
-import jakarta.annotation.Generated;
+import javax.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;

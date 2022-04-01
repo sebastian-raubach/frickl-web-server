@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jakarta.annotation.Generated;
+import javax.annotation.Generated;
 
 import org.jooq.Catalog;
 import org.jooq.Table;
@@ -16,6 +16,7 @@ import org.jooq.impl.SchemaImpl;
 
 import raubach.fricklweb.server.database.tables.AccessTokens;
 import raubach.fricklweb.server.database.tables.AlbumAccessToken;
+import raubach.fricklweb.server.database.tables.AlbumCounts;
 import raubach.fricklweb.server.database.tables.AlbumStats;
 import raubach.fricklweb.server.database.tables.AlbumTokens;
 import raubach.fricklweb.server.database.tables.Albums;
@@ -42,7 +43,7 @@ import raubach.fricklweb.server.database.tables.Tags;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Frickl extends SchemaImpl {
 
-    private static final long serialVersionUID = -940971307;
+    private static final long serialVersionUID = -819243265;
 
     /**
      * The reference instance of <code>frickl</code>
@@ -63,6 +64,11 @@ public class Frickl extends SchemaImpl {
      * VIEW
      */
     public final AlbumAccessToken ALBUM_ACCESS_TOKEN = raubach.fricklweb.server.database.tables.AlbumAccessToken.ALBUM_ACCESS_TOKEN;
+
+    /**
+     * The table <code>frickl.album_counts</code>.
+     */
+    public final AlbumCounts ALBUM_COUNTS = raubach.fricklweb.server.database.tables.AlbumCounts.ALBUM_COUNTS;
 
     /**
      * VIEW
@@ -142,6 +148,7 @@ public class Frickl extends SchemaImpl {
             AccessTokens.ACCESS_TOKENS,
             Albums.ALBUMS,
             AlbumAccessToken.ALBUM_ACCESS_TOKEN,
+            AlbumCounts.ALBUM_COUNTS,
             AlbumStats.ALBUM_STATS,
             AlbumTokens.ALBUM_TOKENS,
             CalendarData.CALENDAR_DATA,

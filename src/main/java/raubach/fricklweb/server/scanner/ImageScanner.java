@@ -6,6 +6,7 @@ import raubach.fricklweb.server.computed.*;
 import raubach.fricklweb.server.database.enums.ImagesDataType;
 import raubach.fricklweb.server.database.tables.records.*;
 import raubach.fricklweb.server.util.ThumbnailUtils;
+import raubach.fricklweb.server.util.task.AlbumCountUpdateTask;
 
 import java.io.*;
 import java.net.URLConnection;
@@ -178,6 +179,8 @@ public class ImageScanner implements Runnable
 				e.printStackTrace();
 			}
 		}
+
+		new AlbumCountUpdateTask().run();
 	}
 
 	private void setAlbumBanner(DSLContext context, Path dir)
