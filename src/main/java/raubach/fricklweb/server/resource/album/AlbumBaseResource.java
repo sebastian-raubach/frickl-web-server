@@ -65,21 +65,24 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 					step.where(ALBUM_STATS.PARENT_ALBUM_ID.eq(parentAlbumId));
 			}
 
-			// Restrict to only albums containing at least one public image
-			if (!StringUtils.isEmpty(accessToken))
+			if (auth)
 			{
-				step.where(DSL.exists(DSL.selectOne()
-										 .from(ALBUM_TOKENS)
-										 .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
-										 .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
-																   .and(ALBUM_TOKENS.ALBUM_ID.eq(ALBUM_STATS.ID)))));
-			}
-			else if (StringUtils.isEmpty(userDetails.getToken()))
-			{
-				step.where(DSL.exists(DSL.selectOne()
-										 .from(IMAGES)
-										 .where(IMAGES.ALBUM_ID.eq(ALBUM_STATS.ID)
-															   .and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
+				// Restrict to only albums containing at least one public image
+				if (!StringUtils.isEmpty(accessToken))
+				{
+					step.where(DSL.exists(DSL.selectOne()
+											 .from(ALBUM_TOKENS)
+											 .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
+											 .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
+																	   .and(ALBUM_TOKENS.ALBUM_ID.eq(ALBUM_STATS.ID)))));
+				}
+				else if (StringUtils.isEmpty(userDetails.getToken()))
+				{
+					step.where(DSL.exists(DSL.selectOne()
+											 .from(IMAGES)
+											 .where(IMAGES.ALBUM_ID.eq(ALBUM_STATS.ID)
+																   .and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
+				}
 			}
 
 			return step.orderBy(DSL.coalesce(ALBUM_STATS.NEWEST_IMAGE, 0).desc(), DSL.coalesce(ALBUM_STATS.CREATED_ON, 0).desc(), ALBUM_STATS.NAME.desc())
@@ -242,21 +245,24 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 					step.where(ALBUMS.PARENT_ALBUM_ID.eq(parentAlbumId));
 			}
 
-			// Restrict to only albums containing at least one public image
-			if (!StringUtils.isEmpty(accessToken))
+			if (auth)
 			{
-				step.where(DSL.exists(DSL.selectOne()
-										 .from(ALBUM_TOKENS)
-										 .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
-										 .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
-																   .and(ALBUM_TOKENS.ALBUM_ID.eq(ALBUMS.ID)))));
-			}
-			else if (StringUtils.isEmpty(userDetails.getToken()))
-			{
-				step.where(DSL.exists(DSL.selectOne()
-										 .from(IMAGES)
-										 .where(IMAGES.ALBUM_ID.eq(ALBUMS.ID)
-															   .and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
+				// Restrict to only albums containing at least one public image
+				if (!StringUtils.isEmpty(accessToken))
+				{
+					step.where(DSL.exists(DSL.selectOne()
+											 .from(ALBUM_TOKENS)
+											 .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
+											 .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
+																	   .and(ALBUM_TOKENS.ALBUM_ID.eq(ALBUMS.ID)))));
+				}
+				else if (StringUtils.isEmpty(userDetails.getToken()))
+				{
+					step.where(DSL.exists(DSL.selectOne()
+											 .from(IMAGES)
+											 .where(IMAGES.ALBUM_ID.eq(ALBUMS.ID)
+																   .and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
+				}
 			}
 
 			return step.fetchAny(0, int.class);
@@ -299,18 +305,21 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 				SelectConditionStep<Record> step = context.select().from(IMAGES)
 														  .where(IMAGES.ALBUM_ID.eq(albumId));
 
-				// Restrict to only albums containing at least one public image
-				if (!StringUtils.isEmpty(accessToken))
+				if (auth)
 				{
-					step.and(DSL.exists(DSL.selectOne()
-										   .from(ALBUM_TOKENS)
-										   .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
-										   .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
-																	 .and(ALBUM_TOKENS.ALBUM_ID.eq(IMAGES.ALBUM_ID)))));
-				}
-				else if (StringUtils.isEmpty(userDetails.getToken()))
-				{
-					step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+					// Restrict to only albums containing at least one public image
+					if (!StringUtils.isEmpty(accessToken))
+					{
+						step.and(DSL.exists(DSL.selectOne()
+											   .from(ALBUM_TOKENS)
+											   .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
+											   .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
+																		 .and(ALBUM_TOKENS.ALBUM_ID.eq(IMAGES.ALBUM_ID)))));
+					}
+					else if (StringUtils.isEmpty(userDetails.getToken()))
+					{
+						step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+					}
 				}
 
 				List<Images> images = step.fetchInto(Images.class);
@@ -741,18 +750,21 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 													 .leftJoin(ALBUMS).on(ALBUMS.ID.eq(IMAGES.ALBUM_ID)))
 												 .where(ALBUMS.ID.eq(albumId));
 
-			// Restrict to only albums containing at least one public image
-			if (!StringUtils.isEmpty(accessToken))
+			if (auth)
 			{
-				step.and(DSL.exists(DSL.selectOne()
-									   .from(ALBUM_TOKENS)
-									   .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
-									   .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
-																 .and(ALBUM_TOKENS.ALBUM_ID.eq(ALBUMS.ID)))));
-			}
-			else if (StringUtils.isEmpty(userDetails.getToken()))
-			{
-				step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+				// Restrict to only albums containing at least one public image
+				if (!StringUtils.isEmpty(accessToken))
+				{
+					step.and(DSL.exists(DSL.selectOne()
+										   .from(ALBUM_TOKENS)
+										   .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
+										   .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
+																	 .and(ALBUM_TOKENS.ALBUM_ID.eq(ALBUMS.ID)))));
+				}
+				else if (StringUtils.isEmpty(userDetails.getToken()))
+				{
+					step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+				}
 			}
 
 			return step.orderBy(TAGS.NAME)
@@ -921,21 +933,24 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 
 			step.where(woyI.eq(woyN)).and(DSL.year(date).eq(DSL.year(DSL.now()).minus(year)));
 
-			// Restrict to only albums containing at least one public image
-			if (!StringUtils.isEmpty(accessToken))
+			if (auth)
 			{
-				step.where(DSL.exists(DSL.selectOne()
-										 .from(ALBUM_TOKENS)
-										 .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
-										 .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
-																   .and(ALBUM_TOKENS.ALBUM_ID.eq(ALBUM_STATS.ID)))));
-			}
-			else if (StringUtils.isEmpty(userDetails.getToken()))
-			{
-				step.where(DSL.exists(DSL.selectOne()
-										 .from(IMAGES)
-										 .where(IMAGES.ALBUM_ID.eq(ALBUM_STATS.ID)
-															   .and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
+				// Restrict to only albums containing at least one public image
+				if (!StringUtils.isEmpty(accessToken))
+				{
+					step.where(DSL.exists(DSL.selectOne()
+											 .from(ALBUM_TOKENS)
+											 .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
+											 .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
+																	   .and(ALBUM_TOKENS.ALBUM_ID.eq(ALBUM_STATS.ID)))));
+				}
+				else if (StringUtils.isEmpty(userDetails.getToken()))
+				{
+					step.where(DSL.exists(DSL.selectOne()
+											 .from(IMAGES)
+											 .where(IMAGES.ALBUM_ID.eq(ALBUM_STATS.ID)
+																   .and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
+				}
 			}
 
 			return step.orderBy(date.desc(), ALBUM_STATS.NAME.desc())
