@@ -250,7 +250,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 			}
 			else
 			{
-				step.where(ALBUM_STATS.PARENT_ALBUM_ID.isNull());
+				step.where(ALBUMS.PARENT_ALBUM_ID.isNull());
 			}
 
 			if (auth)
