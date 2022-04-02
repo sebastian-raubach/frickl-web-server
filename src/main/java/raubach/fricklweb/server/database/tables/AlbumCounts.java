@@ -4,6 +4,7 @@
 package raubach.fricklweb.server.database.tables;
 
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,7 +41,7 @@ import raubach.fricklweb.server.database.tables.records.AlbumCountsRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AlbumCounts extends TableImpl<AlbumCountsRecord> {
 
-    private static final long serialVersionUID = -671531132;
+    private static final long serialVersionUID = 1440048773;
 
     /**
      * The reference instance of <code>frickl.album_counts</code>
@@ -79,6 +80,16 @@ public class AlbumCounts extends TableImpl<AlbumCountsRecord> {
      * The column <code>frickl.album_counts.image_view_count</code>.
      */
     public final TableField<AlbumCountsRecord, Integer> IMAGE_VIEW_COUNT = createField("image_view_count", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>frickl.album_counts.newest_image</code>.
+     */
+    public final TableField<AlbumCountsRecord, Timestamp> NEWEST_IMAGE = createField("newest_image", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+
+    /**
+     * The column <code>frickl.album_counts.oldest_image</code>.
+     */
+    public final TableField<AlbumCountsRecord, Timestamp> OLDEST_IMAGE = createField("oldest_image", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
 
     /**
      * Create a <code>frickl.album_counts</code> table reference

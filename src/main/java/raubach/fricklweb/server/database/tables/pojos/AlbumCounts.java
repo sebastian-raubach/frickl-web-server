@@ -5,6 +5,7 @@ package raubach.fricklweb.server.database.tables.pojos;
 
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import javax.annotation.Generated;
 
@@ -22,13 +23,15 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AlbumCounts implements Serializable {
 
-    private static final long serialVersionUID = 35386496;
+    private static final long serialVersionUID = -1952715907;
 
-    private Integer albumId;
-    private Integer imageCount;
-    private Integer imageCountPublic;
-    private Integer albumCount;
-    private Integer imageViewCount;
+    private Integer   albumId;
+    private Integer   imageCount;
+    private Integer   imageCountPublic;
+    private Integer   albumCount;
+    private Integer   imageViewCount;
+    private Timestamp newestImage;
+    private Timestamp oldestImage;
 
     public AlbumCounts() {}
 
@@ -38,20 +41,26 @@ public class AlbumCounts implements Serializable {
         this.imageCountPublic = value.imageCountPublic;
         this.albumCount = value.albumCount;
         this.imageViewCount = value.imageViewCount;
+        this.newestImage = value.newestImage;
+        this.oldestImage = value.oldestImage;
     }
 
     public AlbumCounts(
-        Integer albumId,
-        Integer imageCount,
-        Integer imageCountPublic,
-        Integer albumCount,
-        Integer imageViewCount
+        Integer   albumId,
+        Integer   imageCount,
+        Integer   imageCountPublic,
+        Integer   albumCount,
+        Integer   imageViewCount,
+        Timestamp newestImage,
+        Timestamp oldestImage
     ) {
         this.albumId = albumId;
         this.imageCount = imageCount;
         this.imageCountPublic = imageCountPublic;
         this.albumCount = albumCount;
         this.imageViewCount = imageViewCount;
+        this.newestImage = newestImage;
+        this.oldestImage = oldestImage;
     }
 
     public Integer getAlbumId() {
@@ -94,6 +103,22 @@ public class AlbumCounts implements Serializable {
         this.imageViewCount = imageViewCount;
     }
 
+    public Timestamp getNewestImage() {
+        return this.newestImage;
+    }
+
+    public void setNewestImage(Timestamp newestImage) {
+        this.newestImage = newestImage;
+    }
+
+    public Timestamp getOldestImage() {
+        return this.oldestImage;
+    }
+
+    public void setOldestImage(Timestamp oldestImage) {
+        this.oldestImage = oldestImage;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("AlbumCounts (");
@@ -103,6 +128,8 @@ public class AlbumCounts implements Serializable {
         sb.append(", ").append(imageCountPublic);
         sb.append(", ").append(albumCount);
         sb.append(", ").append(imageViewCount);
+        sb.append(", ").append(newestImage);
+        sb.append(", ").append(oldestImage);
 
         sb.append(")");
         return sb.toString();

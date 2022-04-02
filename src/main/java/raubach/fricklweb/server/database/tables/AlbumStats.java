@@ -35,7 +35,7 @@ import raubach.fricklweb.server.database.tables.records.AlbumStatsRecord;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AlbumStats extends TableImpl<AlbumStatsRecord> {
 
-    private static final long serialVersionUID = 2097249970;
+    private static final long serialVersionUID = 1074168188;
 
     /**
      * The reference instance of <code>frickl.album_stats</code>
@@ -86,16 +86,6 @@ public class AlbumStats extends TableImpl<AlbumStatsRecord> {
     public final TableField<AlbumStatsRecord, Integer> PARENT_ALBUM_ID = createField("parent_album_id", org.jooq.impl.SQLDataType.INTEGER, this, "Optional parent album id. If this album is a sub-album of another album, this parent album can be defined here.");
 
     /**
-     * The column <code>frickl.album_stats.newest_image</code>.
-     */
-    public final TableField<AlbumStatsRecord, Timestamp> NEWEST_IMAGE = createField("newest_image", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
-
-    /**
-     * The column <code>frickl.album_stats.oldest_image</code>.
-     */
-    public final TableField<AlbumStatsRecord, Timestamp> OLDEST_IMAGE = createField("oldest_image", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
-
-    /**
      * The column <code>frickl.album_stats.created_on</code>. When this record has been created.
      */
     public final TableField<AlbumStatsRecord, Timestamp> CREATED_ON = createField("created_on", org.jooq.impl.SQLDataType.TIMESTAMP, this, "When this record has been created.");
@@ -129,6 +119,16 @@ public class AlbumStats extends TableImpl<AlbumStatsRecord> {
      * The column <code>frickl.album_stats.image_view_count</code>.
      */
     public final TableField<AlbumStatsRecord, Integer> IMAGE_VIEW_COUNT = createField("image_view_count", org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>frickl.album_stats.newest_image</code>.
+     */
+    public final TableField<AlbumStatsRecord, Timestamp> NEWEST_IMAGE = createField("newest_image", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+
+    /**
+     * The column <code>frickl.album_stats.oldest_image</code>.
+     */
+    public final TableField<AlbumStatsRecord, Timestamp> OLDEST_IMAGE = createField("oldest_image", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
 
     /**
      * Create a <code>frickl.album_stats</code> table reference

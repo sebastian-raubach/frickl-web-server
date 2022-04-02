@@ -23,7 +23,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AlbumStats implements Serializable {
 
-    private static final long serialVersionUID = -207327620;
+    private static final long serialVersionUID = 999044010;
 
     private Integer   id;
     private String    name;
@@ -32,8 +32,6 @@ public class AlbumStats implements Serializable {
     private Integer   bannerImageId;
     private Long      bannerImagePublicId;
     private Integer   parentAlbumId;
-    private Timestamp newestImage;
-    private Timestamp oldestImage;
     private Timestamp createdOn;
     private Timestamp updatedOn;
     private Integer   albumId;
@@ -41,6 +39,8 @@ public class AlbumStats implements Serializable {
     private Integer   imageCountPublic;
     private Integer   albumCount;
     private Integer   imageViewCount;
+    private Timestamp newestImage;
+    private Timestamp oldestImage;
 
     public AlbumStats() {}
 
@@ -52,8 +52,6 @@ public class AlbumStats implements Serializable {
         this.bannerImageId = value.bannerImageId;
         this.bannerImagePublicId = value.bannerImagePublicId;
         this.parentAlbumId = value.parentAlbumId;
-        this.newestImage = value.newestImage;
-        this.oldestImage = value.oldestImage;
         this.createdOn = value.createdOn;
         this.updatedOn = value.updatedOn;
         this.albumId = value.albumId;
@@ -61,6 +59,8 @@ public class AlbumStats implements Serializable {
         this.imageCountPublic = value.imageCountPublic;
         this.albumCount = value.albumCount;
         this.imageViewCount = value.imageViewCount;
+        this.newestImage = value.newestImage;
+        this.oldestImage = value.oldestImage;
     }
 
     public AlbumStats(
@@ -71,15 +71,15 @@ public class AlbumStats implements Serializable {
         Integer   bannerImageId,
         Long      bannerImagePublicId,
         Integer   parentAlbumId,
-        Timestamp newestImage,
-        Timestamp oldestImage,
         Timestamp createdOn,
         Timestamp updatedOn,
         Integer   albumId,
         Integer   imageCount,
         Integer   imageCountPublic,
         Integer   albumCount,
-        Integer   imageViewCount
+        Integer   imageViewCount,
+        Timestamp newestImage,
+        Timestamp oldestImage
     ) {
         this.id = id;
         this.name = name;
@@ -88,8 +88,6 @@ public class AlbumStats implements Serializable {
         this.bannerImageId = bannerImageId;
         this.bannerImagePublicId = bannerImagePublicId;
         this.parentAlbumId = parentAlbumId;
-        this.newestImage = newestImage;
-        this.oldestImage = oldestImage;
         this.createdOn = createdOn;
         this.updatedOn = updatedOn;
         this.albumId = albumId;
@@ -97,6 +95,8 @@ public class AlbumStats implements Serializable {
         this.imageCountPublic = imageCountPublic;
         this.albumCount = albumCount;
         this.imageViewCount = imageViewCount;
+        this.newestImage = newestImage;
+        this.oldestImage = oldestImage;
     }
 
     public Integer getId() {
@@ -155,22 +155,6 @@ public class AlbumStats implements Serializable {
         this.parentAlbumId = parentAlbumId;
     }
 
-    public Timestamp getNewestImage() {
-        return this.newestImage;
-    }
-
-    public void setNewestImage(Timestamp newestImage) {
-        this.newestImage = newestImage;
-    }
-
-    public Timestamp getOldestImage() {
-        return this.oldestImage;
-    }
-
-    public void setOldestImage(Timestamp oldestImage) {
-        this.oldestImage = oldestImage;
-    }
-
     public Timestamp getCreatedOn() {
         return this.createdOn;
     }
@@ -227,6 +211,22 @@ public class AlbumStats implements Serializable {
         this.imageViewCount = imageViewCount;
     }
 
+    public Timestamp getNewestImage() {
+        return this.newestImage;
+    }
+
+    public void setNewestImage(Timestamp newestImage) {
+        this.newestImage = newestImage;
+    }
+
+    public Timestamp getOldestImage() {
+        return this.oldestImage;
+    }
+
+    public void setOldestImage(Timestamp oldestImage) {
+        this.oldestImage = oldestImage;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("AlbumStats (");
@@ -238,8 +238,6 @@ public class AlbumStats implements Serializable {
         sb.append(", ").append(bannerImageId);
         sb.append(", ").append(bannerImagePublicId);
         sb.append(", ").append(parentAlbumId);
-        sb.append(", ").append(newestImage);
-        sb.append(", ").append(oldestImage);
         sb.append(", ").append(createdOn);
         sb.append(", ").append(updatedOn);
         sb.append(", ").append(albumId);
@@ -247,6 +245,8 @@ public class AlbumStats implements Serializable {
         sb.append(", ").append(imageCountPublic);
         sb.append(", ").append(albumCount);
         sb.append(", ").append(imageViewCount);
+        sb.append(", ").append(newestImage);
+        sb.append(", ").append(oldestImage);
 
         sb.append(")");
         return sb.toString();

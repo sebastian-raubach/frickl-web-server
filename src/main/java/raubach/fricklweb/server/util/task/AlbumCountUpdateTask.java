@@ -3,6 +3,7 @@ package raubach.fricklweb.server.util.task;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import raubach.fricklweb.server.Database;
+import raubach.fricklweb.server.database.enums.ImagesDataType;
 import raubach.fricklweb.server.database.tables.Albums;
 import raubach.fricklweb.server.database.tables.records.AlbumCountsRecord;
 
@@ -34,6 +35,8 @@ public class AlbumCountUpdateTask implements Runnable
 			Map<Integer, Integer> imageCountPublic = new HashMap<>();
 			Map<Integer, Integer> imageViewCount = new HashMap<>();
 			Map<Integer, Integer> albumCount = new HashMap<>();
+			Map<Integer, Long> maxImageDate = new HashMap<>();
+			Map<Integer, Long> minImageDate = new HashMap<>();
 
 			Albums a = ALBUMS.as("a");
 
@@ -41,6 +44,8 @@ public class AlbumCountUpdateTask implements Runnable
 			Field<Integer> icpField = DSL.selectCount().from(IMAGES).where(IMAGES.ALBUM_ID.eq(ALBUMS.ID).and(IMAGES.IS_PUBLIC.eq((byte) 1))).asField();
 			Field<Integer> acField = DSL.selectCount().from(a).where(a.PARENT_ALBUM_ID.eq(ALBUMS.ID)).asField();
 			Field<BigDecimal> icvField = DSL.select(DSL.sum(DSL.coalesce(IMAGES.VIEW_COUNT, 0))).from(IMAGES).where(IMAGES.ALBUM_ID.eq(ALBUMS.ID)).asField();
+			Field<Timestamp> minField = DSL.select(DSL.min(IMAGES.CREATED_ON)).from(IMAGES).where(IMAGES.ALBUM_ID.eq(ALBUMS.ID).and(IMAGES.DATA_TYPE.eq(ImagesDataType.image))).asField();
+			Field<Timestamp> maxField = DSL.select(DSL.max(IMAGES.CREATED_ON)).from(IMAGES).where(IMAGES.ALBUM_ID.eq(ALBUMS.ID).and(IMAGES.DATA_TYPE.eq(ImagesDataType.image))).asField();
 
 			context.select(
 					   ALBUMS.ID,
@@ -48,7 +53,9 @@ public class AlbumCountUpdateTask implements Runnable
 					   icField,
 					   acField,
 					   icpField,
-					   icvField
+					   icvField,
+					   minField,
+					   maxField
 				   ).from(ALBUMS)
 				   .orderBy(ALBUMS.ID.desc())
 				   .forEach(r -> {
@@ -60,10 +67,29 @@ public class AlbumCountUpdateTask implements Runnable
 						   Integer ac = r.get(acField);
 						   Integer icp = r.get(icpField);
 						   Integer icv = 0;
+						   Long min = 0l;
+						   Long max = 0l;
 
 						   try
 						   {
 							   icv = r.get(icvField).intValue();
+						   }
+						   catch (Exception e)
+						   {
+							   // Ignore
+						   }
+						   try
+						   {
+							   min = r.get(minField).getTime();
+						   }
+						   catch (Exception e)
+						   {
+							   // Ignore
+						   }
+
+						   try
+						   {
+							   max = r.get(maxField).getTime();
 						   }
 						   catch (Exception e)
 						   {
@@ -101,6 +127,16 @@ public class AlbumCountUpdateTask implements Runnable
 						   else
 							   imageViewCount.put(albumId, imageViewCount.get(albumId) + icv);
 
+						   if (!minImageDate.containsKey(albumId))
+							   minImageDate.put(albumId, min);
+						   else
+							   minImageDate.put(albumId, Math.min(minImageDate.get(albumId), min));
+
+						   if (!maxImageDate.containsKey(albumId))
+							   maxImageDate.put(albumId, max);
+						   else
+							   maxImageDate.put(albumId, Math.max(maxImageDate.get(albumId), max));
+
 						   if (parentAlbumId != null)
 						   {
 							   albumIds.add(parentAlbumId);
@@ -119,6 +155,16 @@ public class AlbumCountUpdateTask implements Runnable
 								   imageViewCount.put(parentAlbumId, imageViewCount.get(albumId));
 							   else
 								   imageViewCount.put(parentAlbumId, imageViewCount.get(parentAlbumId) + imageViewCount.get(albumId));
+
+							   if (!minImageDate.containsKey(parentAlbumId))
+								   minImageDate.put(parentAlbumId, minImageDate.get(albumId));
+							   else
+								   minImageDate.put(parentAlbumId, Math.min(minImageDate.get(parentAlbumId), minImageDate.get(albumId)));
+
+							   if (!maxImageDate.containsKey(parentAlbumId))
+								   maxImageDate.put(parentAlbumId, maxImageDate.get(albumId));
+							   else
+								   maxImageDate.put(parentAlbumId, Math.max(maxImageDate.get(parentAlbumId), maxImageDate.get(albumId)));
 						   }
 					   }
 					   catch (Exception e)
@@ -140,6 +186,8 @@ public class AlbumCountUpdateTask implements Runnable
 					rec.setImageCountPublic(imageCountPublic.get(id));
 					rec.setImageViewCount(imageViewCount.get(id));
 					rec.setAlbumCount(albumCount.get(id));
+					rec.setNewestImage(maxImageDate.get(id) == null ? null : new Timestamp(maxImageDate.get(id)));
+					rec.setOldestImage(minImageDate.get(id) == null ? null : new Timestamp(minImageDate.get(id)));
 
 					cache.add(rec);
 
