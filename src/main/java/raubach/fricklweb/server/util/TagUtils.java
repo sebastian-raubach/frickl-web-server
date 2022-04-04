@@ -24,8 +24,6 @@ public class TagUtils
 			tags.forEach(t -> commands.add("-keywords-=" + t));
 			commands.add(file.getAbsolutePath());
 
-			Logger.getLogger("").info("IMAGE TAG DELETION: " + commands);
-
 			Process p = new ProcessBuilder(commands.toArray(String[]::new)).start();
 			IOUtils.toString(p.getInputStream(), Charset.defaultCharset());
 			result = p.waitFor();
@@ -58,8 +56,6 @@ public class TagUtils
 				commands.add("-keywords+=" + t);
 			});
 			commands.add(file.getAbsolutePath());
-
-			Logger.getLogger("").info("IMAGE TAG ADDITION: " + commands);
 
 			Process p = new ProcessBuilder(commands.toArray(String[]::new)).start();
 			IOUtils.toString(p.getInputStream(), Charset.defaultCharset());
