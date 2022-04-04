@@ -21,7 +21,7 @@ public class TagUtils
 			List<String> commands = new ArrayList<>();
 			commands.add("exiftool");
 			commands.add("-overwrite_original");
-			tags.forEach(t -> commands.add("-keyword-=" + t));
+			tags.forEach(t -> commands.add("-keywords-=" + t));
 			commands.add(file.getAbsolutePath());
 
 			Logger.getLogger("").info("IMAGE TAG DELETION: " + commands);
@@ -54,8 +54,8 @@ public class TagUtils
 			commands.add("-overwrite_original");
 			tags.forEach(t -> {
 				// Remove first to prevent duplication
-				commands.add("-keyword-=" + t);
-				commands.add("-keyword+=" + t);
+				commands.add("-keywords-=" + t);
+				commands.add("-keywords+=" + t);
 			});
 			commands.add(file.getAbsolutePath());
 
