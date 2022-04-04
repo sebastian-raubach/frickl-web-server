@@ -261,7 +261,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 					File file = new File(Frickl.BASE_PATH, image.getPath());
 					try
 					{
-						TagUtils.deleteTagFromImage(file, Collections.singletonList(t.getName()));
+						TagUtils.deleteTagFromFileOrFolder(file, Collections.singletonList(t.getName()));
 					}
 					catch (IOException e)
 					{
@@ -354,7 +354,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 						File file = new File(Frickl.BASE_PATH, image.getPath());
 						try
 						{
-							TagUtils.addTagToImage(file, tagStrings);
+							TagUtils.addTagToFileOrFolder(file, tagStrings);
 						}
 						catch (IOException e)
 						{

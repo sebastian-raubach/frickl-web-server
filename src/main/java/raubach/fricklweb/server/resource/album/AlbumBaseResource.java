@@ -10,7 +10,6 @@ import org.jooq.tools.StringUtils;
 import raubach.fricklweb.server.*;
 import raubach.fricklweb.server.auth.*;
 import raubach.fricklweb.server.computed.AccessToken;
-import raubach.fricklweb.server.database.enums.ImagesDataType;
 import raubach.fricklweb.server.database.tables.pojos.*;
 import raubach.fricklweb.server.database.tables.records.*;
 import raubach.fricklweb.server.resource.AbstractAccessTokenResource;
@@ -567,6 +566,8 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 			try (Connection conn = Database.getConnection();
 				 DSLContext context = Database.getContext(conn))
 			{
+				Albums album = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(albumId)).fetchAnyInto(Albums.class);
+
 				List<Images> images = context.selectFrom(IMAGES)
 											 .where(IMAGES.ALBUM_ID.eq(albumId))
 											 .fetchInto(Images.class);
@@ -612,20 +613,14 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 
 				// Run this in a separate thread, we don't need to wait for it to finish
 				new Thread(() -> {
-					for (Images image : images)
+					try
 					{
-						if (image.getDataType() != ImagesDataType.video)
-						{
-							File file = new File(Frickl.BASE_PATH, image.getPath());
-							try
-							{
-								TagUtils.addTagToImage(file, tagStrings);
-							}
-							catch (IOException e)
-							{
-								e.printStackTrace();
-							}
-						}
+						TagUtils.addTagToFileOrFolder(new File(Frickl.BASE_PATH, album.getPath()), tagStrings);
+					}
+					catch (IOException e)
+					{
+						Logger.getLogger("").severe(e.getMessage());
+						e.printStackTrace();
 					}
 				}).start();
 			}
@@ -670,6 +665,8 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 			try (Connection conn = Database.getConnection();
 				 DSLContext context = Database.getContext(conn))
 			{
+				Albums album = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(albumId)).fetchAnyInto(Albums.class);
+
 				List<Images> images = context.selectFrom(IMAGES)
 											 .where(IMAGES.ALBUM_ID.eq(albumId))
 											 .fetchInto(Images.class);
@@ -697,20 +694,14 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 
 				// Run this in a separate thread, we don't need to wait for it to finish
 				new Thread(() -> {
-					for (Images image : images)
+					try
 					{
-						if (image.getDataType() != ImagesDataType.video)
-						{
-							File file = new File(Frickl.BASE_PATH, image.getPath());
-							try
-							{
-								TagUtils.deleteTagFromImage(file, tagNames);
-							}
-							catch (IOException e)
-							{
-								e.printStackTrace();
-							}
-						}
+						TagUtils.deleteTagFromFileOrFolder(new File(Frickl.BASE_PATH, album.getPath()), tagNames);
+					}
+					catch (IOException e)
+					{
+						Logger.getLogger("").severe(e.getMessage());
+						e.printStackTrace();
 					}
 				}).start();
 
