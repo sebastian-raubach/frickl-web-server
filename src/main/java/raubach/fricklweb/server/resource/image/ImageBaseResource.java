@@ -265,6 +265,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 					}
 					catch (IOException e)
 					{
+						Logger.getLogger("").severe(e.getMessage());
 						e.printStackTrace();
 					}
 				}
@@ -358,6 +359,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 						}
 						catch (IOException e)
 						{
+							Logger.getLogger("").severe(e.getMessage());
 							e.printStackTrace();
 						}
 					}).start();
