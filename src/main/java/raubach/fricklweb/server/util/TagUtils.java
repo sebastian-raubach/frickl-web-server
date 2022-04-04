@@ -5,6 +5,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * @author Sebastian Raubach
@@ -22,6 +23,8 @@ public class TagUtils
 			commands.add("-overwrite_original");
 			tags.forEach(t -> commands.add("-keyword-=" + t));
 			commands.add(file.getAbsolutePath());
+
+			Logger.getLogger("").info("IMAGE TAG DELETION: " + commands);
 
 			Process p = new ProcessBuilder(commands.toArray(String[]::new)).start();
 			IOUtils.toString(p.getInputStream(), Charset.defaultCharset());
@@ -55,6 +58,8 @@ public class TagUtils
 				commands.add("-keyword+=" + t);
 			});
 			commands.add(file.getAbsolutePath());
+
+			Logger.getLogger("").info("IMAGE TAG ADDITION: " + commands);
 
 			Process p = new ProcessBuilder(commands.toArray(String[]::new)).start();
 			IOUtils.toString(p.getInputStream(), Charset.defaultCharset());
