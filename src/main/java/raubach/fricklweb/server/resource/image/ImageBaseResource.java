@@ -668,7 +668,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 					}
 					else
 					{
-						String pageUrl = Frickl.getServerBase(req, false) + "/#/images/" + imageId;
+						String pageUrl = Frickl.getServerBase(req, true) + "/#/images/" + imageId;
 						return Response.status(Response.Status.MOVED_PERMANENTLY)
 									   .location(URI.create(pageUrl))
 									   .build();
