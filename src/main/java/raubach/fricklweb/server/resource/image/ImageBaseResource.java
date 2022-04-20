@@ -638,14 +638,18 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 				if (image != null)
 				{
 					boolean isBot = StringUtils.isEmpty(userAgent) || userAgent.toLowerCase().contains("bot") || userAgent.toLowerCase().contains("twitter") || userAgent.toLowerCase().contains("facebook");
+					String publicUrl = PropertyWatcher.get(ServerProperty.PUBLIC_URL);
 
 					if (isBot)
 					{
 						URL url = Database.class.getClassLoader().getResource("index.html");
 
+						if (publicUrl.endsWith("/"))
+							publicUrl = publicUrl.substring(0, publicUrl.length() - 1);
+
 						if (url != null)
 						{
-							String imageUrl = Frickl.getServerBase(req, true) + "/api/image/" + imageId + "/img?size=MEDIUM";
+							String imageUrl = publicUrl + "/api/image/" + imageId + "/img?size=MEDIUM";
 
 							File targetFile = new File(getTempFolder(), UUID.randomUUID() + ".html");
 
@@ -668,7 +672,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 					}
 					else
 					{
-						String pageUrl = Frickl.getServerBase(req, true) + "/#/images/" + imageId;
+						String pageUrl = publicUrl + "/#/images/" + imageId;
 						return Response.status(Response.Status.MOVED_PERMANENTLY)
 									   .location(URI.create(pageUrl))
 									   .build();

@@ -15,6 +15,7 @@ public enum ServerProperty
 	ADMIN_PASSWORD("admin.password", null, false),
 	GOOGLE_ANALYTICS_KEY("google.analytics.key", null, false),
 	BASE_PATH("base.path", null, true),
+	PUBLIC_URL("public.url", null, true),
 	API_VERSION("api.version", "1", false);
 
 	String  key;
