@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter
 {
-	public static final long AGE = 43200000; // 12 hours
+	public static final long AGE = 604_800_000; // 7 days
 	private static final String REALM                 = "example";
 	private static final String                   AUTHENTICATION_SCHEME = "Bearer";
 	private static final Map<String, UserDetails> tokenToTimestamp      = new ConcurrentHashMap<>();
