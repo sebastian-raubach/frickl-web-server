@@ -14,6 +14,9 @@ public enum ServerProperty
 	ADMIN_USERNAME("admin.username", null, false),
 	ADMIN_PASSWORD("admin.password", null, false),
 	GOOGLE_ANALYTICS_KEY("google.analytics.key", null, false),
+	PLAUSIBLE_DOMAIN("plausible.domain", null, false),
+	PLAUSIBLE_HASH_MODE("plausible.hash.mode", "true", false),
+	PLAUSIBLE_API_HOST("plausible.api.host", "https://plausible.io", false),
 	BASE_PATH("base.path", null, true),
 	PUBLIC_URL("public.url", null, true),
 	API_VERSION("api.version", "1", false);
