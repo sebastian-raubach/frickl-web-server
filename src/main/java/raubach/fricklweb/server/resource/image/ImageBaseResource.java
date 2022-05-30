@@ -888,10 +888,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 		{
 			SelectJoinStep<Record> step = context.select().from(IMAGES);
 
-			Field<Integer> woyI = DSL.field("weekofyear(?)", Integer.class, IMAGES.CREATED_ON);
-			Field<Integer> woyN = DSL.field("weekofyear(?)", Integer.class, DSL.now());
-
-			step.where(woyI.eq(woyN)).and(DSL.year(IMAGES.CREATED_ON).eq(DSL.year(DSL.now()).minus(year)));
+			step.where(DSL.date(IMAGES.CREATED_ON).between(DSL.dateSub(DSL.dateSub(DSL.currentDate(), year, DatePart.YEAR), 7, DatePart.DAY), DSL.dateAdd(DSL.dateSub(DSL.currentDate(), year, DatePart.YEAR), 7, DatePart.DAY)));
 
 			if (auth)
 			{
