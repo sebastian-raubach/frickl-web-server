@@ -927,10 +927,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 
 			Field<Serializable> date = DSL.greatest(DSL.coalesce(ALBUM_STATS.NEWEST_IMAGE, 0), DSL.coalesce(ALBUM_STATS.CREATED_ON, 0));
 
-			Field<Integer> woyI = DSL.field("weekofyear(?)", Integer.class, date);
-			Field<Integer> woyN = DSL.field("weekofyear(?)", Integer.class, DSL.now());
-
-			step.where(woyI.eq(woyN)).and(DSL.year(date).eq(DSL.year(DSL.now()).minus(year)));
+			step.where(date.between(DSL.dateSub(DSL.dateSub(DSL.currentDate(), year, DatePart.YEAR), 7, DatePart.DAY), DSL.dateAdd(DSL.dateSub(DSL.currentDate(), year, DatePart.YEAR), 7, DatePart.DAY)));
 
 			if (auth)
 			{
