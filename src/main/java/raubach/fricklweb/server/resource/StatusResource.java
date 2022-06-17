@@ -1,10 +1,8 @@
 package raubach.fricklweb.server.resource;
 
-import raubach.fricklweb.server.computed.DataScanResult;
-import raubach.fricklweb.server.scanner.ImageScanner;
-
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.*;
+import raubach.fricklweb.server.scanner.ImageScanner;
 
 /**
  * @author Sebastian Raubach
@@ -15,8 +13,8 @@ public class StatusResource
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public DataScanResult getJson()
+	public Response getJson()
 	{
-		return ImageScanner.SCANRESULT;
+		return Response.ok(ImageScanner.SCANRESULT).build();
 	}
 }

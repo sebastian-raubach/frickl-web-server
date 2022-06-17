@@ -32,23 +32,17 @@ public class AlbumImageUploadResource extends ContextResource
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean postImages(@PathParam("albumId") Integer albumId, @FormDataParam("imageFile") InputStream fileIs, @FormDataParam("imageFile") FormDataContentDisposition fileDetails)
+	public Response postImages(@PathParam("albumId") Integer albumId, @FormDataParam("imageFile") InputStream fileIs, @FormDataParam("imageFile") FormDataContentDisposition fileDetails)
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
-		{
-			resp.sendError(Response.Status.FORBIDDEN.getStatusCode());
-			return false;
-		}
+			return Response.status(Response.Status.FORBIDDEN).build();
 
 		if (albumId == null)
-		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return false;
-		}
+			return Response.status(Response.Status.BAD_REQUEST).build();
 
 		try (Connection conn = Database.getConnection();
 			 DSLContext context = Database.getContext(conn))
@@ -56,10 +50,7 @@ public class AlbumImageUploadResource extends ContextResource
 			AlbumsRecord album = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(albumId)).fetchAny();
 
 			if (album == null)
-			{
-				resp.sendError(Response.Status.NOT_FOUND.getStatusCode());
-				return false;
-			}
+				return Response.status(Response.Status.NOT_FOUND).build();
 
 			File basePath = new File(Frickl.BASE_PATH);
 			File folder = new File(basePath, album.getPath());
@@ -102,7 +93,7 @@ public class AlbumImageUploadResource extends ContextResource
 				needsBannerImage = false;
 			}
 
-			return counter > 0;
+			return Response.ok(counter > 0).build();
 		}
 	}
 }

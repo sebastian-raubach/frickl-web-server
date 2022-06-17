@@ -32,7 +32,7 @@ public class SearchImageResource extends PaginatedServerResource
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Images> getSearchImages()
+	public Response getSearchImages()
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -51,19 +51,19 @@ public class SearchImageResource extends PaginatedServerResource
 				if (auth && StringUtils.isEmpty(userDetails.getToken()))
 					step.where(IMAGES.IS_PUBLIC.eq((byte) 1));
 
-				return step.where(TAGS.NAME.like(searchTerm)
+				return Response.ok(step.where(TAGS.NAME.like(searchTerm)
 										   .or(IMAGES.PATH.like(searchTerm)))
 						   .groupBy(IMAGES.ID)
 						   .offset(pageSize * currentPage)
 						   .limit(pageSize)
 						   .fetch()
-						   .into(Images.class);
+						   .into(Images.class))
+					.build();
 			}
 		}
 		else
 		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return null;
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
 
@@ -71,7 +71,7 @@ public class SearchImageResource extends PaginatedServerResource
 	@Path("/count")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public int getSearchImageCount()
+	public Response getSearchImageCount()
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -90,15 +90,15 @@ public class SearchImageResource extends PaginatedServerResource
 				if (auth && StringUtils.isEmpty(userDetails.getToken()))
 					step.where(IMAGES.IS_PUBLIC.eq((byte) 1));
 
-				return step.where(TAGS.NAME.like(searchTerm)
+				return Response.ok(step.where(TAGS.NAME.like(searchTerm)
 										   .or(IMAGES.PATH.like(searchTerm)))
-						   .fetchAny(0, int.class);
+						   .fetchAny(0, int.class))
+					.build();
 			}
 		}
 		else
 		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return 0;
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
 }

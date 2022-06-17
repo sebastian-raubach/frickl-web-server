@@ -22,7 +22,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.*;
 import java.sql.*;
 import java.util.*;
-import java.util.logging.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static raubach.fricklweb.server.database.tables.AccessTokens.*;
@@ -43,7 +43,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public List<AlbumStats> getAlbumById(@PathParam("albumId") Integer albumId, @QueryParam("parentAlbumId") Integer parentAlbumId)
+	public Response getAlbumById(@PathParam("albumId") Integer albumId, @QueryParam("parentAlbumId") Integer parentAlbumId)
 		throws SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -88,11 +88,12 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 				}
 			}
 
-			return step.orderBy(DSL.coalesce(ALBUM_STATS.NEWEST_IMAGE, 0).desc(), DSL.coalesce(ALBUM_STATS.CREATED_ON, 0).desc(), ALBUM_STATS.NAME.desc())
-					   .limit(pageSize)
-					   .offset(pageSize * currentPage)
-					   .fetch()
-					   .into(AlbumStats.class);
+			return Response.ok(step.orderBy(DSL.coalesce(ALBUM_STATS.NEWEST_IMAGE, 0).desc(), DSL.coalesce(ALBUM_STATS.CREATED_ON, 0).desc(), ALBUM_STATS.NAME.desc())
+								   .limit(pageSize)
+								   .offset(pageSize * currentPage)
+								   .fetch()
+								   .into(AlbumStats.class))
+						   .build();
 		}
 	}
 
@@ -100,7 +101,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public List<AlbumStats> getAlbums(@PathParam("albumId") Integer albumId, @QueryParam("parentAlbumId") Integer parentAlbumId)
+	public Response getAlbums(@PathParam("albumId") Integer albumId, @QueryParam("parentAlbumId") Integer parentAlbumId)
 		throws IOException, SQLException
 	{
 		return this.getAlbumById(null, parentAlbumId);
@@ -109,23 +110,17 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean postAlbum(Albums album)
+	public Response postAlbum(Albums album)
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
-		{
-			resp.sendError(Response.Status.FORBIDDEN.getStatusCode());
-			return false;
-		}
+			return Response.status(Response.Status.FORBIDDEN).build();
 
 		if (album == null || StringUtils.isEmpty(album.getName()))
-		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return false;
-		}
+			return Response.status(Response.Status.BAD_REQUEST).build();
 
 		try (Connection conn = Database.getConnection();
 			 DSLContext context = Database.getContext(conn))
@@ -138,10 +133,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 				AlbumsRecord parent = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(album.getParentAlbumId())).fetchAny();
 
 				if (parent == null)
-				{
-					resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-					return false;
-				}
+					return Response.status(Response.Status.BAD_REQUEST).build();
 
 				location = new File(location, parent.getPath());
 			}
@@ -149,17 +141,14 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 			location = new File(location, album.getName());
 
 			if (location.exists())
-			{
-				resp.sendError(Response.Status.CONFLICT.getStatusCode());
-				return false;
-			}
+				return Response.status(Response.Status.CONFLICT).build();
 
 			location.mkdirs();
 
 			AlbumsRecord record = context.newRecord(ALBUMS, album);
 			record.setPath(base.toURI().relativize(location.toURI()).getPath());
 			record.setCreatedOn(new Timestamp(System.currentTimeMillis()));
-			return record.store() > 0;
+			return Response.ok(record.store() > 0).build();
 		}
 	}
 
@@ -167,17 +156,14 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Path("/{albumId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean patchAlbum(@PathParam("albumId") Integer albumId, Albums album)
+	public Response patchAlbum(@PathParam("albumId") Integer albumId, Albums album)
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
-		{
-			resp.sendError(Response.Status.FORBIDDEN.getStatusCode());
-			return false;
-		}
+			return Response.status(Response.Status.FORBIDDEN).build();
 
 		if (albumId != null && album != null && Objects.equals(album.getId(), albumId))
 		{
@@ -192,11 +178,10 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 		}
 		else
 		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return false;
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 
-		return true;
+		return Response.ok(true).build();
 	}
 
 	@GET
@@ -204,7 +189,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public int getAlbumCount(@QueryParam("parentAlbumId") Integer parentAlbumId)
+	public Response getAlbumCount(@QueryParam("parentAlbumId") Integer parentAlbumId)
 		throws SQLException
 	{
 		return this.getAlbumByIdCount(null, parentAlbumId);
@@ -215,7 +200,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public int getRootCount(@QueryParam("parentAlbumId") Integer parentAlbumId)
+	public Response getRootCount(@QueryParam("parentAlbumId") Integer parentAlbumId)
 		throws SQLException
 	{
 		return this.getAlbumByIdCount(null, parentAlbumId);
@@ -226,7 +211,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public int getAlbumByIdCount(@PathParam("albumId") Integer albumId, @QueryParam("parentAlbumId") Integer parentAlbumId)
+	public Response getAlbumByIdCount(@PathParam("albumId") Integer albumId, @QueryParam("parentAlbumId") Integer parentAlbumId)
 		throws SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -272,7 +257,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 				}
 			}
 
-			return step.fetchAny(0, int.class);
+			return Response.ok(step.fetchAny(0, int.class)).build();
 		}
 	}
 
@@ -281,7 +266,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public String getRootDownload()
+	public Response getRootDownload()
 		throws IOException, SQLException
 	{
 		return this.getAlbumDownload(null);
@@ -292,7 +277,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public String getAlbumDownload(@PathParam("albumId") Integer albumId)
+	public Response getAlbumDownload(@PathParam("albumId") Integer albumId)
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -357,17 +342,16 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 						e.printStackTrace();
 					}
 
-					return zipFile.getName();
+					return Response.ok(zipFile.getName()).build();
 				}
 			}
 		}
 		else
 		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return null;
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 
-		return null;
+		return Response.noContent().build();
 	}
 
 	@GET
@@ -375,7 +359,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public List<LatLngs> getRootLocations()
+	public Response getRootLocations()
 		throws IOException, SQLException
 	{
 		return this.getAlbumLocations(null);
@@ -386,7 +370,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public List<LatLngs> getAlbumLocations(@PathParam("albumId") Integer albumId)
+	public Response getAlbumLocations(@PathParam("albumId") Integer albumId)
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -418,14 +402,14 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 
 				step.where(LAT_LNGS.ALBUM_ID.eq(albumId));
 
-				return step.fetch()
-						   .into(LatLngs.class);
+				return Response.ok(step.fetch()
+									   .into(LatLngs.class))
+							   .build();
 			}
 		}
 		else
 		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return null;
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
 
@@ -434,7 +418,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public List<Images> getRootImages()
+	public Response getRootImages()
 		throws SQLException
 	{
 		return this.getAlbumImages(null);
@@ -445,7 +429,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public List<Images> getAlbumImages(@PathParam("albumId") Integer albumId)
+	public Response getAlbumImages(@PathParam("albumId") Integer albumId)
 		throws SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -476,11 +460,12 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 				}
 			}
 
-			return step.orderBy(IMAGES.CREATED_ON.desc(), IMAGES.ID.desc())
-					   .offset(pageSize * currentPage)
-					   .limit(pageSize)
-					   .fetch()
-					   .into(Images.class);
+			return Response.ok(step.orderBy(IMAGES.CREATED_ON.desc(), IMAGES.ID.desc())
+								   .offset(pageSize * currentPage)
+								   .limit(pageSize)
+								   .fetch()
+								   .into(Images.class))
+						   .build();
 		}
 	}
 
@@ -489,7 +474,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public int getRootImageCount()
+	public Response getRootImageCount()
 		throws SQLException
 	{
 		return this.getAlbumImageCount(null);
@@ -500,7 +485,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public int getAlbumImageCount(@PathParam("albumId") Integer albumId)
+	public Response getAlbumImageCount(@PathParam("albumId") Integer albumId)
 		throws SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -531,7 +516,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 				}
 			}
 
-			return step.fetchAny(0, int.class);
+			return Response.ok(step.fetchAny(0, int.class)).build();
 		}
 	}
 
@@ -539,7 +524,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Path("/null/tag")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean postRootTags(Tags[] tags)
+	public Response postRootTags(Tags[] tags)
 		throws IOException, SQLException
 	{
 		return this.postAlbumTags(null, tags);
@@ -549,17 +534,14 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Path("/{albumId}/tag")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean postAlbumTags(@PathParam("albumId") Integer albumId, Tags[] tags)
+	public Response postAlbumTags(@PathParam("albumId") Integer albumId, Tags[] tags)
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
-		{
-			resp.sendError(Response.Status.FORBIDDEN.getStatusCode());
-			return false;
-		}
+			return Response.status(Response.Status.FORBIDDEN).build();
 
 		if (albumId != null && tags != null && tags.length > 0)
 		{
@@ -627,18 +609,17 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 		}
 		else
 		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return false;
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 
-		return true;
+		return Response.ok(true).build();
 	}
 
 	@DELETE
 	@Path("/null/tag")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean deleteRootTags(Tags[] tags)
+	public Response deleteRootTags(Tags[] tags)
 		throws IOException, SQLException
 	{
 		return this.deleteAlbumTags(null, tags);
@@ -648,17 +629,14 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Path("/{albumId}/tag")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean deleteAlbumTags(@PathParam("albumId") Integer albumId, Tags[] tags)
+	public Response deleteAlbumTags(@PathParam("albumId") Integer albumId, Tags[] tags)
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
-		{
-			resp.sendError(Response.Status.FORBIDDEN.getStatusCode());
-			return false;
-		}
+			return Response.status(Response.Status.FORBIDDEN).build();
 
 		if (albumId != null && tags != null && tags.length > 0)
 		{
@@ -672,10 +650,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 											 .fetchInto(Images.class);
 
 				if (images == null || images.size() < 1)
-				{
-					resp.sendError(Response.Status.NOT_FOUND.getStatusCode());
-					return false;
-				}
+					return Response.status(Response.Status.NOT_FOUND).build();
 
 				List<Integer> imageIds = images.stream().map(Images::getId).collect(Collectors.toList());
 
@@ -710,11 +685,10 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 		}
 		else
 		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return false;
+			return Response.status(Response.Status.BAD_REQUEST.getStatusCode()).build();
 		}
 
-		return true;
+		return Response.ok(true).build();
 	}
 
 	@GET
@@ -722,7 +696,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public List<Tags> getRootTags()
+	public Response getRootTags()
 		throws SQLException, IOException
 	{
 		return this.getAlbumTags(null);
@@ -733,7 +707,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public List<Tags> getAlbumTags(@PathParam("albumId") Integer albumId)
+	public Response getAlbumTags(@PathParam("albumId") Integer albumId)
 		throws SQLException, IOException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -766,11 +740,12 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 				}
 			}
 
-			return step.orderBy(TAGS.NAME)
-					   .offset(pageSize * currentPage)
-					   .limit(pageSize)
-					   .fetch()
-					   .into(Tags.class);
+			return Response.ok(step.orderBy(TAGS.NAME)
+								   .offset(pageSize * currentPage)
+								   .limit(pageSize)
+								   .fetch()
+								   .into(Tags.class))
+						   .build();
 		}
 	}
 
@@ -779,7 +754,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public boolean getRootPublic(@QueryParam("public") Boolean publicParam)
+	public Response getRootPublic(@QueryParam("public") Boolean publicParam)
 		throws IOException, SQLException
 	{
 		return this.getAlbumPublic(null, publicParam);
@@ -790,23 +765,17 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public boolean getAlbumPublic(@PathParam("albumId") Integer albumId, @QueryParam("public") Boolean publicParam)
+	public Response getAlbumPublic(@PathParam("albumId") Integer albumId, @QueryParam("public") Boolean publicParam)
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
-		{
-			resp.sendError(Response.Status.FORBIDDEN.getStatusCode());
-			return false;
-		}
+			return Response.status(Response.Status.FORBIDDEN).build();
 
 		if (publicParam == null || albumId == null)
-		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return false;
-		}
+			return Response.status(Response.Status.BAD_REQUEST).build();
 
 		try (Connection conn = Database.getConnection();
 			 DSLContext context = Database.getContext(conn))
@@ -817,14 +786,14 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 				   .execute();
 		}
 
-		return true;
+		return Response.ok(true).build();
 	}
 
 	@POST
 	@Path("/null/accesstoken")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean postRootAccessToken(AccessToken accessToken)
+	public Response postRootAccessToken(AccessToken accessToken)
 		throws IOException, SQLException
 	{
 		return this.postAlbumAccessToken(null, accessToken);
@@ -834,23 +803,17 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Path("/{albumId}/accesstoken")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean postAlbumAccessToken(@PathParam("albumId") Integer albumId, AccessToken accessToken)
+	public Response postAlbumAccessToken(@PathParam("albumId") Integer albumId, AccessToken accessToken)
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
-		{
-			resp.sendError(Response.Status.FORBIDDEN.getStatusCode());
-			return false;
-		}
+			return Response.status(Response.Status.FORBIDDEN).build();
 
 		if (accessToken == null || StringUtils.isEmpty(accessToken.getToken()) || albumId == null)
-		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return false;
-		}
+			return Response.status(Response.Status.BAD_REQUEST).build();
 
 		try (Connection conn = Database.getConnection();
 			 DSLContext context = Database.getContext(conn))
@@ -861,23 +824,18 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 			}
 			catch (IllegalArgumentException | NullPointerException e)
 			{
-				resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-				return false;
+				return Response.status(Response.Status.BAD_REQUEST).build();
 			}
-
-			Logger.getLogger("").log(Level.INFO, "TOKEN: " + accessToken);
 
 			AccessTokensRecord token = context.newRecord(ACCESS_TOKENS);
 			token.setToken(accessToken.getToken());
 			token.setExpiresOn(accessToken.getExpiresOn());
-
-			Logger.getLogger("").log(Level.INFO, "RECORD: " + token);
 			token.store();
 
 			AlbumTokensRecord albumToken = context.newRecord(ALBUM_TOKENS);
 			albumToken.setAlbumId(albumId);
 			albumToken.setAccessTokenId(token.getId());
-			return albumToken.store() > 0;
+			return Response.ok(albumToken.store() > 0).build();
 		}
 	}
 
@@ -885,17 +843,14 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Path("/{albumId}/scan")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean startImageScanner(@PathParam("albumId") Integer albumId)
+	public Response startImageScanner(@PathParam("albumId") Integer albumId)
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
-		{
-			resp.sendError(Response.Status.FORBIDDEN.getStatusCode());
-			return false;
-		}
+			return Response.status(Response.Status.FORBIDDEN).build();
 
 		try (Connection conn = Database.getConnection();
 			 DSLContext context = Database.getContext(conn))
@@ -906,7 +861,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 			ApplicationListener.startImageScanner(folder);
 		}
 
-		return true;
+		return Response.ok(true).build();
 	}
 
 	@GET
@@ -914,7 +869,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public List<AlbumStats> getImagesXago(@QueryParam("year") Integer year)
+	public Response getImagesXago(@QueryParam("year") Integer year)
 		throws SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -949,11 +904,12 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 				}
 			}
 
-			return step.orderBy(date.desc(), ALBUM_STATS.NAME.desc())
-					   .limit(pageSize)
-					   .offset(pageSize * currentPage)
-					   .fetch()
-					   .into(AlbumStats.class);
+			return Response.ok(step.orderBy(date.desc(), ALBUM_STATS.NAME.desc())
+								   .limit(pageSize)
+								   .offset(pageSize * currentPage)
+								   .fetch()
+								   .into(AlbumStats.class))
+						   .build();
 		}
 	}
 }

@@ -1,11 +1,11 @@
 package raubach.fricklweb.server.resource;
 
+import jakarta.ws.rs.core.*;
 import raubach.fricklweb.server.computed.Settings;
 import raubach.fricklweb.server.util.ServerProperty;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
 
 @Path("settings")
 public class SettingsResource extends ContextResource
@@ -13,7 +13,7 @@ public class SettingsResource extends ContextResource
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Settings getSettings()
+	public Response getSettings()
 	{
 		Settings settings = new Settings();
 		settings.setAuthEnabled(PropertyWatcher.authEnabled());
@@ -22,6 +22,6 @@ public class SettingsResource extends ContextResource
 		settings.setPlausibleHashMode(PropertyWatcher.getBoolean(ServerProperty.PLAUSIBLE_HASH_MODE));
 		settings.setPlausibleDomain(PropertyWatcher.get(ServerProperty.PLAUSIBLE_DOMAIN));
 
-		return settings;
+		return Response.ok(settings).build();
 	}
 }

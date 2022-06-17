@@ -14,7 +14,6 @@ import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.io.IOException;
 import java.sql.*;
-import java.util.List;
 
 import static raubach.fricklweb.server.database.tables.Images.*;
 import static raubach.fricklweb.server.database.tables.StatsCamera.*;
@@ -31,17 +30,14 @@ public class StatsResource extends PaginatedServerResource
 	@Path("dayhour")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<StatsDayHour> getDayHourStats()
+	public Response getDayHourStats()
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
-		{
-			resp.sendError(Response.Status.FORBIDDEN.getStatusCode());
-			return null;
-		}
+			return Response.status(Response.Status.FORBIDDEN).build();
 
 		try (Connection conn = Database.getConnection();
 			 DSLContext context = Database.getContext(conn))
@@ -49,16 +45,17 @@ public class StatsResource extends PaginatedServerResource
 			Field<Short> day = DSL.field("weekday(?)", Short.class, IMAGES.CREATED_ON).as("day");
 			Field<?> hour = DSL.hour(IMAGES.CREATED_ON).as("hour");
 
-			return context.select(
-							  day,
-							  hour,
-							  DSL.count()
-						  )
-						  .from(IMAGES)
-						  .where(IMAGES.CREATED_ON.isNotNull())
-						  .groupBy(day, hour)
-						  .orderBy(day, hour)
-						  .fetchInto(StatsDayHour.class);
+			return Response.ok(context.select(
+										  day,
+										  hour,
+										  DSL.count()
+									  )
+									  .from(IMAGES)
+									  .where(IMAGES.CREATED_ON.isNotNull())
+									  .groupBy(day, hour)
+									  .orderBy(day, hour)
+									  .fetchInto(StatsDayHour.class))
+						   .build();
 		}
 	}
 
@@ -66,25 +63,23 @@ public class StatsResource extends PaginatedServerResource
 	@Path("camera")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<StatsCamera> getCameraStats()
+	public Response getCameraStats()
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
-		{
-			resp.sendError(Response.Status.FORBIDDEN.getStatusCode());
-			return null;
-		}
+			return Response.status(Response.Status.FORBIDDEN).build();
 
 		try (Connection conn = Database.getConnection();
 			 DSLContext context = Database.getContext(conn))
 		{
-			return context.select().from(STATS_CAMERA)
-						  .limit(15)
-						  .fetch()
-						  .into(StatsCamera.class);
+			return Response.ok(context.select().from(STATS_CAMERA)
+									  .limit(15)
+									  .fetch()
+									  .into(StatsCamera.class))
+						   .build();
 		}
 	}
 }

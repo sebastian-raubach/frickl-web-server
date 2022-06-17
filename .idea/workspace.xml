@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0b41da56-1101-476e-ba7d-884db70611d5" name="Default Changelist" comment="- FIX: Fixed null image count for empty albums.">
+    <list default="true" id="0b41da56-1101-476e-ba7d-884db70611d5" name="Default Changelist" comment="- ADD: Added day/hour heatmap stats.">
       <change beforePath="$PROJECT_DIR$/.gradle/6.7/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.7/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.7/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/fileHashes/fileHashes.bin" afterDir="false" />
@@ -18,78 +18,20 @@
       <change beforePath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/ApplicationListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/ApplicationListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/Frickl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/Frickl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/auth/AuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/auth/AuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/auth/Secured.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/auth/Secured.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/DefaultCatalog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/DefaultCatalog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/Frickl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/Frickl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/Indexes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/Indexes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/Keys.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/Keys.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/Tables.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/Tables.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/enums/ImagesDataType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/enums/ImagesDataType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/AccessTokens.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/AccessTokens.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/AlbumAccessToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/AlbumAccessToken.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/AlbumStats.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/AlbumStats.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/AlbumTokens.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/AlbumTokens.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/Albums.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/Albums.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/CalendarData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/CalendarData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/ImageTags.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/ImageTags.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/ImageTimeline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/ImageTimeline.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/Images.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/Images.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/LatLngs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/LatLngs.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/SchemaVersion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/SchemaVersion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/StatsCamera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/StatsCamera.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/Tags.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/Tags.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/AccessTokens.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/AccessTokens.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/AlbumAccessToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/AlbumAccessToken.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/AlbumStats.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/AlbumStats.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/AlbumTokens.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/AlbumTokens.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/Albums.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/Albums.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/CalendarData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/CalendarData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/ImageTags.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/ImageTags.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/ImageTimeline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/ImageTimeline.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/Images.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/Images.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/LatLngs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/LatLngs.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/SchemaVersion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/SchemaVersion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/StatsCamera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/StatsCamera.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/Tags.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/Tags.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/AccessTokensRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/AccessTokensRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/AlbumAccessTokenRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/AlbumAccessTokenRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/AlbumStatsRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/AlbumStatsRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/AlbumTokensRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/AlbumTokensRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/AlbumsRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/AlbumsRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/CalendarDataRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/CalendarDataRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/ImageTagsRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/ImageTagsRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/ImageTimelineRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/ImageTimelineRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/ImagesRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/ImagesRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/LatLngsRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/LatLngsRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/SchemaVersionRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/SchemaVersionRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/StatsCameraRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/StatsCameraRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/TagsRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/TagsRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/AbstractAccessTokenResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/AbstractAccessTokenResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/ContextResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/ContextResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/PaginatedServerResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/PaginatedServerResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/SettingsResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/SettingsResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/StatusResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/StatusResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/TokenResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/TokenResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/accesstoken/AccessTokenResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/accesstoken/AccessTokenResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/album/AlbumBaseResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/album/AlbumBaseResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/album/AlbumImageUploadResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/album/AlbumImageUploadResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/calendar/CalendarResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/calendar/CalendarResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/download/DownloadResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/download/DownloadResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/image/ImageBaseResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/image/ImageBaseResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/image/MediaStreamer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/image/MediaStreamer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/location/LocationResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/location/LocationResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/search/SearchAlbumResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/search/SearchAlbumResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/search/SearchImageResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/search/SearchImageResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/stats/StatsCameraResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/stats/StatsCameraResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/stats/StatsResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/stats/StatsResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/tag/TagResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/tag/TagResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/FileUploadHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/GsonMessageBodyHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/GsonMessageBodyHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/ResourceUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/ResourceUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/SQLExceptionMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/SQLExceptionMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/ThumbnailUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/ThumbnailUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -351,7 +293,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../sgud-server" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -360,6 +302,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\sr41756\workspaces\java\frickl-web-server\src\main\resources\raubach\fricklweb\server\util\database\migration" />
       <recent name="C:\Users\sr41756\workspaces\java\frickl-web-server" />
       <recent name="$PROJECT_DIR$/src/main/resources" />
       <recent name="$PROJECT_DIR$" />
@@ -380,6 +323,19 @@
     </key>
   </component>
   <component name="RunManager" selected="Gradle.frickl-web-server [deployTomcat]">
+    <configuration name="TagUtils" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="raubach.fricklweb.server.util.TagUtils" />
+      <module name="frickl-web-server.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="raubach.fricklweb.server.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="frickl-web-server [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -464,34 +420,13 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="frickl-web-server [war]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="war" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.frickl-web-server [deployTomcat]" />
-        <item itemvalue="Gradle.frickl-web-server [clean]" />
         <item itemvalue="Gradle.frickl-web-server [build]" />
+        <item itemvalue="Gradle.frickl-web-server [clean]" />
+        <item itemvalue="Application.TagUtils" />
         <item itemvalue="Gradle.frickl-web-server [codegen]" />
-        <item itemvalue="Gradle.frickl-web-server [war]" />
       </list>
     </recent_temporary>
   </component>
@@ -506,160 +441,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1558543167839</updated>
-    </task>
-    <task id="LOCAL-00026" summary="- ADD: Added authentication.&#10;- ADD: Added public images that can be shared with people even if Frickl is set to use authentication.&#10;-">
-      <created>1584295237987</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1584295237987</updated>
-    </task>
-    <task id="LOCAL-00027" summary="- ADD: Added support for environmental variables to set admin username and password.">
-      <created>1584296372590</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1584296372590</updated>
-    </task>
-    <task id="LOCAL-00028" summary="- ADD: Added support for environmental variables to set admin username and password.">
-      <created>1584296829443</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1584296829443</updated>
-    </task>
-    <task id="LOCAL-00029" summary="- FIX: Fixed issues with compilation on Java 8.">
-      <created>1584298529231</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1584298529231</updated>
-    </task>
-    <task id="LOCAL-00030" summary="- FIX: Replaced fetchOne with fetchAny.">
-      <created>1584366685847</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1584366685847</updated>
-    </task>
-    <task id="LOCAL-00031" summary="- FIX: Included .sql files for database upgrades in .jar file.">
-      <created>1584383321324</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1584383321324</updated>
-    </task>
-    <task id="LOCAL-00032" summary="- FIX: Fixed wrong order of database upgrade and SQL view creation.">
-      <created>1584387174135</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1584387174135</updated>
-    </task>
-    <task id="LOCAL-00033" summary="- FIX: Added more exception printing.">
-      <created>1584469037520</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1584469037520</updated>
-    </task>
-    <task id="LOCAL-00034" summary="- ADD: Added more database init logging.">
-      <created>1584479254184</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1584479254184</updated>
-    </task>
-    <task id="LOCAL-00035" summary="- ADD: Added more database init logging.">
-      <created>1584515492495</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1584515492495</updated>
-    </task>
-    <task id="LOCAL-00036" summary="- FIX: Fixed database existence check.">
-      <created>1584531270283</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1584531270283</updated>
-    </task>
-    <task id="LOCAL-00037" summary="- CHG: Adjusted album view to support public views.">
-      <created>1584642336049</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1584642336049</updated>
-    </task>
-    <task id="LOCAL-00038" summary="- CHG: Changed status call to return number of processed images and totals.">
-      <created>1584903703342</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1584903703342</updated>
-    </task>
-    <task id="LOCAL-00039" summary="- CHG: Added new image scanner status of &quot;scanning&quot; to indicate the first part of the import process.">
-      <created>1584947872375</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1584947872376</updated>
-    </task>
-    <task id="LOCAL-00040" summary="- CHG: Updated readme.">
-      <created>1585478789541</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1585478789542</updated>
-    </task>
-    <task id="LOCAL-00041" summary="- ADD: Added Google Analytics tracking option.&#10;-">
-      <created>1586026713312</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1586026713312</updated>
-    </task>
-    <task id="LOCAL-00042" summary="- ADD: Added endpoint for social media sharing which fakes an image extension.">
-      <created>1586154247816</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1586154247816</updated>
-    </task>
-    <task id="LOCAL-00043" summary="- ADD: Added endpoint for social media sharing which generates a simple HTML file with the necessary meta tags.">
-      <created>1586177297252</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1586177297252</updated>
-    </task>
-    <task id="LOCAL-00044" summary="- ADD: Added redirect for non-bots from image share URL to client.">
-      <created>1586193334016</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1586193334016</updated>
-    </task>
-    <task id="LOCAL-00045" summary="- ADD: Added support for access tokens generated to share with other people who can then access specific folders without being logged in and without these folder being public.">
-      <created>1587319228217</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1587319228217</updated>
-    </task>
-    <task id="LOCAL-00046" summary="- ADD: Finalised support for access tokens generated to share with other people who can then access specific folders without being logged in and without these folder being public.">
-      <created>1590333872242</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1590333872242</updated>
-    </task>
-    <task id="LOCAL-00047" summary="- ADD: Finalised support for access tokens generated to share with other people who can then access specific folders without being logged in and without these folder being public.">
-      <created>1590351434096</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1590351434096</updated>
     </task>
     <task id="LOCAL-00048" summary="- ADD: Finalised support for access tokens generated to share with other people who can then access specific folders without being logged in and without these folder being public.">
       <created>1590393675871</created>
@@ -850,7 +631,161 @@
       <option name="project" value="LOCAL" />
       <updated>1647532857053</updated>
     </task>
-    <option name="localTasksCounter" value="75" />
+    <task id="LOCAL-00075" summary="- CHG: Updated dependencies to latest versions.">
+      <created>1648150848198</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1648150848199</updated>
+    </task>
+    <task id="LOCAL-00076" summary="- FIX: Fixed bug where root folders don't show up in unauth mode.">
+      <created>1648806754026</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1648806754027</updated>
+    </task>
+    <task id="LOCAL-00077" summary="- FIX: Fixed bug where root folders don't show up in unauth mode.">
+      <created>1648810709248</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1648810709248</updated>
+    </task>
+    <task id="LOCAL-00078" summary="- FIX: Fixed exif date parsing.">
+      <created>1648810860994</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1648810860994</updated>
+    </task>
+    <task id="LOCAL-00079" summary="- FIX: Fixed issue with root album endpoints.">
+      <created>1648816548341</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1648816548342</updated>
+    </task>
+    <task id="LOCAL-00080" summary="- FIX: Fixed issue with root album endpoints.">
+      <created>1648821325815</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1648821325815</updated>
+    </task>
+    <task id="LOCAL-00081" summary="- FIX: Fixed unauth error.">
+      <created>1648823231534</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1648823231535</updated>
+    </task>
+    <task id="LOCAL-00082" summary="- FIX: Fixed some codegen issues.&#10;- CHG: Changed album stats to be pre-computed to allow for recursive counts.&#10;-">
+      <created>1648834655501</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1648834655503</updated>
+    </task>
+    <task id="LOCAL-00083" summary="- FIX: Fixed album count updater.">
+      <created>1648838788043</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1648838788043</updated>
+    </task>
+    <task id="LOCAL-00084" summary="- ADD: Added newest and oldest  image date to album stats.">
+      <created>1648904225717</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1648904225718</updated>
+    </task>
+    <task id="LOCAL-00085" summary="- CHG: Replaced dependency on iCafe with exiftools.">
+      <created>1649062514622</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1649062514623</updated>
+    </task>
+    <task id="LOCAL-00086" summary="- FIX: Attempt to fix tagging not working.">
+      <created>1649065584283</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1649065584283</updated>
+    </task>
+    <task id="LOCAL-00087" summary="- FIX: Attempt to fix tagging not working.">
+      <created>1649065988753</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1649065988753</updated>
+    </task>
+    <task id="LOCAL-00088" summary="- FIX: Attempt to fix tagging not working.">
+      <created>1649066330658</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1649066330658</updated>
+    </task>
+    <task id="LOCAL-00089" summary="- CHG: Removed debugging log statements.">
+      <created>1649066881491</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1649066881491</updated>
+    </task>
+    <task id="LOCAL-00090" summary="- FIX: Fixed share link redirect.">
+      <created>1650440283446</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1650440283446</updated>
+    </task>
+    <task id="LOCAL-00091" summary="- FIX: Fixed share link redirect.">
+      <created>1650442462583</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1650442462583</updated>
+    </task>
+    <task id="LOCAL-00092" summary="- CHG: Increased token lifetime to 7 days.">
+      <created>1650551291148</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1650551291148</updated>
+    </task>
+    <task id="LOCAL-00093" summary="- ADD: Added Plausible tracking support.">
+      <created>1650986036335</created>
+      <option name="number" value="00093" />
+      <option name="presentableId" value="LOCAL-00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1650986036336</updated>
+    </task>
+    <task id="LOCAL-00094" summary="- CHG: Changed x-ago endpoint to return all images/albums within a 7 day range x years ago.">
+      <created>1653932341363</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1653932341366</updated>
+    </task>
+    <task id="LOCAL-00095" summary="- CHG: Changed x-ago endpoint to return all images/albums within a 7 day range x years ago.">
+      <created>1654519921127</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1654519921128</updated>
+    </task>
+    <task id="LOCAL-00096" summary="- ADD: Added day/hour heatmap stats.">
+      <created>1654885363104</created>
+      <option name="number" value="00096" />
+      <option name="presentableId" value="LOCAL-00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1654885363105</updated>
+    </task>
+    <option name="localTasksCounter" value="97" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -888,12 +823,13 @@
     </layout>
   </component>
   <component name="Vcs.Log.History.Properties">
-    <option name="COLUMN_ORDER">
+    <option name="COLUMN_ID_ORDER">
       <list>
-        <option value="0" />
-        <option value="2" />
-        <option value="3" />
-        <option value="1" />
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
       </list>
     </option>
   </component>
@@ -912,22 +848,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="- ADD: Added endpoint for social media sharing which generates a simple HTML file with the necessary meta tags." />
-    <MESSAGE value="- ADD: Added redirect for non-bots from image share URL to client." />
-    <MESSAGE value="- ADD: Added support for access tokens generated to share with other people who can then access specific folders without being logged in and without these folder being public." />
-    <MESSAGE value="- ADD: Finalised support for access tokens generated to share with other people who can then access specific folders without being logged in and without these folder being public." />
-    <MESSAGE value="- CHG: Moved build system from Ant to Gradle.&#10;- ADD: Added initial support for videos (ffmpeg required!)." />
-    <MESSAGE value="- FIX: Fixed issues with thumbnail creation for videos." />
-    <MESSAGE value="- FIX: Attempt at fixing stuck import runnables." />
-    <MESSAGE value="- FIX: Fixed wrong config file check." />
-    <MESSAGE value="- FIX: Fixed issue with default sort order of images." />
-    <MESSAGE value="- ADD: Added endpoint for image upload.&#10;- ADD: Added endpoint for album c reation.&#10;-" />
-    <MESSAGE value="- FIX: Fixed wrong ordering of albums if not created in date order." />
-    <MESSAGE value="- CHG: Made image scanner more efficient." />
-    <MESSAGE value="- FIX: Attempt to fix image scanner." />
-    <MESSAGE value="- FIX: Fixed issues with image scanner.&#10;- CHG: When new images are uploaded, the image scanner automatically starts running for this new folder." />
-    <MESSAGE value="- FIX: Fixed build issues." />
-    <MESSAGE value="- CHG: Replaced Restlet with Jax-RS.&#10;- FIX: Issues in image scanner.&#10;- FIX: Issues with image tagging.&#10;-" />
     <MESSAGE value="- CHG: Removed automatic folder scanning after each image upload and added a new dedicated endpoint.&#10;- CHG: Updated Thumbnailator and reduced thumbnail quality." />
     <MESSAGE value="- FIX: Fixed view creation script.&#10;- CHG: Use last modified date of uploaded files rather than creation date (because this will be when the file was uploaded)." />
     <MESSAGE value="- CHG: Replaced Thumbnailator with ImageMagick for thumbnail creation.&#10;- CHG: Changed image thumbnail endpoint to use a threaded pool for thumbnail creation to keep CPU load on the Pi low.&#10;-" />
@@ -937,23 +857,23 @@
     <MESSAGE value="- ADD: Added image view count increment." />
     <MESSAGE value="- FIX: Fixed issues with duplicate counts." />
     <MESSAGE value="- FIX: Fixed null image count for empty albums." />
-    <option name="LAST_COMMIT_MESSAGE" value="- FIX: Fixed null image count for empty albums." />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/TagUtils.java</url>
-          <line>61</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/TagUtils.java</url>
-          <line>92</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="- CHG: Updated dependencies to latest versions." />
+    <MESSAGE value="- FIX: Fixed bug where root folders don't show up in unauth mode." />
+    <MESSAGE value="- FIX: Fixed exif date parsing." />
+    <MESSAGE value="- FIX: Fixed issue with root album endpoints." />
+    <MESSAGE value="- FIX: Fixed unauth error." />
+    <MESSAGE value="- FIX: Fixed some codegen issues.&#10;- CHG: Changed album stats to be pre-computed to allow for recursive counts.&#10;-" />
+    <MESSAGE value="- FIX: Fixed album count updater." />
+    <MESSAGE value="- ADD: Added newest and oldest  image date to album stats." />
+    <MESSAGE value="- CHG: Replaced dependency on iCafe with exiftools." />
+    <MESSAGE value="- FIX: Attempt to fix tagging not working." />
+    <MESSAGE value="- CHG: Removed debugging log statements." />
+    <MESSAGE value="- FIX: Fixed share link redirect." />
+    <MESSAGE value="- CHG: Increased token lifetime to 7 days." />
+    <MESSAGE value="- ADD: Added Plausible tracking support." />
+    <MESSAGE value="- CHG: Changed x-ago endpoint to return all images/albums within a 7 day range x years ago." />
+    <MESSAGE value="- ADD: Added day/hour heatmap stats." />
+    <option name="LAST_COMMIT_MESSAGE" value="- ADD: Added day/hour heatmap stats." />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />

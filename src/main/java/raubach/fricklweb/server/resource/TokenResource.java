@@ -37,58 +37,46 @@ public class TokenResource extends ContextResource
 	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean deleteToken(LoginDetails user)
+	public Response deleteToken(LoginDetails user)
 		throws IOException
 	{
 		boolean enabled = PropertyWatcher.authEnabled();
 
 		if (!enabled)
-		{
-			resp.sendError(Response.Status.SERVICE_UNAVAILABLE.getStatusCode());
-			return false;
-		}
+			return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
 
 		if (user == null)
-		{
-			resp.sendError(Response.Status.NOT_FOUND.getStatusCode(), StatusMessage.NOT_FOUND_TOKEN);
-			return false;
-		}
+			return Response.status(Response.Status.NOT_FOUND).build();
 
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 
 		if (userDetails == null || !Objects.equals(userDetails.getToken(), user.getPassword()))
-		{
-			resp.sendError(Response.Status.FORBIDDEN.getStatusCode(), StatusMessage.FORBIDDEN_ACCESS_TO_OTHER_USER);
-			return false;
-		}
+		return Response.status(Response.Status.FORBIDDEN.getStatusCode(), StatusMessage.FORBIDDEN_ACCESS_TO_OTHER_USER).build();
 
 		try
 		{
 			// Try and see if it's a valid UUID
 			UUID.fromString(user.getPassword());
 			AuthenticationFilter.removeToken(user.getPassword(), req, resp);
-			return true;
+			return Response.ok(true).build();
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
+			return Response.ok(false).build();
 		}
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Token postToken(LoginDetails request)
+	public Response postToken(LoginDetails request)
 		throws IOException
 	{
 		boolean enabled = PropertyWatcher.authEnabled();
 
 		if (!enabled)
-		{
-			resp.sendError(Response.Status.SERVICE_UNAVAILABLE.getStatusCode());
-			return null;
-		}
+			return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
 
 		String username = PropertyWatcher.get(ServerProperty.ADMIN_USERNAME);
 		String password = PropertyWatcher.get(ServerProperty.ADMIN_PASSWORD);
@@ -106,10 +94,9 @@ public class TokenResource extends ContextResource
 		}
 		else
 		{
-			resp.sendError(Response.Status.FORBIDDEN.getStatusCode(), StatusMessage.FORBIDDEN_INVALID_CREDENTIALS);
-			return null;
+			return Response.status(Response.Status.FORBIDDEN.getStatusCode(), StatusMessage.FORBIDDEN_INVALID_CREDENTIALS).build();
 		}
 
-		return new Token(token, imageToken, AuthenticationFilter.AGE, System.currentTimeMillis());
+		return Response.ok(new Token(token, imageToken, AuthenticationFilter.AGE, System.currentTimeMillis())).build();
 	}
 }

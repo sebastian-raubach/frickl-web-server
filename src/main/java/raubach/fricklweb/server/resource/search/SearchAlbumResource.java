@@ -35,7 +35,7 @@ public class SearchAlbumResource extends PaginatedServerResource
 	@Path("/album")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Albums> getAlbums()
+	public Response getAlbums()
 		throws SQLException, IOException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -55,18 +55,18 @@ public class SearchAlbumResource extends PaginatedServerResource
 											 .where(IMAGES.ALBUM_ID.eq(ALBUMS.ID)
 																   .and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
 
-				return step.where(ALBUMS.NAME.like(searchTerm)
+				return Response.ok(step.where(ALBUMS.NAME.like(searchTerm)
 											 .or(ALBUMS.DESCRIPTION.like(searchTerm)))
 						   .offset(pageSize * currentPage)
 						   .limit(pageSize)
 						   .fetch()
-						   .into(Albums.class);
+						   .into(Albums.class))
+					.build();
 			}
 		}
 		else
 		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return null;
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
 
@@ -74,7 +74,7 @@ public class SearchAlbumResource extends PaginatedServerResource
 	@Path("/album/count")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public int getAlbumCount()
+	public Response getAlbumCount()
 		throws SQLException, IOException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -94,15 +94,15 @@ public class SearchAlbumResource extends PaginatedServerResource
 											 .where(IMAGES.ALBUM_ID.eq(ALBUMS.ID)
 																   .and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
 
-				return step.where(ALBUMS.NAME.like(searchTerm)
+				return Response.ok(step.where(ALBUMS.NAME.like(searchTerm)
 											 .or(ALBUMS.DESCRIPTION.like(searchTerm)))
-						   .fetchAny(0, int.class);
+						   .fetchAny(0, int.class))
+					.build();
 			}
 		}
 		else
 		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return 0;
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
 }

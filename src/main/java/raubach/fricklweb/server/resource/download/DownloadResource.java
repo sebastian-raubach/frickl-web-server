@@ -23,10 +23,7 @@ public class DownloadResource extends ContextResource
 		throws IOException
 	{
 		if (StringUtils.isEmpty(filename))
-		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return null;
-		}
+			return Response.status(Response.Status.BAD_REQUEST).build();
 
 		File file = ResourceUtils.getTempFile("frickl-download", filename);
 

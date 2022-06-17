@@ -1,5 +1,6 @@
 package raubach.fricklweb.server.resource.location;
 
+import jakarta.ws.rs.core.*;
 import org.jooq.*;
 import org.jooq.tools.StringUtils;
 import raubach.fricklweb.server.Database;
@@ -10,7 +11,7 @@ import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import jakarta.annotation.security.PermitAll;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
+
 import java.sql.*;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class LocationResource extends PaginatedServerResource
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<LatLngs> getLocations()
+	public Response getLocations()
 		throws SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -41,7 +42,7 @@ public class LocationResource extends PaginatedServerResource
 			if (auth && StringUtils.isEmpty(userDetails.getToken()))
 				step.where(LAT_LNGS.IS_PUBLIC.eq((byte) 1));
 
-			return step.fetchInto(LatLngs.class);
+			return Response.ok(step.fetchInto(LatLngs.class)).build();
 		}
 	}
 }

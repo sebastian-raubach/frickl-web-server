@@ -1,5 +1,8 @@
 package raubach.fricklweb.server.resource.image;
 
+import jakarta.annotation.security.PermitAll;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.*;
 import org.apache.commons.io.IOUtils;
 import org.jooq.*;
 import org.jooq.impl.DSL;
@@ -14,9 +17,6 @@ import raubach.fricklweb.server.resource.AbstractAccessTokenResource;
 import raubach.fricklweb.server.util.*;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import jakarta.annotation.security.PermitAll;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.*;
 import java.io.*;
 import java.net.*;
 import java.nio.channels.*;
@@ -43,7 +43,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public List<Images> getImages(@QueryParam("fav") Boolean isFav, @QueryParam("date") DateParameter date)
+	public Response getImages(@QueryParam("fav") Boolean isFav, @QueryParam("date") DateParameter date)
 		throws SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -75,11 +75,12 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 				}
 			}
 
-			return step.orderBy(IMAGES.CREATED_ON.desc(), IMAGES.ID.desc())
-					   .offset(pageSize * currentPage)
-					   .limit(pageSize)
-					   .fetch()
-					   .into(Images.class);
+			return Response.ok(step.orderBy(IMAGES.CREATED_ON.desc(), IMAGES.ID.desc())
+								   .offset(pageSize * currentPage)
+								   .limit(pageSize)
+								   .fetch()
+								   .into(Images.class))
+						   .build();
 		}
 	}
 
@@ -87,17 +88,14 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Path("/{imageId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean patchImage(@PathParam("imageId") Integer imageId, Images image)
+	public Response patchImage(@PathParam("imageId") Integer imageId, Images image)
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
-		{
-			resp.sendError(Response.Status.UNAUTHORIZED.getStatusCode());
-			return false;
-		}
+			return Response.status(Response.Status.UNAUTHORIZED).build();
 
 		if (imageId != null && image != null && Objects.equals(image.getId(), imageId))
 		{
@@ -113,11 +111,10 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 		}
 		else
 		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return false;
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 
-		return true;
+		return Response.ok(true).build();
 	}
 
 	@GET
@@ -125,7 +122,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public List<Images> getImageById(@PathParam("imageId") Integer imageId)
+	public Response getImageById(@PathParam("imageId") Integer imageId)
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -159,8 +156,9 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 				}
 			}
 
-			return step.fetch()
-					   .into(Images.class);
+			return Response.ok(step.fetch()
+								   .into(Images.class))
+						   .build();
 		}
 	}
 
@@ -169,7 +167,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public List<Tags> getImageTags(@PathParam("imageId") Integer imageId)
+	public Response getImageTags(@PathParam("imageId") Integer imageId)
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -202,17 +200,17 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 					}
 				}
 
-				return step.orderBy(TAGS.NAME)
-						   .offset(pageSize * currentPage)
-						   .limit(pageSize)
-						   .fetch()
-						   .into(Tags.class);
+				return Response.ok(step.orderBy(TAGS.NAME)
+									   .offset(pageSize * currentPage)
+									   .limit(pageSize)
+									   .fetch()
+									   .into(Tags.class))
+							   .build();
 			}
 		}
 		else
 		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return null;
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
 
@@ -220,17 +218,14 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Path("/{imageId}/tag")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean deleteImageTags(@PathParam("imageId") Integer imageId, Tags tag)
+	public Response deleteImageTags(@PathParam("imageId") Integer imageId, Tags tag)
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
-		{
-			resp.sendError(Response.Status.FORBIDDEN.getStatusCode());
-			return false;
-		}
+			return Response.status(Response.Status.FORBIDDEN).build();
 
 		if (imageId != null && tag != null)
 		{
@@ -246,10 +241,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 								.fetchAnyInto(Tags.class);
 
 				if (t == null || image == null)
-				{
-					resp.sendError(Response.Status.NOT_FOUND.getStatusCode());
-					return false;
-				}
+					return Response.status(Response.Status.NOT_FOUND).build();
 
 				int numberOfDeletedItems = context.deleteFrom(IMAGE_TAGS)
 												  .where(IMAGE_TAGS.IMAGE_ID.eq(image.getId()))
@@ -272,13 +264,12 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 
 				// TODO: Delete all tags that have no more images associated with them
 
-				return numberOfDeletedItems == 1;
+				return Response.ok(numberOfDeletedItems == 1).build();
 			}
 		}
 		else
 		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return false;
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
 
@@ -286,17 +277,14 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Path("/{imageId}/tag")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean postImageTags(@PathParam("imageId") Integer imageId, Tags[] tags)
+	public Response postImageTags(@PathParam("imageId") Integer imageId, Tags[] tags)
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
-		{
-			resp.sendError(Response.Status.FORBIDDEN.getStatusCode());
-			return false;
-		}
+			return Response.status(Response.Status.FORBIDDEN).build();
 
 		boolean result = false;
 		if (tags != null && tags.length > 0 && imageId != null)
@@ -368,11 +356,10 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 		}
 		else
 		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return false;
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 
-		return result;
+		return Response.ok(result).build();
 	}
 
 	@GET
@@ -437,10 +424,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 					}
 
 					if (file == null)
-					{
-						resp.sendError(Response.Status.NOT_FOUND.getStatusCode());
-						return null;
-					}
+						return Response.status(Response.Status.NOT_FOUND).build();
 
 					// Set it again
 					if (file.getName().toLowerCase().endsWith(".jpg"))
@@ -470,24 +454,22 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 					else
 					{
 						Logger.getLogger("").log(Level.WARNING, "File not found: " + file.getAbsolutePath());
-						resp.sendError(Response.Status.NOT_FOUND.getStatusCode());
-						return null;
+
+						return Response.status(Response.Status.NOT_FOUND).build();
 					}
 				}
 			}
 			catch (IOException e)
 			{
-				resp.sendError(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode());
-				return null;
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 			}
 		}
 		else
 		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return null;
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 
-		return null;
+		return Response.noContent().build();
 	}
 
 
@@ -496,7 +478,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public int getImageCount(@QueryParam("fav") Boolean isFav, @QueryParam("date") DateParameter date)
+	public Response getImageCount(@QueryParam("fav") Boolean isFav, @QueryParam("date") DateParameter date)
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -528,7 +510,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 				}
 			}
 
-			return step.fetchAny(0, int.class);
+			return Response.ok(step.fetchAny(0, int.class)).build();
 		}
 	}
 
@@ -537,7 +519,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public Images getRandomFav()
+	public Response getRandomFav()
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -605,11 +587,11 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 			catch (NullPointerException e)
 			{
 				e.printStackTrace();
-				return null;
+				return Response.noContent().build();
 			}
 		}
 
-		return result;
+		return Response.ok(result).build();
 	}
 
 	@GET
@@ -681,17 +663,15 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 			}
 			catch (URISyntaxException | IOException e)
 			{
-				resp.sendError(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode());
-				return null;
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 			}
 		}
 		else
 		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return null;
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 
-		return null;
+		return Response.noContent().build();
 	}
 
 	@HEAD
@@ -795,19 +775,17 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 					else
 					{
 						Logger.getLogger("").log(Level.WARNING, "File not found: " + file.getAbsolutePath());
-						resp.sendError(Response.Status.NOT_FOUND.getStatusCode());
-						return null;
+						return Response.status(Response.Status.NOT_FOUND).build();
 					}
 				}
 			}
 		}
 		else
 		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return null;
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 
-		return null;
+		return Response.noContent().build();
 	}
 
 	private Response buildStream(final File asset, final String range)
@@ -874,7 +852,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public List<Images> getImagesXago(@QueryParam("year") Integer year)
+	public Response getImagesXago(@QueryParam("year") Integer year)
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -906,9 +884,10 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 				}
 			}
 
-			return step.orderBy(IMAGES.CREATED_ON.desc(), IMAGES.ID.desc())
-					   .fetch()
-					   .into(Images.class);
+			return Response.ok(step.orderBy(IMAGES.CREATED_ON.desc(), IMAGES.ID.desc())
+								   .fetch()
+								   .into(Images.class))
+						   .build();
 		}
 	}
 }

@@ -35,7 +35,7 @@ public class TagResource extends AbstractAccessTokenResource
 	@Path("/{tagId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<TagCount> getTagsById(@PathParam("tagId") Integer tagId)
+	public Response getTagsById(@PathParam("tagId") Integer tagId)
 		throws SQLException, IOException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -80,14 +80,14 @@ public class TagResource extends AbstractAccessTokenResource
 					tagCounts.add(new TagCount(tag, count));
 				});
 
-			return tagCounts;
+			return Response.ok(tagCounts).build();
 		}
 	}
 
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<TagCount> getTags()
+	public Response getTags()
 		throws IOException, SQLException
 	{
 		return this.getTagsById(null);
@@ -97,7 +97,7 @@ public class TagResource extends AbstractAccessTokenResource
 	@Path("/{tagId}/image")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Images> getTagImages(@PathParam("tagId") Integer tagId)
+	public Response getTagImages(@PathParam("tagId") Integer tagId)
 		throws SQLException, IOException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -128,23 +128,23 @@ public class TagResource extends AbstractAccessTokenResource
 					}
 				}
 
-				return step.where(TAGS.ID.eq(tagId))
+				return Response.ok(step.where(TAGS.ID.eq(tagId))
 						   .offset(pageSize * currentPage)
 						   .limit(pageSize)
 						   .fetch()
-						   .into(Images.class);
+						   .into(Images.class))
+					.build();
 			}
 		}
 		else
 		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return null;
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
 
 	@GET
 	@Path("/{tagId}/image/count")
-	public int getTagImageCount(@PathParam("tagId") Integer tagId)
+	public Response getTagImageCount(@PathParam("tagId") Integer tagId)
 		throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -175,14 +175,14 @@ public class TagResource extends AbstractAccessTokenResource
 					}
 				}
 
-				return step.where(TAGS.ID.eq(tagId))
-						   .fetchAny(0, int.class);
+				return Response.ok(step.where(TAGS.ID.eq(tagId))
+						   .fetchAny(0, int.class))
+					.build();
 			}
 		}
 		else
 		{
-			resp.sendError(Response.Status.BAD_REQUEST.getStatusCode());
-			return 0;
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
 }
