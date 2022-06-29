@@ -4,34 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0b41da56-1101-476e-ba7d-884db70611d5" name="Default Changelist" comment="- ADD: Added day/hour heatmap stats.">
-      <change beforePath="$PROJECT_DIR$/.gradle/6.7/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.7/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.7/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.7/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.7/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.7/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/javaCompile/classAnalysis.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.7/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/javaCompile/javaCompile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.7/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.7/javaCompile/taskHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
+    <list default="true" id="0b41da56-1101-476e-ba7d-884db70611d5" name="Default Changelist" comment="- CHG: Changed all endpoints to use Response.* calls for return statements.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/SettingsResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/SettingsResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/StatusResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/StatusResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/TokenResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/TokenResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/accesstoken/AccessTokenResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/accesstoken/AccessTokenResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/album/AlbumBaseResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/album/AlbumBaseResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/album/AlbumImageUploadResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/album/AlbumImageUploadResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/calendar/CalendarResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/calendar/CalendarResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/download/DownloadResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/download/DownloadResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/image/ImageBaseResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/image/ImageBaseResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/location/LocationResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/location/LocationResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/search/SearchAlbumResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/search/SearchAlbumResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/search/SearchImageResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/search/SearchImageResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/stats/StatsResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/stats/StatsResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/tag/TagResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/tag/TagResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -442,13 +417,6 @@
       <option name="presentableId" value="Default" />
       <updated>1558543167839</updated>
     </task>
-    <task id="LOCAL-00048" summary="- ADD: Finalised support for access tokens generated to share with other people who can then access specific folders without being logged in and without these folder being public.">
-      <created>1590393675871</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1590393675871</updated>
-    </task>
     <task id="LOCAL-00049" summary="- ADD: Finalised support for access tokens generated to share with other people who can then access specific folders without being logged in and without these folder being public.">
       <created>1590405426931</created>
       <option name="number" value="00049" />
@@ -785,7 +753,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654885363105</updated>
     </task>
-    <option name="localTasksCounter" value="97" />
+    <task id="LOCAL-00097" summary="- CHG: Changed all endpoints to use Response.* calls for return statements.">
+      <created>1655477766213</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1655477766214</updated>
+    </task>
+    <option name="localTasksCounter" value="98" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -848,7 +823,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="- CHG: Removed automatic folder scanning after each image upload and added a new dedicated endpoint.&#10;- CHG: Updated Thumbnailator and reduced thumbnail quality." />
     <MESSAGE value="- FIX: Fixed view creation script.&#10;- CHG: Use last modified date of uploaded files rather than creation date (because this will be when the file was uploaded)." />
     <MESSAGE value="- CHG: Replaced Thumbnailator with ImageMagick for thumbnail creation.&#10;- CHG: Changed image thumbnail endpoint to use a threaded pool for thumbnail creation to keep CPU load on the Pi low.&#10;-" />
     <MESSAGE value="- ADD: Added endpoints for x-ago queries on albums.&#10;- CHG: Codegen updates." />
@@ -873,7 +847,8 @@
     <MESSAGE value="- ADD: Added Plausible tracking support." />
     <MESSAGE value="- CHG: Changed x-ago endpoint to return all images/albums within a 7 day range x years ago." />
     <MESSAGE value="- ADD: Added day/hour heatmap stats." />
-    <option name="LAST_COMMIT_MESSAGE" value="- ADD: Added day/hour heatmap stats." />
+    <MESSAGE value="- CHG: Changed all endpoints to use Response.* calls for return statements." />
+    <option name="LAST_COMMIT_MESSAGE" value="- CHG: Changed all endpoints to use Response.* calls for return statements." />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
