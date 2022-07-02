@@ -756,11 +756,11 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 					// Check if the image exists
 					if (file.exists() && file.isFile())
 					{
-						image.setViewCount(image.getViewCount() + 1);
-						image.store(IMAGES.VIEW_COUNT);
-
 						if (isHead)
 						{
+							image.setViewCount(image.getViewCount() + 1);
+							image.store(IMAGES.VIEW_COUNT);
+
 							return Response.ok()
 										   .status(Response.Status.PARTIAL_CONTENT)
 										   .header(HttpHeaders.CONTENT_LENGTH, file.length())
