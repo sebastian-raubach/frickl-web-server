@@ -2,7 +2,7 @@ package raubach.fricklweb.server;
 
 import raubach.fricklweb.server.computed.Status;
 import raubach.fricklweb.server.scanner.ImageScanner;
-import raubach.fricklweb.server.util.ServerProperty;
+import raubach.fricklweb.server.util.*;
 import raubach.fricklweb.server.util.task.AccessTokenDeleteTask;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
@@ -37,7 +37,6 @@ public class ApplicationListener implements ServletContextListener
 
 		Frickl.BASE_PATH = PropertyWatcher.get(ServerProperty.BASE_PATH);
 
-
 		backgroundScheduler = Executors.newSingleThreadScheduledExecutor();
 		// Run it now
 		backgroundScheduler.schedule(new AccessTokenDeleteTask(), 0, TimeUnit.SECONDS);
@@ -52,6 +51,7 @@ public class ApplicationListener implements ServletContextListener
 	public void contextDestroyed(ServletContextEvent servletContextEvent)
 	{
 		PropertyWatcher.stopFileWatcher();
+		ThumbnailUtils.shutdownExecutor();
 
 		try
 		{

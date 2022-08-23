@@ -28,6 +28,8 @@ public class ThumbnailUtils
 			cores--;
 
 		executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cores);
+
+		Logger.getLogger("").info("STARTED THUMBNAIL EXECUTOR WITH " + cores + " CORES.");
 	}
 
 	public static boolean thumbnailExists(String type, ImagesRecord image, File file, Size size)
@@ -72,8 +74,7 @@ public class ThumbnailUtils
 		// If not, create a new thumbnail
 		else
 		{
-			ImageScaler is = new ImageScaler(image, size);
-			Future<File> future = executor.submit(is);
+			Future<File> future = executor.submit(new ImageScaler(image, size));
 			try
 			{
 				result = future.get();
@@ -84,7 +85,6 @@ public class ThumbnailUtils
 				e.printStackTrace();
 				result = null;
 			}
-
 		}
 
 		return result;
@@ -197,6 +197,21 @@ public class ThumbnailUtils
 		}
 
 		return video;
+	}
+
+	public static void shutdownExecutor()
+	{
+		if (executor != null && !executor.isShutdown())
+		{
+			try
+			{
+				executor.shutdown();
+			}
+			catch (SecurityException e)
+			{
+				// Ignore
+			}
+		}
 	}
 
 	public enum Size
