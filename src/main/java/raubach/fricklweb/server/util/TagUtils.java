@@ -69,7 +69,7 @@ public class TagUtils
 		{
 			if (result != 0)
 			{
-				throw new IOException("Adding image tag failed");
+				throw new IOException("Adding image tag failed: " + file.getAbsolutePath());
 			}
 		}
 	}
