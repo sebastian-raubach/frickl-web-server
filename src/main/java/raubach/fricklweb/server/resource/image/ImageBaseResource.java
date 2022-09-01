@@ -316,6 +316,8 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 					// If it doesn't exist, create it
 					if (tag.getId() == null)
 					{
+						// Lower-case it
+						tag.setName(tag.getName().toLowerCase());
 						tag.setCreatedOn(new Timestamp(System.currentTimeMillis()));
 						TagsRecord t = context.newRecord(TAGS, tag);
 						t.store();
