@@ -284,7 +284,8 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 		boolean auth = PropertyWatcher.authEnabled();
 
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
-			return Response.status(Response.Status.FORBIDDEN).build();
+			return Response.status(Response.Status.FORBIDDEN)
+						   .build();
 
 		boolean result = false;
 		if (tags != null && tags.length > 0 && imageId != null)
@@ -300,41 +301,45 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 				for (Tags tag : tags)
 					tagStrings.add(tag.getName());
 
-				Map<String, Integer> tagIds = context.selectFrom(TAGS)
-													 .where(TAGS.NAME.in(tagStrings))
-													 .fetchMap(TAGS.NAME, TAGS.ID);
+				Map<String, Integer> tagIds = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
-				// Get all existing ids
-				for (Tags tag : tags)
-				{
-					if (tag.getId() == null)
-						tag.setId(tagIds.get(tag.getName()));
-				}
+				context.selectFrom(TAGS)
+					   .where(TAGS.NAME.in(tagStrings))
+					   .forEach(t -> {
+						   if (!tagIds.containsKey(t.getName()))
+							   tagIds.put(t.getName(), t.getId());
+					   });
 
 				for (Tags tag : tags)
 				{
-					// If it doesn't exist, create it
 					if (tag.getId() == null)
 					{
-						// Lower-case it
-						tag.setName(tag.getName().toLowerCase());
-						tag.setCreatedOn(new Timestamp(System.currentTimeMillis()));
-						TagsRecord t = context.newRecord(TAGS, tag);
-						t.store();
-						tag.setId(t.getId());
+						Integer existing = tagIds.get(tag.getName());
+
+						if (existing == null)
+						{
+							// Lower-case it
+							tag.setName(tag.getName().toLowerCase());
+							tag.setCreatedOn(new Timestamp(System.currentTimeMillis()));
+							TagsRecord t = context.newRecord(TAGS, tag);
+							t.store();
+							tag.setId(t.getId());
+							tagIds.put(tag.getName(), tag.getId());
+						}
+						else
+						{
+							tag.setId(existing);
+						}
 					}
 
-					List<Integer> existingIds = context.select(IMAGE_TAGS.IMAGE_ID)
-													   .from(IMAGE_TAGS)
-													   .where(IMAGE_TAGS.TAG_ID.eq(tag.getId()))
-													   .fetchInto(Integer.class);
+					ImageTagsRecord it = context.selectFrom(IMAGE_TAGS).where(IMAGE_TAGS.TAG_ID.eq(tag.getId())).and(IMAGE_TAGS.IMAGE_ID.eq(imageId)).fetchAny();
 
-					if (!existingIds.contains(image.getId()))
+					if (it == null)
 					{
-
-						result = context.insertInto(IMAGE_TAGS, IMAGE_TAGS.IMAGE_ID, IMAGE_TAGS.TAG_ID)
-										.values(image.getId(), tag.getId())
-										.execute() == 1;
+						it = context.newRecord(IMAGE_TAGS);
+						it.setImageId(imageId);
+						it.setTagId(tag.getId());
+						it.store();
 					}
 				}
 
@@ -358,10 +363,12 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 		}
 		else
 		{
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return Response.status(Response.Status.BAD_REQUEST)
+						   .build();
 		}
 
-		return Response.ok(result).build();
+		return Response.ok()
+					   .build();
 	}
 
 	@GET

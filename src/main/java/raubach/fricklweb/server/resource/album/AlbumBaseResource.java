@@ -558,39 +558,49 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 				for (Tags tag : tags)
 					tagStrings.add(tag.getName());
 
-				Map<String, Integer> tagIds = context.selectFrom(TAGS)
-													 .where(TAGS.NAME.in(tagStrings))
-													 .fetchMap(TAGS.NAME, TAGS.ID);
+				Map<String, Integer> tagIds = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
-				// Get all existing ids
-				for (Tags tag : tags)
-				{
-					if (tag.getId() == null)
-						tag.setId(tagIds.get(tag.getName()));
-				}
+				context.selectFrom(TAGS)
+					   .where(TAGS.NAME.in(tagStrings))
+					   .forEach(t -> {
+						   if (!tagIds.containsKey(t.getName()))
+							   tagIds.put(t.getName(), t.getId());
+					   });
 
 				for (Tags tag : tags)
 				{
-					// If it doesn't exist, create it
 					if (tag.getId() == null)
 					{
-						tag.setCreatedOn(new Timestamp(System.currentTimeMillis()));
-						TagsRecord t = context.newRecord(TAGS, tag);
-						t.store();
-						tag.setId(t.getId());
+						Integer existing = tagIds.get(tag.getName());
+
+						if (existing == null)
+						{
+							// Lower-case it
+							tag.setName(tag.getName().toLowerCase());
+							tag.setCreatedOn(new Timestamp(System.currentTimeMillis()));
+							TagsRecord t = context.newRecord(TAGS, tag);
+							t.store();
+							tag.setId(t.getId());
+							tagIds.put(tag.getName(), tag.getId());
+						}
+						else
+						{
+							tag.setId(existing);
+						}
 					}
 
-					List<Integer> existingIds = context.select(IMAGE_TAGS.IMAGE_ID)
-													   .from(IMAGE_TAGS)
-													   .where(IMAGE_TAGS.TAG_ID.eq(tag.getId()))
-													   .fetchInto(Integer.class);
-
-					images.removeIf(i -> existingIds.contains(i.getId()));
-
-					InsertValuesStep2<ImageTagsRecord, Integer, Integer> step = context.insertInto(IMAGE_TAGS, IMAGE_TAGS.IMAGE_ID, IMAGE_TAGS.TAG_ID);
 					for (Images image : images)
-						step.values(image.getId(), tag.getId());
-					step.execute();
+					{
+						ImageTagsRecord it = context.selectFrom(IMAGE_TAGS).where(IMAGE_TAGS.TAG_ID.eq(tag.getId())).and(IMAGE_TAGS.IMAGE_ID.eq(image.getId())).fetchAny();
+
+						if (it == null)
+						{
+							it = context.newRecord(IMAGE_TAGS);
+							it.setImageId(image.getId());
+							it.setTagId(tag.getId());
+							it.store();
+						}
+					}
 				}
 
 				// Run this in a separate thread, we don't need to wait for it to finish

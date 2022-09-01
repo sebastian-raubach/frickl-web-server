@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0b41da56-1101-476e-ba7d-884db70611d5" name="Default Changelist" comment="- ADD: Added code to shutdown thumbnail executor.">
+    <list default="true" id="0b41da56-1101-476e-ba7d-884db70611d5" name="Default Changelist" comment="- FIX: Fixed case-insensitive tag differences.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/album/AlbumBaseResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/album/AlbumBaseResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/image/ImageBaseResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/image/ImageBaseResource.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -41,6 +41,12 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="frickl-web-server" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="frickl-web-server" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
@@ -385,8 +391,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.frickl-web-server [deployTomcat]" />
-        <item itemvalue="Gradle.frickl-web-server [build]" />
         <item itemvalue="Gradle.frickl-web-server [clean]" />
+        <item itemvalue="Gradle.frickl-web-server [build]" />
         <item itemvalue="Application.TagUtils" />
         <item itemvalue="Gradle.frickl-web-server [codegen]" />
       </list>
@@ -403,13 +409,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1558543167839</updated>
-    </task>
-    <task id="LOCAL-00053" summary="- FIX: Attempt at fixing stuck import runnables.">
-      <created>1606411220748</created>
-      <option name="number" value="00053" />
-      <option name="presentableId" value="LOCAL-00053" />
-      <option name="project" value="LOCAL" />
-      <updated>1606411220748</updated>
     </task>
     <task id="LOCAL-00054" summary="- FIX: Fixed wrong config file check.">
       <created>1630686317011</created>
@@ -747,7 +746,14 @@
       <option name="project" value="LOCAL" />
       <updated>1661263807743</updated>
     </task>
-    <option name="localTasksCounter" value="102" />
+    <task id="LOCAL-00102" summary="- FIX: Fixed case-insensitive tag differences.">
+      <created>1662038000251</created>
+      <option name="number" value="00102" />
+      <option name="presentableId" value="LOCAL-00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1662038000252</updated>
+    </task>
+    <option name="localTasksCounter" value="103" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -809,7 +815,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="- FIX: Fixed sorting issues of albums endpoint." />
     <MESSAGE value="- ADD: Added image view count column.&#10;- CHG: Updated codegen to reflect this change.&#10;- FIX: Fixed a bug introduced in the last commit." />
     <MESSAGE value="- ADD: Added image view count increment." />
     <MESSAGE value="- FIX: Fixed issues with duplicate counts." />
@@ -834,7 +839,8 @@
     <MESSAGE value="- FIX: Fixed issue where view count for videos was increased too often." />
     <MESSAGE value="- CHG: Version bump." />
     <MESSAGE value="- ADD: Added code to shutdown thumbnail executor." />
-    <option name="LAST_COMMIT_MESSAGE" value="- ADD: Added code to shutdown thumbnail executor." />
+    <MESSAGE value="- FIX: Fixed case-insensitive tag differences." />
+    <option name="LAST_COMMIT_MESSAGE" value="- FIX: Fixed case-insensitive tag differences." />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
