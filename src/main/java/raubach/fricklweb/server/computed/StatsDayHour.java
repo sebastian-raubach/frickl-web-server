@@ -1,4 +1,4 @@
-package raubach.fricklweb.server.util;
+package raubach.fricklweb.server.computed;
 
 public class StatsDayHour
 {

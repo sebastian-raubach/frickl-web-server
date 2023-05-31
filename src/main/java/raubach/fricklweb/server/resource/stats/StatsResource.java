@@ -10,7 +10,7 @@ import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.auth.*;
 import raubach.fricklweb.server.database.tables.pojos.*;
 import raubach.fricklweb.server.resource.PaginatedServerResource;
-import raubach.fricklweb.server.util.StatsDayHour;
+import raubach.fricklweb.server.computed.StatsDayHour;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.io.IOException;

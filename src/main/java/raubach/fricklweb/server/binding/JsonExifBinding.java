@@ -17,7 +17,9 @@ public class JsonExifBinding implements Binding<JSON, Exif>
 	@Override
 	public Converter<JSON, Exif> converter()
 	{
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder()
+				.setDateFormat("yyyy-MM-dd HH:mm:ss")
+				.create();
 		return new Converter<>()
 		{
 			@Override
