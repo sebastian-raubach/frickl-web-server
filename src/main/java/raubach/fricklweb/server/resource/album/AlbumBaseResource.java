@@ -17,9 +17,11 @@ import raubach.fricklweb.server.util.*;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.io.*;
+import java.io.File;
 import java.net.URI;
 import java.nio.file.FileSystem;
 import java.nio.file.*;
+import java.nio.file.Files;
 import java.sql.*;
 import java.util.*;
 import java.util.logging.Logger;
@@ -49,9 +51,9 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			SelectJoinStep<Record> step = context.select().from(ALBUM_STATS);
 
 			if (albumId != null)
@@ -101,7 +103,7 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
-	public Response getAlbums(@PathParam("albumId") Integer albumId, @QueryParam("parentAlbumId") Integer parentAlbumId)
+	public Response getAlbums(@QueryParam("parentAlbumId") Integer parentAlbumId)
 		throws IOException, SQLException
 	{
 		return this.getAlbumById(null, parentAlbumId);
@@ -122,9 +124,9 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 		if (album == null || StringUtils.isEmpty(album.getName()))
 			return Response.status(Response.Status.BAD_REQUEST).build();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			File base = new File(Frickl.BASE_PATH);
 			File location = new File(Frickl.BASE_PATH);
 			// Check the parent album exists
@@ -167,9 +169,9 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 
 		if (albumId != null && album != null && Objects.equals(album.getId(), albumId))
 		{
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = Database.getConnection())
 			{
+				DSLContext context = Database.getContext(conn);
 				context.update(ALBUMS)
 					   .set(ALBUMS.BANNER_IMAGE_ID, album.getBannerImageId())
 					   .where(ALBUMS.ID.eq(albumId))
@@ -217,9 +219,9 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			SelectJoinStep<?> step = context.selectCount().from(ALBUMS);
 
 
@@ -287,9 +289,9 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 
 		if (albumId != null)
 		{
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = Database.getConnection())
 			{
+				DSLContext context = Database.getContext(conn);
 				Albums album = context.select().from(ALBUMS)
 									  .where(ALBUMS.ID.eq(albumId))
 									  .fetchAnyInto(Albums.class);
@@ -378,9 +380,9 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 
 		if (albumId != null)
 		{
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = Database.getConnection())
 			{
+				DSLContext context = Database.getContext(conn);
 				SelectJoinStep<Record> step = context.select().from(LAT_LNGS);
 
 				if (auth)
@@ -435,9 +437,9 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			SelectConditionStep<Record> step = context.select().from(IMAGES)
 													  .where(DSL.trueCondition());
 
@@ -491,9 +493,9 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			SelectConditionStep<Record1<Integer>> step = context.selectCount().from(IMAGES)
 																.where(DSL.trueCondition());
 
@@ -545,9 +547,9 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 
 		if (albumId != null && tags != null && tags.length > 0)
 		{
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = Database.getConnection())
 			{
+				DSLContext context = Database.getContext(conn);
 				Albums album = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(albumId)).fetchAnyInto(Albums.class);
 
 				List<Images> images = context.selectFrom(IMAGES)
@@ -650,9 +652,9 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 
 		if (albumId != null && tags != null && tags.length > 0)
 		{
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = Database.getConnection())
 			{
+				DSLContext context = Database.getContext(conn);
 				Albums album = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(albumId)).fetchAnyInto(Albums.class);
 
 				List<Images> images = context.selectFrom(IMAGES)
@@ -723,9 +725,9 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			SelectConditionStep<?> step = context.selectDistinct(TAGS.ID, TAGS.NAME, TAGS.CREATED_ON, TAGS.UPDATED_ON)
 												 .from(TAGS
 													 .leftJoin(IMAGE_TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))
@@ -787,9 +789,9 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 		if (publicParam == null || albumId == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			context.update(IMAGES)
 				   .set(IMAGES.IS_PUBLIC, (byte) (publicParam ? 1 : 0))
 				   .where(IMAGES.ALBUM_ID.eq(albumId))
@@ -825,9 +827,9 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 		if (accessToken == null || StringUtils.isEmpty(accessToken.getToken()) || albumId == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			try
 			{
 				UUID.fromString(accessToken.getToken());
@@ -862,9 +864,9 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
 			return Response.status(Response.Status.FORBIDDEN).build();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			AlbumsRecord album = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(albumId)).fetchAny();
 			File basePath = new File(Frickl.BASE_PATH);
 			File folder = new File(basePath, album.getPath());
@@ -885,9 +887,9 @@ public class AlbumBaseResource extends AbstractAccessTokenResource
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			SelectJoinStep<Record> step = context.select().from(ALBUM_STATS);
 
 			Field<Serializable> date = DSL.greatest(DSL.coalesce(ALBUM_STATS.NEWEST_IMAGE, 0), DSL.coalesce(ALBUM_STATS.CREATED_ON, 0));

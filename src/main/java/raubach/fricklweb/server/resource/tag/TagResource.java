@@ -1,5 +1,8 @@
 package raubach.fricklweb.server.resource.tag;
 
+import jakarta.annotation.security.PermitAll;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.*;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
@@ -10,18 +13,15 @@ import raubach.fricklweb.server.database.tables.pojos.*;
 import raubach.fricklweb.server.resource.AbstractAccessTokenResource;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
-import jakarta.annotation.security.PermitAll;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.*;
 import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 
-import static raubach.fricklweb.server.database.tables.AccessTokens.*;
-import static raubach.fricklweb.server.database.tables.AlbumTokens.*;
-import static raubach.fricklweb.server.database.tables.ImageTags.*;
-import static raubach.fricklweb.server.database.tables.Images.*;
-import static raubach.fricklweb.server.database.tables.Tags.*;
+import static raubach.fricklweb.server.database.tables.AccessTokens.ACCESS_TOKENS;
+import static raubach.fricklweb.server.database.tables.AlbumTokens.ALBUM_TOKENS;
+import static raubach.fricklweb.server.database.tables.ImageTags.IMAGE_TAGS;
+import static raubach.fricklweb.server.database.tables.Images.IMAGES;
+import static raubach.fricklweb.server.database.tables.Tags.TAGS;
 
 /**
  * @author Sebastian Raubach
@@ -36,14 +36,14 @@ public class TagResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getTagsById(@PathParam("tagId") Integer tagId)
-		throws SQLException, IOException
+			throws SQLException, IOException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			SelectJoinStep<Record> step = context.select(TAGS.asterisk(), DSL.count().as("count"))
 												 .from(IMAGE_TAGS.leftJoin(TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))
 																 .leftJoin(IMAGES).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID)));
@@ -88,7 +88,7 @@ public class TagResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getTags()
-		throws IOException, SQLException
+			throws IOException, SQLException
 	{
 		return this.getTagsById(null);
 	}
@@ -98,19 +98,19 @@ public class TagResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getTagImages(@PathParam("tagId") Integer tagId)
-		throws SQLException, IOException
+			throws SQLException, IOException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
 		if (tagId != null)
 		{
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = Database.getConnection())
 			{
+				DSLContext context = Database.getContext(conn);
 				SelectJoinStep<Record> step = context.select().from(TAGS
-					.leftJoin(IMAGE_TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))
-					.leftJoin(IMAGES).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID)));
+						.leftJoin(IMAGE_TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))
+						.leftJoin(IMAGES).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID)));
 
 				if (auth)
 				{
@@ -129,11 +129,11 @@ public class TagResource extends AbstractAccessTokenResource
 				}
 
 				return Response.ok(step.where(TAGS.ID.eq(tagId))
-						   .offset(pageSize * currentPage)
-						   .limit(pageSize)
-						   .fetch()
-						   .into(Images.class))
-					.build();
+									   .offset(pageSize * currentPage)
+									   .limit(pageSize)
+									   .fetch()
+									   .into(Images.class))
+							   .build();
 			}
 		}
 		else
@@ -145,19 +145,19 @@ public class TagResource extends AbstractAccessTokenResource
 	@GET
 	@Path("/{tagId}/image/count")
 	public Response getTagImageCount(@PathParam("tagId") Integer tagId)
-		throws IOException, SQLException
+			throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
 		if (tagId != null)
 		{
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = Database.getConnection())
 			{
+				DSLContext context = Database.getContext(conn);
 				SelectJoinStep<Record1<Integer>> step = context.selectCount().from(TAGS
-					.leftJoin(IMAGE_TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))
-					.leftJoin(IMAGES).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID)));
+						.leftJoin(IMAGE_TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))
+						.leftJoin(IMAGES).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID)));
 
 				if (auth)
 				{
@@ -176,8 +176,8 @@ public class TagResource extends AbstractAccessTokenResource
 				}
 
 				return Response.ok(step.where(TAGS.ID.eq(tagId))
-						   .fetchAny(0, int.class))
-					.build();
+									   .fetchAny(0, int.class))
+							   .build();
 			}
 		}
 		else

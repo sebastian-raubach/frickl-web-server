@@ -31,9 +31,9 @@ public class AccessTokenResource extends PaginatedServerResource
 		if (tokenId == null || token == null || token.getTokenId() == null || !Objects.equals(tokenId, token.getTokenId()))
 			return Response.status(Response.Status.BAD_REQUEST).build();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			return Response.ok(context.deleteFrom(ACCESS_TOKENS)
 									  .where(ACCESS_TOKENS.ID.eq(tokenId))
 									  .execute() > 0)
@@ -53,9 +53,9 @@ public class AccessTokenResource extends PaginatedServerResource
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
 			return Response.status(Response.Status.FORBIDDEN).build();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			return Response.ok(context.selectFrom(ALBUM_ACCESS_TOKEN)
 									  .limit(pageSize)
 									  .offset(pageSize * currentPage)
@@ -78,9 +78,9 @@ public class AccessTokenResource extends PaginatedServerResource
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
 			return Response.status(Response.Status.FORBIDDEN).build();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			return Response.ok(context.selectCount()
 									  .from(ALBUM_ACCESS_TOKEN)
 									  .limit(pageSize)

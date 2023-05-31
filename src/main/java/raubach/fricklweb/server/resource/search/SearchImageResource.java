@@ -41,9 +41,9 @@ public class SearchImageResource extends PaginatedServerResource
 		if (searchTerm != null)
 		{
 			searchTerm = "%" + searchTerm.replace(" ", "%") + "%";
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = Database.getConnection())
 			{
+				DSLContext context = Database.getContext(conn);
 				SelectOnConditionStep<Record> step = context.select(IMAGES.asterisk()).from(IMAGES)
 															.leftJoin(IMAGE_TAGS).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID))
 															.leftJoin(TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID));
@@ -80,9 +80,9 @@ public class SearchImageResource extends PaginatedServerResource
 		if (searchTerm != null)
 		{
 			searchTerm = "%" + searchTerm.replace(" ", "%") + "%";
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = Database.getConnection())
 			{
+				DSLContext context = Database.getContext(conn);
 				SelectOnConditionStep<Record1<Integer>> step = context.selectCount().from(IMAGES)
 																	  .leftJoin(IMAGE_TAGS).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID))
 																	  .leftJoin(TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID));

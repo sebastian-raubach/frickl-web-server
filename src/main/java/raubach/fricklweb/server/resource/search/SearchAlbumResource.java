@@ -44,9 +44,9 @@ public class SearchAlbumResource extends PaginatedServerResource
 		if (searchTerm != null)
 		{
 			searchTerm = "%" + searchTerm.replace(" ", "%") + "%";
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = Database.getConnection())
 			{
+				DSLContext context = Database.getContext(conn);
 				SelectWhereStep<AlbumsRecord> step = context.selectFrom(ALBUMS);
 
 				if (auth && StringUtils.isEmpty(userDetails.getToken()))
@@ -83,9 +83,9 @@ public class SearchAlbumResource extends PaginatedServerResource
 		if (searchTerm != null)
 		{
 			searchTerm = "%" + searchTerm.replace(" ", "%") + "%";
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = Database.getConnection())
 			{
+				DSLContext context = Database.getContext(conn);
 				SelectJoinStep<Record1<Integer>> step = context.selectCount().from(ALBUMS);
 
 				if (auth && StringUtils.isEmpty(userDetails.getToken()))

@@ -1,4 +1,4 @@
-package raubach.fricklweb.server.database.tables.pojos;
+package raubach.fricklweb.server.util;
 
 public class StatsDayHour
 {

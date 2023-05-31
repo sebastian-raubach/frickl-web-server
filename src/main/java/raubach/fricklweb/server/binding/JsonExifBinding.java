@@ -12,30 +12,30 @@ import java.util.Objects;
 /**
  * @author Sebastian Raubach
  */
-public class JsonExifBinding implements Binding<Object, Exif>
+public class JsonExifBinding implements Binding<JSON, Exif>
 {
 	@Override
-	public Converter<Object, Exif> converter()
+	public Converter<JSON, Exif> converter()
 	{
-		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-		return new Converter<Object, Exif>()
+		Gson gson = new Gson();
+		return new Converter<>()
 		{
 			@Override
-			public Exif from(Object o)
+			public Exif from(JSON o)
 			{
-				return gson.fromJson(Objects.toString(o), Exif.class);
+				return o == null ? null : gson.fromJson(Objects.toString(o), Exif.class);
 			}
 
 			@Override
-			public Object to(Exif exif)
+			public JSON to(Exif o)
 			{
-				return exif == null ? null : gson.toJson(exif);
+				return o == null ? null : JSON.json(gson.toJson(o));
 			}
 
 			@Override
-			public Class<Object> fromType()
+			public Class<JSON> fromType()
 			{
-				return Object.class;
+				return JSON.class;
 			}
 
 			@Override
@@ -48,7 +48,7 @@ public class JsonExifBinding implements Binding<Object, Exif>
 
 	@Override
 	public void sql(BindingSQLContext<Exif> ctx)
-		throws SQLException
+			throws SQLException
 	{
 		// Depending on how you generate your SQL, you may need to explicitly distinguish
 		// between jOOQ generating bind variables or inlined literals.
@@ -60,42 +60,42 @@ public class JsonExifBinding implements Binding<Object, Exif>
 
 	@Override
 	public void register(BindingRegisterContext<Exif> ctx)
-		throws SQLException
+			throws SQLException
 	{
 		ctx.statement().registerOutParameter(ctx.index(), Types.VARCHAR);
 	}
 
 	@Override
 	public void set(BindingSetStatementContext<Exif> ctx)
-		throws SQLException
+			throws SQLException
 	{
 		ctx.statement().setString(ctx.index(), Objects.toString(ctx.convert(converter()).value(), null));
 	}
 
 	@Override
 	public void set(BindingSetSQLOutputContext<Exif> ctx)
-		throws SQLException
+			throws SQLException
 	{
 		throw new SQLFeatureNotSupportedException();
 	}
 
 	@Override
 	public void get(BindingGetResultSetContext<Exif> ctx)
-		throws SQLException
+			throws SQLException
 	{
-		ctx.convert(converter()).value(ctx.resultSet().getString(ctx.index()));
+		ctx.convert(converter()).value(JSON.json(ctx.resultSet().getString(ctx.index())));
 	}
 
 	@Override
 	public void get(BindingGetStatementContext<Exif> ctx)
-		throws SQLException
+			throws SQLException
 	{
-		ctx.convert(converter()).value(ctx.statement().getString(ctx.index()));
+		ctx.convert(converter()).value(JSON.json(ctx.statement().getString(ctx.index())));
 	}
 
 	@Override
 	public void get(BindingGetSQLInputContext<Exif> ctx)
-		throws SQLException
+			throws SQLException
 	{
 		throw new SQLFeatureNotSupportedException();
 	}

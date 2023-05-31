@@ -34,9 +34,9 @@ public class LocationResource extends PaginatedServerResource
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			SelectJoinStep<Record> step = context.select().from(LAT_LNGS);
 
 			if (auth && StringUtils.isEmpty(userDetails.getToken()))

@@ -10,6 +10,7 @@ import raubach.fricklweb.server.database.Frickl;
 import raubach.fricklweb.server.util.ScriptRunner;
 
 import java.io.*;
+import java.io.File;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
@@ -54,7 +55,7 @@ public class Database
 		// Get an initial connection to try if it works
 		try (Connection conn = getConnection())
 		{
-			DSL.using(conn, SQLDialect.MYSQL).close();
+			DSL.using(conn, SQLDialect.MYSQL);
 		}
 		catch (SQLException e)
 		{
@@ -65,9 +66,9 @@ public class Database
 		if (initAndUpdate)
 		{
 			boolean databaseExists = true;
-			try (Connection conn = getConnection();
-				 DSLContext context = getContext(conn))
+			try (Connection conn = getConnection())
 			{
+				DSLContext context = getContext(conn);
 				// Try and see if the `images` table exists
 				context.selectOne()
 					   .from(IMAGES)

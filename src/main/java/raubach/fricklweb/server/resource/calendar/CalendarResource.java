@@ -37,9 +37,9 @@ public class CalendarResource extends PaginatedServerResource
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
 			return Response.status(Response.Status.FORBIDDEN).build();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			SelectJoinStep<Record> step = context.select().from(CALENDAR_DATA);
 
 			if (year != null)
@@ -64,9 +64,9 @@ public class CalendarResource extends PaginatedServerResource
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
 			return Response.status(Response.Status.FORBIDDEN).build();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			return Response.ok(context.selectDistinct(DSL.year(CALENDAR_DATA.DATE).as("year"))
 									  .from(CALENDAR_DATA)
 									  .fetch()

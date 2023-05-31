@@ -129,6 +129,7 @@
 
 		<generate>
 			<!-- Generation flags: See advanced configuration properties -->
+			<javaTimeTypes>false</javaTimeTypes>
 			<pojos>true</pojos>
 		</generate>
 

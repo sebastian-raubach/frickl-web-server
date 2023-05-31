@@ -98,9 +98,9 @@ public class ImageExifReader extends ImageRecordRunnable<ImageExifReader.ExifRes
 
 		if (exif != null)
 		{
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = Database.getConnection())
 			{
+				DSLContext context = Database.getContext(conn);
 				context.update(IMAGES)
 					   .set(IMAGES.EXIF, exif.exif)
 					   .set(IMAGES.CREATED_ON, date)

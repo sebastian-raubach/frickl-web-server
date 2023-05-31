@@ -10,6 +10,7 @@ import raubach.fricklweb.server.Database;
 import raubach.fricklweb.server.auth.*;
 import raubach.fricklweb.server.database.tables.pojos.*;
 import raubach.fricklweb.server.resource.PaginatedServerResource;
+import raubach.fricklweb.server.util.StatsDayHour;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
 import java.io.IOException;
@@ -39,9 +40,9 @@ public class StatsResource extends PaginatedServerResource
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
 			return Response.status(Response.Status.FORBIDDEN).build();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			Field<Short> day = DSL.field("weekday(?)", Short.class, IMAGES.CREATED_ON).as("day");
 			Field<?> hour = DSL.hour(IMAGES.CREATED_ON).as("hour");
 
@@ -72,9 +73,9 @@ public class StatsResource extends PaginatedServerResource
 		if (auth && StringUtils.isEmpty(userDetails.getToken()))
 			return Response.status(Response.Status.FORBIDDEN).build();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			return Response.ok(context.select().from(STATS_CAMERA)
 									  .limit(15)
 									  .fetch()

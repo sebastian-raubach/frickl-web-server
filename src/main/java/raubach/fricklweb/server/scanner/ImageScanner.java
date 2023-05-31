@@ -9,8 +9,10 @@ import raubach.fricklweb.server.util.ThumbnailUtils;
 import raubach.fricklweb.server.util.task.AlbumCountUpdateTask;
 
 import java.io.*;
+import java.io.File;
 import java.net.URLConnection;
 import java.nio.file.*;
+import java.nio.file.Files;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.sql.*;
 import java.util.*;
@@ -30,8 +32,8 @@ public class ImageScanner implements Runnable
 
 	private final ThreadPoolExecutor executor;
 
-	private final File                      basePath;
-	private final File                      folder;
+	private final File basePath;
+	private final File folder;
 	private final Map<String, AlbumsRecord> albumPathToId = new HashMap<>();
 	private final Map<String, ImagesRecord> imagePathToId = new HashMap<>();
 
@@ -67,9 +69,9 @@ public class ImageScanner implements Runnable
 		Logger.getLogger("").info("IMAGE SCANNER PROCESSING: " + folder);
 		if (folder != null && folder.exists() && folder.isDirectory())
 		{
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = Database.getConnection())
 			{
+				DSLContext context = Database.getContext(conn);
 				SCANRESULT.setStatus(Status.SCANNING);
 				// Get all existing albums and remember their path to id mapping
 				context.selectFrom(ALBUMS)

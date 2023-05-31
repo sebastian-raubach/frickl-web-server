@@ -17,6 +17,7 @@ import raubach.fricklweb.server.resource.AbstractAccessTokenResource;
 import raubach.fricklweb.server.util.*;
 import raubach.fricklweb.server.util.watcher.PropertyWatcher;
 
+import java.io.File;
 import java.io.*;
 import java.net.*;
 import java.nio.channels.*;
@@ -27,11 +28,11 @@ import java.util.Date;
 import java.util.*;
 import java.util.logging.*;
 
-import static raubach.fricklweb.server.database.tables.AccessTokens.*;
-import static raubach.fricklweb.server.database.tables.AlbumTokens.*;
-import static raubach.fricklweb.server.database.tables.ImageTags.*;
-import static raubach.fricklweb.server.database.tables.Images.*;
-import static raubach.fricklweb.server.database.tables.Tags.*;
+import static raubach.fricklweb.server.database.tables.AccessTokens.ACCESS_TOKENS;
+import static raubach.fricklweb.server.database.tables.AlbumTokens.ALBUM_TOKENS;
+import static raubach.fricklweb.server.database.tables.ImageTags.IMAGE_TAGS;
+import static raubach.fricklweb.server.database.tables.Images.IMAGES;
+import static raubach.fricklweb.server.database.tables.Tags.TAGS;
 
 @Path("image")
 @Secured
@@ -44,14 +45,14 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
 	public Response getImages(@QueryParam("fav") Boolean isFav, @QueryParam("date") DateParameter date)
-		throws SQLException
+			throws SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			SelectJoinStep<Record> step = context.select().from(IMAGES);
 
 			if (isFav != null && isFav)
@@ -89,7 +90,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response patchImage(@PathParam("imageId") Integer imageId, Images image)
-		throws IOException, SQLException
+			throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
@@ -99,9 +100,9 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 
 		if (imageId != null && image != null && Objects.equals(image.getId(), imageId))
 		{
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = Database.getConnection())
 			{
+				DSLContext context = Database.getContext(conn);
 				context.update(IMAGES)
 					   .set(IMAGES.IS_FAVORITE, image.getIsFavorite())
 					   .set(IMAGES.IS_PUBLIC, image.getIsPublic())
@@ -123,14 +124,14 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
 	public Response getImageById(@PathParam("imageId") Integer imageId)
-		throws IOException, SQLException
+			throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			// Update the view count
 			context.update(IMAGES)
 				   .set(IMAGES.VIEW_COUNT, IMAGES.VIEW_COUNT.plus(1))
@@ -168,20 +169,20 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
 	public Response getImageTags(@PathParam("imageId") Integer imageId)
-		throws IOException, SQLException
+			throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
 		if (imageId != null)
 		{
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = Database.getConnection())
 			{
+				DSLContext context = Database.getContext(conn);
 				SelectConditionStep<?> step = context.select(TAGS.ID, TAGS.NAME, TAGS.CREATED_ON, TAGS.UPDATED_ON)
 													 .from(TAGS
-														 .leftJoin(IMAGE_TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))
-														 .leftJoin(IMAGES).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID)))
+															 .leftJoin(IMAGE_TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))
+															 .leftJoin(IMAGES).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID)))
 													 .where(IMAGES.ID.eq(imageId));
 
 				if (auth)
@@ -219,7 +220,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteImageTags(@PathParam("imageId") Integer imageId, Tags tag)
-		throws IOException, SQLException
+			throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
@@ -229,9 +230,9 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 
 		if (imageId != null && tag != null)
 		{
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = Database.getConnection())
 			{
+				DSLContext context = Database.getContext(conn);
 				Images image = context.selectFrom(IMAGES)
 									  .where(IMAGES.ID.eq(imageId))
 									  .fetchAnyInto(Images.class);
@@ -278,7 +279,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response postImageTags(@PathParam("imageId") Integer imageId, Tags[] tags)
-		throws IOException, SQLException
+			throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
@@ -290,9 +291,9 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 		boolean result = false;
 		if (tags != null && tags.length > 0 && imageId != null)
 		{
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = Database.getConnection())
 			{
+				DSLContext context = Database.getContext(conn);
 				Images image = context.selectFrom(IMAGES)
 									  .where(IMAGES.ID.eq(imageId))
 									  .fetchAnyInto(Images.class);
@@ -377,15 +378,15 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Produces({"image/png", "image/jpeg", "image/svg+xml", "image/*"})
 	@PermitAll
 	public Response getImageSrc(@PathParam("imageId") Integer imageId, @QueryParam("token") String token, @QueryParam("size") ThumbnailUtils.Size size)
-		throws IOException, SQLException
+			throws IOException, SQLException
 	{
 		boolean auth = PropertyWatcher.authEnabled();
 
 		if (imageId != null)
 		{
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = Database.getConnection())
 			{
+				DSLContext context = Database.getContext(conn);
 				SelectConditionStep<Record> step = context.select().from(IMAGES)
 														  .where(IMAGES.ID.eq(imageId));
 
@@ -488,14 +489,14 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
 	public Response getImageCount(@QueryParam("fav") Boolean isFav, @QueryParam("date") DateParameter date)
-		throws IOException, SQLException
+			throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			SelectJoinStep<Record1<Integer>> step = context.selectCount().from(IMAGES);
 
 			if (isFav != null && isFav)
@@ -529,15 +530,15 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
 	public Response getRandomFav()
-		throws IOException, SQLException
+			throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
 		Images result = null;
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			SelectConditionStep<Record> step = context.select().from(IMAGES)
 													  .where(IMAGES.IS_FAVORITE.eq((byte) 1));
 
@@ -568,9 +569,9 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 
 		if (result == null)
 		{
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = Database.getConnection())
 			{
+				DSLContext context = Database.getContext(conn);
 				SelectJoinStep<Record> step = context.select().from(IMAGES);
 
 				if (auth)
@@ -609,15 +610,15 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
 	public Response getHtml(@PathParam("imageId") Integer imageId, @HeaderParam("user-agent") String userAgent)
-		throws IOException, SQLException
+			throws IOException, SQLException
 	{
 		boolean auth = PropertyWatcher.authEnabled();
 
 		if (imageId != null)
 		{
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = Database.getConnection())
 			{
+				DSLContext context = Database.getContext(conn);
 				SelectConditionStep<Record> step = context.select().from(IMAGES)
 														  .where(IMAGES.ID.eq(imageId));
 
@@ -689,7 +690,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Produces({"video/quicktime", "video/mp4", "video/x-msvideo", "video/x-ms-wmv", "video/webm"})
 	@PermitAll
 	public Response getVideoByNameHead(@PathParam("imageId") Integer imageId, @QueryParam("token") String token, @HeaderParam("Range") String range)
-		throws IOException, SQLException
+			throws IOException, SQLException
 	{
 		return this.getVideo(imageId, token, range, true);
 	}
@@ -700,7 +701,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Produces({"video/quicktime", "video/mp4", "video/x-msvideo", "video/x-ms-wmv", "video/webm"})
 	@PermitAll
 	public Response getVideoByName(@PathParam("imageId") Integer imageId, @QueryParam("token") String token, @HeaderParam("Range") String range)
-		throws IOException, SQLException
+			throws IOException, SQLException
 	{
 		return this.getVideo(imageId, token, range, false);
 	}
@@ -711,7 +712,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Produces({"video/quicktime", "video/mp4", "video/x-msvideo", "video/x-ms-wmv", "video/webm"})
 	@PermitAll
 	public Response getVideoHead(@PathParam("imageId") Integer imageId, @QueryParam("token") String token, @HeaderParam("Range") String range)
-		throws IOException, SQLException
+			throws IOException, SQLException
 	{
 		return this.getVideo(imageId, token, range, true);
 	}
@@ -722,21 +723,21 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Produces({"video/quicktime", "video/mp4", "video/x-msvideo", "video/x-ms-wmv", "video/webm"})
 	@PermitAll
 	public Response getVideo(@PathParam("imageId") Integer imageId, @QueryParam("token") String token, @HeaderParam("Range") String range)
-		throws IOException, SQLException
+			throws IOException, SQLException
 	{
 		return this.getVideo(imageId, token, range, false);
 	}
 
 	private Response getVideo(Integer imageId, String token, String range, boolean isHead)
-		throws IOException, SQLException
+			throws IOException, SQLException
 	{
 		boolean auth = PropertyWatcher.authEnabled();
 
 		if (imageId != null)
 		{
-			try (Connection conn = Database.getConnection();
-				 DSLContext context = Database.getContext(conn))
+			try (Connection conn = Database.getConnection())
 			{
+				DSLContext context = Database.getContext(conn);
 				SelectConditionStep<Record> step = context.select().from(IMAGES)
 														  .where(IMAGES.ID.eq(imageId));
 
@@ -798,13 +799,14 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	}
 
 	private Response buildStream(final File asset, final String range)
-		throws IOException
+			throws IOException
 	{
 		// range not requested: firefox does not send range headers
 		if (range == null)
 		{
 			StreamingOutput streamer = output -> {
-				try (FileChannel inputChannel = new FileInputStream(asset).getChannel();
+				try (FileInputStream fis = new FileInputStream(asset);
+					 FileChannel inputChannel = fis.getChannel();
 					 WritableByteChannel outputChannel = Channels.newChannel(output))
 				{
 
@@ -862,7 +864,7 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
 	public Response getImagesXago(@QueryParam("year") Integer year)
-		throws IOException, SQLException
+			throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
@@ -870,9 +872,9 @@ public class ImageBaseResource extends AbstractAccessTokenResource
 		currentPage = 0;
 		pageSize = Integer.MAX_VALUE;
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			SelectJoinStep<Record> step = context.select().from(IMAGES);
 
 			step.where(DSL.date(IMAGES.CREATED_ON).between(DSL.dateSub(DSL.dateSub(DSL.currentDate(), year, DatePart.YEAR), 7, DatePart.DAY), DSL.dateAdd(DSL.dateSub(DSL.currentDate(), year, DatePart.YEAR), 7, DatePart.DAY)));

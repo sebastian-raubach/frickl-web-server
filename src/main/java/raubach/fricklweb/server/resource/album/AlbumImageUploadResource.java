@@ -44,9 +44,9 @@ public class AlbumImageUploadResource extends ContextResource
 		if (albumId == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			AlbumsRecord album = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(albumId)).fetchAny();
 
 			if (album == null)

@@ -27,9 +27,9 @@ public class AlbumCountUpdateTask implements Runnable
 		RUNNING = true;
 		Logger.getLogger("").info("STARTING ALBUM COUNT UPDATER");
 
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			Set<Integer> albumIds = new HashSet<>();
 			Map<Integer, Integer> imageCount = new HashMap<>();
 			Map<Integer, Integer> imageCountPublic = new HashMap<>();

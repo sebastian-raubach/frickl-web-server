@@ -12,9 +12,9 @@ public class AccessTokenDeleteTask implements Runnable
 	@Override
 	public void run()
 	{
-		try (Connection conn = Database.getConnection();
-			 DSLContext context = Database.getContext(conn))
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
 			context.deleteFrom(ACCESS_TOKENS)
 				   .where(ACCESS_TOKENS.EXPIRES_ON.isNotNull()
 												  .and(ACCESS_TOKENS.EXPIRES_ON.le(new Timestamp(System.currentTimeMillis()))))
