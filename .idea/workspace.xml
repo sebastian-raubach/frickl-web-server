@@ -5,273 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- ADD: Code import for NEXT release.">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/frickl-next.main.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle.template.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/ApplicationListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/Database.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/Frickl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/auth/AuthenticationFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/auth/Secured.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/binding/JsonExifBinding.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/DefaultCatalog.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/Frickl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/Indexes.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/Keys.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/Tables.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/enums/ImagesDataType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/enums/LatLngsDataType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/AccessTokens.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/AlbumAccessToken.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/AlbumCounts.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/AlbumStats.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/AlbumTokens.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/Albums.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/CalendarData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/ImageTags.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/ImageTimeline.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/Images.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/LatLngs.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/SchemaVersion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/StatsCamera.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/Tags.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/AccessTokens.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/AlbumAccessToken.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/AlbumCounts.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/AlbumStats.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/AlbumTokens.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/Albums.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/CalendarData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/ImageTags.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/ImageTimeline.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/Images.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/LatLngs.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/SchemaVersion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/StatsCamera.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/Tags.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/AccessTokensRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/AlbumAccessTokenRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/AlbumCountsRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/AlbumStatsRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/AlbumTokensRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/AlbumsRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/CalendarDataRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/ImageTagsRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/ImageTimelineRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/ImagesRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/LatLngsRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/SchemaVersionRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/StatsCameraRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/TagsRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/AccessToken.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/Album.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/AlbumRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/Counts.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/DataScanResult.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/DateParameter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/Exif.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/ImageRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/LoginDetails.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/PaginatedRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/PaginatedResult.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/Settings.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/StatsDayHour.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/Status.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/StatusMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/TagCount.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/Token.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/AbstractAccessTokenResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/ContextResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/PaginatedServerResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/StatusResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/TokenResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageTagResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/MediaStreamer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/VideoResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/location/LocationResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/settings/SettingsResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/stats/StatsResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/tag/TagResource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/scanner/ImageExifReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/scanner/ImageRecordRunnable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/scanner/ImageScaler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/scanner/ImageScanner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/CollectionUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/CorsFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/FlywayChecksumGenerator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/GsonMessageBodyHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/GsonUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/ResourceUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/SQLExceptionMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/ScriptRunner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/ServerProperty.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/StringUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/TagUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/ThumbnailUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/task/AccessTokenDeleteTask.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/task/AlbumCountUpdateTask.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/watcher/PropertyWatcher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/raubach/frickl/next/database/init/database.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/raubach/frickl/next/database/init/views.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/raubach/frickl/next/database/migration/V1.20.02.23__update.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/raubach/frickl/next/database/migration/V1.20.04.11__update.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/raubach/frickl/next/database/migration/V1.20.10.11__update.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/raubach/frickl/next/database/migration/V1.22.03.17__update.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/raubach/frickl/next/database/migration/V1.22.04.01__update.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/raubach/frickl/next/database/migration/V1.22.04.02__update.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/raubach/frickl/next/database/migration/V2.22.09.01__update.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.7/executionHistory/executionHistory.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.7/executionHistory/executionHistory.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.7/fileChanges/last-build.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.7/fileHashes/fileHashes.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.7/fileHashes/fileHashes.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.7/fileHashes/resourceHashesCache.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.7/gc.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.7/javaCompile/classAnalysis.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.7/javaCompile/jarAnalysis.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.7/javaCompile/javaCompile.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.7/javaCompile/taskHistory.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/gc.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.template.properties" beforeDir="false" afterPath="$PROJECT_DIR$/config.template.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging.properties" beforeDir="false" afterPath="$PROJECT_DIR$/logging.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/ApplicationListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/Database.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/Frickl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/auth/AuthenticationFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/auth/Secured.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/binding/JsonExifBinding.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/computed/AccessToken.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/computed/DataScanResult.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/computed/DateParameter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/computed/Exif.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/computed/LoginDetails.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/computed/Settings.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/computed/StatsDayHour.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/computed/Status.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/computed/StatusMessage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/computed/TagCount.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/computed/Token.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/DefaultCatalog.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/Frickl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/Indexes.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/Keys.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/Tables.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/enums/ImagesDataType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/AccessTokens.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/AlbumAccessToken.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/AlbumCounts.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/AlbumStats.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/AlbumTokens.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/Albums.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/CalendarData.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/ImageTags.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/ImageTimeline.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/Images.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/LatLngs.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/SchemaVersion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/StatsCamera.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/Tags.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/AccessTokens.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/AlbumAccessToken.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/AlbumCounts.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/AlbumStats.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/AlbumTokens.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/Albums.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/CalendarData.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/ImageTags.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/ImageTimeline.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/Images.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/LatLngs.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/SchemaVersion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/StatsCamera.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/pojos/Tags.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/AccessTokensRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/AlbumAccessTokenRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/AlbumCountsRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/AlbumStatsRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/AlbumTokensRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/AlbumsRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/CalendarDataRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/ImageTagsRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/ImageTimelineRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/ImagesRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/LatLngsRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/SchemaVersionRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/StatsCameraRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/database/tables/records/TagsRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/AbstractAccessTokenResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/ContextResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/PaginatedServerResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/SettingsResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/StatusResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/TokenResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/accesstoken/AccessTokenResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/album/AlbumBaseResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/album/AlbumImageUploadResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/calendar/CalendarResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/download/DownloadResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/image/ImageBaseResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/image/MediaStreamer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/location/LocationResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/search/SearchAlbumResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/search/SearchImageResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/stats/StatsResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/resource/tag/TagResource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageExifReader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageRecordRunnable.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageScaler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/scanner/ImageScanner.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/CollectionUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/CorsFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/FlywayChecksumGenerator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/GsonMessageBodyHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/GsonUtil.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/ResourceUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/SQLExceptionMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/ScriptRunner.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/ServerProperty.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/StringUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/TagUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/ThumbnailUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/task/AccessTokenDeleteTask.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/task/AlbumCountUpdateTask.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/fricklweb/server/util/watcher/PropertyWatcher.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/jooq.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/jooq.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/raubach/fricklweb/server/util/database/database.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/raubach/fricklweb/server/util/database/migration/V1.20.02.23__update.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/raubach/fricklweb/server/util/database/migration/V1.20.04.11__update.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/raubach/fricklweb/server/util/database/migration/V1.20.10.11__update.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/raubach/fricklweb/server/util/database/migration/V1.22.03.17__update.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/raubach/fricklweb/server/util/database/migration/V1.22.04.01__update.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/raubach/fricklweb/server/util/database/migration/V1.22.04.02__update.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/raubach/fricklweb/server/util/database/migration/V2.22.09.01__update.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/raubach/fricklweb/server/util/database/views.sql" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -502,8 +236,25 @@
       <workItem from="1694280065781" duration="1241000" />
       <workItem from="1694699255985" duration="2165000" />
       <workItem from="1694702000644" duration="4370000" />
-      <workItem from="1694709231387" duration="143000" />
+      <workItem from="1694709231387" duration="326000" />
     </task>
+    <task id="LOCAL-00001" summary="- ADD: Code import for NEXT release.">
+      <option name="closed" value="true" />
+      <created>1694709396772</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1694709396772</updated>
+    </task>
+    <task id="LOCAL-00002" summary="- ADD: Code import for NEXT release.">
+      <option name="closed" value="true" />
+      <created>1694709422763</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1694709422763</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
