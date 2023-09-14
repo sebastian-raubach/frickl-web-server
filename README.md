@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/sebastian-raubach/frickl-web/master/src/assets/frickl.svg?sanitize=true" width="200" alt="Logo">
+  <img src="https://raw.githubusercontent.com/sebastian-raubach/frickl-web/next/src/assets/frickl.svg?sanitize=true" width="200" alt="Logo">
 </p>
 
 ![GitHub](https://img.shields.io/github/license/sebastian-raubach/frickl-web-server)
