@@ -26,10 +26,10 @@
 				<forcedType>
 
 					<!-- Specify the Java type of your custom type. This corresponds to the Binding's <U> type. -->
-					<userType>raubach.fricklweb.server.computed.Exif</userType>
+					<userType>raubach.frickl.next.pojo.Exif</userType>
 
 					<!-- Associate that custom type with your binding. -->
-					<binding>raubach.fricklweb.server.binding.JsonExifBinding</binding>
+					<binding>raubach.frickl.next.binding.JsonExifBinding</binding>
 
 					<!-- Add a Java regular expression matching fully-qualified columns. Use the pipe to separate several expressions.
 
@@ -140,7 +140,7 @@
 				 jOOQ may append the schema name to this package if generating multiple schemas,
 				 e.g. org.jooq.your.packagename.schema1
 					  org.jooq.your.packagename.schema2 -->
-			<packageName>raubach.fricklweb.server.database</packageName>
+			<packageName>raubach.frickl.next.codegen</packageName>
 
 			<!-- The destination directory of your generated classes -->
 			<directory>src/main/java/</directory>
