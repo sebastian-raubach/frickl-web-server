@@ -8,9 +8,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-import org.jooq.JSON;
-
 import raubach.frickl.next.codegen.enums.LatLngsDataType;
+import raubach.frickl.next.pojo.Exif;
 
 
 /**
@@ -25,7 +24,7 @@ public class LatLngs implements Serializable {
     private String          path;
     private String          name;
     private Byte            isFavorite;
-    private JSON            exif;
+    private Exif            exif;
     private Integer         albumId;
     private Byte            isPublic;
     private Integer         viewCount;
@@ -58,7 +57,7 @@ public class LatLngs implements Serializable {
         String          path,
         String          name,
         Byte            isFavorite,
-        JSON            exif,
+        Exif            exif,
         Integer         albumId,
         Byte            isPublic,
         Integer         viewCount,
@@ -151,7 +150,7 @@ public class LatLngs implements Serializable {
      * Getter for <code>frickl.lat_lngs.exif</code>. Optional Exif information
      * in JSON format.
      */
-    public JSON getExif() {
+    public Exif getExif() {
         return this.exif;
     }
 
@@ -159,7 +158,7 @@ public class LatLngs implements Serializable {
      * Setter for <code>frickl.lat_lngs.exif</code>. Optional Exif information
      * in JSON format.
      */
-    public void setExif(JSON exif) {
+    public void setExif(Exif exif) {
         this.exif = exif;
     }
 

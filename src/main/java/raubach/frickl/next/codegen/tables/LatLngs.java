@@ -9,7 +9,6 @@ import java.sql.Timestamp;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.JSON;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Row13;
@@ -21,9 +20,11 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
+import raubach.frickl.next.binding.JsonExifBinding;
 import raubach.frickl.next.codegen.Frickl;
 import raubach.frickl.next.codegen.enums.LatLngsDataType;
 import raubach.frickl.next.codegen.tables.records.LatLngsRecord;
+import raubach.frickl.next.pojo.Exif;
 
 
 /**
@@ -75,7 +76,7 @@ public class LatLngs extends TableImpl<LatLngsRecord> {
      * The column <code>frickl.lat_lngs.exif</code>. Optional Exif information
      * in JSON format.
      */
-    public final TableField<LatLngsRecord, JSON> EXIF = createField(DSL.name("exif"), SQLDataType.JSON, this, "Optional Exif information in JSON format.");
+    public final TableField<LatLngsRecord, Exif> EXIF = createField(DSL.name("exif"), SQLDataType.JSON, this, "Optional Exif information in JSON format.", new JsonExifBinding());
 
     /**
      * The column <code>frickl.lat_lngs.album_id</code>. The album this image
@@ -189,7 +190,7 @@ public class LatLngs extends TableImpl<LatLngsRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row13<Integer, String, String, Byte, JSON, Integer, Byte, Integer, LatLngsDataType, Timestamp, Timestamp, BigDecimal, BigDecimal> fieldsRow() {
+    public Row13<Integer, String, String, Byte, Exif, Integer, Byte, Integer, LatLngsDataType, Timestamp, Timestamp, BigDecimal, BigDecimal> fieldsRow() {
         return (Row13) super.fieldsRow();
     }
 }

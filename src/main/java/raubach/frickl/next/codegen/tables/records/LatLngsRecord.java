@@ -8,20 +8,20 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import org.jooq.Field;
-import org.jooq.JSON;
 import org.jooq.Record13;
 import org.jooq.Row13;
 import org.jooq.impl.TableRecordImpl;
 
 import raubach.frickl.next.codegen.enums.LatLngsDataType;
 import raubach.frickl.next.codegen.tables.LatLngs;
+import raubach.frickl.next.pojo.Exif;
 
 
 /**
  * VIEW
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Record13<Integer, String, String, Byte, JSON, Integer, Byte, Integer, LatLngsDataType, Timestamp, Timestamp, BigDecimal, BigDecimal> {
+public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Record13<Integer, String, String, Byte, Exif, Integer, Byte, Integer, LatLngsDataType, Timestamp, Timestamp, BigDecimal, BigDecimal> {
 
     private static final long serialVersionUID = 1L;
 
@@ -93,7 +93,7 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
      * Setter for <code>frickl.lat_lngs.exif</code>. Optional Exif information
      * in JSON format.
      */
-    public void setExif(JSON value) {
+    public void setExif(Exif value) {
         set(4, value);
     }
 
@@ -101,8 +101,8 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
      * Getter for <code>frickl.lat_lngs.exif</code>. Optional Exif information
      * in JSON format.
      */
-    public JSON getExif() {
-        return (JSON) get(4);
+    public Exif getExif() {
+        return (Exif) get(4);
     }
 
     /**
@@ -228,12 +228,12 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
     // -------------------------------------------------------------------------
 
     @Override
-    public Row13<Integer, String, String, Byte, JSON, Integer, Byte, Integer, LatLngsDataType, Timestamp, Timestamp, BigDecimal, BigDecimal> fieldsRow() {
+    public Row13<Integer, String, String, Byte, Exif, Integer, Byte, Integer, LatLngsDataType, Timestamp, Timestamp, BigDecimal, BigDecimal> fieldsRow() {
         return (Row13) super.fieldsRow();
     }
 
     @Override
-    public Row13<Integer, String, String, Byte, JSON, Integer, Byte, Integer, LatLngsDataType, Timestamp, Timestamp, BigDecimal, BigDecimal> valuesRow() {
+    public Row13<Integer, String, String, Byte, Exif, Integer, Byte, Integer, LatLngsDataType, Timestamp, Timestamp, BigDecimal, BigDecimal> valuesRow() {
         return (Row13) super.valuesRow();
     }
 
@@ -258,7 +258,7 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
     }
 
     @Override
-    public Field<JSON> field5() {
+    public Field<Exif> field5() {
         return LatLngs.LAT_LNGS.EXIF;
     }
 
@@ -323,7 +323,7 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
     }
 
     @Override
-    public JSON component5() {
+    public Exif component5() {
         return getExif();
     }
 
@@ -388,7 +388,7 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
     }
 
     @Override
-    public JSON value5() {
+    public Exif value5() {
         return getExif();
     }
 
@@ -457,7 +457,7 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
     }
 
     @Override
-    public LatLngsRecord value5(JSON value) {
+    public LatLngsRecord value5(Exif value) {
         setExif(value);
         return this;
     }
@@ -511,7 +511,7 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
     }
 
     @Override
-    public LatLngsRecord values(Integer value1, String value2, String value3, Byte value4, JSON value5, Integer value6, Byte value7, Integer value8, LatLngsDataType value9, Timestamp value10, Timestamp value11, BigDecimal value12, BigDecimal value13) {
+    public LatLngsRecord values(Integer value1, String value2, String value3, Byte value4, Exif value5, Integer value6, Byte value7, Integer value8, LatLngsDataType value9, Timestamp value10, Timestamp value11, BigDecimal value12, BigDecimal value13) {
         value1(value1);
         value2(value2);
         value3(value3);
@@ -542,7 +542,7 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
     /**
      * Create a detached, initialised LatLngsRecord
      */
-    public LatLngsRecord(Integer id, String path, String name, Byte isFavorite, JSON exif, Integer albumId, Byte isPublic, Integer viewCount, LatLngsDataType dataType, Timestamp createdOn, Timestamp updatedOn, BigDecimal latitude, BigDecimal longitude) {
+    public LatLngsRecord(Integer id, String path, String name, Byte isFavorite, Exif exif, Integer albumId, Byte isPublic, Integer viewCount, LatLngsDataType dataType, Timestamp createdOn, Timestamp updatedOn, BigDecimal latitude, BigDecimal longitude) {
         super(LatLngs.LAT_LNGS);
 
         setId(id);

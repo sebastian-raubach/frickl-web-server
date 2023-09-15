@@ -16,16 +16,18 @@ import raubach.frickl.next.resource.AbstractAccessTokenResource;
 import raubach.frickl.next.util.ThumbnailUtils;
 import raubach.frickl.next.util.watcher.PropertyWatcher;
 
-import java.io.*;
 import java.io.File;
+import java.io.*;
 import java.sql.*;
 import java.util.*;
 import java.util.logging.*;
 
 import static raubach.frickl.next.codegen.tables.AccessTokens.ACCESS_TOKENS;
 import static raubach.frickl.next.codegen.tables.AlbumTokens.ALBUM_TOKENS;
+import static raubach.frickl.next.codegen.tables.Albums.ALBUMS;
 import static raubach.frickl.next.codegen.tables.ImageTags.IMAGE_TAGS;
 import static raubach.frickl.next.codegen.tables.Images.IMAGES;
+import static raubach.frickl.next.codegen.tables.Tags.TAGS;
 
 @Path("image")
 @Secured
@@ -46,19 +48,25 @@ public class ImageResource extends AbstractAccessTokenResource
 		{
 			DSLContext context = Database.getContext(conn);
 
-			SelectSelectStep<Record> select = context.select();
+			SelectSelectStep<Record> select = context.select(IMAGES.asterisk());
 
 			if (previousCount == -1)
 				select.hint("SQL_CALC_FOUND_ROWS");
 
-			SelectJoinStep<Record> step = select.from(IMAGES);
+			SelectJoinStep<Record> step = select.from(IMAGES).leftJoin(ALBUMS).on(ALBUMS.ID.eq(IMAGES.ALBUM_ID));
 
 			if (request.getIsFav() != null && request.getIsFav())
 				step.where(IMAGES.IS_FAVORITE.eq((byte) 1));
 			if (request.getDate() != null)
 				step.where(DSL.date(IMAGES.CREATED_ON).eq(DSL.date(request.getDate())));
 			if (!StringUtils.isBlank(request.getSearchTerm()))
-				step.where(IMAGES.NAME.containsIgnoreCase(request.getSearchTerm()));
+				step.where(IMAGES.NAME.containsIgnoreCase(request.getSearchTerm())
+									  .or(ALBUMS.NAME.containsIgnoreCase(request.getSearchTerm()))
+									  .or(DSL.exists(DSL.selectOne()
+														.from(TAGS)
+														.leftJoin(IMAGE_TAGS).on(IMAGE_TAGS.TAG_ID.eq(TAGS.ID))
+														.where(TAGS.NAME.containsIgnoreCase(request.getSearchTerm()))
+															 .and(IMAGE_TAGS.IMAGE_ID.eq(IMAGES.ID)))));
 			if (request.getTagId() != null)
 				step.whereExists(DSL.selectOne()
 									.from(IMAGE_TAGS)
