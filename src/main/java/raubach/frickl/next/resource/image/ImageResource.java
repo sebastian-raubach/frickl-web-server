@@ -66,7 +66,7 @@ public class ImageResource extends AbstractAccessTokenResource
 														.from(TAGS)
 														.leftJoin(IMAGE_TAGS).on(IMAGE_TAGS.TAG_ID.eq(TAGS.ID))
 														.where(TAGS.NAME.containsIgnoreCase(request.getSearchTerm()))
-															 .and(IMAGE_TAGS.IMAGE_ID.eq(IMAGES.ID)))));
+														.and(IMAGE_TAGS.IMAGE_ID.eq(IMAGES.ID)))));
 			if (request.getTagId() != null)
 				step.whereExists(DSL.selectOne()
 									.from(IMAGE_TAGS)

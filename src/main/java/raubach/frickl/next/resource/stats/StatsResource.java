@@ -8,7 +8,7 @@ import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
 import raubach.frickl.next.Database;
 import raubach.frickl.next.auth.*;
-import raubach.frickl.next.pojo.Counts;
+import raubach.frickl.next.pojo.*;
 import raubach.frickl.next.resource.AbstractAccessTokenResource;
 import raubach.frickl.next.util.watcher.PropertyWatcher;
 
@@ -30,7 +30,94 @@ import static raubach.frickl.next.codegen.tables.Tags.TAGS;
 public class StatsResource extends AbstractAccessTokenResource
 {
 	@GET
-	@Path("count")
+	@Path("/year/{year:\\d+}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getYearData(@PathParam("year") Integer year)
+			throws SQLException
+	{
+		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
+		boolean auth = PropertyWatcher.authEnabled();
+
+		try (Connection conn = Database.getConnection())
+		{
+			DSLContext context = Database.getContext(conn);
+
+			Field<Date> date = IMAGES.CREATED_ON.cast(Date.class).as("date");
+
+			SelectConditionStep<?> step = context.select(date, DSL.count().as("count"))
+												 .from(IMAGES)
+												 .where(IMAGES.CREATED_ON.isNotNull())
+												 .and(DSL.year(IMAGES.CREATED_ON).eq(year));
+
+			if (auth)
+			{
+				if (!StringUtils.isEmpty(accessToken))
+				{
+					step.and(DSL.exists(DSL.selectOne()
+										   .from(ALBUM_TOKENS)
+										   .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
+										   .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
+																	 .and(ALBUM_TOKENS.ALBUM_ID.eq(IMAGES.ALBUM_ID)))));
+				}
+				else if (StringUtils.isEmpty(userDetails.getToken()))
+				{
+					step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+				}
+			}
+
+			return Response.ok(step.groupBy(date)
+								   .orderBy(date)
+								   .fetchInto(YearCount.class))
+						   .build();
+		}
+	}
+
+	@GET
+	@Path("/year")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getYears()
+			throws SQLException
+	{
+		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
+		boolean auth = PropertyWatcher.authEnabled();
+
+		try (Connection conn = Database.getConnection())
+		{
+			DSLContext context = Database.getContext(conn);
+
+			Field<Integer> date = DSL.year(IMAGES.CREATED_ON).as("year");
+
+			SelectConditionStep<Record2<Integer, Integer>> step = context.select(date, DSL.count().as("count"))
+																		 .from(IMAGES)
+																		 .where(IMAGES.CREATED_ON.isNotNull());
+
+			if (auth)
+			{
+				if (!StringUtils.isEmpty(accessToken))
+				{
+					step.and(DSL.exists(DSL.selectOne()
+										   .from(ALBUM_TOKENS)
+										   .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
+										   .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
+																	 .and(ALBUM_TOKENS.ALBUM_ID.eq(IMAGES.ALBUM_ID)))));
+				}
+				else if (StringUtils.isEmpty(userDetails.getToken()))
+				{
+					step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+				}
+			}
+
+			return Response.ok(step.groupBy(date)
+								   .orderBy(date)
+								   .fetchInto(YearCounts.class))
+						   .build();
+		}
+	}
+
+	@GET
+	@Path("/count")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCounts()

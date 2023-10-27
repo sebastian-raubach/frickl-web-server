@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- FIX: Fixed logo.">
+    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- FIX: Fixed codegen issue.&#10;- FIX: Fixed broken image search.&#10;- ADD: Added tag and album name search to image search.">
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/LatLngs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/LatLngs.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/LatLngs.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/LatLngs.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/LatLngsRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/LatLngsRecord.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/jooq.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/jooq.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/stats/StatsResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/stats/StatsResource.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,35 +33,7 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="frickl-next" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="frickl-next" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="frickl-next" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="build" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="frickl-next" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="deployment" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="frickl-next" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="execution" type="c8890929:TasksNode$1" />
-              </path>
-            </expand>
+            <expand />
             <select />
           </tree_state>
         </projects_view>
@@ -88,6 +58,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2U9V7xk5QDmU1tsAdd7Ci5Xyoc9" />
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
@@ -125,6 +98,7 @@
       <recent name="C:\Users\sr41756\workspaces\java\frickl-next\src\main\resources\raubach\frickl\next" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="raubach.frickl.next.pojo" />
       <recent name="raubach.frickl.next.resource.image" />
       <recent name="raubach.frickl.next.resource" />
       <recent name="raubach.frickl.next.util.watcher" />
@@ -151,7 +125,7 @@
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <ForceTestExec>false</ForceTestExec>
+      <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="frickl-next [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -173,7 +147,7 @@
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <ForceTestExec>false</ForceTestExec>
+      <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="frickl-next [codegen]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -195,7 +169,7 @@
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <ForceTestExec>false</ForceTestExec>
+      <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="frickl-next [deployTomcat]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -217,14 +191,14 @@
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <ForceTestExec>false</ForceTestExec>
+      <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.frickl-next [deployTomcat]" />
-        <item itemvalue="Gradle.frickl-next [build]" />
         <item itemvalue="Gradle.frickl-next [clean]" />
+        <item itemvalue="Gradle.frickl-next [build]" />
         <item itemvalue="Gradle.frickl-next [codegen]" />
       </list>
     </recent_temporary>
@@ -243,7 +217,12 @@
       <workItem from="1694702000644" duration="4370000" />
       <workItem from="1694709231387" duration="365000" />
       <workItem from="1694709938560" duration="77000" />
-      <workItem from="1694759839822" duration="3423000" />
+      <workItem from="1694759839822" duration="3639000" />
+      <workItem from="1695027758859" duration="743000" />
+      <workItem from="1695048837890" duration="588000" />
+      <workItem from="1696517552548" duration="2204000" />
+      <workItem from="1698247216359" duration="1132000" />
+      <workItem from="1698249144455" duration="94000" />
     </task>
     <task id="LOCAL-00001" summary="- ADD: Code import for NEXT release.">
       <option name="closed" value="true" />
@@ -269,7 +248,15 @@
       <option name="project" value="LOCAL" />
       <updated>1694709570661</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="- FIX: Fixed codegen issue.&#10;- FIX: Fixed broken image search.&#10;- ADD: Added tag and album name search to image search.">
+      <option name="closed" value="true" />
+      <created>1694792877753</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1694792877753</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -280,6 +267,7 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="- ADD: Code import for NEXT release." />
     <MESSAGE value="- FIX: Fixed logo." />
-    <option name="LAST_COMMIT_MESSAGE" value="- FIX: Fixed logo." />
+    <MESSAGE value="- FIX: Fixed codegen issue.&#10;- FIX: Fixed broken image search.&#10;- ADD: Added tag and album name search to image search." />
+    <option name="LAST_COMMIT_MESSAGE" value="- FIX: Fixed codegen issue.&#10;- FIX: Fixed broken image search.&#10;- ADD: Added tag and album name search to image search." />
   </component>
 </project>
