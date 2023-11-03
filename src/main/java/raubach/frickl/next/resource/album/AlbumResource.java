@@ -6,13 +6,15 @@ import jakarta.ws.rs.core.*;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
-import raubach.frickl.next.Database;
+import raubach.frickl.next.*;
 import raubach.frickl.next.auth.*;
 import raubach.frickl.next.codegen.tables.pojos.AlbumStats;
+import raubach.frickl.next.codegen.tables.records.AlbumsRecord;
 import raubach.frickl.next.pojo.*;
 import raubach.frickl.next.resource.AbstractAccessTokenResource;
 import raubach.frickl.next.util.watcher.PropertyWatcher;
 
+import java.io.File;
 import java.sql.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 import static raubach.frickl.next.codegen.tables.AccessTokens.ACCESS_TOKENS;
 import static raubach.frickl.next.codegen.tables.AlbumStats.ALBUM_STATS;
 import static raubach.frickl.next.codegen.tables.AlbumTokens.ALBUM_TOKENS;
+import static raubach.frickl.next.codegen.tables.Albums.ALBUMS;
 import static raubach.frickl.next.codegen.tables.Images.IMAGES;
 
 @Path("album")
@@ -101,5 +104,32 @@ public class AlbumResource extends AbstractAccessTokenResource
 			return Response.ok(new PaginatedResult<>(result, count))
 						   .build();
 		}
+	}
+
+	@GET
+	@Path("/{albumId:\\d+}/scan")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response startImageScanner(@PathParam("albumId") Integer albumId)
+			throws SQLException
+	{
+		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
+		boolean auth = PropertyWatcher.authEnabled();
+
+		if (auth && StringUtils.isEmpty(userDetails.getToken()))
+			return Response.status(Response.Status.FORBIDDEN).build();
+
+		try (Connection conn = Database.getConnection())
+		{
+			DSLContext context = Database.getContext(conn);
+			AlbumsRecord album = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(albumId)).fetchAny();
+			if (album == null)
+				return Response.status(Response.Status.NOT_FOUND).build();
+			File basePath = new File(Frickl.BASE_PATH);
+			File folder = new File(basePath, album.getPath());
+			ApplicationListener.startImageScanner(folder);
+		}
+
+		return Response.ok(true).build();
 	}
 }

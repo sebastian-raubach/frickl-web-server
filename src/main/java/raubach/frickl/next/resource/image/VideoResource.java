@@ -35,7 +35,7 @@ public class VideoResource extends AbstractAccessTokenResource
 	@HEAD
 	@Path("/{filename}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces({"video/quicktime", "video/mp4", "video/x-msvideo", "video/x-ms-wmv", "video/webm"})
+	@Produces({"video/quicktime", "video/mp4", "video/x-msvideo", "video/x-ms-wmv", "video/webm", "video/mkv"})
 	@PermitAll
 	public Response getVideoByNameHead(@PathParam("imageId") Integer imageId, @QueryParam("token") String token, @HeaderParam("Range") String range)
 			throws IOException, SQLException
@@ -46,7 +46,7 @@ public class VideoResource extends AbstractAccessTokenResource
 	@GET
 	@Path("/{filename}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces({"video/quicktime", "video/mp4", "video/x-msvideo", "video/x-ms-wmv", "video/webm"})
+	@Produces({"video/quicktime", "video/mp4", "video/x-msvideo", "video/x-ms-wmv", "video/webm", "video/mkv"})
 	@PermitAll
 	public Response getVideoByName(@PathParam("imageId") Integer imageId, @QueryParam("token") String token, @HeaderParam("Range") String range)
 			throws IOException, SQLException
@@ -56,7 +56,7 @@ public class VideoResource extends AbstractAccessTokenResource
 
 	@HEAD
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces({"video/quicktime", "video/mp4", "video/x-msvideo", "video/x-ms-wmv", "video/webm"})
+	@Produces({"video/quicktime", "video/mp4", "video/x-msvideo", "video/x-ms-wmv", "video/webm", "video/mkv"})
 	@PermitAll
 	public Response getVideoHead(@PathParam("imageId") Integer imageId, @QueryParam("token") String token, @HeaderParam("Range") String range)
 			throws IOException, SQLException
@@ -66,7 +66,7 @@ public class VideoResource extends AbstractAccessTokenResource
 
 	@GET
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces({"video/quicktime", "video/mp4", "video/x-msvideo", "video/x-ms-wmv", "video/webm"})
+	@Produces({"video/quicktime", "video/mp4", "video/x-msvideo", "video/x-ms-wmv", "video/webm", "video/mkv"})
 	@PermitAll
 	public Response getVideo(@PathParam("imageId") Integer imageId, @QueryParam("token") String token, @HeaderParam("Range") String range)
 			throws IOException, SQLException

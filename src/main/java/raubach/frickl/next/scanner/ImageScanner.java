@@ -32,7 +32,7 @@ public class ImageScanner implements Runnable
 
 	private final ThreadPoolExecutor executor;
 
-	private final File basePath;
+	private final File                      basePath;
 	private final File                      folder;
 	private final Map<String, AlbumsRecord> albumPathToId = new HashMap<>();
 	private final Map<String, ImagesRecord> imagePathToId = new HashMap<>();
@@ -256,11 +256,11 @@ public class ImageScanner implements Runnable
 	}
 
 	private void processFile(DSLContext context, Path file)
-		throws IOException
+			throws IOException
 	{
 		String path = file.toFile().getAbsolutePath();
 		String mimeType = URLConnection.guessContentTypeFromName(path);
-		boolean isVideo = mimeType != null && mimeType.startsWith("video");
+		boolean isVideo = (mimeType != null && mimeType.startsWith("video")) || (mimeType == null && path.endsWith(".mkv"));
 
 		if (path.toLowerCase().endsWith(".jpg") || path.toLowerCase().endsWith(".jpeg") || isVideo)
 		{
@@ -335,7 +335,8 @@ public class ImageScanner implements Runnable
 					if (!ThumbnailUtils.thumbnailExists(type, image, file.toFile(), ThumbnailUtils.Size.SMALL))
 						executor.submit(new ImageScaler(image, ThumbnailUtils.Size.SMALL));
 
-					if (!isVideo) {
+					if (!isVideo)
+					{
 						if (!ThumbnailUtils.thumbnailExists(type, image, file.toFile(), ThumbnailUtils.Size.MEDIUM))
 							executor.submit(new ImageScaler(image, ThumbnailUtils.Size.MEDIUM));
 						if (image.getExif() == null)

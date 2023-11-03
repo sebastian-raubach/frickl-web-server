@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- FIX: Fixed codegen issue.&#10;- FIX: Fixed broken image search.&#10;- ADD: Added tag and album name search to image search.">
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- ADD: Added stats endpoints.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/stats/StatsResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/stats/StatsResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/VideoResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/VideoResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/scanner/ImageScanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/scanner/ImageScanner.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,14 +98,27 @@
       <recent name="C:\Users\sr41756\workspaces\java\frickl-next\src\main\resources\raubach\frickl\next" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="raubach.frickl.next.resource.album" />
       <recent name="raubach.frickl.next.pojo" />
       <recent name="raubach.frickl.next.resource.image" />
       <recent name="raubach.frickl.next.resource" />
       <recent name="raubach.frickl.next.util.watcher" />
-      <recent name="raubach.frickl.next.binding" />
     </key>
   </component>
   <component name="RunManager" selected="Gradle.frickl-next [deployTomcat]">
+    <configuration name="ImageScanner" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="raubach.frickl.next.scanner.ImageScanner" />
+      <module name="frickl-next.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="raubach.frickl.next.scanner.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="frickl-next [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -198,6 +211,7 @@
       <list>
         <item itemvalue="Gradle.frickl-next [deployTomcat]" />
         <item itemvalue="Gradle.frickl-next [clean]" />
+        <item itemvalue="Application.ImageScanner" />
         <item itemvalue="Gradle.frickl-next [build]" />
         <item itemvalue="Gradle.frickl-next [codegen]" />
       </list>
@@ -223,6 +237,9 @@
       <workItem from="1696517552548" duration="2204000" />
       <workItem from="1698247216359" duration="1132000" />
       <workItem from="1698249144455" duration="94000" />
+      <workItem from="1698401490632" duration="801000" />
+      <workItem from="1698858039544" duration="18000" />
+      <workItem from="1699019721106" duration="5324000" />
     </task>
     <task id="LOCAL-00001" summary="- ADD: Code import for NEXT release.">
       <option name="closed" value="true" />
@@ -256,7 +273,15 @@
       <option name="project" value="LOCAL" />
       <updated>1694792877753</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="- ADD: Added stats endpoints.">
+      <option name="closed" value="true" />
+      <created>1698401647316</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1698401647316</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -268,6 +293,7 @@
     <MESSAGE value="- ADD: Code import for NEXT release." />
     <MESSAGE value="- FIX: Fixed logo." />
     <MESSAGE value="- FIX: Fixed codegen issue.&#10;- FIX: Fixed broken image search.&#10;- ADD: Added tag and album name search to image search." />
-    <option name="LAST_COMMIT_MESSAGE" value="- FIX: Fixed codegen issue.&#10;- FIX: Fixed broken image search.&#10;- ADD: Added tag and album name search to image search." />
+    <MESSAGE value="- ADD: Added stats endpoints." />
+    <option name="LAST_COMMIT_MESSAGE" value="- ADD: Added stats endpoints." />
   </component>
 </project>
