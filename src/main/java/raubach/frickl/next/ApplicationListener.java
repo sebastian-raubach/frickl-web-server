@@ -2,6 +2,7 @@ package raubach.frickl.next;
 
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebListener;
+import jhi.oddjob.*;
 import raubach.frickl.next.pojo.Status;
 import raubach.frickl.next.scanner.ImageScanner;
 import raubach.frickl.next.util.*;
@@ -17,7 +18,9 @@ import java.util.logging.Logger;
 @WebListener
 public class ApplicationListener implements ServletContextListener
 {
-	private static ScheduledExecutorService backgroundScheduler;
+	private static      ScheduledExecutorService backgroundScheduler;
+	public static final IScheduler               SCHEDULER = new ProcessScheduler();
+	public static final ConcurrentHashMap<String, String> SCHEDULER_IDS = new ConcurrentHashMap<>();
 
 	public static void startImageScanner(File file)
 	{
@@ -33,6 +36,15 @@ public class ApplicationListener implements ServletContextListener
 	{
 		Logger.getLogger("").info("APPLICATION LISTENER");
 		PropertyWatcher.initialize();
+
+		try
+		{
+			SCHEDULER.initialize();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 
 		Frickl.BASE_PATH = PropertyWatcher.get(ServerProperty.BASE_PATH);
 
@@ -51,6 +63,15 @@ public class ApplicationListener implements ServletContextListener
 	{
 		PropertyWatcher.stopFileWatcher();
 		ThumbnailUtils.shutdownExecutor();
+
+		try
+		{
+			SCHEDULER.destroy();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 
 		try
 		{

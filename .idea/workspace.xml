@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- ADD: Added stats endpoints.">
+    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- ADD: Added endpoint for image upload.&#10;- ADD: Added .mkv mime type to video endpoint.&#10;- ADD: Added album scan endpoint.">
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/ApplicationListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/ApplicationListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/Album.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/Album.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/VideoResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/VideoResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/scanner/ImageScanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/scanner/ImageScanner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/ResourceUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/ResourceUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +76,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;next&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/sr41756/workspaces/java/frickl-next&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/sr41756/workspaces/java/frickl-next/lib&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -87,22 +89,22 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\sr41756\workspaces\java\frickl-next\lib" />
       <recent name="C:\Users\sr41756\workspaces\java\frickl-next" />
       <recent name="C:\Users\sr41756\workspaces\java\frickl-next\src\main\java\raubach\frickl\next\resource" />
       <recent name="C:\Users\sr41756\workspaces\java\frickl-next\src\main\java\raubach\frickl\next\scanner" />
       <recent name="C:\Users\sr41756\workspaces\java\frickl-next\src\main\java\raubach\frickl\next\util\task" />
-      <recent name="C:\Users\sr41756\workspaces\java\frickl-next\src\main\resources\raubach\frickl\next\database\migration" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\sr41756\workspaces\java\frickl-next\src\main\resources" />
       <recent name="C:\Users\sr41756\workspaces\java\frickl-next\src\main\resources\raubach\frickl\next" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="raubach.frickl.next.util.async" />
       <recent name="raubach.frickl.next.resource.album" />
       <recent name="raubach.frickl.next.pojo" />
       <recent name="raubach.frickl.next.resource.image" />
       <recent name="raubach.frickl.next.resource" />
-      <recent name="raubach.frickl.next.util.watcher" />
     </key>
   </component>
   <component name="RunManager" selected="Gradle.frickl-next [deployTomcat]">
@@ -239,7 +241,10 @@
       <workItem from="1698249144455" duration="94000" />
       <workItem from="1698401490632" duration="801000" />
       <workItem from="1698858039544" duration="18000" />
-      <workItem from="1699019721106" duration="5324000" />
+      <workItem from="1699019721106" duration="5659000" />
+      <workItem from="1699456270259" duration="1427000" />
+      <workItem from="1699514567123" duration="2704000" />
+      <workItem from="1699539552859" duration="3834000" />
     </task>
     <task id="LOCAL-00001" summary="- ADD: Code import for NEXT release.">
       <option name="closed" value="true" />
@@ -281,7 +286,15 @@
       <option name="project" value="LOCAL" />
       <updated>1698401647316</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="- ADD: Added endpoint for image upload.&#10;- ADD: Added .mkv mime type to video endpoint.&#10;- ADD: Added album scan endpoint.">
+      <option name="closed" value="true" />
+      <created>1699030583490</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1699030583490</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -294,6 +307,7 @@
     <MESSAGE value="- FIX: Fixed logo." />
     <MESSAGE value="- FIX: Fixed codegen issue.&#10;- FIX: Fixed broken image search.&#10;- ADD: Added tag and album name search to image search." />
     <MESSAGE value="- ADD: Added stats endpoints." />
-    <option name="LAST_COMMIT_MESSAGE" value="- ADD: Added stats endpoints." />
+    <MESSAGE value="- ADD: Added endpoint for image upload.&#10;- ADD: Added .mkv mime type to video endpoint.&#10;- ADD: Added album scan endpoint." />
+    <option name="LAST_COMMIT_MESSAGE" value="- ADD: Added endpoint for image upload.&#10;- ADD: Added .mkv mime type to video endpoint.&#10;- ADD: Added album scan endpoint." />
   </component>
 </project>

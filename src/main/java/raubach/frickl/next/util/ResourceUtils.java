@@ -4,10 +4,30 @@ import org.jooq.tools.StringUtils;
 import raubach.frickl.next.util.watcher.PropertyWatcher;
 
 import java.io.*;
+import java.net.*;
 import java.util.UUID;
 
 public class ResourceUtils
 {
+	/**
+	 * Returns the location of the project's lib filter as a {@link File}
+	 *
+	 * @return The location of the project's lib filter as a {@link File}
+	 * @throws URISyntaxException Thrown if the URI of the folder location is invalid
+	 */
+	public static File getLibFolder()
+			throws URISyntaxException
+	{
+		URL resource = PropertyWatcher.class.getClassLoader().getResource("logging.properties");
+		if (resource != null)
+		{
+			File file = new File(resource.toURI());
+			return new File(file.getParentFile().getParentFile(), "lib");
+		}
+
+		return null;
+	}
+
 	public static File getTempFile(String parentFolder, String filename)
 		throws IOException
 	{

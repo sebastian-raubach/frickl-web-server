@@ -27,7 +27,7 @@ public class Album
 		this.name = original.getName();
 		this.description = original.getDescription();
 		this.path = original.getPath();
-		this.bannerImageId = onlyPublic ? original.getBannerImagePublicId() : Long.valueOf(original.getBannerImageId());
+		this.bannerImageId = onlyPublic ? original.getBannerImagePublicId() : (original.getBannerImageId() != null ? Long.valueOf(original.getBannerImageId()) : null);
 		this.parentAlbumId = original.getParentAlbumId();
 		this.createdOn = original.getCreatedOn();
 		this.updatedOn = original.getUpdatedOn();
