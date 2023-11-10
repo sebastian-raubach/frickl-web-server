@@ -101,7 +101,7 @@ war {
 task codegen (type: JavaExec) {
     group = 'Execution'
     classpath = sourceSets.main.runtimeClasspath
-    mainClass = 'org.jooq.codegen.GenerationTool'
+    main = 'org.jooq.codegen.GenerationTool'
     args 'jooq.xml'
     finalizedBy build
 }
