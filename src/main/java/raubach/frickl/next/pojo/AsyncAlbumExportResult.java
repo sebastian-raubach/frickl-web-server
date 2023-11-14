@@ -12,7 +12,10 @@ import java.util.Date;
 @ToString
 public class AsyncAlbumExportResult
 {
+	private String userToken;
 	private String token;
 	private String albumName;
+	private ExportStatus status;
+	private String jobId;
 	private Date createdOn;
 }

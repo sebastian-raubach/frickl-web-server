@@ -20,8 +20,8 @@ import raubach.frickl.next.util.watcher.PropertyWatcher;
 import java.io.File;
 import java.io.*;
 import java.sql.*;
-import java.util.*;
 import java.util.Date;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static raubach.frickl.next.codegen.tables.AccessTokens.ACCESS_TOKENS;
@@ -190,6 +190,51 @@ public class AlbumResource extends AbstractAccessTokenResource
 		return Response.ok(true).build();
 	}
 
+	@POST
+	@Path("/download/status")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@PermitAll
+	public Response checkDownloadStatus(List<String> uuids)
+			throws SQLException
+	{
+		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
+
+		if (CollectionUtils.isEmpty(uuids))
+			return Response.status(Response.Status.NO_CONTENT).build();
+
+		return Response.ok(uuids.stream()
+								.map(ApplicationListener.SCHEDULER_IDS::get)
+								.filter(j -> j != null && Objects.equals(j.getUserToken(), userDetails.getToken()))
+								.map(j -> {
+									try
+									{
+										if (ApplicationListener.SCHEDULER.isJobFinished(j.getJobId()))  {
+											// The job is "finished", so check if the result exists
+											String version = PropertyWatcher.get(ServerProperty.API_VERSION);
+											File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-exports" + "-" + version);
+											File targetFolder = new File(folder, j.getToken());
+											// Get zip result files (there'll only be one per folder)
+											File[] zipFiles = targetFolder.listFiles((dir, name) -> name.endsWith(".zip"));
+
+											if (!CollectionUtils.isEmpty(zipFiles))
+												j.setStatus(ExportStatus.FINISHED);
+											else
+												j.setStatus(ExportStatus.EXPIRED);
+										} else {
+											j.setStatus(ExportStatus.RUNNING);
+										}
+									}
+									catch (Exception e)
+									{
+										// Do nothing here
+									}
+									return j;
+								})
+								.collect(Collectors.toList()))
+					   .build();
+	}
+
 	@GET
 	@Path("/download/{uuid}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -198,11 +243,18 @@ public class AlbumResource extends AbstractAccessTokenResource
 	public Response downloadAlbumByToken(@PathParam("uuid") String uuid)
 			throws SQLException
 	{
-		String jobId = ApplicationListener.SCHEDULER_IDS.get(uuid);
+		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
+
+		AsyncAlbumExportResult info = ApplicationListener.SCHEDULER_IDS.get(uuid);
+
+		if (info == null)
+			return Response.status(Response.Status.NOT_FOUND).build();
+		if (!Objects.equals(info.getToken(), userDetails.getToken()))
+			return Response.status(Response.Status.FORBIDDEN).build();
 
 		try
 		{
-			if (ApplicationListener.SCHEDULER.isJobFinished(jobId))
+			if (ApplicationListener.SCHEDULER.isJobFinished(info.getJobId()))
 			{
 				String version = PropertyWatcher.get(ServerProperty.API_VERSION);
 				File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-exports" + "-" + version);
@@ -289,12 +341,16 @@ public class AlbumResource extends AbstractAccessTokenResource
 			args.add(StringUtils.orEmptyQuotes(accessToken));
 
 			JobInfo info = ApplicationListener.SCHEDULER.submit("ImageZipExporter", "java", args, targetFolder.getAbsolutePath());
-			ApplicationListener.SCHEDULER_IDS.put(uuid, info.getId());
+			AsyncAlbumExportResult result = new AsyncAlbumExportResult()
+					.setUserToken(userDetails.getToken())
+					.setToken(uuid)
+					.setAlbumName(album.getName())
+					.setJobId(info.getId())
+					.setStatus(ExportStatus.RUNNING)
+					.setCreatedOn(new Date(System.currentTimeMillis()));
+			ApplicationListener.SCHEDULER_IDS.put(uuid, result);
 
-			return Response.ok(new AsyncAlbumExportResult()
-									   .setToken(uuid)
-									   .setAlbumName(album.getName())
-									   .setCreatedOn(new Date(System.currentTimeMillis()))).build();
+			return Response.ok(result).build();
 		}
 		catch (Exception e)
 		{
