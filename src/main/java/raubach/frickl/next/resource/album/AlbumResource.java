@@ -31,12 +31,12 @@ import static raubach.frickl.next.codegen.tables.Albums.ALBUMS;
 import static raubach.frickl.next.codegen.tables.Images.IMAGES;
 
 @Path("album")
-@Secured
 public class AlbumResource extends AbstractAccessTokenResource
 {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@Secured
 	@PermitAll
 	public Response postAlbums(AlbumRequest request)
 			throws SQLException
@@ -48,6 +48,7 @@ public class AlbumResource extends AbstractAccessTokenResource
 	@Path("/{albumId:\\d+}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@Secured
 	@PermitAll
 	public Response postAlbumById(@PathParam("albumId") Integer albumId, AlbumRequest request)
 			throws SQLException
@@ -121,6 +122,7 @@ public class AlbumResource extends AbstractAccessTokenResource
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@Secured
 	public Response postAlbum(Albums album)
 			throws IOException, SQLException
 	{
@@ -167,6 +169,7 @@ public class AlbumResource extends AbstractAccessTokenResource
 	@Path("/{albumId:\\d+}/scan")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@Secured
 	public Response startImageScanner(@PathParam("albumId") Integer albumId)
 			throws SQLException
 	{
@@ -194,6 +197,7 @@ public class AlbumResource extends AbstractAccessTokenResource
 	@Path("/download/status")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@Secured
 	@PermitAll
 	public Response checkDownloadStatus(List<String> uuids)
 			throws SQLException
@@ -201,7 +205,7 @@ public class AlbumResource extends AbstractAccessTokenResource
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 
 		if (CollectionUtils.isEmpty(uuids))
-			return Response.status(Response.Status.NO_CONTENT).build();
+			return Response.ok(new ArrayList<AsyncAlbumExportResult>()).build();
 
 		return Response.ok(uuids.stream()
 								.map(ApplicationListener.SCHEDULER_IDS::get)
@@ -239,26 +243,43 @@ public class AlbumResource extends AbstractAccessTokenResource
 	@Path("/download/{uuid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces("application/zip")
-	@PermitAll
 	public Response downloadAlbumByToken(@PathParam("uuid") String uuid)
 			throws SQLException
 	{
-		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
+		String version = PropertyWatcher.get(ServerProperty.API_VERSION);
+		File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-exports" + "-" + version);
+		File targetFolder = new File(folder, uuid);
 
 		AsyncAlbumExportResult info = ApplicationListener.SCHEDULER_IDS.get(uuid);
 
 		if (info == null)
-			return Response.status(Response.Status.NOT_FOUND).build();
-		if (!Objects.equals(info.getToken(), userDetails.getToken()))
-			return Response.status(Response.Status.FORBIDDEN).build();
+		{
+			// Job isn't in the active map anymore, but may still exist locally in a file. We cannot check user tokens for that.
+			// Get zip result files (there'll only be one per folder)
+			File[] zipFiles = targetFolder.listFiles((dir, name) -> name.endsWith(".zip"));
+			if (!CollectionUtils.isEmpty(zipFiles))
+			{
+				java.nio.file.Path zipFilePath = zipFiles[0].toPath();
+				return Response.ok((StreamingOutput) output -> {
+								   java.nio.file.Files.copy(zipFilePath, output);
+								   // Delete the whole folder once we're done
+								   FileUtils.deleteDirectory(targetFolder);
+							   })
+							   .type("application/zip")
+							   .header("content-disposition", "attachment;filename= \"" + zipFiles[0].getName() + "\"")
+							   .header("content-length", zipFiles[0].length())
+							   .build();
+			}
+			else
+			{
+				return Response.status(Response.Status.NOT_FOUND).build();
+			}
+		}
 
 		try
 		{
 			if (ApplicationListener.SCHEDULER.isJobFinished(info.getJobId()))
 			{
-				String version = PropertyWatcher.get(ServerProperty.API_VERSION);
-				File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-exports" + "-" + version);
-				File targetFolder = new File(folder, uuid);
 				// Get zip result files (there'll only be one per folder)
 				File[] zipFiles = targetFolder.listFiles((dir, name) -> name.endsWith(".zip"));
 
@@ -296,6 +317,7 @@ public class AlbumResource extends AbstractAccessTokenResource
 	@Path("/{albumId:\\d+}/download")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@Secured
 	@PermitAll
 	public Response downloadAlbum(@PathParam("albumId") Integer albumId)
 			throws SQLException
@@ -303,10 +325,8 @@ public class AlbumResource extends AbstractAccessTokenResource
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 		boolean auth = PropertyWatcher.authEnabled();
 
-		try (Connection conn = Database.getConnection())
+		try
 		{
-			DSLContext context = Database.getContext(conn);
-
 			AlbumRequest r = new AlbumRequest();
 			r.setPage(0);
 			r.setLimit(1);

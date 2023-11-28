@@ -45,6 +45,9 @@ public class ImageZipExporter
 
 	public static void main(String[] args)
 	{
+		System.setProperty("org.jooq.no-logo", "true");
+		System.setProperty("org.jooq.no-tips", "true");
+
 		ImageZipExporter exporter = new ImageZipExporter();
 		Database.init(args[0], args[1], args[2], args[3], args[4], false);
 		Integer albumId = Integer.parseInt(args[5]);

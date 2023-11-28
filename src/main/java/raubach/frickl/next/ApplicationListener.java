@@ -34,7 +34,9 @@ public class ApplicationListener implements ServletContextListener
 	@Override
 	public void contextInitialized(ServletContextEvent sce)
 	{
-		Logger.getLogger("").info("APPLICATION LISTENER");
+		System.setProperty("org.jooq.no-logo", "true");
+		System.setProperty("org.jooq.no-tips", "true");
+
 		PropertyWatcher.initialize();
 
 		try

@@ -9,7 +9,7 @@ import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
 import raubach.frickl.next.*;
 import raubach.frickl.next.auth.*;
-import raubach.frickl.next.codegen.tables.pojos.Images;
+import raubach.frickl.next.codegen.tables.pojos.*;
 import raubach.frickl.next.codegen.tables.records.ImagesRecord;
 import raubach.frickl.next.pojo.*;
 import raubach.frickl.next.resource.AbstractAccessTokenResource;
@@ -33,6 +33,41 @@ import static raubach.frickl.next.codegen.tables.Tags.TAGS;
 @Secured
 public class ImageResource extends AbstractAccessTokenResource
 {
+	@GET
+	@Path("/{imageId:\\d+}/hierarchy")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@PermitAll
+	public Response getImageAlbumHierarchy(@PathParam("imageId") Integer imageId)
+			throws
+			SQLException
+	{
+		try (Connection conn = Database.getConnection())
+		{
+			DSLContext context = Database.getContext(conn);
+
+			List<Albums> hierarchy = new ArrayList<>();
+
+			Images image = context.selectFrom(IMAGES).where(IMAGES.ID.eq(imageId)).fetchAnyInto(Images.class);
+
+			if (image != null && image.getAlbumId() != null)
+			{
+				Albums current = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(image.getAlbumId())).fetchAnyInto(Albums.class);
+				hierarchy.add(0, current);
+
+				while (current != null && current.getParentAlbumId() != null)
+				{
+					current = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(current.getParentAlbumId())).fetchAnyInto(Albums.class);
+
+					if (current != null)
+						hierarchy.add(0, current);
+				}
+			}
+
+			return Response.ok(hierarchy).build();
+		}
+	}
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)

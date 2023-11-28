@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- FIX: Tried to fix build errors.">
+    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- ADD: Added album download job status check.">
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/frickl-next.main.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/ApplicationListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/ApplicationListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/AsyncAlbumExportResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/AsyncAlbumExportResult.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/scanner/ImageScanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/scanner/ImageScanner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/async/ImageZipExporter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/async/ImageZipExporter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -248,7 +248,10 @@
       <workItem from="1699539552859" duration="4619000" />
       <workItem from="1699616835145" duration="1695000" />
       <workItem from="1699874353357" duration="3366000" />
-      <workItem from="1699951943600" duration="4835000" />
+      <workItem from="1699951943600" duration="4955000" />
+      <workItem from="1700037836665" duration="588000" />
+      <workItem from="1700119971378" duration="4219000" />
+      <workItem from="1701161937673" duration="292000" />
     </task>
     <task id="LOCAL-00001" summary="- ADD: Code import for NEXT release.">
       <option name="closed" value="true" />
@@ -314,7 +317,15 @@
       <option name="project" value="LOCAL" />
       <updated>1699617329336</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="- ADD: Added album download job status check.">
+      <option name="closed" value="true" />
+      <created>1699980378892</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1699980378892</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -330,6 +341,7 @@
     <MESSAGE value="- ADD: Added endpoint for image upload.&#10;- ADD: Added .mkv mime type to video endpoint.&#10;- ADD: Added album scan endpoint." />
     <MESSAGE value="- ADD: Added initial async folder image export task.&#10;- ADD: Added endpoint to create  new albums.&#10;-" />
     <MESSAGE value="- FIX: Tried to fix build errors." />
-    <option name="LAST_COMMIT_MESSAGE" value="- FIX: Tried to fix build errors." />
+    <MESSAGE value="- ADD: Added album download job status check." />
+    <option name="LAST_COMMIT_MESSAGE" value="- ADD: Added album download job status check." />
   </component>
 </project>
