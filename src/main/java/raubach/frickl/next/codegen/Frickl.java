@@ -25,6 +25,7 @@ import raubach.frickl.next.codegen.tables.LatLngs;
 import raubach.frickl.next.codegen.tables.SchemaVersion;
 import raubach.frickl.next.codegen.tables.StatsCamera;
 import raubach.frickl.next.codegen.tables.Tags;
+import raubach.frickl.next.codegen.tables.Users;
 
 
 /**
@@ -115,6 +116,11 @@ public class Frickl extends SchemaImpl {
     public final Tags TAGS = Tags.TAGS;
 
     /**
+     * The table <code>frickl.users</code>.
+     */
+    public final Users USERS = Users.USERS;
+
+    /**
      * No further instances allowed
      */
     private Frickl() {
@@ -143,7 +149,8 @@ public class Frickl extends SchemaImpl {
             LatLngs.LAT_LNGS,
             SchemaVersion.SCHEMA_VERSION,
             StatsCamera.STATS_CAMERA,
-            Tags.TAGS
+            Tags.TAGS,
+            Users.USERS
         );
     }
 }

@@ -4,14 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- ADD: Added album download job status check.">
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- CHG: Disable jOOQ logging.&#10;- ADD: Add environment variable support for FRICKL_MAX_CPU for image scanner.&#10;- ADD: Added endpoint for image album hierarchy.&#10;- ADD: Added final support for async image album download.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/ApplicationListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/ApplicationListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/auth/AuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/auth/AuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/auth/Secured.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/auth/Secured.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/Frickl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/Frickl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/Indexes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/Indexes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/Keys.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/Keys.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/Tables.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/Tables.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/Albums.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/Albums.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/Images.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/Images.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/Albums.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/Albums.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/Images.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/Images.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/AlbumsRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/AlbumsRecord.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/ImagesRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/ImagesRecord.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/Token.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/TokenResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/TokenResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumImageUploadResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumImageUploadResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/scanner/ImageScanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/scanner/ImageScanner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/async/ImageZipExporter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/async/ImageZipExporter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageTagResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageTagResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/FlywayChecksumGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/FlywayChecksumGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/watcher/PropertyWatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/watcher/PropertyWatcher.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,6 +60,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
@@ -71,44 +86,57 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;next&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/sr41756/workspaces/java/frickl-next/lib&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.23678161&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "next",
+    "last_opened_file_path": "C:/Users/sr41756/workspaces/java/frickl-next/src/main/resources/raubach/frickl/next/database/migration",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.23678161",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\sr41756\workspaces\java\frickl-next\src\main\resources\raubach\frickl\next\database\migration" />
       <recent name="C:\Users\sr41756\workspaces\java\frickl-next\lib" />
       <recent name="C:\Users\sr41756\workspaces\java\frickl-next" />
       <recent name="C:\Users\sr41756\workspaces\java\frickl-next\src\main\java\raubach\frickl\next\resource" />
       <recent name="C:\Users\sr41756\workspaces\java\frickl-next\src\main\java\raubach\frickl\next\scanner" />
-      <recent name="C:\Users\sr41756\workspaces\java\frickl-next\src\main\java\raubach\frickl\next\util\task" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\sr41756\workspaces\java\frickl-next\src\main\resources" />
       <recent name="C:\Users\sr41756\workspaces\java\frickl-next\src\main\resources\raubach\frickl\next" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="raubach.frickl.next.auth" />
       <recent name="raubach.frickl.next.util.task" />
       <recent name="raubach.frickl.next.util.async" />
       <recent name="raubach.frickl.next.resource.album" />
       <recent name="raubach.frickl.next.pojo" />
-      <recent name="raubach.frickl.next.resource.image" />
     </key>
   </component>
   <component name="RunManager" selected="Gradle.frickl-next [deployTomcat]">
+    <configuration name="FlywayChecksumGenerator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="raubach.frickl.next.util.FlywayChecksumGenerator" />
+      <module name="frickl-next.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="raubach.frickl.next.util.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ImageScanner" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="raubach.frickl.next.scanner.ImageScanner" />
       <module name="frickl-next.main" />
@@ -121,28 +149,6 @@
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
-    </configuration>
-    <configuration name="frickl-next [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="build" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
     </configuration>
     <configuration name="frickl-next [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -213,10 +219,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.frickl-next [deployTomcat]" />
+        <item itemvalue="Gradle.frickl-next [codegen]" />
+        <item itemvalue="Application.FlywayChecksumGenerator" />
         <item itemvalue="Gradle.frickl-next [clean]" />
         <item itemvalue="Application.ImageScanner" />
-        <item itemvalue="Gradle.frickl-next [build]" />
-        <item itemvalue="Gradle.frickl-next [codegen]" />
       </list>
     </recent_temporary>
   </component>
@@ -251,7 +257,9 @@
       <workItem from="1699951943600" duration="4955000" />
       <workItem from="1700037836665" duration="588000" />
       <workItem from="1700119971378" duration="4219000" />
-      <workItem from="1701161937673" duration="292000" />
+      <workItem from="1701161937673" duration="1626000" />
+      <workItem from="1701169878133" duration="1320000" />
+      <workItem from="1701249322589" duration="8541000" />
     </task>
     <task id="LOCAL-00001" summary="- ADD: Code import for NEXT release.">
       <option name="closed" value="true" />
@@ -325,7 +333,15 @@
       <option name="project" value="LOCAL" />
       <updated>1699980378892</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="- CHG: Disable jOOQ logging.&#10;- ADD: Add environment variable support for FRICKL_MAX_CPU for image scanner.&#10;- ADD: Added endpoint for image album hierarchy.&#10;- ADD: Added final support for async image album download.">
+      <option name="closed" value="true" />
+      <created>1701162371589</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1701162371589</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -342,6 +358,7 @@
     <MESSAGE value="- ADD: Added initial async folder image export task.&#10;- ADD: Added endpoint to create  new albums.&#10;-" />
     <MESSAGE value="- FIX: Tried to fix build errors." />
     <MESSAGE value="- ADD: Added album download job status check." />
-    <option name="LAST_COMMIT_MESSAGE" value="- ADD: Added album download job status check." />
+    <MESSAGE value="- CHG: Disable jOOQ logging.&#10;- ADD: Add environment variable support for FRICKL_MAX_CPU for image scanner.&#10;- ADD: Added endpoint for image album hierarchy.&#10;- ADD: Added final support for async image album download." />
+    <option name="LAST_COMMIT_MESSAGE" value="- CHG: Disable jOOQ logging.&#10;- ADD: Add environment variable support for FRICKL_MAX_CPU for image scanner.&#10;- ADD: Added endpoint for image album hierarchy.&#10;- ADD: Added final support for async image album download." />
   </component>
 </project>

@@ -18,14 +18,22 @@
 package raubach.frickl.next.util.watcher;
 
 import org.apache.commons.io.monitor.*;
+import org.jooq.DSLContext;
 import org.jooq.tools.StringUtils;
 import raubach.frickl.next.Database;
+import raubach.frickl.next.auth.BCrypt;
+import raubach.frickl.next.codegen.enums.UsersViewType;
+import raubach.frickl.next.codegen.tables.records.UsersRecord;
+import raubach.frickl.next.resource.TokenResource;
 import raubach.frickl.next.util.*;
 
 import java.io.*;
 import java.net.URL;
+import java.sql.*;
 import java.util.*;
 import java.util.logging.*;
+
+import static raubach.frickl.next.codegen.tables.Users.USERS;
 
 /**
  * {@link PropertyWatcher} is a wrapper around {@link Properties} to readAll properties.
@@ -136,6 +144,31 @@ public class PropertyWatcher
 			set(ServerProperty.ADMIN_PASSWORD, password);
 		if (!StringUtils.isEmpty(googleAnalyticsKey))
 			set(ServerProperty.GOOGLE_ANALYTICS_KEY, googleAnalyticsKey);
+
+		if (!StringUtils.isBlank(get(ServerProperty.ADMIN_USERNAME)) && !StringUtils.isBlank(get(ServerProperty.ADMIN_PASSWORD)))
+		{
+			// Create the admin user if it doesn't exist yet
+			try (Connection conn = Database.getConnection())
+			{
+				DSLContext context = Database.getContext(conn);
+				UsersRecord admin = context.selectFrom(USERS).where(USERS.USERNAME.eq(username)).fetchAny();
+
+				if (admin == null)
+				{
+					admin = context.newRecord(USERS);
+					admin.setUsername(get(ServerProperty.ADMIN_USERNAME));
+				}
+
+				admin.setPassword(BCrypt.hashpw(get(ServerProperty.ADMIN_PASSWORD), BCrypt.gensalt(TokenResource.SALT)));
+				admin.setViewType(UsersViewType.VIEW_ALL);
+				admin.setPermissions((short) Permission.getAll());
+				admin.store();
+			}
+			catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public static void stopFileWatcher()

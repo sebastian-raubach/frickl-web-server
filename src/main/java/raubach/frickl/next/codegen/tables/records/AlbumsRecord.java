@@ -8,8 +8,8 @@ import java.sql.Timestamp;
 
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record8;
-import org.jooq.Row8;
+import org.jooq.Record9;
+import org.jooq.Row9;
 import org.jooq.impl.UpdatableRecordImpl;
 
 import raubach.frickl.next.codegen.tables.Albums;
@@ -20,7 +20,7 @@ import raubach.frickl.next.codegen.tables.Albums;
  * folders on the file system.
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements Record8<Integer, String, String, String, Integer, Integer, Timestamp, Timestamp> {
+public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements Record9<Integer, String, String, String, Integer, Integer, Integer, Timestamp, Timestamp> {
 
     private static final long serialVersionUID = 1L;
 
@@ -123,11 +123,27 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
     }
 
     /**
+     * Setter for <code>frickl.albums.created_by</code>. Optional user id. This
+     * indicates which user created this album.
+     */
+    public void setCreatedBy(Integer value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>frickl.albums.created_by</code>. Optional user id. This
+     * indicates which user created this album.
+     */
+    public Integer getCreatedBy() {
+        return (Integer) get(6);
+    }
+
+    /**
      * Setter for <code>frickl.albums.created_on</code>. When this record has
      * been created.
      */
     public void setCreatedOn(Timestamp value) {
-        set(6, value);
+        set(7, value);
     }
 
     /**
@@ -135,7 +151,7 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
      * been created.
      */
     public Timestamp getCreatedOn() {
-        return (Timestamp) get(6);
+        return (Timestamp) get(7);
     }
 
     /**
@@ -143,7 +159,7 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
      * last been updated.
      */
     public void setUpdatedOn(Timestamp value) {
-        set(7, value);
+        set(8, value);
     }
 
     /**
@@ -151,7 +167,7 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
      * last been updated.
      */
     public Timestamp getUpdatedOn() {
-        return (Timestamp) get(7);
+        return (Timestamp) get(8);
     }
 
     // -------------------------------------------------------------------------
@@ -164,17 +180,17 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
     }
 
     // -------------------------------------------------------------------------
-    // Record8 type implementation
+    // Record9 type implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public Row8<Integer, String, String, String, Integer, Integer, Timestamp, Timestamp> fieldsRow() {
-        return (Row8) super.fieldsRow();
+    public Row9<Integer, String, String, String, Integer, Integer, Integer, Timestamp, Timestamp> fieldsRow() {
+        return (Row9) super.fieldsRow();
     }
 
     @Override
-    public Row8<Integer, String, String, String, Integer, Integer, Timestamp, Timestamp> valuesRow() {
-        return (Row8) super.valuesRow();
+    public Row9<Integer, String, String, String, Integer, Integer, Integer, Timestamp, Timestamp> valuesRow() {
+        return (Row9) super.valuesRow();
     }
 
     @Override
@@ -208,12 +224,17 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
     }
 
     @Override
-    public Field<Timestamp> field7() {
-        return Albums.ALBUMS.CREATED_ON;
+    public Field<Integer> field7() {
+        return Albums.ALBUMS.CREATED_BY;
     }
 
     @Override
     public Field<Timestamp> field8() {
+        return Albums.ALBUMS.CREATED_ON;
+    }
+
+    @Override
+    public Field<Timestamp> field9() {
         return Albums.ALBUMS.UPDATED_ON;
     }
 
@@ -248,12 +269,17 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
     }
 
     @Override
-    public Timestamp component7() {
-        return getCreatedOn();
+    public Integer component7() {
+        return getCreatedBy();
     }
 
     @Override
     public Timestamp component8() {
+        return getCreatedOn();
+    }
+
+    @Override
+    public Timestamp component9() {
         return getUpdatedOn();
     }
 
@@ -288,12 +314,17 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
     }
 
     @Override
-    public Timestamp value7() {
-        return getCreatedOn();
+    public Integer value7() {
+        return getCreatedBy();
     }
 
     @Override
     public Timestamp value8() {
+        return getCreatedOn();
+    }
+
+    @Override
+    public Timestamp value9() {
         return getUpdatedOn();
     }
 
@@ -334,19 +365,25 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
     }
 
     @Override
-    public AlbumsRecord value7(Timestamp value) {
-        setCreatedOn(value);
+    public AlbumsRecord value7(Integer value) {
+        setCreatedBy(value);
         return this;
     }
 
     @Override
     public AlbumsRecord value8(Timestamp value) {
+        setCreatedOn(value);
+        return this;
+    }
+
+    @Override
+    public AlbumsRecord value9(Timestamp value) {
         setUpdatedOn(value);
         return this;
     }
 
     @Override
-    public AlbumsRecord values(Integer value1, String value2, String value3, String value4, Integer value5, Integer value6, Timestamp value7, Timestamp value8) {
+    public AlbumsRecord values(Integer value1, String value2, String value3, String value4, Integer value5, Integer value6, Integer value7, Timestamp value8, Timestamp value9) {
         value1(value1);
         value2(value2);
         value3(value3);
@@ -355,6 +392,7 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
         value6(value6);
         value7(value7);
         value8(value8);
+        value9(value9);
         return this;
     }
 
@@ -372,7 +410,7 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
     /**
      * Create a detached, initialised AlbumsRecord
      */
-    public AlbumsRecord(Integer id, String name, String description, String path, Integer bannerImageId, Integer parentAlbumId, Timestamp createdOn, Timestamp updatedOn) {
+    public AlbumsRecord(Integer id, String name, String description, String path, Integer bannerImageId, Integer parentAlbumId, Integer createdBy, Timestamp createdOn, Timestamp updatedOn) {
         super(Albums.ALBUMS);
 
         setId(id);
@@ -381,6 +419,7 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
         setPath(path);
         setBannerImageId(bannerImageId);
         setParentAlbumId(parentAlbumId);
+        setCreatedBy(createdBy);
         setCreatedOn(createdOn);
         setUpdatedOn(updatedOn);
     }
@@ -398,6 +437,7 @@ public class AlbumsRecord extends UpdatableRecordImpl<AlbumsRecord> implements R
             setPath(value.getPath());
             setBannerImageId(value.getBannerImageId());
             setParentAlbumId(value.getParentAlbumId());
+            setCreatedBy(value.getCreatedBy());
             setCreatedOn(value.getCreatedOn());
             setUpdatedOn(value.getUpdatedOn());
         }

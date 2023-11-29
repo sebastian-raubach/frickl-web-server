@@ -23,6 +23,7 @@ public class Albums implements Serializable {
     private String    path;
     private Integer   bannerImageId;
     private Integer   parentAlbumId;
+    private Integer   createdBy;
     private Timestamp createdOn;
     private Timestamp updatedOn;
 
@@ -35,6 +36,7 @@ public class Albums implements Serializable {
         this.path = value.path;
         this.bannerImageId = value.bannerImageId;
         this.parentAlbumId = value.parentAlbumId;
+        this.createdBy = value.createdBy;
         this.createdOn = value.createdOn;
         this.updatedOn = value.updatedOn;
     }
@@ -46,6 +48,7 @@ public class Albums implements Serializable {
         String    path,
         Integer   bannerImageId,
         Integer   parentAlbumId,
+        Integer   createdBy,
         Timestamp createdOn,
         Timestamp updatedOn
     ) {
@@ -55,6 +58,7 @@ public class Albums implements Serializable {
         this.path = path;
         this.bannerImageId = bannerImageId;
         this.parentAlbumId = parentAlbumId;
+        this.createdBy = createdBy;
         this.createdOn = createdOn;
         this.updatedOn = updatedOn;
     }
@@ -158,6 +162,22 @@ public class Albums implements Serializable {
     }
 
     /**
+     * Getter for <code>frickl.albums.created_by</code>. Optional user id. This
+     * indicates which user created this album.
+     */
+    public Integer getCreatedBy() {
+        return this.createdBy;
+    }
+
+    /**
+     * Setter for <code>frickl.albums.created_by</code>. Optional user id. This
+     * indicates which user created this album.
+     */
+    public void setCreatedBy(Integer createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    /**
      * Getter for <code>frickl.albums.created_on</code>. When this record has
      * been created.
      */
@@ -199,6 +219,7 @@ public class Albums implements Serializable {
         sb.append(", ").append(path);
         sb.append(", ").append(bannerImageId);
         sb.append(", ").append(parentAlbumId);
+        sb.append(", ").append(createdBy);
         sb.append(", ").append(createdOn);
         sb.append(", ").append(updatedOn);
 

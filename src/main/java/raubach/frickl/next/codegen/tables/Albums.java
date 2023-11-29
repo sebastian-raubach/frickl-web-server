@@ -14,7 +14,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row8;
+import org.jooq.Row9;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -90,6 +90,12 @@ public class Albums extends TableImpl<AlbumsRecord> {
     public final TableField<AlbumsRecord, Integer> PARENT_ALBUM_ID = createField(DSL.name("parent_album_id"), SQLDataType.INTEGER, this, "Optional parent album id. If this album is a sub-album of another album, this parent album can be defined here.");
 
     /**
+     * The column <code>frickl.albums.created_by</code>. Optional user id. This
+     * indicates which user created this album.
+     */
+    public final TableField<AlbumsRecord, Integer> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.INTEGER, this, "Optional user id. This indicates which user created this album.");
+
+    /**
      * The column <code>frickl.albums.created_on</code>. When this record has
      * been created.
      */
@@ -141,7 +147,7 @@ public class Albums extends TableImpl<AlbumsRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.ALBUMS_BANNER_IMAGE_ID, Indexes.ALBUMS_PARENT_ALBUM_ID);
+        return Arrays.asList(Indexes.ALBUMS_BANNER_IMAGE_ID, Indexes.ALBUMS_CREATED_BY, Indexes.ALBUMS_PARENT_ALBUM_ID);
     }
 
     @Override
@@ -156,11 +162,12 @@ public class Albums extends TableImpl<AlbumsRecord> {
 
     @Override
     public List<ForeignKey<AlbumsRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.ALBUMS_IBFK_1, Keys.ALBUMS_IBFK_2);
+        return Arrays.asList(Keys.ALBUMS_IBFK_1, Keys.ALBUMS_IBFK_2, Keys.ALBUMS_IBFK_3);
     }
 
     private transient Images _images;
     private transient Albums _albums;
+    private transient Users _users;
 
     /**
      * Get the implicit join path to the <code>frickl.images</code> table.
@@ -180,6 +187,16 @@ public class Albums extends TableImpl<AlbumsRecord> {
             _albums = new Albums(this, Keys.ALBUMS_IBFK_2);
 
         return _albums;
+    }
+
+    /**
+     * Get the implicit join path to the <code>frickl.users</code> table.
+     */
+    public Users users() {
+        if (_users == null)
+            _users = new Users(this, Keys.ALBUMS_IBFK_3);
+
+        return _users;
     }
 
     @Override
@@ -209,11 +226,11 @@ public class Albums extends TableImpl<AlbumsRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row8 type methods
+    // Row9 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row8<Integer, String, String, String, Integer, Integer, Timestamp, Timestamp> fieldsRow() {
-        return (Row8) super.fieldsRow();
+    public Row9<Integer, String, String, String, Integer, Integer, Integer, Timestamp, Timestamp> fieldsRow() {
+        return (Row9) super.fieldsRow();
     }
 }

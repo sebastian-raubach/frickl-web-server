@@ -10,7 +10,8 @@ import jakarta.ws.rs.container.*;
 import jakarta.ws.rs.core.*;
 import jakarta.ws.rs.ext.Provider;
 import org.jooq.tools.StringUtils;
-import raubach.frickl.next.util.CollectionUtils;
+import raubach.frickl.next.codegen.enums.UsersViewType;
+import raubach.frickl.next.util.*;
 import raubach.frickl.next.util.watcher.PropertyWatcher;
 
 import java.io.IOException;
@@ -29,8 +30,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter
 {
-	public static final long AGE = 604_800_000; // 7 days
-	private static final String REALM                 = "example";
+	public static final  long                     AGE                   = 604_800_000; // 7 days
+	private static final String                   REALM                 = "example";
 	private static final String                   AUTHENTICATION_SCHEME = "Bearer";
 	private static final Map<String, UserDetails> tokenToTimestamp      = new ConcurrentHashMap<>();
 	private static final Map<String, String>      tokenToImageToken     = new ConcurrentHashMap<>();
@@ -41,7 +42,7 @@ public class AuthenticationFilter implements ContainerRequestFilter
 	@Context
 	private HttpServletResponse response;
 	@Context
-	private ResourceInfo resourceInfo;
+	private ResourceInfo        resourceInfo;
 
 	public static void updateAcceptedDatasets(HttpServletRequest req, HttpServletResponse resp, Integer licenseId)
 	{
@@ -64,13 +65,15 @@ public class AuthenticationFilter implements ContainerRequestFilter
 		tokenToImageToken.clear();
 	}
 
-	public static void addToken(HttpServletRequest request, HttpServletResponse response, String token, String imageToken)
+	public static void addToken(HttpServletRequest request, HttpServletResponse response, String token, String imageToken, Integer userId, Short userPermissions)
 	{
 		setCookie(token, request, response);
 		UserDetails details = new UserDetails();
+		details.id = userId;
 		details.timestamp = System.currentTimeMillis();
 		details.imageToken = imageToken;
 		details.token = token;
+		details.permissions = userPermissions;
 		tokenToTimestamp.put(token, details);
 		tokenToImageToken.put(token, details.imageToken);
 	}
@@ -195,7 +198,7 @@ public class AuthenticationFilter implements ContainerRequestFilter
 
 	@Override
 	public void filter(ContainerRequestContext requestContext)
-		throws IOException
+			throws IOException
 	{
 		// Get the Authorization header from the request
 		String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
@@ -224,7 +227,7 @@ public class AuthenticationFilter implements ContainerRequestFilter
 
 				if (details == null)
 				{
-					details = new UserDetails(null, null, AGE);
+					details = new UserDetails(null, null, null, AGE);
 				}
 
 				return details;
@@ -233,7 +236,21 @@ public class AuthenticationFilter implements ContainerRequestFilter
 			@Override
 			public boolean isUserInRole(String role)
 			{
-				return true;
+				UserDetails details = finalToken == null ? null : tokenToTimestamp.get(finalToken);
+
+				if (details == null)
+					return false;
+
+				try
+				{
+					Permission required = Permission.valueOf(role);
+
+					return required.allows(details.getPermissions());
+				}
+				catch (Exception e)
+				{
+					return false;
+				}
 			}
 
 			@Override
@@ -259,7 +276,8 @@ public class AuthenticationFilter implements ContainerRequestFilter
 
 			try
 			{
-				if (PropertyWatcher.authEnabled() && (token != null || (!isClassFree && !isMethodFree))) {
+				if (PropertyWatcher.authEnabled() && (token != null || (!isClassFree && !isMethodFree)))
+				{
 					validateToken(token);
 				}
 			}
@@ -336,19 +354,35 @@ public class AuthenticationFilter implements ContainerRequestFilter
 
 	public static class UserDetails implements Principal
 	{
-		private String token;
-		private String imageToken;
-		private Long   timestamp;
+		private Integer       id;
+		private String        token;
+		private String        imageToken;
+		private short         permissions = 0;
+		private Long          timestamp;
+		private UsersViewType viewType    = UsersViewType.ALBUM_PERMISSION;
 
 		public UserDetails()
 		{
 		}
 
-		public UserDetails(String token, String imageToken, Long timestamp)
+		public UserDetails(Integer id, String token, String imageToken, Long timestamp)
 		{
+			this.id = id;
 			this.token = token;
 			this.imageToken = imageToken;
 			this.timestamp = timestamp;
+		}
+
+		public UserDetails(Integer id, String token, String imageToken, short permission, UsersViewType viewType, Long timestamp)
+		{
+			this(id, token, imageToken, timestamp);
+			this.permissions = permission;
+			this.viewType = viewType;
+		}
+
+		public Integer getId()
+		{
+			return id;
 		}
 
 		public String getToken()
@@ -361,6 +395,16 @@ public class AuthenticationFilter implements ContainerRequestFilter
 			return imageToken;
 		}
 
+		public short getPermissions()
+		{
+			return permissions;
+		}
+
+		public UsersViewType getViewType()
+		{
+			return viewType;
+		}
+
 		public Long getTimestamp()
 		{
 			return timestamp;
@@ -370,10 +414,13 @@ public class AuthenticationFilter implements ContainerRequestFilter
 		public String toString()
 		{
 			return "UserDetails{" +
-				", token='" + token + '\'' +
-				", imageToken='" + imageToken + '\'' +
-				", timestamp=" + timestamp +
-				'}';
+					"id=" + id +
+					", token='" + token + '\'' +
+					", imageToken='" + imageToken + '\'' +
+					", permissions=" + permissions +
+					", timestamp=" + timestamp +
+					", viewType=" + viewType +
+					'}';
 		}
 
 		@Override

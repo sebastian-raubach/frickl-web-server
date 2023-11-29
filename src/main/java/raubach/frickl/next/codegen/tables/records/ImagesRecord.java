@@ -8,8 +8,8 @@ import java.sql.Timestamp;
 
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record11;
-import org.jooq.Row11;
+import org.jooq.Record12;
+import org.jooq.Row12;
 import org.jooq.impl.UpdatableRecordImpl;
 
 import raubach.frickl.next.codegen.enums.ImagesDataType;
@@ -21,7 +21,7 @@ import raubach.frickl.next.pojo.Exif;
  * This table contains images from the file system.
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements Record11<Integer, String, String, Byte, Exif, Integer, Byte, Integer, ImagesDataType, Timestamp, Timestamp> {
+public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements Record12<Integer, String, String, Byte, Exif, Integer, Byte, Integer, ImagesDataType, Integer, Timestamp, Timestamp> {
 
     private static final long serialVersionUID = 1L;
 
@@ -164,11 +164,27 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     /**
+     * Setter for <code>frickl.images.created_by</code>. Optional user id.
+     * Indicates which user created/uploaded this image.
+     */
+    public void setCreatedBy(Integer value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>frickl.images.created_by</code>. Optional user id.
+     * Indicates which user created/uploaded this image.
+     */
+    public Integer getCreatedBy() {
+        return (Integer) get(9);
+    }
+
+    /**
      * Setter for <code>frickl.images.created_on</code>. When this record has
      * been created.
      */
     public void setCreatedOn(Timestamp value) {
-        set(9, value);
+        set(10, value);
     }
 
     /**
@@ -176,7 +192,7 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
      * been created.
      */
     public Timestamp getCreatedOn() {
-        return (Timestamp) get(9);
+        return (Timestamp) get(10);
     }
 
     /**
@@ -184,7 +200,7 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
      * last been updated.
      */
     public void setUpdatedOn(Timestamp value) {
-        set(10, value);
+        set(11, value);
     }
 
     /**
@@ -192,7 +208,7 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
      * last been updated.
      */
     public Timestamp getUpdatedOn() {
-        return (Timestamp) get(10);
+        return (Timestamp) get(11);
     }
 
     // -------------------------------------------------------------------------
@@ -205,17 +221,17 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     // -------------------------------------------------------------------------
-    // Record11 type implementation
+    // Record12 type implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public Row11<Integer, String, String, Byte, Exif, Integer, Byte, Integer, ImagesDataType, Timestamp, Timestamp> fieldsRow() {
-        return (Row11) super.fieldsRow();
+    public Row12<Integer, String, String, Byte, Exif, Integer, Byte, Integer, ImagesDataType, Integer, Timestamp, Timestamp> fieldsRow() {
+        return (Row12) super.fieldsRow();
     }
 
     @Override
-    public Row11<Integer, String, String, Byte, Exif, Integer, Byte, Integer, ImagesDataType, Timestamp, Timestamp> valuesRow() {
-        return (Row11) super.valuesRow();
+    public Row12<Integer, String, String, Byte, Exif, Integer, Byte, Integer, ImagesDataType, Integer, Timestamp, Timestamp> valuesRow() {
+        return (Row12) super.valuesRow();
     }
 
     @Override
@@ -264,12 +280,17 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     @Override
-    public Field<Timestamp> field10() {
-        return Images.IMAGES.CREATED_ON;
+    public Field<Integer> field10() {
+        return Images.IMAGES.CREATED_BY;
     }
 
     @Override
     public Field<Timestamp> field11() {
+        return Images.IMAGES.CREATED_ON;
+    }
+
+    @Override
+    public Field<Timestamp> field12() {
         return Images.IMAGES.UPDATED_ON;
     }
 
@@ -319,12 +340,17 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     @Override
-    public Timestamp component10() {
-        return getCreatedOn();
+    public Integer component10() {
+        return getCreatedBy();
     }
 
     @Override
     public Timestamp component11() {
+        return getCreatedOn();
+    }
+
+    @Override
+    public Timestamp component12() {
         return getUpdatedOn();
     }
 
@@ -374,12 +400,17 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     @Override
-    public Timestamp value10() {
-        return getCreatedOn();
+    public Integer value10() {
+        return getCreatedBy();
     }
 
     @Override
     public Timestamp value11() {
+        return getCreatedOn();
+    }
+
+    @Override
+    public Timestamp value12() {
         return getUpdatedOn();
     }
 
@@ -438,19 +469,25 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     }
 
     @Override
-    public ImagesRecord value10(Timestamp value) {
-        setCreatedOn(value);
+    public ImagesRecord value10(Integer value) {
+        setCreatedBy(value);
         return this;
     }
 
     @Override
     public ImagesRecord value11(Timestamp value) {
+        setCreatedOn(value);
+        return this;
+    }
+
+    @Override
+    public ImagesRecord value12(Timestamp value) {
         setUpdatedOn(value);
         return this;
     }
 
     @Override
-    public ImagesRecord values(Integer value1, String value2, String value3, Byte value4, Exif value5, Integer value6, Byte value7, Integer value8, ImagesDataType value9, Timestamp value10, Timestamp value11) {
+    public ImagesRecord values(Integer value1, String value2, String value3, Byte value4, Exif value5, Integer value6, Byte value7, Integer value8, ImagesDataType value9, Integer value10, Timestamp value11, Timestamp value12) {
         value1(value1);
         value2(value2);
         value3(value3);
@@ -462,6 +499,7 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
         value9(value9);
         value10(value10);
         value11(value11);
+        value12(value12);
         return this;
     }
 
@@ -479,7 +517,7 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
     /**
      * Create a detached, initialised ImagesRecord
      */
-    public ImagesRecord(Integer id, String path, String name, Byte isFavorite, Exif exif, Integer albumId, Byte isPublic, Integer viewCount, ImagesDataType dataType, Timestamp createdOn, Timestamp updatedOn) {
+    public ImagesRecord(Integer id, String path, String name, Byte isFavorite, Exif exif, Integer albumId, Byte isPublic, Integer viewCount, ImagesDataType dataType, Integer createdBy, Timestamp createdOn, Timestamp updatedOn) {
         super(Images.IMAGES);
 
         setId(id);
@@ -491,6 +529,7 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
         setIsPublic(isPublic);
         setViewCount(viewCount);
         setDataType(dataType);
+        setCreatedBy(createdBy);
         setCreatedOn(createdOn);
         setUpdatedOn(updatedOn);
     }
@@ -511,6 +550,7 @@ public class ImagesRecord extends UpdatableRecordImpl<ImagesRecord> implements R
             setIsPublic(value.getIsPublic());
             setViewCount(value.getViewCount());
             setDataType(value.getDataType());
+            setCreatedBy(value.getCreatedBy());
             setCreatedOn(value.getCreatedOn());
             setUpdatedOn(value.getUpdatedOn());
         }

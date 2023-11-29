@@ -11,7 +11,7 @@ import raubach.frickl.next.auth.*;
 import raubach.frickl.next.codegen.enums.ImagesDataType;
 import raubach.frickl.next.codegen.tables.pojos.*;
 import raubach.frickl.next.resource.AbstractAccessTokenResource;
-import raubach.frickl.next.util.TagUtils;
+import raubach.frickl.next.util.*;
 import raubach.frickl.next.util.watcher.PropertyWatcher;
 
 import java.io.*;
@@ -27,7 +27,6 @@ import static raubach.frickl.next.codegen.tables.Images.IMAGES;
 import static raubach.frickl.next.codegen.tables.Tags.TAGS;
 
 @Path("image/{imageId:\\d+}/tag")
-@Secured
 public class ImageTagResource extends AbstractAccessTokenResource
 {
 	@PathParam("imageId")
@@ -37,6 +36,7 @@ public class ImageTagResource extends AbstractAccessTokenResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PermitAll
+	@Secured
 	public Response getImageTags()
 			throws IOException, SQLException
 	{
@@ -88,6 +88,7 @@ public class ImageTagResource extends AbstractAccessTokenResource
 	@Path("/{tagId:\\d+}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@Secured(Permission.TAG)
 	public Response deleteTagFromImage(@PathParam("tagId") Integer tagId)
 			throws SQLException
 	{

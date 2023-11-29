@@ -16,24 +16,32 @@
 
 package raubach.frickl.next.pojo;
 
+import raubach.frickl.next.util.Permission;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
 /**
  * @author Sebastian Raubach
  */
 public class Token
 {
-	private String token;
-	private String imageToken;
-	private Long   lifetime;
-	private Long   createdOn;
+	private String               token;
+	private String               imageToken;
+	private Short                permissions;
+	private List<UserPermission> allPermissions = Arrays.stream(Permission.values()).map(p -> new UserPermission(p.name(), p.getNumericValue())).collect(Collectors.toList());
+	private Long                 lifetime;
+	private Long                 createdOn;
 
 	public Token()
 	{
 	}
 
-	public Token(String token, String imageToken, Long lifetime, Long createdOn)
+	public Token(String token, String imageToken, Short permissions, Long lifetime, Long createdOn)
 	{
 		this.token = token;
 		this.imageToken = imageToken;
+		this.permissions = permissions;
 		this.lifetime = lifetime;
 		this.createdOn = createdOn;
 	}
@@ -58,6 +66,22 @@ public class Token
 	{
 		this.imageToken = imageToken;
 		return this;
+	}
+
+	public Short getPermissions()
+	{
+		return permissions;
+	}
+
+	public Token setPermissions(Short permissions)
+	{
+		this.permissions = permissions;
+		return this;
+	}
+
+	public List<UserPermission> getAllPermissions()
+	{
+		return allPermissions;
 	}
 
 	public Long getLifetime()

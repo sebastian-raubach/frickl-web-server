@@ -18,6 +18,7 @@ import raubach.frickl.next.codegen.tables.LatLngs;
 import raubach.frickl.next.codegen.tables.SchemaVersion;
 import raubach.frickl.next.codegen.tables.StatsCamera;
 import raubach.frickl.next.codegen.tables.Tags;
+import raubach.frickl.next.codegen.tables.Users;
 
 
 /**
@@ -99,4 +100,9 @@ public class Tables {
      * to images.
      */
     public static final Tags TAGS = Tags.TAGS;
+
+    /**
+     * The table <code>frickl.users</code>.
+     */
+    public static final Users USERS = Users.USERS;
 }

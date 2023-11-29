@@ -18,14 +18,19 @@ package raubach.frickl.next.resource;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
-import org.jooq.tools.StringUtils;
+import org.jooq.DSLContext;
+import raubach.frickl.next.Database;
 import raubach.frickl.next.auth.*;
+import raubach.frickl.next.codegen.tables.records.UsersRecord;
 import raubach.frickl.next.pojo.*;
-import raubach.frickl.next.util.ServerProperty;
 import raubach.frickl.next.util.watcher.PropertyWatcher;
 
 import java.io.IOException;
+import java.sql.*;
 import java.util.*;
+import java.util.logging.*;
+
+import static raubach.frickl.next.codegen.tables.Users.USERS;
 
 /**
  * @author Sebastian Raubach
@@ -33,12 +38,14 @@ import java.util.*;
 @Path("token")
 public class TokenResource extends ContextResource
 {
+	public static Integer SALT = 10;
+
 	@DELETE
 	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteToken(LoginDetails user)
-		throws IOException
+			throws IOException
 	{
 		boolean enabled = PropertyWatcher.authEnabled();
 
@@ -51,7 +58,7 @@ public class TokenResource extends ContextResource
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 
 		if (userDetails == null || !Objects.equals(userDetails.getToken(), user.getPassword()))
-		return Response.status(Response.Status.FORBIDDEN.getStatusCode(), StatusMessage.FORBIDDEN_ACCESS_TO_OTHER_USER).build();
+			return Response.status(Response.Status.FORBIDDEN.getStatusCode(), StatusMessage.FORBIDDEN_ACCESS_TO_OTHER_USER).build();
 
 		try
 		{
@@ -71,32 +78,69 @@ public class TokenResource extends ContextResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response postToken(LoginDetails request)
-		throws IOException
+			throws IOException, SQLException
 	{
-		boolean enabled = PropertyWatcher.authEnabled();
-
-		if (!enabled)
-			return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-
-		String username = PropertyWatcher.get(ServerProperty.ADMIN_USERNAME);
-		String password = PropertyWatcher.get(ServerProperty.ADMIN_PASSWORD);
-
-		boolean canAccess = !StringUtils.isEmpty(request.getUsername()) && !StringUtils.isEmpty(request.getPassword()) && Objects.equals(username, request.getUsername()) && Objects.equals(password, request.getPassword());
-
+		boolean canAccess;
 		String token;
 		String imageToken;
+		UsersRecord user;
+
+		try (Connection conn = Database.getConnection())
+		{
+			DSLContext context = Database.getContext(conn);
+			user = context.selectFrom(USERS)
+						  .where(USERS.USERNAME.eq(request.getUsername()))
+						  .fetchAny();
+
+			if (user != null)
+			{
+				canAccess = BCrypt.checkpw(request.getPassword(), user.getPassword());
+
+				if (canAccess)
+				{
+					// Keep track of this last login event
+					user.setLastLogin(new Timestamp(System.currentTimeMillis()));
+					user.store(USERS.LAST_LOGIN);
+				}
+			}
+			else
+			{
+				Logger.getLogger("").log(Level.SEVERE, "User not found: " + request.getUsername());
+				return Response.status(Response.Status.FORBIDDEN.getStatusCode(), StatusMessage.FORBIDDEN_INVALID_CREDENTIALS).build();
+			}
+		}
 
 		if (canAccess)
 		{
 			token = UUID.randomUUID().toString();
 			imageToken = UUID.randomUUID().toString();
-			AuthenticationFilter.addToken(req, resp, token, imageToken);
+			AuthenticationFilter.addToken(this.req, this.resp, token, imageToken, user.getId(), user.getPermissions());
+
+			// The salt may have changed since the last time, so update the password in the database with the new salt.
+			String saltedPassword = BCrypt.hashpw(request.getPassword(), BCrypt.gensalt(SALT));
+
+			if (!Objects.equals(saltedPassword, user.getPassword()))
+			{
+				try (Connection conn = Database.getConnection())
+				{
+					DSLContext context = Database.getContext(conn);
+					context.update(USERS)
+						   .set(USERS.PASSWORD, saltedPassword)
+						   .where(USERS.ID.eq(user.getId()))
+						   .execute();
+				}
+				catch (SQLException e)
+				{
+					Logger.getLogger("").info(e.getMessage());
+					e.printStackTrace();
+				}
+			}
 		}
 		else
 		{
 			return Response.status(Response.Status.FORBIDDEN.getStatusCode(), StatusMessage.FORBIDDEN_INVALID_CREDENTIALS).build();
 		}
 
-		return Response.ok(new Token(token, imageToken, AuthenticationFilter.AGE, System.currentTimeMillis())).build();
+		return Response.ok(new Token(token, imageToken, user.getPermissions(), AuthenticationFilter.AGE, System.currentTimeMillis())).build();
 	}
 }

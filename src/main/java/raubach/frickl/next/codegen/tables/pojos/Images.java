@@ -28,6 +28,7 @@ public class Images implements Serializable {
     private Byte           isPublic;
     private Integer        viewCount;
     private ImagesDataType dataType;
+    private Integer        createdBy;
     private Timestamp      createdOn;
     private Timestamp      updatedOn;
 
@@ -43,6 +44,7 @@ public class Images implements Serializable {
         this.isPublic = value.isPublic;
         this.viewCount = value.viewCount;
         this.dataType = value.dataType;
+        this.createdBy = value.createdBy;
         this.createdOn = value.createdOn;
         this.updatedOn = value.updatedOn;
     }
@@ -57,6 +59,7 @@ public class Images implements Serializable {
         Byte           isPublic,
         Integer        viewCount,
         ImagesDataType dataType,
+        Integer        createdBy,
         Timestamp      createdOn,
         Timestamp      updatedOn
     ) {
@@ -69,6 +72,7 @@ public class Images implements Serializable {
         this.isPublic = isPublic;
         this.viewCount = viewCount;
         this.dataType = dataType;
+        this.createdBy = createdBy;
         this.createdOn = createdOn;
         this.updatedOn = updatedOn;
     }
@@ -212,6 +216,22 @@ public class Images implements Serializable {
     }
 
     /**
+     * Getter for <code>frickl.images.created_by</code>. Optional user id.
+     * Indicates which user created/uploaded this image.
+     */
+    public Integer getCreatedBy() {
+        return this.createdBy;
+    }
+
+    /**
+     * Setter for <code>frickl.images.created_by</code>. Optional user id.
+     * Indicates which user created/uploaded this image.
+     */
+    public void setCreatedBy(Integer createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    /**
      * Getter for <code>frickl.images.created_on</code>. When this record has
      * been created.
      */
@@ -256,6 +276,7 @@ public class Images implements Serializable {
         sb.append(", ").append(isPublic);
         sb.append(", ").append(viewCount);
         sb.append(", ").append(dataType);
+        sb.append(", ").append(createdBy);
         sb.append(", ").append(createdOn);
         sb.append(", ").append(updatedOn);
 

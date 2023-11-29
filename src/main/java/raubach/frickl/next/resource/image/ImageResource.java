@@ -13,7 +13,7 @@ import raubach.frickl.next.codegen.tables.pojos.*;
 import raubach.frickl.next.codegen.tables.records.ImagesRecord;
 import raubach.frickl.next.pojo.*;
 import raubach.frickl.next.resource.AbstractAccessTokenResource;
-import raubach.frickl.next.util.ThumbnailUtils;
+import raubach.frickl.next.util.*;
 import raubach.frickl.next.util.watcher.PropertyWatcher;
 
 import java.io.File;
@@ -30,13 +30,13 @@ import static raubach.frickl.next.codegen.tables.Images.IMAGES;
 import static raubach.frickl.next.codegen.tables.Tags.TAGS;
 
 @Path("image")
-@Secured
 public class ImageResource extends AbstractAccessTokenResource
 {
 	@GET
 	@Path("/{imageId:\\d+}/hierarchy")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@Secured
 	@PermitAll
 	public Response getImageAlbumHierarchy(@PathParam("imageId") Integer imageId)
 			throws
@@ -71,6 +71,7 @@ public class ImageResource extends AbstractAccessTokenResource
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@Secured
 	@PermitAll
 	public Response postImages(ImageRequest request)
 			throws SQLException
@@ -142,6 +143,7 @@ public class ImageResource extends AbstractAccessTokenResource
 	@Path("/{imageId:\\d+}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@Secured
 	@PermitAll
 	public Response getImageById(@PathParam("imageId") Integer imageId)
 			throws IOException, SQLException
@@ -186,6 +188,7 @@ public class ImageResource extends AbstractAccessTokenResource
 	@Path("/{imageId:\\d+}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@Secured(Permission.IMAGE_UPLOAD)
 	public Response patchImage(@PathParam("imageId") Integer imageId, Images image)
 			throws IOException, SQLException
 	{
@@ -219,6 +222,7 @@ public class ImageResource extends AbstractAccessTokenResource
 	@Path("/{imageId:\\d+}/img/{filename}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces({"image/png", "image/jpeg", "image/svg+xml", "image/*"})
+	@Secured
 	@PermitAll
 	public Response getImageSrcWName(@PathParam("imageId") Integer imageId, @QueryParam("token") String token, @QueryParam("size") ThumbnailUtils.Size size)
 			throws IOException, SQLException
@@ -230,6 +234,7 @@ public class ImageResource extends AbstractAccessTokenResource
 	@Path("/{imageId:\\d+}/img")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces({"image/png", "image/jpeg", "image/svg+xml", "image/*"})
+	@Secured
 	@PermitAll
 	public Response getImageSrc(@PathParam("imageId") Integer imageId, @QueryParam("token") String token, @QueryParam("size") ThumbnailUtils.Size size)
 			throws IOException, SQLException

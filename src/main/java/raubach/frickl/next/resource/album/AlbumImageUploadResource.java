@@ -12,6 +12,7 @@ import raubach.frickl.next.auth.*;
 import raubach.frickl.next.codegen.enums.ImagesDataType;
 import raubach.frickl.next.codegen.tables.records.*;
 import raubach.frickl.next.resource.ContextResource;
+import raubach.frickl.next.util.Permission;
 import raubach.frickl.next.util.watcher.PropertyWatcher;
 
 import java.io.*;
@@ -24,7 +25,7 @@ import static raubach.frickl.next.codegen.tables.Albums.ALBUMS;
 import static raubach.frickl.next.codegen.tables.Images.IMAGES;
 
 @Path("album/{albumId:\\d+}/upload/image")
-@Secured
+@Secured(Permission.IMAGE_UPLOAD)
 @MultipartConfig
 public class AlbumImageUploadResource extends ContextResource
 {
@@ -85,6 +86,7 @@ public class AlbumImageUploadResource extends ContextResource
 			image.setName(targetFile.getName());
 			image.setPath(relativePath);
 			image.setDataType(isVideo ? ImagesDataType.video : ImagesDataType.image);
+			image.setCreatedBy(userDetails.getId());
 			image.setCreatedOn(ts);
 			counter += image.store() > 0 ? 1 : 0;
 

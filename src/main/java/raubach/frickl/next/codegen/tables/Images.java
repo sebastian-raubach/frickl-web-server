@@ -14,7 +14,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row11;
+import org.jooq.Row12;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -106,6 +106,12 @@ public class Images extends TableImpl<ImagesRecord> {
     public final TableField<ImagesRecord, ImagesDataType> DATA_TYPE = createField(DSL.name("data_type"), SQLDataType.VARCHAR(5).nullable(false).defaultValue(DSL.inline("image", SQLDataType.VARCHAR)).asEnumDataType(raubach.frickl.next.codegen.enums.ImagesDataType.class), this, "");
 
     /**
+     * The column <code>frickl.images.created_by</code>. Optional user id.
+     * Indicates which user created/uploaded this image.
+     */
+    public final TableField<ImagesRecord, Integer> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.INTEGER, this, "Optional user id. Indicates which user created/uploaded this image.");
+
+    /**
      * The column <code>frickl.images.created_on</code>. When this record has
      * been created.
      */
@@ -157,7 +163,7 @@ public class Images extends TableImpl<ImagesRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.IMAGES_IMAGES_DATA_TYPE, Indexes.IMAGES_IMAGES_IS_PUBLIC);
+        return Arrays.asList(Indexes.IMAGES_CREATED_BY, Indexes.IMAGES_IMAGES_DATA_TYPE, Indexes.IMAGES_IMAGES_IS_PUBLIC);
     }
 
     @Override
@@ -172,10 +178,11 @@ public class Images extends TableImpl<ImagesRecord> {
 
     @Override
     public List<ForeignKey<ImagesRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.IMAGES_IBFK_1);
+        return Arrays.asList(Keys.IMAGES_IBFK_1, Keys.IMAGES_IBFK_2);
     }
 
     private transient Albums _albums;
+    private transient Users _users;
 
     /**
      * Get the implicit join path to the <code>frickl.albums</code> table.
@@ -185,6 +192,16 @@ public class Images extends TableImpl<ImagesRecord> {
             _albums = new Albums(this, Keys.IMAGES_IBFK_1);
 
         return _albums;
+    }
+
+    /**
+     * Get the implicit join path to the <code>frickl.users</code> table.
+     */
+    public Users users() {
+        if (_users == null)
+            _users = new Users(this, Keys.IMAGES_IBFK_2);
+
+        return _users;
     }
 
     @Override
@@ -214,11 +231,11 @@ public class Images extends TableImpl<ImagesRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row11 type methods
+    // Row12 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row11<Integer, String, String, Byte, Exif, Integer, Byte, Integer, ImagesDataType, Timestamp, Timestamp> fieldsRow() {
-        return (Row11) super.fieldsRow();
+    public Row12<Integer, String, String, Byte, Exif, Integer, Byte, Integer, ImagesDataType, Integer, Timestamp, Timestamp> fieldsRow() {
+        return (Row12) super.fieldsRow();
     }
 }

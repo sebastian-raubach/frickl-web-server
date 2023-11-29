@@ -122,8 +122,8 @@ public class AlbumResource extends AbstractAccessTokenResource
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Secured
-	public Response postAlbum(Albums album)
+	@Secured(Permission.ALBUM_CREATE)
+	public Response putAlbum(Albums album)
 			throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -160,6 +160,7 @@ public class AlbumResource extends AbstractAccessTokenResource
 
 			AlbumsRecord record = context.newRecord(ALBUMS, album);
 			record.setPath(base.toURI().relativize(location.toURI()).getPath());
+			record.setCreatedBy(userDetails.getId());
 			record.setCreatedOn(new Timestamp(System.currentTimeMillis()));
 			return Response.ok(record.store() > 0).build();
 		}
@@ -169,7 +170,7 @@ public class AlbumResource extends AbstractAccessTokenResource
 	@Path("/{albumId:\\d+}/scan")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Secured
+	@Secured(Permission.SETTINGS_CHANGE)
 	public Response startImageScanner(@PathParam("albumId") Integer albumId)
 			throws SQLException
 	{

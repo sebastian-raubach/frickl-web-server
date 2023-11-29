@@ -28,6 +28,8 @@ public class Indexes {
 
     public static final Index ACCESS_TOKENS_ACCESS_TOKENS_TOKEN = Internal.createIndex(DSL.name("access_tokens_token"), AccessTokens.ACCESS_TOKENS, new OrderField[] { AccessTokens.ACCESS_TOKENS.TOKEN }, false);
     public static final Index ALBUMS_BANNER_IMAGE_ID = Internal.createIndex(DSL.name("banner_image_id"), Albums.ALBUMS, new OrderField[] { Albums.ALBUMS.BANNER_IMAGE_ID }, false);
+    public static final Index ALBUMS_CREATED_BY = Internal.createIndex(DSL.name("created_by"), Albums.ALBUMS, new OrderField[] { Albums.ALBUMS.CREATED_BY }, false);
+    public static final Index IMAGES_CREATED_BY = Internal.createIndex(DSL.name("created_by"), Images.IMAGES, new OrderField[] { Images.IMAGES.CREATED_BY }, false);
     public static final Index IMAGES_IMAGES_DATA_TYPE = Internal.createIndex(DSL.name("images_data_type"), Images.IMAGES, new OrderField[] { Images.IMAGES.DATA_TYPE }, false);
     public static final Index IMAGES_IMAGES_IS_PUBLIC = Internal.createIndex(DSL.name("images_is_public"), Images.IMAGES, new OrderField[] { Images.IMAGES.IS_PUBLIC }, false);
     public static final Index ALBUMS_PARENT_ALBUM_ID = Internal.createIndex(DSL.name("parent_album_id"), Albums.ALBUMS, new OrderField[] { Albums.ALBUMS.PARENT_ALBUM_ID }, false);
