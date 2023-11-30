@@ -184,6 +184,24 @@ public class ImageResource extends AbstractAccessTokenResource
 		}
 	}
 
+	@DELETE
+	@Path("/{imageId:\\d+}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Secured(Permission.IMAGE_DELETE)
+	public Response deleteImage(@PathParam("imageId") Integer imageId) throws SQLException {
+		// TODO:
+//		if (imageId != null)
+//		{
+//			try (Connection conn = Database.getConnection())
+//			{
+//				ImagesRecord image = getImageRecord();
+//			}
+//		}
+
+		return Response.ok().build();
+	}
+
 	@PATCH
 	@Path("/{imageId:\\d+}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -230,6 +248,31 @@ public class ImageResource extends AbstractAccessTokenResource
 		return getImageSrc(imageId, token, size);
 	}
 
+	private ImagesRecord getImageRecord(DSLContext context, Integer imageId, String token) {
+		boolean auth = PropertyWatcher.authEnabled();
+
+		SelectConditionStep<Record> step = context.select().from(IMAGES)
+												  .where(IMAGES.ID.eq(imageId));
+
+		if (auth)
+		{
+			if (!StringUtils.isEmpty(accessToken))
+			{
+				step.and(DSL.exists(DSL.selectOne()
+									   .from(ALBUM_TOKENS)
+									   .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
+									   .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
+																 .and(ALBUM_TOKENS.ALBUM_ID.eq(IMAGES.ALBUM_ID)))));
+			}
+			else if (!AuthenticationFilter.isValidImageToken(token))
+			{
+				step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+			}
+		}
+
+		return step.fetchAnyInto(ImagesRecord.class);
+	}
+
 	@GET
 	@Path("/{imageId:\\d+}/img")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -239,33 +282,12 @@ public class ImageResource extends AbstractAccessTokenResource
 	public Response getImageSrc(@PathParam("imageId") Integer imageId, @QueryParam("token") String token, @QueryParam("size") ThumbnailUtils.Size size)
 			throws IOException, SQLException
 	{
-		boolean auth = PropertyWatcher.authEnabled();
-
 		if (imageId != null)
 		{
 			try (Connection conn = Database.getConnection())
 			{
 				DSLContext context = Database.getContext(conn);
-				SelectConditionStep<Record> step = context.select().from(IMAGES)
-														  .where(IMAGES.ID.eq(imageId));
-
-				if (auth)
-				{
-					if (!StringUtils.isEmpty(accessToken))
-					{
-						step.and(DSL.exists(DSL.selectOne()
-											   .from(ALBUM_TOKENS)
-											   .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
-											   .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
-																		 .and(ALBUM_TOKENS.ALBUM_ID.eq(IMAGES.ALBUM_ID)))));
-					}
-					else if (!AuthenticationFilter.isValidImageToken(token))
-					{
-						step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
-					}
-				}
-
-				ImagesRecord image = step.fetchAnyInto(ImagesRecord.class);
+				ImagesRecord image = getImageRecord(context, imageId, token);
 
 				if (image != null)
 				{

@@ -1,21 +1,27 @@
 package raubach.frickl.next.util;
 
+import java.util.Arrays;
+
 public enum Permission
 {
-	TAG(1),
-	IMAGE_UPLOAD(2),
-	IMAGE_DELETE(4),
-	ALBUM_CREATE(8),
-	ALBUM_DELETE(16),
-	SETTINGS_CHANGE(32);
+	TAG_ADD(1),
+	TAG_DELETE(2),
+	IMAGE_UPLOAD(4),
+	IMAGE_DELETE(8),
+	IMAGE_EDIT(16),
+	ALBUM_CREATE(32),
+	ALBUM_DELETE(64),
+	SETTINGS_CHANGE(128);
 
 	private final int value;
 
-	Permission(int value) {
+	Permission(int value)
+	{
 		this.value = value;
 	}
 
-	public int getNumericValue() {
+	public int getNumericValue()
+	{
 		return value;
 	}
 
@@ -24,7 +30,8 @@ public enum Permission
 		return (check & value) == value;
 	}
 
-	public static int getAll() {
-		return TAG.value | IMAGE_UPLOAD.value | IMAGE_DELETE.value | ALBUM_CREATE.value | ALBUM_DELETE.value | SETTINGS_CHANGE.value;
+	public static int getAll()
+	{
+		return Arrays.stream(values()).mapToInt(i -> i.value).reduce(0, (a, b) -> a | b);
 	}
 }

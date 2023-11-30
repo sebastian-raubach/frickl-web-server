@@ -4,27 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- CHG: Disable jOOQ logging.&#10;- ADD: Add environment variable support for FRICKL_MAX_CPU for image scanner.&#10;- ADD: Added endpoint for image album hierarchy.&#10;- ADD: Added final support for async image album download.">
+    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- ADD: Added initial user management.&#10;- ADD: Added functionality permission checks to all endpoints that required it via the @Secured permission.&#10;-">
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/auth/AuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/auth/AuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/auth/Secured.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/auth/Secured.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/Frickl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/Frickl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/Indexes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/Indexes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/Keys.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/Keys.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/Tables.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/Tables.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/Albums.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/Albums.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/Images.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/Images.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/Albums.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/Albums.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/Images.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/pojos/Images.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/AlbumsRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/AlbumsRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/ImagesRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/codegen/tables/records/ImagesRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/pojo/Token.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/TokenResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/TokenResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumImageUploadResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumImageUploadResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageTagResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageTagResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/FlywayChecksumGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/FlywayChecksumGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/Permission.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/Permission.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/watcher/PropertyWatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/watcher/PropertyWatcher.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -86,23 +73,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "next",
-    "last_opened_file_path": "C:/Users/sr41756/workspaces/java/frickl-next/src/main/resources/raubach/frickl/next/database/migration",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.23678161",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;next&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/sr41756/workspaces/java/frickl-next/src/main/resources/raubach/frickl/next/database/migration&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.23678161&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\sr41756\workspaces\java\frickl-next\src\main\resources\raubach\frickl\next\database\migration" />
@@ -259,7 +246,8 @@
       <workItem from="1700119971378" duration="4219000" />
       <workItem from="1701161937673" duration="1626000" />
       <workItem from="1701169878133" duration="1320000" />
-      <workItem from="1701249322589" duration="8541000" />
+      <workItem from="1701249322589" duration="8769000" />
+      <workItem from="1701330603405" duration="6871000" />
     </task>
     <task id="LOCAL-00001" summary="- ADD: Code import for NEXT release.">
       <option name="closed" value="true" />
@@ -341,7 +329,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701162371589</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="- ADD: Added initial user management.&#10;- ADD: Added functionality permission checks to all endpoints that required it via the @Secured permission.&#10;-">
+      <option name="closed" value="true" />
+      <created>1701283739164</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1701283739164</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -359,6 +355,7 @@
     <MESSAGE value="- FIX: Tried to fix build errors." />
     <MESSAGE value="- ADD: Added album download job status check." />
     <MESSAGE value="- CHG: Disable jOOQ logging.&#10;- ADD: Add environment variable support for FRICKL_MAX_CPU for image scanner.&#10;- ADD: Added endpoint for image album hierarchy.&#10;- ADD: Added final support for async image album download." />
-    <option name="LAST_COMMIT_MESSAGE" value="- CHG: Disable jOOQ logging.&#10;- ADD: Add environment variable support for FRICKL_MAX_CPU for image scanner.&#10;- ADD: Added endpoint for image album hierarchy.&#10;- ADD: Added final support for async image album download." />
+    <MESSAGE value="- ADD: Added initial user management.&#10;- ADD: Added functionality permission checks to all endpoints that required it via the @Secured permission.&#10;-" />
+    <option name="LAST_COMMIT_MESSAGE" value="- ADD: Added initial user management.&#10;- ADD: Added functionality permission checks to all endpoints that required it via the @Secured permission.&#10;-" />
   </component>
 </project>

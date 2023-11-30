@@ -10,6 +10,7 @@ import raubach.frickl.next.*;
 import raubach.frickl.next.auth.*;
 import raubach.frickl.next.codegen.enums.ImagesDataType;
 import raubach.frickl.next.codegen.tables.pojos.*;
+import raubach.frickl.next.codegen.tables.records.*;
 import raubach.frickl.next.resource.AbstractAccessTokenResource;
 import raubach.frickl.next.util.*;
 import raubach.frickl.next.util.watcher.PropertyWatcher;
@@ -17,7 +18,7 @@ import raubach.frickl.next.util.watcher.PropertyWatcher;
 import java.io.*;
 import java.io.File;
 import java.sql.*;
-import java.util.Collections;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static raubach.frickl.next.codegen.tables.AccessTokens.ACCESS_TOKENS;
@@ -88,7 +89,7 @@ public class ImageTagResource extends AbstractAccessTokenResource
 	@Path("/{tagId:\\d+}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Secured(Permission.TAG)
+	@Secured(Permission.TAG_DELETE)
 	public Response deleteTagFromImage(@PathParam("tagId") Integer tagId)
 			throws SQLException
 	{
@@ -142,5 +143,104 @@ public class ImageTagResource extends AbstractAccessTokenResource
 		{
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
+	}
+
+	@POST
+	@Path("/tag")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Secured(Permission.TAG_ADD)
+	public Response postImageTags(@PathParam("imageId") Integer imageId, Tags[] tags)
+			throws IOException, SQLException
+	{
+		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
+		boolean auth = PropertyWatcher.authEnabled();
+
+		if (auth && StringUtils.isEmpty(userDetails.getToken()))
+			return Response.status(Response.Status.FORBIDDEN)
+						   .build();
+
+		boolean result = false;
+		if (tags != null && tags.length > 0 && imageId != null)
+		{
+			try (Connection conn = Database.getConnection())
+			{
+				DSLContext context = Database.getContext(conn);
+				Images image = context.selectFrom(IMAGES)
+									  .where(IMAGES.ID.eq(imageId))
+									  .fetchAnyInto(Images.class);
+
+				List<String> tagStrings = new ArrayList<>();
+				for (Tags tag : tags)
+					tagStrings.add(tag.getName());
+
+				Map<String, Integer> tagIds = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+
+				context.selectFrom(TAGS)
+					   .where(TAGS.NAME.in(tagStrings))
+					   .forEach(t -> {
+						   if (!tagIds.containsKey(t.getName()))
+							   tagIds.put(t.getName(), t.getId());
+					   });
+
+				for (Tags tag : tags)
+				{
+					if (tag.getId() == null)
+					{
+						Integer existing = tagIds.get(tag.getName());
+
+						if (existing == null)
+						{
+							// Lower-case it
+							tag.setName(tag.getName().toLowerCase());
+							tag.setCreatedOn(new Timestamp(System.currentTimeMillis()));
+							TagsRecord t = context.newRecord(TAGS, tag);
+							t.store();
+							tag.setId(t.getId());
+							tagIds.put(tag.getName(), tag.getId());
+						}
+						else
+						{
+							tag.setId(existing);
+						}
+					}
+
+					ImageTagsRecord it = context.selectFrom(IMAGE_TAGS).where(IMAGE_TAGS.TAG_ID.eq(tag.getId())).and(IMAGE_TAGS.IMAGE_ID.eq(imageId)).fetchAny();
+
+					if (it == null)
+					{
+						it = context.newRecord(IMAGE_TAGS);
+						it.setImageId(imageId);
+						it.setTagId(tag.getId());
+						it.store();
+					}
+				}
+
+				if (image.getDataType() != ImagesDataType.video)
+				{
+					// Run this in a separate thread, we don't need to wait for it to finish
+					new Thread(() -> {
+						File file = new File(Frickl.BASE_PATH, image.getPath());
+						try
+						{
+							TagUtils.addTagToFileOrFolder(file, tagStrings);
+						}
+						catch (IOException e)
+						{
+							Logger.getLogger("").severe(e.getMessage());
+							e.printStackTrace();
+						}
+					}).start();
+				}
+			}
+		}
+		else
+		{
+			return Response.status(Response.Status.BAD_REQUEST)
+						   .build();
+		}
+
+		return Response.ok()
+					   .build();
 	}
 }

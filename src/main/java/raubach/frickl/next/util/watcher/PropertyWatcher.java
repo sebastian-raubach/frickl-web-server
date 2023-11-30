@@ -145,7 +145,10 @@ public class PropertyWatcher
 		if (!StringUtils.isEmpty(googleAnalyticsKey))
 			set(ServerProperty.GOOGLE_ANALYTICS_KEY, googleAnalyticsKey);
 
-		if (!StringUtils.isBlank(get(ServerProperty.ADMIN_USERNAME)) && !StringUtils.isBlank(get(ServerProperty.ADMIN_PASSWORD)))
+		username = get(ServerProperty.ADMIN_USERNAME);
+		password = get(ServerProperty.ADMIN_PASSWORD);
+
+		if (!StringUtils.isBlank(username) && !StringUtils.isBlank(password))
 		{
 			// Create the admin user if it doesn't exist yet
 			try (Connection conn = Database.getConnection())
@@ -159,7 +162,7 @@ public class PropertyWatcher
 					admin.setUsername(get(ServerProperty.ADMIN_USERNAME));
 				}
 
-				admin.setPassword(BCrypt.hashpw(get(ServerProperty.ADMIN_PASSWORD), BCrypt.gensalt(TokenResource.SALT)));
+				admin.setPassword(BCrypt.hashpw(password, BCrypt.gensalt(TokenResource.SALT)));
 				admin.setViewType(UsersViewType.VIEW_ALL);
 				admin.setPermissions((short) Permission.getAll());
 				admin.store();

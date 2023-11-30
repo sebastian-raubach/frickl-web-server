@@ -22,6 +22,7 @@ import java.io.*;
 import java.sql.*;
 import java.util.Date;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static raubach.frickl.next.codegen.tables.AccessTokens.ACCESS_TOKENS;
@@ -42,6 +43,45 @@ public class AlbumResource extends AbstractAccessTokenResource
 			throws SQLException
 	{
 		return postAlbumById(null, request);
+	}
+
+	@DELETE
+	@Path("/{albumId:\\d+}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Secured(Permission.ALBUM_DELETE)
+	public Response deleteAlbum(@PathParam("albumId") Integer albumId)
+			throws SQLException
+	{
+		try (Connection conn = Database.getConnection())
+		{
+			DSLContext context = Database.getContext(conn);
+
+			AlbumsRecord album = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(albumId)).fetchAny();
+
+			if (album == null)
+				return Response.status(Response.Status.NOT_FOUND).build();
+
+			File location = new File(Frickl.BASE_PATH);
+			File albumFolder = new File(location, album.getPath());
+
+			if (albumFolder.exists() && albumFolder.isDirectory())
+			{
+				try
+				{
+					FileUtils.deleteDirectory(albumFolder);
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+					Logger.getLogger("").severe(e.getMessage());
+				}
+			}
+
+			album.delete();
+
+			return Response.ok().build();
+		}
 	}
 
 	@POST
@@ -214,7 +254,8 @@ public class AlbumResource extends AbstractAccessTokenResource
 								.map(j -> {
 									try
 									{
-										if (ApplicationListener.SCHEDULER.isJobFinished(j.getJobId()))  {
+										if (ApplicationListener.SCHEDULER.isJobFinished(j.getJobId()))
+										{
 											// The job is "finished", so check if the result exists
 											String version = PropertyWatcher.get(ServerProperty.API_VERSION);
 											File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-exports" + "-" + version);
@@ -226,7 +267,9 @@ public class AlbumResource extends AbstractAccessTokenResource
 												j.setStatus(ExportStatus.FINISHED);
 											else
 												j.setStatus(ExportStatus.EXPIRED);
-										} else {
+										}
+										else
+										{
 											j.setStatus(ExportStatus.RUNNING);
 										}
 									}

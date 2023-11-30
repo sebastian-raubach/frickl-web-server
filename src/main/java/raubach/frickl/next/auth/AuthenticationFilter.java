@@ -227,6 +227,7 @@ public class AuthenticationFilter implements ContainerRequestFilter
 
 				if (details == null)
 				{
+					// TODO: Do we want to check if authentication  is even  enabled? If not, grant all permissions, cause we don't have user accounts.
 					details = new UserDetails(null, null, null, AGE);
 				}
 
