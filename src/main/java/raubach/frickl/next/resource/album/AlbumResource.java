@@ -12,9 +12,9 @@ import raubach.frickl.next.auth.*;
 import raubach.frickl.next.codegen.tables.pojos.*;
 import raubach.frickl.next.codegen.tables.records.AlbumsRecord;
 import raubach.frickl.next.pojo.*;
-import raubach.frickl.next.resource.AbstractAccessTokenResource;
+import raubach.frickl.next.resource.PaginatedServerResource;
 import raubach.frickl.next.util.*;
-import raubach.frickl.next.util.async.ImageZipExporter;
+import raubach.frickl.next.util.async.AlbumZipExporter;
 import raubach.frickl.next.util.watcher.PropertyWatcher;
 
 import java.io.File;
@@ -25,14 +25,12 @@ import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static raubach.frickl.next.codegen.tables.AccessTokens.ACCESS_TOKENS;
 import static raubach.frickl.next.codegen.tables.AlbumStats.ALBUM_STATS;
-import static raubach.frickl.next.codegen.tables.AlbumTokens.ALBUM_TOKENS;
 import static raubach.frickl.next.codegen.tables.Albums.ALBUMS;
 import static raubach.frickl.next.codegen.tables.Images.IMAGES;
 
 @Path("album")
-public class AlbumResource extends AbstractAccessTokenResource
+public class AlbumResource extends PaginatedServerResource
 {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -43,6 +41,24 @@ public class AlbumResource extends AbstractAccessTokenResource
 			throws SQLException
 	{
 		return postAlbumById(null, request);
+	}
+
+	@DELETE
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Secured(Permission.ALBUM_DELETE)
+	public Response deleteAlbums(List<Integer> albumIds)
+			throws SQLException
+	{
+		if (CollectionUtils.isEmpty(albumIds))
+			return Response.status(Response.Status.BAD_REQUEST).build();
+
+		try (Connection conn = Database.getConnection())
+		{
+			DSLContext context = Database.getContext(conn);
+
+			return deleteAlbums(context, albumIds);
+		}
 	}
 
 	@DELETE
@@ -57,11 +73,40 @@ public class AlbumResource extends AbstractAccessTokenResource
 		{
 			DSLContext context = Database.getContext(conn);
 
-			AlbumsRecord album = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(albumId)).fetchAny();
+			return deleteAlbums(context, Collections.singletonList(albumId));
+		}
+	}
 
-			if (album == null)
-				return Response.status(Response.Status.NOT_FOUND).build();
+	private Response deleteAlbums(DSLContext context, List<Integer> startingIds)
+			throws SQLException
+	{
+		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 
+		Set<Integer> albumsForUser = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
+
+		for (Integer id : startingIds)
+		{
+			if (!albumsForUser.contains(id))
+				return Response.status(Response.Status.FORBIDDEN).build();
+		}
+
+		Set<Integer> ids = new HashSet<>(startingIds);
+
+		while (true)
+		{
+			List<Integer> albumIds = context.select(ALBUMS.ID).from(ALBUMS).where(ALBUMS.PARENT_ALBUM_ID.in(ids)).andNot(ALBUMS.ID.in(ids)).fetchInto(Integer.class);
+
+			if (CollectionUtils.isEmpty(albumIds))
+				break;
+			else
+				ids.addAll(albumIds);
+		}
+
+		// Now get all the albums in reverse order so we're deleting the child albums first
+		List<AlbumsRecord> albums = context.selectFrom(ALBUMS).where(ALBUMS.ID.in(ids)).orderBy(ALBUMS.ID.desc()).fetchInto(AlbumsRecord.class);
+
+		for (AlbumsRecord album : albums)
+		{
 			File location = new File(Frickl.BASE_PATH);
 			File albumFolder = new File(location, album.getPath());
 
@@ -79,9 +124,11 @@ public class AlbumResource extends AbstractAccessTokenResource
 			}
 
 			album.delete();
-
-			return Response.ok().build();
 		}
+
+		UserAlbumAccessStore.initialize();
+
+		return Response.ok().build();
 	}
 
 	@POST
@@ -102,9 +149,6 @@ public class AlbumResource extends AbstractAccessTokenResource
 	private PaginatedResult<List<Album>> getAlbums(Integer albumId, AlbumRequest request)
 			throws SQLException
 	{
-		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
-		boolean auth = PropertyWatcher.authEnabled();
-
 		try (Connection conn = Database.getConnection())
 		{
 			DSLContext context = Database.getContext(conn);
@@ -124,25 +168,26 @@ public class AlbumResource extends AbstractAccessTokenResource
 				step.where(ALBUM_STATS.PARENT_ALBUM_ID.isNull());
 
 			boolean onlyPublic = false;
-			if (auth)
+			AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
+			// Restrict to only albums containing at least one public image
+			if (Permission.IS_ADMIN.allows(userDetails.getPermissions()))
 			{
-				// Restrict to only albums containing at least one public image
-				if (!StringUtils.isEmpty(accessToken))
-				{
-					step.where(DSL.exists(DSL.selectOne()
-											 .from(ALBUM_TOKENS)
-											 .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
-											 .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
-																	   .and(ALBUM_TOKENS.ALBUM_ID.eq(ALBUM_STATS.ID)))));
-				}
-				else if (StringUtils.isEmpty(userDetails.getToken()))
-				{
-					onlyPublic = true;
-					step.where(DSL.exists(DSL.selectOne()
-											 .from(IMAGES)
-											 .where(IMAGES.ALBUM_ID.eq(ALBUM_STATS.ID)
-																   .and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
-				}
+				// Nothing required here, admins can see everything
+			}
+			else if (StringUtils.isEmpty(userDetails.getToken()))
+			{
+				// Check if the album contains public images
+				onlyPublic = true;
+				step.where(DSL.exists(DSL.selectOne()
+										 .from(IMAGES)
+										 .where(IMAGES.ALBUM_ID.eq(ALBUM_STATS.ALBUM_ID)
+															   .and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
+			}
+			else
+			{
+				// Check user permissions for the album
+				Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
+				step.where(ALBUM_STATS.ALBUM_ID.in(albumAccess));
 			}
 
 			final boolean b = onlyPublic;
@@ -167,10 +212,6 @@ public class AlbumResource extends AbstractAccessTokenResource
 			throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
-		boolean auth = PropertyWatcher.authEnabled();
-
-		if (auth && StringUtils.isEmpty(userDetails.getToken()))
-			return Response.status(Response.Status.FORBIDDEN).build();
 
 		if (album == null || StringUtils.isEmpty(album.getName()))
 			return Response.status(Response.Status.BAD_REQUEST).build();
@@ -178,11 +219,20 @@ public class AlbumResource extends AbstractAccessTokenResource
 		try (Connection conn = Database.getConnection())
 		{
 			DSLContext context = Database.getContext(conn);
+
 			File base = new File(Frickl.BASE_PATH);
 			File location = new File(Frickl.BASE_PATH);
 			// Check the parent album exists
 			if (album.getParentAlbumId() != null)
 			{
+				if (!Permission.IS_ADMIN.allows(userDetails.getPermissions()))
+				{
+					// Check the user has access to that parent album
+					Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
+					if (!albumAccess.contains(album.getParentAlbumId()))
+						return Response.status(Response.Status.FORBIDDEN).build();
+				}
+
 				AlbumsRecord parent = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(album.getParentAlbumId())).fetchAny();
 
 				if (parent == null)
@@ -202,7 +252,11 @@ public class AlbumResource extends AbstractAccessTokenResource
 			record.setPath(base.toURI().relativize(location.toURI()).getPath());
 			record.setCreatedBy(userDetails.getId());
 			record.setCreatedOn(new Timestamp(System.currentTimeMillis()));
-			return Response.ok(record.store() > 0).build();
+			boolean result = record.store() > 0;
+
+			UserAlbumAccessStore.initialize();
+
+			return Response.ok(result).build();
 		}
 	}
 
@@ -210,19 +264,24 @@ public class AlbumResource extends AbstractAccessTokenResource
 	@Path("/{albumId:\\d+}/scan")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Secured(Permission.SETTINGS_CHANGE)
+	@Secured(Permission.IMAGE_UPLOAD)
 	public Response startImageScanner(@PathParam("albumId") Integer albumId)
 			throws SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
-		boolean auth = PropertyWatcher.authEnabled();
-
-		if (auth && StringUtils.isEmpty(userDetails.getToken()))
-			return Response.status(Response.Status.FORBIDDEN).build();
 
 		try (Connection conn = Database.getConnection())
 		{
 			DSLContext context = Database.getContext(conn);
+
+			if (!Permission.IS_ADMIN.allows(userDetails.getPermissions()))
+			{
+				// Check the user has access to that album
+				Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
+				if (!albumAccess.contains(albumId))
+					return Response.status(Response.Status.FORBIDDEN).build();
+			}
+
 			AlbumsRecord album = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(albumId)).fetchAny();
 			if (album == null)
 				return Response.status(Response.Status.NOT_FOUND).build();
@@ -232,129 +291,6 @@ public class AlbumResource extends AbstractAccessTokenResource
 		}
 
 		return Response.ok(true).build();
-	}
-
-	@POST
-	@Path("/download/status")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	@Secured
-	@PermitAll
-	public Response checkDownloadStatus(List<String> uuids)
-			throws SQLException
-	{
-		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
-
-		if (CollectionUtils.isEmpty(uuids))
-			return Response.ok(new ArrayList<AsyncAlbumExportResult>()).build();
-
-		return Response.ok(uuids.stream()
-								.map(ApplicationListener.SCHEDULER_IDS::get)
-								.filter(j -> j != null && Objects.equals(j.getUserToken(), userDetails.getToken()))
-								.map(j -> {
-									try
-									{
-										if (ApplicationListener.SCHEDULER.isJobFinished(j.getJobId()))
-										{
-											// The job is "finished", so check if the result exists
-											String version = PropertyWatcher.get(ServerProperty.API_VERSION);
-											File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-exports" + "-" + version);
-											File targetFolder = new File(folder, j.getToken());
-											// Get zip result files (there'll only be one per folder)
-											File[] zipFiles = targetFolder.listFiles((dir, name) -> name.endsWith(".zip"));
-
-											if (!CollectionUtils.isEmpty(zipFiles))
-												j.setStatus(ExportStatus.FINISHED);
-											else
-												j.setStatus(ExportStatus.EXPIRED);
-										}
-										else
-										{
-											j.setStatus(ExportStatus.RUNNING);
-										}
-									}
-									catch (Exception e)
-									{
-										// Do nothing here
-									}
-									return j;
-								})
-								.collect(Collectors.toList()))
-					   .build();
-	}
-
-	@GET
-	@Path("/download/{uuid}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces("application/zip")
-	public Response downloadAlbumByToken(@PathParam("uuid") String uuid)
-			throws SQLException
-	{
-		String version = PropertyWatcher.get(ServerProperty.API_VERSION);
-		File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-exports" + "-" + version);
-		File targetFolder = new File(folder, uuid);
-
-		AsyncAlbumExportResult info = ApplicationListener.SCHEDULER_IDS.get(uuid);
-
-		if (info == null)
-		{
-			// Job isn't in the active map anymore, but may still exist locally in a file. We cannot check user tokens for that.
-			// Get zip result files (there'll only be one per folder)
-			File[] zipFiles = targetFolder.listFiles((dir, name) -> name.endsWith(".zip"));
-			if (!CollectionUtils.isEmpty(zipFiles))
-			{
-				java.nio.file.Path zipFilePath = zipFiles[0].toPath();
-				return Response.ok((StreamingOutput) output -> {
-								   java.nio.file.Files.copy(zipFilePath, output);
-								   // Delete the whole folder once we're done
-								   FileUtils.deleteDirectory(targetFolder);
-							   })
-							   .type("application/zip")
-							   .header("content-disposition", "attachment;filename= \"" + zipFiles[0].getName() + "\"")
-							   .header("content-length", zipFiles[0].length())
-							   .build();
-			}
-			else
-			{
-				return Response.status(Response.Status.NOT_FOUND).build();
-			}
-		}
-
-		try
-		{
-			if (ApplicationListener.SCHEDULER.isJobFinished(info.getJobId()))
-			{
-				// Get zip result files (there'll only be one per folder)
-				File[] zipFiles = targetFolder.listFiles((dir, name) -> name.endsWith(".zip"));
-
-				if (!CollectionUtils.isEmpty(zipFiles))
-				{
-					java.nio.file.Path zipFilePath = zipFiles[0].toPath();
-					return Response.ok((StreamingOutput) output -> {
-									   java.nio.file.Files.copy(zipFilePath, output);
-									   // Delete the whole folder once we're done
-									   FileUtils.deleteDirectory(targetFolder);
-								   })
-								   .type("application/zip")
-								   .header("content-disposition", "attachment;filename= \"" + zipFiles[0].getName() + "\"")
-								   .header("content-length", zipFiles[0].length())
-								   .build();
-				}
-				else
-				{
-					return Response.status(Response.Status.NOT_FOUND).build();
-				}
-			}
-			else
-			{
-				return Response.status(Response.Status.ACCEPTED).build();
-			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-		}
 	}
 
 	@GET
@@ -367,10 +303,18 @@ public class AlbumResource extends AbstractAccessTokenResource
 			throws SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
-		boolean auth = PropertyWatcher.authEnabled();
 
-		try
+		try (Connection conn = Database.getConnection())
 		{
+			DSLContext context = Database.getContext(conn);
+
+			if (!Permission.IS_ADMIN.allows(userDetails.getPermissions()))
+			{
+				Set<Integer> albumsForUser = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
+				if (!albumsForUser.contains(albumId))
+					return Response.status(Response.Status.FORBIDDEN).build();
+			}
+
 			AlbumRequest r = new AlbumRequest();
 			r.setPage(0);
 			r.setLimit(1);
@@ -392,7 +336,7 @@ public class AlbumResource extends AbstractAccessTokenResource
 			List<String> args = new ArrayList<>();
 			args.add("-cp");
 			args.add(libFolder.getAbsolutePath() + File.separator + "*");
-			args.add(ImageZipExporter.class.getCanonicalName());
+			args.add(AlbumZipExporter.class.getCanonicalName());
 			args.add(StringUtils.orEmptyQuotes(PropertyWatcher.get(ServerProperty.DATABASE_SERVER)));
 			args.add(StringUtils.orEmptyQuotes(PropertyWatcher.get(ServerProperty.DATABASE_NAME)));
 			args.add(StringUtils.orEmptyQuotes(PropertyWatcher.get(ServerProperty.DATABASE_PORT)));
@@ -402,13 +346,12 @@ public class AlbumResource extends AbstractAccessTokenResource
 			args.add(Frickl.BASE_PATH);
 			args.add(targetFolder.getAbsolutePath());
 			args.add(StringUtils.orEmptyQuotes(userDetails != null ? userDetails.getToken() : ""));
-			args.add(StringUtils.orEmptyQuotes(accessToken));
 
-			JobInfo info = ApplicationListener.SCHEDULER.submit("ImageZipExporter", "java", args, targetFolder.getAbsolutePath());
-			AsyncAlbumExportResult result = new AsyncAlbumExportResult()
+			JobInfo info = ApplicationListener.SCHEDULER.submit("AlbumZipExporter", "java", args, targetFolder.getAbsolutePath());
+			AsyncExportResult result = new AsyncAlbumExportResult()
+					.setAlbumName(album.getName())
 					.setUserToken(userDetails.getToken())
 					.setToken(uuid)
-					.setAlbumName(album.getName())
 					.setJobId(info.getId())
 					.setStatus(ExportStatus.RUNNING)
 					.setCreatedOn(new Date(System.currentTimeMillis()));
@@ -418,6 +361,8 @@ public class AlbumResource extends AbstractAccessTokenResource
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
+			Logger.getLogger("").info(e.getMessage());
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}

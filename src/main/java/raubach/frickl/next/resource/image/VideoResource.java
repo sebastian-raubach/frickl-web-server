@@ -9,23 +9,23 @@ import org.jooq.tools.StringUtils;
 import raubach.frickl.next.*;
 import raubach.frickl.next.auth.*;
 import raubach.frickl.next.codegen.tables.records.ImagesRecord;
-import raubach.frickl.next.resource.AbstractAccessTokenResource;
+import raubach.frickl.next.resource.*;
+import raubach.frickl.next.util.*;
 import raubach.frickl.next.util.watcher.PropertyWatcher;
 
 import java.io.*;
 import java.io.File;
 import java.nio.channels.*;
 import java.sql.*;
+import java.util.*;
 import java.util.Date;
 import java.util.logging.*;
 
-import static raubach.frickl.next.codegen.tables.AccessTokens.ACCESS_TOKENS;
-import static raubach.frickl.next.codegen.tables.AlbumTokens.ALBUM_TOKENS;
 import static raubach.frickl.next.codegen.tables.Images.IMAGES;
 
 @Path("image/{imageId:\\d+}/video")
 @Secured
-public class VideoResource extends AbstractAccessTokenResource
+public class VideoResource extends PaginatedServerResource
 {
 	private final int CHUNK_SIZE = 1024 * 1024 * 2; // 2 MB chunks
 
@@ -77,30 +77,30 @@ public class VideoResource extends AbstractAccessTokenResource
 	private Response getVideo(Integer imageId, String token, String range, boolean isHead)
 			throws IOException, SQLException
 	{
-		boolean auth = PropertyWatcher.authEnabled();
-
 		if (imageId != null)
 		{
 			try (Connection conn = Database.getConnection())
 			{
+				AuthenticationFilter.UserDetails userDetails = AuthenticationFilter.getUserDetailsFromImageToken(token);
 				DSLContext context = Database.getContext(conn);
 				SelectConditionStep<Record> step = context.select().from(IMAGES)
 														  .where(IMAGES.ID.eq(imageId));
 
-				if (auth)
+				// Restrict to only albums containing at least one public image
+				if (Permission.IS_ADMIN.allows(userDetails.getPermissions()))
 				{
-					if (!StringUtils.isEmpty(accessToken))
-					{
-						step.and(DSL.exists(DSL.selectOne()
-												 .from(ALBUM_TOKENS)
-												 .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
-												 .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
-																		   .and(ALBUM_TOKENS.ALBUM_ID.eq(IMAGES.ALBUM_ID)))));
-					}
-					else if (!AuthenticationFilter.isValidImageToken(token))
-					{
-						step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
-					}
+					// Nothing required here, admins can see everything
+				}
+				else if (StringUtils.isEmpty(userDetails.getToken()))
+				{
+					// Check if the album contains public images
+					step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+				}
+				else
+				{
+					// Check user permissions for the album
+					Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
+					step.and(IMAGES.ALBUM_ID.in(albumAccess));
 				}
 
 				ImagesRecord image = step.fetchAnyInto(ImagesRecord.class);

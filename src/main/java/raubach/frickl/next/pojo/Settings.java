@@ -2,24 +2,13 @@ package raubach.frickl.next.pojo;
 
 public class Settings
 {
-	private boolean authEnabled;
 	private String  googleAnalyticsKey;
-	private String             plausibleDomain;
-	private Boolean            plausibleHashMode;
-	private String             plausibleApiHost;
+	private String  plausibleDomain;
+	private Boolean plausibleHashMode;
+	private String  plausibleApiHost;
 
 	public Settings()
 	{
-	}
-
-	public boolean isAuthEnabled()
-	{
-		return authEnabled;
-	}
-
-	public void setAuthEnabled(boolean authEnabled)
-	{
-		this.authEnabled = authEnabled;
 	}
 
 	public String getGoogleAnalyticsKey()

@@ -93,6 +93,17 @@ public class ThumbnailUtils
 		return result;
 	}
 
+	public static File getThumbnail(String type, Integer imageId, Size size)
+	{
+		String version = PropertyWatcher.get(ServerProperty.API_VERSION);
+		File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-thumbnails" + "-" + version);
+		folder.mkdirs();
+
+		String extension = Objects.equals(type, "image/png") ? ".png" : ".jpg";
+
+		return new File(folder, imageId + size.getSuffix() + extension);
+	}
+
 	public static File getOrCreateThumbnail(String type, Integer imageId, ImagesDataType dataType, File file, Size size)
 		throws IOException
 	{

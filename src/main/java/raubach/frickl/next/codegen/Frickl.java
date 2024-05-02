@@ -11,11 +11,10 @@ import org.jooq.Catalog;
 import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
 
-import raubach.frickl.next.codegen.tables.AccessTokens;
 import raubach.frickl.next.codegen.tables.AlbumAccessToken;
 import raubach.frickl.next.codegen.tables.AlbumCounts;
 import raubach.frickl.next.codegen.tables.AlbumStats;
-import raubach.frickl.next.codegen.tables.AlbumTokens;
+import raubach.frickl.next.codegen.tables.AlbumUsers;
 import raubach.frickl.next.codegen.tables.Albums;
 import raubach.frickl.next.codegen.tables.CalendarData;
 import raubach.frickl.next.codegen.tables.ImageTags;
@@ -42,12 +41,6 @@ public class Frickl extends SchemaImpl {
     public static final Frickl FRICKL = new Frickl();
 
     /**
-     * This table contains all tokens that can be used to access folders that
-     * aren't public.
-     */
-    public final AccessTokens ACCESS_TOKENS = AccessTokens.ACCESS_TOKENS;
-
-    /**
      * VIEW
      */
     public final AlbumAccessToken ALBUM_ACCESS_TOKEN = AlbumAccessToken.ALBUM_ACCESS_TOKEN;
@@ -63,9 +56,9 @@ public class Frickl extends SchemaImpl {
     public final AlbumStats ALBUM_STATS = AlbumStats.ALBUM_STATS;
 
     /**
-     * This table contains the mapping between access tokens and albums.
+     * The table <code>frickl.album_users</code>.
      */
-    public final AlbumTokens ALBUM_TOKENS = AlbumTokens.ALBUM_TOKENS;
+    public final AlbumUsers ALBUM_USERS = AlbumUsers.ALBUM_USERS;
 
     /**
      * This table contain  s all albums in Frickl. Albums correspond to image
@@ -136,11 +129,10 @@ public class Frickl extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
-            AccessTokens.ACCESS_TOKENS,
             AlbumAccessToken.ALBUM_ACCESS_TOKEN,
             AlbumCounts.ALBUM_COUNTS,
             AlbumStats.ALBUM_STATS,
-            AlbumTokens.ALBUM_TOKENS,
+            AlbumUsers.ALBUM_USERS,
             Albums.ALBUMS,
             CalendarData.CALENDAR_DATA,
             ImageTags.IMAGE_TAGS,

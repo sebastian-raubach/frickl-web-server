@@ -9,13 +9,12 @@ import org.jooq.tools.StringUtils;
 import raubach.frickl.next.Database;
 import raubach.frickl.next.auth.*;
 import raubach.frickl.next.pojo.*;
-import raubach.frickl.next.resource.AbstractAccessTokenResource;
-import raubach.frickl.next.util.watcher.PropertyWatcher;
+import raubach.frickl.next.resource.PaginatedServerResource;
+import raubach.frickl.next.util.*;
 
 import java.sql.*;
+import java.util.Set;
 
-import static raubach.frickl.next.codegen.tables.AccessTokens.ACCESS_TOKENS;
-import static raubach.frickl.next.codegen.tables.AlbumTokens.ALBUM_TOKENS;
 import static raubach.frickl.next.codegen.tables.Albums.ALBUMS;
 import static raubach.frickl.next.codegen.tables.ImageTags.IMAGE_TAGS;
 import static raubach.frickl.next.codegen.tables.Images.IMAGES;
@@ -27,7 +26,7 @@ import static raubach.frickl.next.codegen.tables.Tags.TAGS;
 @Path("stats")
 @Secured
 @PermitAll
-public class StatsResource extends AbstractAccessTokenResource
+public class StatsResource extends PaginatedServerResource
 {
 	@GET
 	@Path("/year/{year:\\d+}")
@@ -37,7 +36,6 @@ public class StatsResource extends AbstractAccessTokenResource
 			throws SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
-		boolean auth = PropertyWatcher.authEnabled();
 
 		try (Connection conn = Database.getConnection())
 		{
@@ -50,20 +48,21 @@ public class StatsResource extends AbstractAccessTokenResource
 												 .where(IMAGES.CREATED_ON.isNotNull())
 												 .and(DSL.year(IMAGES.CREATED_ON).eq(year));
 
-			if (auth)
+			// Restrict to only albums containing at least one public image
+			if (Permission.IS_ADMIN.allows(userDetails.getPermissions()))
 			{
-				if (!StringUtils.isEmpty(accessToken))
-				{
-					step.and(DSL.exists(DSL.selectOne()
-										   .from(ALBUM_TOKENS)
-										   .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
-										   .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
-																	 .and(ALBUM_TOKENS.ALBUM_ID.eq(IMAGES.ALBUM_ID)))));
-				}
-				else if (StringUtils.isEmpty(userDetails.getToken()))
-				{
-					step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
-				}
+				// Nothing required here, admins can see everything
+			}
+			else if (StringUtils.isEmpty(userDetails.getToken()))
+			{
+				// Check if the album contains public images
+				step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+			}
+			else
+			{
+				// Check user permissions for the album
+				Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
+				step.and(IMAGES.ALBUM_ID.in(albumAccess));
 			}
 
 			return Response.ok(step.groupBy(date)
@@ -81,7 +80,6 @@ public class StatsResource extends AbstractAccessTokenResource
 			throws SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
-		boolean auth = PropertyWatcher.authEnabled();
 
 		try (Connection conn = Database.getConnection())
 		{
@@ -93,20 +91,21 @@ public class StatsResource extends AbstractAccessTokenResource
 																		 .from(IMAGES)
 																		 .where(IMAGES.CREATED_ON.isNotNull());
 
-			if (auth)
+			// Restrict to only albums containing at least one public image
+			if (Permission.IS_ADMIN.allows(userDetails.getPermissions()))
 			{
-				if (!StringUtils.isEmpty(accessToken))
-				{
-					step.and(DSL.exists(DSL.selectOne()
-										   .from(ALBUM_TOKENS)
-										   .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
-										   .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
-																	 .and(ALBUM_TOKENS.ALBUM_ID.eq(IMAGES.ALBUM_ID)))));
-				}
-				else if (StringUtils.isEmpty(userDetails.getToken()))
-				{
-					step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
-				}
+				// Nothing required here, admins can see everything
+			}
+			else if (StringUtils.isEmpty(userDetails.getToken()))
+			{
+				// Check if the album contains public images
+				step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+			}
+			else
+			{
+				// Check user permissions for the album
+				Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
+				step.and(IMAGES.ALBUM_ID.in(albumAccess));
 			}
 
 			return Response.ok(step.groupBy(date)
@@ -124,7 +123,6 @@ public class StatsResource extends AbstractAccessTokenResource
 			throws SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
-		boolean auth = PropertyWatcher.authEnabled();
 
 		Counts result = new Counts();
 
@@ -134,96 +132,87 @@ public class StatsResource extends AbstractAccessTokenResource
 
 			// Get image count
 			SelectJoinStep<Record1<Integer>> step = context.selectCount().from(IMAGES);
-			if (auth)
+			// Restrict to only albums containing at least one public image
+			if (Permission.IS_ADMIN.allows(userDetails.getPermissions()))
 			{
-				if (!StringUtils.isEmpty(accessToken))
-				{
-					step.where(DSL.exists(DSL.selectOne()
-											 .from(ALBUM_TOKENS)
-											 .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
-											 .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
-																	   .and(ALBUM_TOKENS.ALBUM_ID.eq(IMAGES.ALBUM_ID)))));
-				}
-				else if (StringUtils.isEmpty(userDetails.getToken()))
-				{
-					step.where(IMAGES.IS_PUBLIC.eq((byte) 1));
-				}
+				// Nothing required here, admins can see everything
+			}
+			else if (StringUtils.isEmpty(userDetails.getToken()))
+			{
+				// Check if the album contains public images
+				step.where(IMAGES.IS_PUBLIC.eq((byte) 1));
+			}
+			else
+			{
+				// Check user permissions for the album
+				Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
+				step.where(IMAGES.ALBUM_ID.in(albumAccess));
 			}
 			result.setImages(step.fetchOne(0, int.class));
 
 			// Get album count
 			step = context.selectCount().from(ALBUMS);
-			if (auth)
+			// Restrict to only albums containing at least one public image
+			if (Permission.IS_ADMIN.allows(userDetails.getPermissions()))
 			{
-				if (!StringUtils.isEmpty(accessToken))
-				{
-					step.where(DSL.exists(DSL.selectOne()
-											 .from(ALBUM_TOKENS)
-											 .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
-											 .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
-																	   .and(ALBUM_TOKENS.ALBUM_ID.eq(ALBUMS.ID)))));
-				}
-				else if (StringUtils.isEmpty(userDetails.getToken()))
-				{
-					step.whereExists(DSL.selectOne()
-										.from(IMAGES)
-										.where(IMAGES.ALBUM_ID.eq(ALBUMS.ID))
-										.and(IMAGES.IS_PUBLIC.eq((byte) 1)));
-				}
+				// Nothing required here, admins can see everything
+			}
+			else if (StringUtils.isEmpty(userDetails.getToken()))
+			{
+				// Check if the album contains public images
+				step.where(DSL.exists(DSL.selectOne()
+										 .from(IMAGES)
+										 .where(IMAGES.ALBUM_ID.eq(ALBUMS.ID)
+															   .and(IMAGES.IS_PUBLIC.eq((byte) 1)))));
+			}
+			else
+			{
+				// Check user permissions for the album
+				Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
+				step.where(ALBUMS.ID.in(albumAccess));
 			}
 			result.setAlbums(step.fetchOne(0, int.class));
 
 			// Get tags
-			step = context.selectCount().from(TAGS);
-			if (auth)
+			step = context.selectCount().from(TAGS)
+						  .leftJoin(IMAGE_TAGS).on(TAGS.ID.eq(IMAGE_TAGS.TAG_ID))
+						  .leftJoin(IMAGES).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID));
+			// Restrict to only albums containing at least one public image
+			if (Permission.IS_ADMIN.allows(userDetails.getPermissions()))
 			{
-				if (!StringUtils.isEmpty(accessToken))
-				{
-					step.whereExists(DSL.selectOne()
-										.from(IMAGE_TAGS)
-										.leftJoin(IMAGES).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID))
-										.leftJoin(ALBUMS).on(ALBUMS.ID.eq(IMAGES.ALBUM_ID))
-										.leftJoin(ALBUM_TOKENS).on(ALBUM_TOKENS.ALBUM_ID.eq(ALBUMS.ID))
-										.leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
-										.where(ACCESS_TOKENS.TOKEN.eq(accessToken))
-										.and(IMAGE_TAGS.TAG_ID.eq(TAGS.ID)));
-				}
-				else if (StringUtils.isEmpty(userDetails.getToken()))
-				{
-					step.whereExists(DSL.selectOne()
-										.from(IMAGE_TAGS)
-										.leftJoin(IMAGES).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID))
-										.where(IMAGES.IS_PUBLIC.eq((byte) 1))
-										.and(IMAGE_TAGS.TAG_ID.eq(TAGS.ID)));
-				}
-				else
-				{
-					step.whereExists(DSL.selectOne().from(IMAGE_TAGS).where(IMAGE_TAGS.TAG_ID.eq(TAGS.ID)));
-				}
+				// Nothing required here, admins can see everything
+			}
+			else if (StringUtils.isEmpty(userDetails.getToken()))
+			{
+				// Check if the album contains public images
+				step.where(IMAGES.IS_PUBLIC.eq((byte) 1));
 			}
 			else
 			{
-				step.whereExists(DSL.selectOne().from(IMAGE_TAGS).where(IMAGE_TAGS.TAG_ID.eq(TAGS.ID)));
+				// Check user permissions for the album
+				Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
+				step.where(IMAGES.ALBUM_ID.in(albumAccess));
 			}
 
 			result.setTags(step.fetchOne(0, int.class));
 
 			// Get favorites
 			step = context.selectCount().from(IMAGES);
-			if (auth)
+			// Restrict to only albums containing at least one public image
+			if (Permission.IS_ADMIN.allows(userDetails.getPermissions()))
 			{
-				if (!StringUtils.isEmpty(accessToken))
-				{
-					step.where(DSL.exists(DSL.selectOne()
-											 .from(ALBUM_TOKENS)
-											 .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
-											 .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
-																	   .and(ALBUM_TOKENS.ALBUM_ID.eq(IMAGES.ALBUM_ID)))));
-				}
-				else if (StringUtils.isEmpty(userDetails.getToken()))
-				{
-					step.where(IMAGES.IS_PUBLIC.eq((byte) 1));
-				}
+				// Nothing required here, admins can see everything
+			}
+			else if (StringUtils.isEmpty(userDetails.getToken()))
+			{
+				// Check if the album contains public images
+				step.where(IMAGES.IS_PUBLIC.eq((byte) 1));
+			}
+			else
+			{
+				// Check user permissions for the album
+				Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
+				step.where(IMAGES.ALBUM_ID.in(albumAccess));
 			}
 			result.setFavorites(step.where(IMAGES.IS_FAVORITE.eq((byte) 1)).fetchOne(0, int.class));
 		}

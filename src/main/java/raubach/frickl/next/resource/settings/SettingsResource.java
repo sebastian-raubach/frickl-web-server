@@ -16,7 +16,6 @@ public class SettingsResource extends ContextResource
 	public Response getSettings()
 	{
 		Settings settings = new Settings();
-		settings.setAuthEnabled(PropertyWatcher.authEnabled());
 		settings.setGoogleAnalyticsKey(PropertyWatcher.get(ServerProperty.GOOGLE_ANALYTICS_KEY));
 		settings.setPlausibleApiHost(PropertyWatcher.get(ServerProperty.PLAUSIBLE_API_HOST));
 		settings.setPlausibleHashMode(PropertyWatcher.getBoolean(ServerProperty.PLAUSIBLE_HASH_MODE));

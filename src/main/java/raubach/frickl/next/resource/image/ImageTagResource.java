@@ -11,7 +11,7 @@ import raubach.frickl.next.auth.*;
 import raubach.frickl.next.codegen.enums.ImagesDataType;
 import raubach.frickl.next.codegen.tables.pojos.*;
 import raubach.frickl.next.codegen.tables.records.*;
-import raubach.frickl.next.resource.AbstractAccessTokenResource;
+import raubach.frickl.next.resource.*;
 import raubach.frickl.next.util.*;
 import raubach.frickl.next.util.watcher.PropertyWatcher;
 
@@ -21,14 +21,12 @@ import java.sql.*;
 import java.util.*;
 import java.util.logging.Logger;
 
-import static raubach.frickl.next.codegen.tables.AccessTokens.ACCESS_TOKENS;
-import static raubach.frickl.next.codegen.tables.AlbumTokens.ALBUM_TOKENS;
 import static raubach.frickl.next.codegen.tables.ImageTags.IMAGE_TAGS;
 import static raubach.frickl.next.codegen.tables.Images.IMAGES;
 import static raubach.frickl.next.codegen.tables.Tags.TAGS;
 
 @Path("image/{imageId:\\d+}/tag")
-public class ImageTagResource extends AbstractAccessTokenResource
+public class ImageTagResource extends PaginatedServerResource
 {
 	@PathParam("imageId")
 	Integer imageId;
@@ -42,7 +40,6 @@ public class ImageTagResource extends AbstractAccessTokenResource
 			throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
-		boolean auth = PropertyWatcher.authEnabled();
 
 		if (imageId != null)
 		{
@@ -55,20 +52,21 @@ public class ImageTagResource extends AbstractAccessTokenResource
 																   .leftJoin(IMAGES).on(IMAGES.ID.eq(IMAGE_TAGS.IMAGE_ID)))
 													 .where(IMAGES.ID.eq(imageId));
 
-				if (auth)
+				// Restrict to only albums containing at least one public image
+				if (Permission.IS_ADMIN.allows(userDetails.getPermissions()))
 				{
-					if (!StringUtils.isEmpty(accessToken))
-					{
-						step.and(DSL.exists(DSL.selectOne()
-											   .from(ALBUM_TOKENS)
-											   .leftJoin(ACCESS_TOKENS).on(ACCESS_TOKENS.ID.eq(ALBUM_TOKENS.ACCESS_TOKEN_ID))
-											   .where(ACCESS_TOKENS.TOKEN.eq(accessToken)
-																		 .and(ALBUM_TOKENS.ALBUM_ID.eq(IMAGES.ALBUM_ID)))));
-					}
-					else if (StringUtils.isEmpty(userDetails.getToken()))
-					{
-						step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
-					}
+					// Nothing required here, admins can see everything
+				}
+				else if (StringUtils.isEmpty(userDetails.getToken()))
+				{
+					// Check if the album contains public images
+					step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+				}
+				else
+				{
+					// Check user permissions for the album
+					Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
+					step.and(IMAGES.ALBUM_ID.in(albumAccess));
 				}
 
 				return Response.ok(step.orderBy(TAGS.NAME)
@@ -94,19 +92,33 @@ public class ImageTagResource extends AbstractAccessTokenResource
 			throws SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
-		boolean auth = PropertyWatcher.authEnabled();
-
-		if (auth && StringUtils.isEmpty(userDetails.getToken()))
-			return Response.status(Response.Status.FORBIDDEN).build();
 
 		if (imageId != null && tagId != null)
 		{
 			try (Connection conn = Database.getConnection())
 			{
 				DSLContext context = Database.getContext(conn);
-				Images image = context.selectFrom(IMAGES)
-									  .where(IMAGES.ID.eq(imageId))
-									  .fetchAnyInto(Images.class);
+				SelectConditionStep<ImagesRecord> step = context.selectFrom(IMAGES)
+																 .where(IMAGES.ID.eq(imageId));
+
+				// Restrict to only albums containing at least one public image
+				if (Permission.IS_ADMIN.allows(userDetails.getPermissions()))
+				{
+					// Nothing required here, admins can see everything
+				}
+				else if (StringUtils.isEmpty(userDetails.getToken()))
+				{
+					// Check if the album contains public images
+					step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+				}
+				else
+				{
+					// Check user permissions for the album
+					Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
+					step.and(IMAGES.ALBUM_ID.in(albumAccess));
+				}
+
+				Images image = step.fetchAnyInto(Images.class);
 
 				Tags t = context.selectFrom(TAGS)
 								.where(TAGS.ID.eq(tagId))
@@ -154,11 +166,6 @@ public class ImageTagResource extends AbstractAccessTokenResource
 			throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
-		boolean auth = PropertyWatcher.authEnabled();
-
-		if (auth && StringUtils.isEmpty(userDetails.getToken()))
-			return Response.status(Response.Status.FORBIDDEN)
-						   .build();
 
 		boolean result = false;
 		if (tags != null && tags.length > 0 && imageId != null)
@@ -166,9 +173,27 @@ public class ImageTagResource extends AbstractAccessTokenResource
 			try (Connection conn = Database.getConnection())
 			{
 				DSLContext context = Database.getContext(conn);
-				Images image = context.selectFrom(IMAGES)
-									  .where(IMAGES.ID.eq(imageId))
-									  .fetchAnyInto(Images.class);
+				SelectConditionStep<ImagesRecord> step = context.selectFrom(IMAGES)
+																.where(IMAGES.ID.eq(imageId));
+
+				// Restrict to only albums containing at least one public image
+				if (Permission.IS_ADMIN.allows(userDetails.getPermissions()))
+				{
+					// Nothing required here, admins can see everything
+				}
+				else if (StringUtils.isEmpty(userDetails.getToken()))
+				{
+					// Check if the album contains public images
+					step.and(IMAGES.IS_PUBLIC.eq((byte) 1));
+				}
+				else
+				{
+					// Check user permissions for the album
+					Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
+					step.and(IMAGES.ALBUM_ID.in(albumAccess));
+				}
+
+				Images image = step.fetchAnyInto(Images.class);
 
 				List<String> tagStrings = new ArrayList<>();
 				for (Tags tag : tags)

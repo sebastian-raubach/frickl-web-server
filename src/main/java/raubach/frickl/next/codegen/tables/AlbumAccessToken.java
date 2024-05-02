@@ -4,19 +4,14 @@
 package raubach.frickl.next.codegen.tables;
 
 
-import java.sql.Timestamp;
-
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row6;
 import org.jooq.Schema;
 import org.jooq.Table;
-import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 import raubach.frickl.next.codegen.Frickl;
@@ -43,42 +38,6 @@ public class AlbumAccessToken extends TableImpl<AlbumAccessTokenRecord> {
     public Class<AlbumAccessTokenRecord> getRecordType() {
         return AlbumAccessTokenRecord.class;
     }
-
-    /**
-     * The column <code>frickl.album_access_token.album_id</code>. Auto
-     * incremented id of this table.
-     */
-    public final TableField<AlbumAccessTokenRecord, Integer> ALBUM_ID = createField(DSL.name("album_id"), SQLDataType.INTEGER.defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "Auto incremented id of this table.");
-
-    /**
-     * The column <code>frickl.album_access_token.album_name</code>. The name of
-     * the album. Should ideally be relatively short.
-     */
-    public final TableField<AlbumAccessTokenRecord, String> ALBUM_NAME = createField(DSL.name("album_name"), SQLDataType.VARCHAR(255), this, "The name of the album. Should ideally be relatively short.");
-
-    /**
-     * The column <code>frickl.album_access_token.album_description</code>.
-     * Optional description of the album.
-     */
-    public final TableField<AlbumAccessTokenRecord, String> ALBUM_DESCRIPTION = createField(DSL.name("album_description"), SQLDataType.CLOB, this, "Optional description of the album.");
-
-    /**
-     * The column <code>frickl.album_access_token.token_id</code>. Auto
-     * incremented id of this table.
-     */
-    public final TableField<AlbumAccessTokenRecord, Integer> TOKEN_ID = createField(DSL.name("token_id"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "Auto incremented id of this table.");
-
-    /**
-     * The column <code>frickl.album_access_token.token_token</code>. The access
-     * token.
-     */
-    public final TableField<AlbumAccessTokenRecord, String> TOKEN_TOKEN = createField(DSL.name("token_token"), SQLDataType.VARCHAR(36).nullable(false), this, "The access token.");
-
-    /**
-     * The column <code>frickl.album_access_token.token_expires_on</code>. When
-     * this token expires.
-     */
-    public final TableField<AlbumAccessTokenRecord, Timestamp> TOKEN_EXPIRES_ON = createField(DSL.name("token_expires_on"), SQLDataType.TIMESTAMP(0), this, "When this token expires.");
 
     private AlbumAccessToken(Name alias, Table<AlbumAccessTokenRecord> aliased) {
         this(alias, aliased, null);
@@ -142,14 +101,5 @@ public class AlbumAccessToken extends TableImpl<AlbumAccessTokenRecord> {
     @Override
     public AlbumAccessToken rename(Name name) {
         return new AlbumAccessToken(name, null);
-    }
-
-    // -------------------------------------------------------------------------
-    // Row6 type methods
-    // -------------------------------------------------------------------------
-
-    @Override
-    public Row6<Integer, String, String, Integer, String, Timestamp> fieldsRow() {
-        return (Row6) super.fieldsRow();
     }
 }

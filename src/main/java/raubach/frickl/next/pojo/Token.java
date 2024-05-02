@@ -28,6 +28,7 @@ public class Token
 {
 	private String               token;
 	private String               imageToken;
+	private String               username;
 	private Short                permissions;
 	private List<UserPermission> allPermissions = Arrays.stream(Permission.values()).map(p -> new UserPermission(p.name(), p.getNumericValue())).collect(Collectors.toList());
 	private Long                 lifetime;
@@ -37,10 +38,11 @@ public class Token
 	{
 	}
 
-	public Token(String token, String imageToken, Short permissions, Long lifetime, Long createdOn)
+	public Token(String token, String imageToken, String username, Short permissions, Long lifetime, Long createdOn)
 	{
 		this.token = token;
 		this.imageToken = imageToken;
+		this.username = username;
 		this.permissions = permissions;
 		this.lifetime = lifetime;
 		this.createdOn = createdOn;
@@ -65,6 +67,17 @@ public class Token
 	public Token setImageToken(String imageToken)
 	{
 		this.imageToken = imageToken;
+		return this;
+	}
+
+	public String getUsername()
+	{
+		return username;
+	}
+
+	public Token setUsername(String username)
+	{
+		this.username = username;
 		return this;
 	}
 

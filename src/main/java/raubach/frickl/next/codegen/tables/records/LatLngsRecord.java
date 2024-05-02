@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import org.jooq.Field;
-import org.jooq.Record13;
-import org.jooq.Row13;
+import org.jooq.Record14;
+import org.jooq.Row14;
 import org.jooq.impl.TableRecordImpl;
 
 import raubach.frickl.next.codegen.enums.LatLngsDataType;
@@ -21,7 +21,7 @@ import raubach.frickl.next.pojo.Exif;
  * VIEW
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
-public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Record13<Integer, String, String, Byte, Exif, Integer, Byte, Integer, LatLngsDataType, Timestamp, Timestamp, BigDecimal, BigDecimal> {
+public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Record14<Integer, String, String, Byte, Exif, Integer, Byte, Integer, LatLngsDataType, Integer, Timestamp, Timestamp, BigDecimal, BigDecimal> {
 
     private static final long serialVersionUID = 1L;
 
@@ -164,11 +164,27 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
     }
 
     /**
+     * Setter for <code>frickl.lat_lngs.created_by</code>. Optional user id.
+     * Indicates which user created/uploaded this image.
+     */
+    public void setCreatedBy(Integer value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>frickl.lat_lngs.created_by</code>. Optional user id.
+     * Indicates which user created/uploaded this image.
+     */
+    public Integer getCreatedBy() {
+        return (Integer) get(9);
+    }
+
+    /**
      * Setter for <code>frickl.lat_lngs.created_on</code>. When this record has
      * been created.
      */
     public void setCreatedOn(Timestamp value) {
-        set(9, value);
+        set(10, value);
     }
 
     /**
@@ -176,7 +192,7 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
      * been created.
      */
     public Timestamp getCreatedOn() {
-        return (Timestamp) get(9);
+        return (Timestamp) get(10);
     }
 
     /**
@@ -184,7 +200,7 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
      * last been updated.
      */
     public void setUpdatedOn(Timestamp value) {
-        set(10, value);
+        set(11, value);
     }
 
     /**
@@ -192,49 +208,49 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
      * last been updated.
      */
     public Timestamp getUpdatedOn() {
-        return (Timestamp) get(10);
+        return (Timestamp) get(11);
     }
 
     /**
      * Setter for <code>frickl.lat_lngs.latitude</code>.
      */
     public void setLatitude(BigDecimal value) {
-        set(11, value);
+        set(12, value);
     }
 
     /**
      * Getter for <code>frickl.lat_lngs.latitude</code>.
      */
     public BigDecimal getLatitude() {
-        return (BigDecimal) get(11);
+        return (BigDecimal) get(12);
     }
 
     /**
      * Setter for <code>frickl.lat_lngs.longitude</code>.
      */
     public void setLongitude(BigDecimal value) {
-        set(12, value);
+        set(13, value);
     }
 
     /**
      * Getter for <code>frickl.lat_lngs.longitude</code>.
      */
     public BigDecimal getLongitude() {
-        return (BigDecimal) get(12);
+        return (BigDecimal) get(13);
     }
 
     // -------------------------------------------------------------------------
-    // Record13 type implementation
+    // Record14 type implementation
     // -------------------------------------------------------------------------
 
     @Override
-    public Row13<Integer, String, String, Byte, Exif, Integer, Byte, Integer, LatLngsDataType, Timestamp, Timestamp, BigDecimal, BigDecimal> fieldsRow() {
-        return (Row13) super.fieldsRow();
+    public Row14<Integer, String, String, Byte, Exif, Integer, Byte, Integer, LatLngsDataType, Integer, Timestamp, Timestamp, BigDecimal, BigDecimal> fieldsRow() {
+        return (Row14) super.fieldsRow();
     }
 
     @Override
-    public Row13<Integer, String, String, Byte, Exif, Integer, Byte, Integer, LatLngsDataType, Timestamp, Timestamp, BigDecimal, BigDecimal> valuesRow() {
-        return (Row13) super.valuesRow();
+    public Row14<Integer, String, String, Byte, Exif, Integer, Byte, Integer, LatLngsDataType, Integer, Timestamp, Timestamp, BigDecimal, BigDecimal> valuesRow() {
+        return (Row14) super.valuesRow();
     }
 
     @Override
@@ -283,22 +299,27 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
     }
 
     @Override
-    public Field<Timestamp> field10() {
-        return LatLngs.LAT_LNGS.CREATED_ON;
+    public Field<Integer> field10() {
+        return LatLngs.LAT_LNGS.CREATED_BY;
     }
 
     @Override
     public Field<Timestamp> field11() {
+        return LatLngs.LAT_LNGS.CREATED_ON;
+    }
+
+    @Override
+    public Field<Timestamp> field12() {
         return LatLngs.LAT_LNGS.UPDATED_ON;
     }
 
     @Override
-    public Field<BigDecimal> field12() {
+    public Field<BigDecimal> field13() {
         return LatLngs.LAT_LNGS.LATITUDE;
     }
 
     @Override
-    public Field<BigDecimal> field13() {
+    public Field<BigDecimal> field14() {
         return LatLngs.LAT_LNGS.LONGITUDE;
     }
 
@@ -348,22 +369,27 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
     }
 
     @Override
-    public Timestamp component10() {
-        return getCreatedOn();
+    public Integer component10() {
+        return getCreatedBy();
     }
 
     @Override
     public Timestamp component11() {
+        return getCreatedOn();
+    }
+
+    @Override
+    public Timestamp component12() {
         return getUpdatedOn();
     }
 
     @Override
-    public BigDecimal component12() {
+    public BigDecimal component13() {
         return getLatitude();
     }
 
     @Override
-    public BigDecimal component13() {
+    public BigDecimal component14() {
         return getLongitude();
     }
 
@@ -413,22 +439,27 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
     }
 
     @Override
-    public Timestamp value10() {
-        return getCreatedOn();
+    public Integer value10() {
+        return getCreatedBy();
     }
 
     @Override
     public Timestamp value11() {
+        return getCreatedOn();
+    }
+
+    @Override
+    public Timestamp value12() {
         return getUpdatedOn();
     }
 
     @Override
-    public BigDecimal value12() {
+    public BigDecimal value13() {
         return getLatitude();
     }
 
     @Override
-    public BigDecimal value13() {
+    public BigDecimal value14() {
         return getLongitude();
     }
 
@@ -487,31 +518,37 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
     }
 
     @Override
-    public LatLngsRecord value10(Timestamp value) {
-        setCreatedOn(value);
+    public LatLngsRecord value10(Integer value) {
+        setCreatedBy(value);
         return this;
     }
 
     @Override
     public LatLngsRecord value11(Timestamp value) {
+        setCreatedOn(value);
+        return this;
+    }
+
+    @Override
+    public LatLngsRecord value12(Timestamp value) {
         setUpdatedOn(value);
         return this;
     }
 
     @Override
-    public LatLngsRecord value12(BigDecimal value) {
+    public LatLngsRecord value13(BigDecimal value) {
         setLatitude(value);
         return this;
     }
 
     @Override
-    public LatLngsRecord value13(BigDecimal value) {
+    public LatLngsRecord value14(BigDecimal value) {
         setLongitude(value);
         return this;
     }
 
     @Override
-    public LatLngsRecord values(Integer value1, String value2, String value3, Byte value4, Exif value5, Integer value6, Byte value7, Integer value8, LatLngsDataType value9, Timestamp value10, Timestamp value11, BigDecimal value12, BigDecimal value13) {
+    public LatLngsRecord values(Integer value1, String value2, String value3, Byte value4, Exif value5, Integer value6, Byte value7, Integer value8, LatLngsDataType value9, Integer value10, Timestamp value11, Timestamp value12, BigDecimal value13, BigDecimal value14) {
         value1(value1);
         value2(value2);
         value3(value3);
@@ -525,6 +562,7 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
         value11(value11);
         value12(value12);
         value13(value13);
+        value14(value14);
         return this;
     }
 
@@ -542,7 +580,7 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
     /**
      * Create a detached, initialised LatLngsRecord
      */
-    public LatLngsRecord(Integer id, String path, String name, Byte isFavorite, Exif exif, Integer albumId, Byte isPublic, Integer viewCount, LatLngsDataType dataType, Timestamp createdOn, Timestamp updatedOn, BigDecimal latitude, BigDecimal longitude) {
+    public LatLngsRecord(Integer id, String path, String name, Byte isFavorite, Exif exif, Integer albumId, Byte isPublic, Integer viewCount, LatLngsDataType dataType, Integer createdBy, Timestamp createdOn, Timestamp updatedOn, BigDecimal latitude, BigDecimal longitude) {
         super(LatLngs.LAT_LNGS);
 
         setId(id);
@@ -554,6 +592,7 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
         setIsPublic(isPublic);
         setViewCount(viewCount);
         setDataType(dataType);
+        setCreatedBy(createdBy);
         setCreatedOn(createdOn);
         setUpdatedOn(updatedOn);
         setLatitude(latitude);
@@ -576,6 +615,7 @@ public class LatLngsRecord extends TableRecordImpl<LatLngsRecord> implements Rec
             setIsPublic(value.getIsPublic());
             setViewCount(value.getViewCount());
             setDataType(value.getDataType());
+            setCreatedBy(value.getCreatedBy());
             setCreatedOn(value.getCreatedOn());
             setUpdatedOn(value.getUpdatedOn());
             setLatitude(value.getLatitude());

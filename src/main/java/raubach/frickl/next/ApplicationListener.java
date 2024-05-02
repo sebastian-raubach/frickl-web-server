@@ -6,21 +6,18 @@ import jhi.oddjob.*;
 import raubach.frickl.next.pojo.*;
 import raubach.frickl.next.scanner.ImageScanner;
 import raubach.frickl.next.util.*;
-import raubach.frickl.next.util.task.AccessTokenDeleteTask;
+import raubach.frickl.next.util.task.AlbumDownloadFolderCleanupTask;
 import raubach.frickl.next.util.watcher.PropertyWatcher;
 
 import java.io.File;
-import java.time.*;
-import java.time.temporal.ChronoUnit;
 import java.util.concurrent.*;
-import java.util.logging.Logger;
 
 @WebListener
 public class ApplicationListener implements ServletContextListener
 {
-	private static      ScheduledExecutorService                          backgroundScheduler;
-	public static final IScheduler                                        SCHEDULER     = new ProcessScheduler();
-	public static final ConcurrentHashMap<String, AsyncAlbumExportResult> SCHEDULER_IDS = new ConcurrentHashMap<>();
+	private static      ScheduledExecutorService                     backgroundScheduler;
+	public static final IScheduler                                   SCHEDULER     = new ProcessScheduler();
+	public static final ConcurrentHashMap<String, AsyncExportResult> SCHEDULER_IDS = new ConcurrentHashMap<>();
 
 	public static void startImageScanner(File file)
 	{
@@ -39,6 +36,8 @@ public class ApplicationListener implements ServletContextListener
 
 		PropertyWatcher.initialize();
 
+		UserAlbumAccessStore.initialize();
+
 		try
 		{
 			SCHEDULER.initialize();
@@ -51,11 +50,7 @@ public class ApplicationListener implements ServletContextListener
 		Frickl.BASE_PATH = PropertyWatcher.get(ServerProperty.BASE_PATH);
 
 		backgroundScheduler = Executors.newSingleThreadScheduledExecutor();
-		// Run it now
-		backgroundScheduler.schedule(new AccessTokenDeleteTask(), 0, TimeUnit.SECONDS);
-		// Then at midnight each day
-		long midnight = LocalDateTime.now().until(LocalDate.now().plusDays(1).atStartOfDay(), ChronoUnit.MINUTES);
-		backgroundScheduler.scheduleAtFixedRate(new AccessTokenDeleteTask(), midnight, TimeUnit.DAYS.toMinutes(1), TimeUnit.MINUTES);
+		backgroundScheduler.scheduleAtFixedRate(new AlbumDownloadFolderCleanupTask(), 0, 1, TimeUnit.DAYS);
 
 		startImageScanner(new File(Frickl.BASE_PATH));
 	}

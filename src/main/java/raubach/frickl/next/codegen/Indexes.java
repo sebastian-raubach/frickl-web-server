@@ -9,7 +9,7 @@ import org.jooq.OrderField;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 
-import raubach.frickl.next.codegen.tables.AccessTokens;
+import raubach.frickl.next.codegen.tables.AlbumUsers;
 import raubach.frickl.next.codegen.tables.Albums;
 import raubach.frickl.next.codegen.tables.ImageTags;
 import raubach.frickl.next.codegen.tables.Images;
@@ -26,7 +26,7 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
-    public static final Index ACCESS_TOKENS_ACCESS_TOKENS_TOKEN = Internal.createIndex(DSL.name("access_tokens_token"), AccessTokens.ACCESS_TOKENS, new OrderField[] { AccessTokens.ACCESS_TOKENS.TOKEN }, false);
+    public static final Index ALBUM_USERS_ALBUM_ID = Internal.createIndex(DSL.name("album_id"), AlbumUsers.ALBUM_USERS, new OrderField[] { AlbumUsers.ALBUM_USERS.ALBUM_ID }, false);
     public static final Index ALBUMS_BANNER_IMAGE_ID = Internal.createIndex(DSL.name("banner_image_id"), Albums.ALBUMS, new OrderField[] { Albums.ALBUMS.BANNER_IMAGE_ID }, false);
     public static final Index ALBUMS_CREATED_BY = Internal.createIndex(DSL.name("created_by"), Albums.ALBUMS, new OrderField[] { Albums.ALBUMS.CREATED_BY }, false);
     public static final Index IMAGES_CREATED_BY = Internal.createIndex(DSL.name("created_by"), Images.IMAGES, new OrderField[] { Images.IMAGES.CREATED_BY }, false);

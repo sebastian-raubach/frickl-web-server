@@ -11,7 +11,7 @@ import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row13;
+import org.jooq.Row14;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -100,6 +100,12 @@ public class LatLngs extends TableImpl<LatLngsRecord> {
     public final TableField<LatLngsRecord, LatLngsDataType> DATA_TYPE = createField(DSL.name("data_type"), SQLDataType.VARCHAR(5).nullable(false).defaultValue(DSL.inline("image", SQLDataType.VARCHAR)).asEnumDataType(raubach.frickl.next.codegen.enums.LatLngsDataType.class), this, "");
 
     /**
+     * The column <code>frickl.lat_lngs.created_by</code>. Optional user id.
+     * Indicates which user created/uploaded this image.
+     */
+    public final TableField<LatLngsRecord, Integer> CREATED_BY = createField(DSL.name("created_by"), SQLDataType.INTEGER, this, "Optional user id. Indicates which user created/uploaded this image.");
+
+    /**
      * The column <code>frickl.lat_lngs.created_on</code>. When this record has
      * been created.
      */
@@ -126,7 +132,7 @@ public class LatLngs extends TableImpl<LatLngsRecord> {
     }
 
     private LatLngs(Name alias, Table<LatLngsRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment("VIEW"), TableOptions.view("create view `lat_lngs` as select `frickl`.`images`.`id` AS `id`,`frickl`.`images`.`path` AS `path`,`frickl`.`images`.`name` AS `name`,`frickl`.`images`.`is_favorite` AS `is_favorite`,`frickl`.`images`.`exif` AS `exif`,`frickl`.`images`.`album_id` AS `album_id`,`frickl`.`images`.`is_public` AS `is_public`,`frickl`.`images`.`view_count` AS `view_count`,`frickl`.`images`.`data_type` AS `data_type`,`frickl`.`images`.`created_on` AS `created_on`,`frickl`.`images`.`updated_on` AS `updated_on`,cast(json_unquote(json_extract(`frickl`.`images`.`exif`,'$.gpsLatitude')) as decimal(64,10)) AS `latitude`,cast(json_unquote(json_extract(`frickl`.`images`.`exif`,'$.gpsLongitude')) as decimal(64,10)) AS `longitude` from `frickl`.`images` where ((json_unquote(json_extract(`frickl`.`images`.`exif`,'$.gpsLatitude')) is not null) and (json_unquote(json_extract(`frickl`.`images`.`exif`,'$.gpsLongitude')) is not null))"));
+        super(alias, null, aliased, parameters, DSL.comment("VIEW"), TableOptions.view("create view `lat_lngs` as select `frickl`.`images`.`id` AS `id`,`frickl`.`images`.`path` AS `path`,`frickl`.`images`.`name` AS `name`,`frickl`.`images`.`is_favorite` AS `is_favorite`,`frickl`.`images`.`exif` AS `exif`,`frickl`.`images`.`album_id` AS `album_id`,`frickl`.`images`.`is_public` AS `is_public`,`frickl`.`images`.`view_count` AS `view_count`,`frickl`.`images`.`data_type` AS `data_type`,`frickl`.`images`.`created_by` AS `created_by`,`frickl`.`images`.`created_on` AS `created_on`,`frickl`.`images`.`updated_on` AS `updated_on`,cast(json_unquote(json_extract(`frickl`.`images`.`exif`,'$.gpsLatitude')) as decimal(64,10)) AS `latitude`,cast(json_unquote(json_extract(`frickl`.`images`.`exif`,'$.gpsLongitude')) as decimal(64,10)) AS `longitude` from `frickl`.`images` where ((json_unquote(json_extract(`frickl`.`images`.`exif`,'$.gpsLatitude')) is not null) and (json_unquote(json_extract(`frickl`.`images`.`exif`,'$.gpsLongitude')) is not null))"));
     }
 
     /**
@@ -186,11 +192,11 @@ public class LatLngs extends TableImpl<LatLngsRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row13 type methods
+    // Row14 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row13<Integer, String, String, Byte, Exif, Integer, Byte, Integer, LatLngsDataType, Timestamp, Timestamp, BigDecimal, BigDecimal> fieldsRow() {
-        return (Row13) super.fieldsRow();
+    public Row14<Integer, String, String, Byte, Exif, Integer, Byte, Integer, LatLngsDataType, Integer, Timestamp, Timestamp, BigDecimal, BigDecimal> fieldsRow() {
+        return (Row14) super.fieldsRow();
     }
 }

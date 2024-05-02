@@ -27,7 +27,7 @@ public class PaginatedServerResource extends ContextResource
 	private int isAscending;
 
 	@QueryParam("searchTerm")
-	private String searchTerm;
+	protected String searchTerm;
 
 	protected Boolean ascending = null;
 

@@ -10,18 +10,16 @@ import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 
-import raubach.frickl.next.codegen.tables.AccessTokens;
 import raubach.frickl.next.codegen.tables.AlbumCounts;
-import raubach.frickl.next.codegen.tables.AlbumTokens;
+import raubach.frickl.next.codegen.tables.AlbumUsers;
 import raubach.frickl.next.codegen.tables.Albums;
 import raubach.frickl.next.codegen.tables.ImageTags;
 import raubach.frickl.next.codegen.tables.Images;
 import raubach.frickl.next.codegen.tables.SchemaVersion;
 import raubach.frickl.next.codegen.tables.Tags;
 import raubach.frickl.next.codegen.tables.Users;
-import raubach.frickl.next.codegen.tables.records.AccessTokensRecord;
 import raubach.frickl.next.codegen.tables.records.AlbumCountsRecord;
-import raubach.frickl.next.codegen.tables.records.AlbumTokensRecord;
+import raubach.frickl.next.codegen.tables.records.AlbumUsersRecord;
 import raubach.frickl.next.codegen.tables.records.AlbumsRecord;
 import raubach.frickl.next.codegen.tables.records.ImageTagsRecord;
 import raubach.frickl.next.codegen.tables.records.ImagesRecord;
@@ -41,9 +39,8 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<AccessTokensRecord> KEY_ACCESS_TOKENS_PRIMARY = Internal.createUniqueKey(AccessTokens.ACCESS_TOKENS, DSL.name("KEY_access_tokens_PRIMARY"), new TableField[] { AccessTokens.ACCESS_TOKENS.ID }, true);
     public static final UniqueKey<AlbumCountsRecord> KEY_ALBUM_COUNTS_PRIMARY = Internal.createUniqueKey(AlbumCounts.ALBUM_COUNTS, DSL.name("KEY_album_counts_PRIMARY"), new TableField[] { AlbumCounts.ALBUM_COUNTS.ALBUM_ID }, true);
-    public static final UniqueKey<AlbumTokensRecord> KEY_ALBUM_TOKENS_PRIMARY = Internal.createUniqueKey(AlbumTokens.ALBUM_TOKENS, DSL.name("KEY_album_tokens_PRIMARY"), new TableField[] { AlbumTokens.ALBUM_TOKENS.ALBUM_ID, AlbumTokens.ALBUM_TOKENS.ACCESS_TOKEN_ID }, true);
+    public static final UniqueKey<AlbumUsersRecord> KEY_ALBUM_USERS_PRIMARY = Internal.createUniqueKey(AlbumUsers.ALBUM_USERS, DSL.name("KEY_album_users_PRIMARY"), new TableField[] { AlbumUsers.ALBUM_USERS.USER_ID, AlbumUsers.ALBUM_USERS.ALBUM_ID }, true);
     public static final UniqueKey<AlbumsRecord> KEY_ALBUMS_PRIMARY = Internal.createUniqueKey(Albums.ALBUMS, DSL.name("KEY_albums_PRIMARY"), new TableField[] { Albums.ALBUMS.ID }, true);
     public static final UniqueKey<ImageTagsRecord> KEY_IMAGE_TAGS_PRIMARY = Internal.createUniqueKey(ImageTags.IMAGE_TAGS, DSL.name("KEY_image_tags_PRIMARY"), new TableField[] { ImageTags.IMAGE_TAGS.IMAGE_ID, ImageTags.IMAGE_TAGS.TAG_ID }, true);
     public static final UniqueKey<ImagesRecord> KEY_IMAGES_PRIMARY = Internal.createUniqueKey(Images.IMAGES, DSL.name("KEY_images_PRIMARY"), new TableField[] { Images.IMAGES.ID }, true);
@@ -56,8 +53,8 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final ForeignKey<AlbumCountsRecord, AlbumsRecord> ALBUM_COUNTS_IBFK_1 = Internal.createForeignKey(AlbumCounts.ALBUM_COUNTS, DSL.name("album_counts_ibfk_1"), new TableField[] { AlbumCounts.ALBUM_COUNTS.ALBUM_ID }, Keys.KEY_ALBUMS_PRIMARY, new TableField[] { Albums.ALBUMS.ID }, true);
-    public static final ForeignKey<AlbumTokensRecord, AlbumsRecord> ALBUM_TOKENS_IBFK_1 = Internal.createForeignKey(AlbumTokens.ALBUM_TOKENS, DSL.name("album_tokens_ibfk_1"), new TableField[] { AlbumTokens.ALBUM_TOKENS.ALBUM_ID }, Keys.KEY_ALBUMS_PRIMARY, new TableField[] { Albums.ALBUMS.ID }, true);
-    public static final ForeignKey<AlbumTokensRecord, AccessTokensRecord> ALBUM_TOKENS_IBFK_2 = Internal.createForeignKey(AlbumTokens.ALBUM_TOKENS, DSL.name("album_tokens_ibfk_2"), new TableField[] { AlbumTokens.ALBUM_TOKENS.ACCESS_TOKEN_ID }, Keys.KEY_ACCESS_TOKENS_PRIMARY, new TableField[] { AccessTokens.ACCESS_TOKENS.ID }, true);
+    public static final ForeignKey<AlbumUsersRecord, UsersRecord> ALBUM_USERS_IBFK_1 = Internal.createForeignKey(AlbumUsers.ALBUM_USERS, DSL.name("album_users_ibfk_1"), new TableField[] { AlbumUsers.ALBUM_USERS.USER_ID }, Keys.KEY_USERS_PRIMARY, new TableField[] { Users.USERS.ID }, true);
+    public static final ForeignKey<AlbumUsersRecord, AlbumsRecord> ALBUM_USERS_IBFK_2 = Internal.createForeignKey(AlbumUsers.ALBUM_USERS, DSL.name("album_users_ibfk_2"), new TableField[] { AlbumUsers.ALBUM_USERS.ALBUM_ID }, Keys.KEY_ALBUMS_PRIMARY, new TableField[] { Albums.ALBUMS.ID }, true);
     public static final ForeignKey<AlbumsRecord, ImagesRecord> ALBUMS_IBFK_1 = Internal.createForeignKey(Albums.ALBUMS, DSL.name("albums_ibfk_1"), new TableField[] { Albums.ALBUMS.BANNER_IMAGE_ID }, Keys.KEY_IMAGES_PRIMARY, new TableField[] { Images.IMAGES.ID }, true);
     public static final ForeignKey<AlbumsRecord, AlbumsRecord> ALBUMS_IBFK_2 = Internal.createForeignKey(Albums.ALBUMS, DSL.name("albums_ibfk_2"), new TableField[] { Albums.ALBUMS.PARENT_ALBUM_ID }, Keys.KEY_ALBUMS_PRIMARY, new TableField[] { Albums.ALBUMS.ID }, true);
     public static final ForeignKey<AlbumsRecord, UsersRecord> ALBUMS_IBFK_3 = Internal.createForeignKey(Albums.ALBUMS, DSL.name("albums_ibfk_3"), new TableField[] { Albums.ALBUMS.CREATED_BY }, Keys.KEY_USERS_PRIMARY, new TableField[] { Users.USERS.ID }, true);

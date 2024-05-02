@@ -47,11 +47,6 @@ public class TokenResource extends ContextResource
 	public Response deleteToken(LoginDetails user)
 			throws IOException
 	{
-		boolean enabled = PropertyWatcher.authEnabled();
-
-		if (!enabled)
-			return Response.status(Response.Status.SERVICE_UNAVAILABLE).build();
-
 		if (user == null)
 			return Response.status(Response.Status.NOT_FOUND).build();
 
@@ -141,6 +136,6 @@ public class TokenResource extends ContextResource
 			return Response.status(Response.Status.FORBIDDEN.getStatusCode(), StatusMessage.FORBIDDEN_INVALID_CREDENTIALS).build();
 		}
 
-		return Response.ok(new Token(token, imageToken, user.getPermissions(), AuthenticationFilter.AGE, System.currentTimeMillis())).build();
+		return Response.ok(new Token(token, imageToken, user.getUsername(), user.getPermissions(), AuthenticationFilter.AGE, System.currentTimeMillis())).build();
 	}
 }

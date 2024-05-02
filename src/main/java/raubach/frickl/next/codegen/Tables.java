@@ -4,11 +4,10 @@
 package raubach.frickl.next.codegen;
 
 
-import raubach.frickl.next.codegen.tables.AccessTokens;
 import raubach.frickl.next.codegen.tables.AlbumAccessToken;
 import raubach.frickl.next.codegen.tables.AlbumCounts;
 import raubach.frickl.next.codegen.tables.AlbumStats;
-import raubach.frickl.next.codegen.tables.AlbumTokens;
+import raubach.frickl.next.codegen.tables.AlbumUsers;
 import raubach.frickl.next.codegen.tables.Albums;
 import raubach.frickl.next.codegen.tables.CalendarData;
 import raubach.frickl.next.codegen.tables.ImageTags;
@@ -28,12 +27,6 @@ import raubach.frickl.next.codegen.tables.Users;
 public class Tables {
 
     /**
-     * This table contains all tokens that can be used to access folders that
-     * aren't public.
-     */
-    public static final AccessTokens ACCESS_TOKENS = AccessTokens.ACCESS_TOKENS;
-
-    /**
      * VIEW
      */
     public static final AlbumAccessToken ALBUM_ACCESS_TOKEN = AlbumAccessToken.ALBUM_ACCESS_TOKEN;
@@ -49,9 +42,9 @@ public class Tables {
     public static final AlbumStats ALBUM_STATS = AlbumStats.ALBUM_STATS;
 
     /**
-     * This table contains the mapping between access tokens and albums.
+     * The table <code>frickl.album_users</code>.
      */
-    public static final AlbumTokens ALBUM_TOKENS = AlbumTokens.ALBUM_TOKENS;
+    public static final AlbumUsers ALBUM_USERS = AlbumUsers.ALBUM_USERS;
 
     /**
      * This table contain  s all albums in Frickl. Albums correspond to image

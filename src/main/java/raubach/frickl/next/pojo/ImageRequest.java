@@ -2,10 +2,22 @@ package raubach.frickl.next.pojo;
 
 public class ImageRequest extends PaginatedRequest
 {
+	public Integer imageId;
 	public Integer albumId;
 	public Boolean isFav;
 	public String  date;
 	public Integer tagId;
+
+	public Integer getImageId()
+	{
+		return imageId;
+	}
+
+	public ImageRequest setImageId(Integer imageId)
+	{
+		this.imageId = imageId;
+		return this;
+	}
 
 	public Integer getAlbumId()
 	{

@@ -11,7 +11,8 @@ public enum Permission
 	IMAGE_EDIT(16),
 	ALBUM_CREATE(32),
 	ALBUM_DELETE(64),
-	SETTINGS_CHANGE(128);
+	SETTINGS_CHANGE(128),
+	IS_ADMIN(256);
 
 	private final int value;
 

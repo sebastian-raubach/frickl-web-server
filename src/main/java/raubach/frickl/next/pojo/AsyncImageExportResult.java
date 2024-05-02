@@ -10,7 +10,7 @@ import java.util.Date;
 @Accessors(chain = true)
 @NoArgsConstructor
 @ToString
-public class AsyncAlbumExportResult extends AsyncExportResult
+public class AsyncImageExportResult extends AsyncExportResult
 {
-	private String albumName;
+	private Integer imageCount;
 }

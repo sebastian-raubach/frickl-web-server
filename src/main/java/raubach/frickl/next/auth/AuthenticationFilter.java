@@ -12,7 +12,6 @@ import jakarta.ws.rs.ext.Provider;
 import org.jooq.tools.StringUtils;
 import raubach.frickl.next.codegen.enums.UsersViewType;
 import raubach.frickl.next.util.*;
-import raubach.frickl.next.util.watcher.PropertyWatcher;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -32,9 +31,9 @@ public class AuthenticationFilter implements ContainerRequestFilter
 {
 	public static final  long                     AGE                   = 604_800_000; // 7 days
 	private static final String                   REALM                 = "example";
-	private static final String                   AUTHENTICATION_SCHEME = "Bearer";
-	private static final Map<String, UserDetails> tokenToTimestamp      = new ConcurrentHashMap<>();
-	private static final Map<String, String>      tokenToImageToken     = new ConcurrentHashMap<>();
+	private static final String                   AUTHENTICATION_SCHEME   = "Bearer";
+	private static final Map<String, UserDetails> tokenToUserDetails      = new ConcurrentHashMap<>();
+	private static final Map<String, UserDetails>      imageTokenToUserDetails = new ConcurrentHashMap<>();
 	@Context
 	ServletContext servletContext;
 	@Context
@@ -61,8 +60,8 @@ public class AuthenticationFilter implements ContainerRequestFilter
 	 */
 	public static void invalidateAllTokens()
 	{
-		tokenToTimestamp.clear();
-		tokenToImageToken.clear();
+		tokenToUserDetails.clear();
+		imageTokenToUserDetails.clear();
 	}
 
 	public static void addToken(HttpServletRequest request, HttpServletResponse response, String token, String imageToken, Integer userId, Short userPermissions)
@@ -74,17 +73,17 @@ public class AuthenticationFilter implements ContainerRequestFilter
 		details.imageToken = imageToken;
 		details.token = token;
 		details.permissions = userPermissions;
-		tokenToTimestamp.put(token, details);
-		tokenToImageToken.put(token, details.imageToken);
+		tokenToUserDetails.put(token, details);
+		imageTokenToUserDetails.put(details.imageToken, details);
 	}
 
 	public static void removeToken(String token, HttpServletRequest request, HttpServletResponse response)
 	{
 		if (token != null)
 		{
-			UserDetails exists = tokenToTimestamp.remove(token);
+			UserDetails exists = tokenToUserDetails.remove(token);
 			if (exists != null)
-				tokenToImageToken.remove(exists.imageToken);
+				imageTokenToUserDetails.remove(exists.imageToken);
 		}
 
 		setCookie(null, request, response);
@@ -185,16 +184,20 @@ public class AuthenticationFilter implements ContainerRequestFilter
 		return result;
 	}
 
-	/**
-	 * Checks whether the given image token is valid
-	 *
-	 * @param imageToken The token
-	 * @return <code>true</code> if the token is valid
-	 */
-	public static boolean isValidImageToken(String imageToken)
-	{
-		return !StringUtils.isEmpty(imageToken) && tokenToImageToken.containsValue(imageToken);
+	public static UserDetails getUserDetailsFromImageToken(String imageToken) {
+		return imageToken == null ? new UserDetails(null, null, null, (short) 0, UsersViewType.ALBUM_PERMISSION, System.currentTimeMillis()) : imageTokenToUserDetails.get(imageToken);
 	}
+
+//	/**
+//	 * Checks whether the given image token is valid
+//	 *
+//	 * @param imageToken The token
+//	 * @return <code>true</code> if the token is valid
+//	 */
+//	public static boolean isValidImageToken(String imageToken)
+//	{
+//		return !StringUtils.isEmpty(imageToken) && imageTokenToUserDetails.containsValue(imageToken);
+//	}
 
 	@Override
 	public void filter(ContainerRequestContext requestContext)
@@ -223,7 +226,7 @@ public class AuthenticationFilter implements ContainerRequestFilter
 			@Override
 			public Principal getUserPrincipal()
 			{
-				UserDetails details = finalToken == null ? null : tokenToTimestamp.get(finalToken);
+				UserDetails details = finalToken == null ? null : tokenToUserDetails.get(finalToken);
 
 				if (details == null)
 				{
@@ -237,7 +240,7 @@ public class AuthenticationFilter implements ContainerRequestFilter
 			@Override
 			public boolean isUserInRole(String role)
 			{
-				UserDetails details = finalToken == null ? null : tokenToTimestamp.get(finalToken);
+				UserDetails details = finalToken == null ? null : tokenToUserDetails.get(finalToken);
 
 				if (details == null)
 					return false;
@@ -277,7 +280,7 @@ public class AuthenticationFilter implements ContainerRequestFilter
 
 			try
 			{
-				if (PropertyWatcher.authEnabled() && (token != null || (!isClassFree && !isMethodFree)))
+				if (token != null || (!isClassFree && !isMethodFree))
 				{
 					validateToken(token);
 				}
@@ -319,7 +322,7 @@ public class AuthenticationFilter implements ContainerRequestFilter
 		boolean canAccess = false;
 
 		// Check if it's a valid token
-		UserDetails details = tokenToTimestamp.get(token);
+		UserDetails details = tokenToUserDetails.get(token);
 
 		if (details != null)
 		{
@@ -329,7 +332,7 @@ public class AuthenticationFilter implements ContainerRequestFilter
 				canAccess = true;
 				// Extend the cookie
 				details.timestamp = System.currentTimeMillis();
-				tokenToTimestamp.put(token, details);
+				tokenToUserDetails.put(token, details);
 			}
 			else
 			{

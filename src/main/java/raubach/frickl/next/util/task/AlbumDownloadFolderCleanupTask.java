@@ -29,7 +29,7 @@ public class AlbumDownloadFolderCleanupTask implements Runnable
 			{
 				Long timestamp = getLastModifiedForFolder(f);
 
-				if (timestamp != null && (System.currentTimeMillis() - timestamp) > 604_800_000)
+				if (timestamp != null && (System.currentTimeMillis() - timestamp) > 604_800_000) // 7 days
 				{
 					try
 					{

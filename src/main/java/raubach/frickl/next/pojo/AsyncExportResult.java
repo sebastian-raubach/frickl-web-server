@@ -10,7 +10,11 @@ import java.util.Date;
 @Accessors(chain = true)
 @NoArgsConstructor
 @ToString
-public class AsyncAlbumExportResult extends AsyncExportResult
+public class AsyncExportResult
 {
-	private String albumName;
+	private String userToken;
+	private String token;
+	private ExportStatus status;
+	private String jobId;
+	private Date createdOn;
 }
