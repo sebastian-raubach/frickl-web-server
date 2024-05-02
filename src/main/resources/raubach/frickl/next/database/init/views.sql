@@ -27,21 +27,32 @@ order by
     `date` desc;
 
 DROP VIEW IF EXISTS `lat_lngs`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `lat_lngs` AS select
-    `images`.*,
-    cast(json_unquote(json_extract(`images`.`exif`,
-    '$.gpsLatitude')) as decimal(64,
-    10)) AS `latitude`,
-    cast(json_unquote(json_extract(`images`.`exif`,
-    '$.gpsLongitude')) as decimal(64,
-    10)) AS `longitude`
-from
-    `images`
-where
-    ((json_unquote(json_extract(`images`.`exif`,
-    '$.gpsLatitude')) is not null)
-    and (json_unquote(json_extract(`images`.`exif`,
-    '$.gpsLongitude')) is not null));
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `lat_lngs` AS SELECT
+     `images`.`id` AS `id`,
+     `images`.`path` AS `path`,
+     `images`.`name` AS `name`,
+     `images`.`is_favorite` AS `is_favorite`,
+     `images`.`exif` AS `exif`,
+     `images`.`album_id` AS `album_id`,
+     `images`.`is_public` AS `is_public`,
+     `images`.`view_count` AS `view_count`,
+     `images`.`data_type` AS `data_type`,
+     `images`.`created_on` AS `created_on`,
+     `images`.`updated_on` AS `updated_on`,
+     cast(
+             json_unquote(
+                     json_extract( `images`.`exif`, '$.gpsLatitude' )) AS DECIMAL ( 64, 10 )) AS `latitude`,
+     cast(
+             json_unquote(
+                     json_extract( `images`.`exif`, '$.gpsLongitude' )) AS DECIMAL ( 64, 10 )) AS `longitude`
+ FROM
+     `images`
+ WHERE
+     ((
+          json_unquote(
+                  json_extract( `images`.`exif`, '$.gpsLatitude' )) IS NOT NULL
+          )
+         AND ( json_unquote( json_extract( `images`.`exif`, '$.gpsLongitude' )) IS NOT NULL ));
 
 DROP VIEW IF EXISTS `stats_camera`;
 CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `stats_camera` AS select
