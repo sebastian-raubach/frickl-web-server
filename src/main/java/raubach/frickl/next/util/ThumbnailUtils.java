@@ -24,8 +24,8 @@ public class ThumbnailUtils
 	{
 		int cores = Runtime.getRuntime().availableProcessors();
 
-		if (cores > 2)
-			cores--;
+		// Keep two cores free for other operations (if possible; use at least one core).
+		cores = Math.max(1, cores - 2);
 
 		executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cores);
 

@@ -37,6 +37,7 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `lat_lngs` AS SELECT
      `images`.`is_public` AS `is_public`,
      `images`.`view_count` AS `view_count`,
      `images`.`data_type` AS `data_type`,
+     `images`.`created_by` AS `created_by`,
      `images`.`created_on` AS `created_on`,
      `images`.`updated_on` AS `updated_on`,
      cast(

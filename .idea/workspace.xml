@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- ADD: Added user permission handling.&#10;- ADD: Added more endpoints for multi-item operations.&#10;- ADD: Added async folder download option.&#10;- ADD: Added initial user CRUD endpoint.&#10;-">
+    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- FIX: Fixed bug in lat_lng query.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/ThumbnailUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/ThumbnailUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/raubach/frickl/next/database/init/views.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/raubach/frickl/next/database/init/views.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -321,7 +323,8 @@
       <workItem from="1707209604416" duration="1163000" />
       <workItem from="1707297995942" duration="1297000" />
       <workItem from="1714642088668" duration="947000" />
-      <workItem from="1714650495110" duration="3481000" />
+      <workItem from="1714650495110" duration="4835000" />
+      <workItem from="1714725172898" duration="1561000" />
     </task>
     <task id="LOCAL-00001" summary="- ADD: Code import for NEXT release.">
       <option name="closed" value="true" />
@@ -435,7 +438,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714656819914</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="- FIX: Fixed bug in lat_lng query.">
+      <option name="closed" value="true" />
+      <created>1714658964482</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1714658964482</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -456,6 +467,7 @@
     <MESSAGE value="- ADD: Added initial user management.&#10;- ADD: Added functionality permission checks to all endpoints that required it via the @Secured permission.&#10;-" />
     <MESSAGE value="- ADD: Added more permission types.&#10;- FIX: Fixed automatic admin user creation.&#10;- ADD: Added POST tag endpoint.&#10;- ADD: Added DELETE album endpoint.&#10;-" />
     <MESSAGE value="- ADD: Added user permission handling.&#10;- ADD: Added more endpoints for multi-item operations.&#10;- ADD: Added async folder download option.&#10;- ADD: Added initial user CRUD endpoint.&#10;-" />
-    <option name="LAST_COMMIT_MESSAGE" value="- ADD: Added user permission handling.&#10;- ADD: Added more endpoints for multi-item operations.&#10;- ADD: Added async folder download option.&#10;- ADD: Added initial user CRUD endpoint.&#10;-" />
+    <MESSAGE value="- FIX: Fixed bug in lat_lng query." />
+    <option name="LAST_COMMIT_MESSAGE" value="- FIX: Fixed bug in lat_lng query." />
   </component>
 </project>
