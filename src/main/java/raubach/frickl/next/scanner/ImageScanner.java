@@ -42,24 +42,20 @@ public class ImageScanner implements Runnable
 		this.basePath = basePath;
 		this.folder = folder;
 
-		// Get the number of available cores
-		int cores = Runtime.getRuntime().availableProcessors();;
+		int cores = Runtime.getRuntime().availableProcessors();
 
-		try
-		{
+		// Keep two cores free for other operations (if possible; use at least one core).
+		cores = Math.max(1, cores - 2);
+
+		try {
 			// Get the specified number of cores from environment variable, but limit to number of available cores
-			cores = Math.max(1, Math.min(cores, Integer.parseInt(System.getenv("FRICKL_MAX_CPU"))));
+			cores = Math.min(cores, Integer.parseInt(System.getenv("FRICKL_MAX_CPU")));
 		}
 		catch (Exception e)
 		{
-			// If there are more than 2, leave one for handling of REST requests, otherwise use them all.
-			if (cores > 2)
-				cores--;
-			e.printStackTrace();
-			Logger.getLogger("").warning(e.getMessage());
 		}
 
-		Logger.getLogger("").info("RUNNING IMAGE SCANNER WITH " + cores + " CORES.");
+		Logger.getLogger("").info("RUNNING IMAGE SCANNER WITH " + cores + "/" + Runtime.getRuntime().availableProcessors() + " CORES.");
 
 		executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cores);
 	}
