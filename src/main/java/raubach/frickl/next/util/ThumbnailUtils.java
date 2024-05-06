@@ -29,7 +29,7 @@ public class ThumbnailUtils
 
 		executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cores);
 
-		Logger.getLogger("").info("STARTED THUMBNAIL EXECUTOR WITH " + cores + " CORES.");
+		Logger.getLogger("").info("STARTED THUMBNAIL EXECUTOR WITH " + cores + "/" + Runtime.getRuntime().availableProcessors() + " CORES.");
 	}
 
 	public static boolean thumbnailExists(String type, ImagesRecord image, File file, Size size)
