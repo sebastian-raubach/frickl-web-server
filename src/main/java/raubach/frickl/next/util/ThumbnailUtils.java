@@ -42,8 +42,10 @@ public class ThumbnailUtils
 
 		File target = new File(folder, image.getId() + size.getSuffix() + extension);
 
+		Logger.getLogger("").info("IMAGE_CHECK: " + target.getAbsolutePath() + " -> " + target.exists() + " (" + (target.lastModified() < file.lastModified()) + ")");
+
 		// Delete the thumbnail if it's older than the source image
-		if (target.lastModified() < file.lastModified())
+		if (target.exists() && target.lastModified() < file.lastModified())
 			target.delete();
 
 		// If it exists, fine, just return it

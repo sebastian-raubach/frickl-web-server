@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- CHG: Reduced core count for image processing to keep the app running fluidly.">
+    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- ADD: Added missing image scaling.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/scanner/ImageScanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/scanner/ImageScanner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/ThumbnailUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/ThumbnailUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -327,7 +328,8 @@
       <workItem from="1714729360596" duration="1252000" />
       <workItem from="1714985352735" duration="902000" />
       <workItem from="1715013627468" duration="1738000" />
-      <workItem from="1715067978769" duration="370000" />
+      <workItem from="1715067978769" duration="2305000" />
+      <workItem from="1715103303338" duration="426000" />
     </task>
     <task id="LOCAL-00001" summary="- ADD: Code import for NEXT release.">
       <option name="closed" value="true" />
@@ -473,7 +475,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715014802508</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="- ADD: Added missing image scaling.">
+      <option name="closed" value="true" />
+      <created>1715099779387</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1715099779387</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -496,6 +506,7 @@
     <MESSAGE value="- ADD: Added user permission handling.&#10;- ADD: Added more endpoints for multi-item operations.&#10;- ADD: Added async folder download option.&#10;- ADD: Added initial user CRUD endpoint.&#10;-" />
     <MESSAGE value="- FIX: Fixed bug in lat_lng query." />
     <MESSAGE value="- CHG: Reduced core count for image processing to keep the app running fluidly." />
-    <option name="LAST_COMMIT_MESSAGE" value="- CHG: Reduced core count for image processing to keep the app running fluidly." />
+    <MESSAGE value="- ADD: Added missing image scaling." />
+    <option name="LAST_COMMIT_MESSAGE" value="- ADD: Added missing image scaling." />
   </component>
 </project>

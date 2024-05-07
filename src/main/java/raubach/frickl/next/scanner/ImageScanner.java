@@ -340,6 +340,8 @@ public class ImageScanner implements Runnable
 					else
 						type = "image/*";
 
+					boolean atLeastOne = false;
+
 					if (!ThumbnailUtils.thumbnailExists(type, image, file.toFile(), ThumbnailUtils.Size.SMALL))
 						executor.submit(new ImageScaler(image, ThumbnailUtils.Size.SMALL));
 
