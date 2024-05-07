@@ -313,6 +313,7 @@ public class ImageScanner implements Runnable
 						if (!isVideo)
 						{
 							executor.submit(new ImageScaler(imagesRecord, ThumbnailUtils.Size.MEDIUM));
+							executor.submit(new ImageScaler(imagesRecord, ThumbnailUtils.Size.TINY));
 							executor.submit(new ImageExifReader(imagesRecord));
 						}
 
@@ -344,6 +345,8 @@ public class ImageScanner implements Runnable
 
 					if (!isVideo)
 					{
+						if (!ThumbnailUtils.thumbnailExists(type, image, file.toFile(), ThumbnailUtils.Size.TINY))
+							executor.submit(new ImageScaler(image, ThumbnailUtils.Size.TINY));
 						if (!ThumbnailUtils.thumbnailExists(type, image, file.toFile(), ThumbnailUtils.Size.MEDIUM))
 							executor.submit(new ImageScaler(image, ThumbnailUtils.Size.MEDIUM));
 						if (image.getExif() == null)
