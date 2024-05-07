@@ -77,6 +77,7 @@ public class ThumbnailUtils
 		// If not, create a new thumbnail
 		else
 		{
+			Logger.getLogger("").info("MISSING THUMBNAIL: " + target.getAbsolutePath());
 			Future<File> future = executor.submit(new ImageScaler(image, size));
 			try
 			{
