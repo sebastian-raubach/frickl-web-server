@@ -136,7 +136,6 @@ public class ImageScanner implements Runnable
 						@Override
 						public FileVisitResult visitFileFailed(Path dir, IOException e)
 						{
-							setCreatedOnDirectory(context, dir);
 							// Something went wrong, print exception
 							if (e != null)
 							{
@@ -157,6 +156,7 @@ public class ImageScanner implements Runnable
 							}
 
 							// Set the album cover now that all images (and sub-albums) have been processed
+							setCreatedOnDirectory(context, dir);
 							setAlbumBanner(context, dir);
 							return FileVisitResult.CONTINUE;
 						}
@@ -248,7 +248,10 @@ public class ImageScanner implements Runnable
 			AlbumsRecord newest = context.selectFrom(ALBUMS).orderBy(ALBUMS.CREATED_ON.desc()).fetchAny();
 
 			if (newest != null)
+			{
+				Logger.getLogger("").info("SETTING CREATED ON FOR ALBUM: " + albumId.getId() + " -> " + newest.getCreatedOn());
 				context.update(ALBUMS).set(ALBUMS.CREATED_ON, newest.getCreatedOn()).where(ALBUMS.ID.eq(albumId.getId())).execute();
+			}
 		}
 	}
 
