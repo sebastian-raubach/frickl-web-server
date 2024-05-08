@@ -47,7 +47,8 @@ public class ImageScanner implements Runnable
 		// Keep two cores free for other operations (if possible; use at least one core).
 		cores = Math.max(1, cores - 2);
 
-		try {
+		try
+		{
 			// Get the specified number of cores from environment variable, but limit to number of available cores
 			cores = Math.min(cores, Integer.parseInt(System.getenv("FRICKL_MAX_CPU")));
 		}
@@ -111,7 +112,7 @@ public class ImageScanner implements Runnable
 						{
 							// Process the album
 							Logger.getLogger("").info("PROCESSING FOLDER: " + dir.toFile().getAbsolutePath());
-							processDirectory(context, dir, attrs);
+							processDirectory(context, dir);
 							return FileVisitResult.CONTINUE;
 						}
 
@@ -133,8 +134,9 @@ public class ImageScanner implements Runnable
 						}
 
 						@Override
-						public FileVisitResult visitFileFailed(Path file, IOException e)
+						public FileVisitResult visitFileFailed(Path dir, IOException e)
 						{
+							setCreatedOnDirectory(context, dir);
 							// Something went wrong, print exception
 							if (e != null)
 							{
@@ -224,7 +226,33 @@ public class ImageScanner implements Runnable
 		}
 	}
 
-	private void processDirectory(DSLContext context, Path file, BasicFileAttributes attrs)
+	private void setCreatedOnDirectory(DSLContext context, Path file)
+	{
+		try
+		{
+			if (Files.isSameFile(file, basePath.toPath()))
+				return;
+		}
+		catch (IOException e)
+		{
+			Logger.getLogger("").severe(e.getMessage());
+			e.printStackTrace();
+			return;
+		}
+
+		String path = file.toFile().getAbsolutePath();
+		AlbumsRecord albumId = albumPathToId.get(path);
+
+		if (albumId != null)
+		{
+			AlbumsRecord newest = context.selectFrom(ALBUMS).orderBy(ALBUMS.CREATED_ON.desc()).fetchAny();
+
+			if (newest != null)
+				context.update(ALBUMS).set(ALBUMS.CREATED_ON, newest.getCreatedOn()).where(ALBUMS.ID.eq(albumId.getId())).execute();
+		}
+	}
+
+	private void processDirectory(DSLContext context, Path file)
 	{
 		try
 		{

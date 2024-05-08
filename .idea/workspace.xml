@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- ADD: Added missing image scaling.">
+    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- CHG: Temporary logging removed.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/scanner/ImageScanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/scanner/ImageScanner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/ThumbnailUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/ThumbnailUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -329,7 +328,8 @@
       <workItem from="1714985352735" duration="902000" />
       <workItem from="1715013627468" duration="1738000" />
       <workItem from="1715067978769" duration="2305000" />
-      <workItem from="1715103303338" duration="426000" />
+      <workItem from="1715103303338" duration="2384000" />
+      <workItem from="1715155211388" duration="2376000" />
     </task>
     <task id="LOCAL-00001" summary="- ADD: Code import for NEXT release.">
       <option name="closed" value="true" />
@@ -483,7 +483,31 @@
       <option name="project" value="LOCAL" />
       <updated>1715099779387</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="- CHG: Temporary logging.">
+      <option name="closed" value="true" />
+      <created>1715103751026</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1715103751026</updated>
+    </task>
+    <task id="LOCAL-00021" summary="- CHG: Temporary logging removed.">
+      <option name="closed" value="true" />
+      <created>1715105125281</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1715105125281</updated>
+    </task>
+    <task id="LOCAL-00022" summary="- CHG: Temporary logging removed.">
+      <option name="closed" value="true" />
+      <created>1715105241259</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1715105241259</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -507,6 +531,8 @@
     <MESSAGE value="- FIX: Fixed bug in lat_lng query." />
     <MESSAGE value="- CHG: Reduced core count for image processing to keep the app running fluidly." />
     <MESSAGE value="- ADD: Added missing image scaling." />
-    <option name="LAST_COMMIT_MESSAGE" value="- ADD: Added missing image scaling." />
+    <MESSAGE value="- CHG: Temporary logging." />
+    <MESSAGE value="- CHG: Temporary logging removed." />
+    <option name="LAST_COMMIT_MESSAGE" value="- CHG: Temporary logging removed." />
   </component>
 </project>
