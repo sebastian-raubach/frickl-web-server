@@ -245,11 +245,11 @@ public class ImageScanner implements Runnable
 
 		if (albumId != null)
 		{
-			AlbumsRecord newest = context.selectFrom(ALBUMS).orderBy(ALBUMS.CREATED_ON.desc()).fetchAny();
+			AlbumsRecord newest = context.selectFrom(ALBUMS).where(ALBUMS.PARENT_ALBUM_ID.eq(albumId.getId())).orderBy(ALBUMS.CREATED_ON.desc()).fetchAny();
 
 			if (newest != null)
 			{
-				Logger.getLogger("").info("SETTING CREATED ON FOR ALBUM: " + albumId.getId() + " -> " + newest.getCreatedOn());
+				Logger.getLogger("").info("SETTING CREATED ON FOR ALBUM: " + albumId.getName() + " -> " + newest.getCreatedOn());
 				context.update(ALBUMS).set(ALBUMS.CREATED_ON, newest.getCreatedOn()).where(ALBUMS.ID.eq(albumId.getId())).execute();
 			}
 		}
