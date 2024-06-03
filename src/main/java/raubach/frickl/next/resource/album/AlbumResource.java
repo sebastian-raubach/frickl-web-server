@@ -105,6 +105,22 @@ public class AlbumResource extends PaginatedServerResource
 		}
 	}
 
+	@GET
+	@Path("/{albumId:\\d+}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Secured
+	@PermitAll
+	public Response getAlbumById(@PathParam("albumId") Integer albumId)
+			throws SQLException
+	{
+		PaginatedResult<List<Album>> albums = getAlbums(albumId, new AlbumRequest());
+		if (!CollectionUtils.isEmpty(albums.getData()))
+			return Response.ok(albums.getData().get(0)).build();
+		else
+			return Response.ok(null).build();
+	}
+
 	@DELETE
 	@Path("/{albumId:\\d+}")
 	@Consumes(MediaType.APPLICATION_JSON)

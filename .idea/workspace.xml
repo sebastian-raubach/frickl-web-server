@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- CHG: Image scanner will now set album creation date recursively.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- ADD: Added endpoint to get album hierarchy.">
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumResource.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -332,6 +332,7 @@
       <workItem from="1715235923200" duration="1364000" />
       <workItem from="1715267391361" duration="614000" />
       <workItem from="1715326801481" duration="2470000" />
+      <workItem from="1717439773888" duration="332000" />
     </task>
     <task id="LOCAL-00001" summary="- ADD: Code import for NEXT release.">
       <option name="closed" value="true" />
@@ -541,7 +542,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715236797986</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="- ADD: Added endpoint to get album hierarchy.">
+      <option name="closed" value="true" />
+      <created>1717439919733</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1717439919733</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -568,6 +577,7 @@
     <MESSAGE value="- CHG: Temporary logging." />
     <MESSAGE value="- CHG: Temporary logging removed." />
     <MESSAGE value="- CHG: Image scanner will now set album creation date recursively." />
-    <option name="LAST_COMMIT_MESSAGE" value="- CHG: Image scanner will now set album creation date recursively." />
+    <MESSAGE value="- ADD: Added endpoint to get album hierarchy." />
+    <option name="LAST_COMMIT_MESSAGE" value="- ADD: Added endpoint to get album hierarchy." />
   </component>
 </project>
