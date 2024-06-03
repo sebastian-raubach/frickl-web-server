@@ -32,6 +32,50 @@ import static raubach.frickl.next.codegen.tables.Images.IMAGES;
 @Path("album")
 public class AlbumResource extends PaginatedServerResource
 {
+	@GET
+	@Path("/{albumId:\\d+}/hierarchy")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Secured
+	@PermitAll
+	public Response getImageAlbumHierarchy(@PathParam("albumId") Integer albumId)
+			throws SQLException
+	{
+		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
+
+		try (Connection conn = Database.getConnection())
+		{
+			DSLContext context = Database.getContext(conn);
+
+			Set<Integer> albumsForUser = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
+
+			List<Albums> hierarchy = new ArrayList<>();
+
+			Albums current = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(albumId)).fetchAnyInto(Albums.class);
+
+			if (current != null)
+			{
+				if (Permission.IS_ADMIN.allows(userDetails.getPermissions()) || albumsForUser.contains(current.getId()))
+				{
+					hierarchy.add(0, current);
+
+					while (current != null && current.getParentAlbumId() != null)
+					{
+						current = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(current.getParentAlbumId())).fetchAnyInto(Albums.class);
+
+						if (Permission.IS_ADMIN.allows(userDetails.getPermissions()) || albumsForUser.contains(current.getId()))
+						{
+							if (current != null)
+								hierarchy.add(0, current);
+						}
+					}
+				}
+			}
+
+			return Response.ok(hierarchy).build();
+		}
+	}
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
