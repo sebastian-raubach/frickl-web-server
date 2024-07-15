@@ -221,11 +221,16 @@ public class AlbumResource extends PaginatedServerResource
 			SelectJoinStep<Record> step = select.from(ALBUM_STATS);
 
 			if (albumId != null)
+			{
 				step.where(ALBUM_STATS.ID.eq(albumId));
-			else if (request.getParentAlbumId() != null && request.getParentAlbumId() != -1)
-				step.where(ALBUM_STATS.PARENT_ALBUM_ID.eq(request.getParentAlbumId()));
-			else
-				step.where(ALBUM_STATS.PARENT_ALBUM_ID.isNull());
+			}
+			else if (request.getParentAlbumId() != null)
+			{
+				if (request.getParentAlbumId() != -1)
+					step.where(ALBUM_STATS.PARENT_ALBUM_ID.eq(request.getParentAlbumId()));
+				else
+					step.where(ALBUM_STATS.PARENT_ALBUM_ID.isNull());
+			}
 
 			if (request != null && !StringUtils.isEmpty(request.getSearchTerm()))
 				step.where(ALBUM_STATS.NAME.containsIgnoreCase(request.getSearchTerm()));

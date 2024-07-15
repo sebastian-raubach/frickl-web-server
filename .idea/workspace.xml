@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- ADD: Added album by id endpoint.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageResource.java" afterDir="false" />
+    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- ADD: Added basic overall search functionality.">
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -341,7 +339,7 @@
       <workItem from="1715326801481" duration="2470000" />
       <workItem from="1717439773888" duration="470000" />
       <workItem from="1717575408166" duration="102000" />
-      <workItem from="1721060389197" duration="612000" />
+      <workItem from="1721060389197" duration="1322000" />
     </task>
     <task id="LOCAL-00001" summary="- ADD: Code import for NEXT release.">
       <option name="closed" value="true" />
@@ -567,7 +565,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717440125983</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="- ADD: Added basic overall search functionality.">
+      <option name="closed" value="true" />
+      <created>1721061133587</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1721061133587</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -596,6 +602,7 @@
     <MESSAGE value="- CHG: Image scanner will now set album creation date recursively." />
     <MESSAGE value="- ADD: Added endpoint to get album hierarchy." />
     <MESSAGE value="- ADD: Added album by id endpoint." />
-    <option name="LAST_COMMIT_MESSAGE" value="- ADD: Added album by id endpoint." />
+    <MESSAGE value="- ADD: Added basic overall search functionality." />
+    <option name="LAST_COMMIT_MESSAGE" value="- ADD: Added basic overall search functionality." />
   </component>
 </project>
