@@ -90,12 +90,12 @@ public class ImageResource extends PaginatedServerResource
 		{
 			DSLContext context = Database.getContext(conn);
 
-			SelectSelectStep<Record> select = context.select();
+			SelectSelectStep<Record> select = context.select(IMAGES.fields());
 
 			if (previousCount == -1)
 				select.hint("SQL_CALC_FOUND_ROWS");
 
-			SelectJoinStep<Record> step = select.from(IMAGES);
+			SelectJoinStep<Record> step = select.from(IMAGES).leftJoin(ALBUMS).on(ALBUMS.ID.eq(IMAGES.ALBUM_ID));
 
 			restrict(context, request, step);
 

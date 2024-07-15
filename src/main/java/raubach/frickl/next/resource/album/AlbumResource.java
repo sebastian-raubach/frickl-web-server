@@ -227,6 +227,9 @@ public class AlbumResource extends PaginatedServerResource
 			else
 				step.where(ALBUM_STATS.PARENT_ALBUM_ID.isNull());
 
+			if (request != null && !StringUtils.isEmpty(request.getSearchTerm()))
+				step.where(ALBUM_STATS.NAME.containsIgnoreCase(request.getSearchTerm()));
+
 			boolean onlyPublic = false;
 			AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
 			// Restrict to only albums containing at least one public image
