@@ -4,7 +4,7 @@ import jakarta.annotation.security.PermitAll;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import jhi.oddjob.JobInfo;
-import org.apache.commons.io.*;
+import org.apache.commons.io.IOUtils;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
@@ -22,8 +22,8 @@ import java.io.File;
 import java.io.*;
 import java.nio.file.StandardOpenOption;
 import java.sql.*;
-import java.util.*;
 import java.util.Date;
+import java.util.*;
 import java.util.logging.*;
 import java.util.stream.Collectors;
 
@@ -167,10 +167,13 @@ public class ImageResource extends PaginatedServerResource
 								.from(IMAGE_TAGS)
 								.where(IMAGE_TAGS.IMAGE_ID.eq(IMAGES.ID))
 								.and(IMAGE_TAGS.TAG_ID.eq(request.getTagId())));
-		if (request.getAlbumId() == null)
-			step.where(IMAGES.ALBUM_ID.isNull());
-		else if (request.getAlbumId() != -1)
-			step.where(IMAGES.ALBUM_ID.eq(request.getAlbumId()));
+		if (request.getAlbumId() != null)
+		{
+			if (request.getAlbumId() == -1)
+				step.where(IMAGES.ALBUM_ID.isNull());
+			else
+				step.where(IMAGES.ALBUM_ID.eq(request.getAlbumId()));
+		}
 	}
 
 	@POST
