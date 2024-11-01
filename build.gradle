@@ -23,7 +23,7 @@ compileJava.options.encoding = 'UTF-8'
 group = 'raubach.frickl.next'
 version '2.0.0'
 
-sourceCompatibility = 11
+sourceCompatibility = 21
 
 repositories {
     mavenCentral()
@@ -60,8 +60,8 @@ dependencies {
     implementation 'org.glassfish.jersey.inject:jersey-hk2:3.1.1'
     implementation 'org.glassfish.jersey.media:jersey-media-multipart:3.1.1'
 
-    compileOnly 'org.projectlombok:lombok:1.18.24'
-    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
 }
 
 // Generate a .war file

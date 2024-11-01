@@ -3,6 +3,7 @@ package raubach.frickl.next.resource.user;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import org.jooq.*;
+import org.jooq.Record;
 import raubach.frickl.next.Database;
 import raubach.frickl.next.auth.Secured;
 import raubach.frickl.next.codegen.tables.pojos.Users;

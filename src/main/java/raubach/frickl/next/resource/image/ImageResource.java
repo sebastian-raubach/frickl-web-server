@@ -6,6 +6,7 @@ import jakarta.ws.rs.core.*;
 import jhi.oddjob.JobInfo;
 import org.apache.commons.io.IOUtils;
 import org.jooq.*;
+import org.jooq.Record;
 import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
 import raubach.frickl.next.*;
@@ -212,7 +213,7 @@ public class ImageResource extends PaginatedServerResource
 	public Response getImageById(@PathParam("imageId") Integer imageId)
 			throws SQLException
 	{
-		PaginatedResult<List<Images>> images = getImages(new ImageRequest().setImageId(imageId).setAlbumId(-1));
+		PaginatedResult<List<Images>> images = getImages(new ImageRequest().setImageId(imageId));
 		if (!CollectionUtils.isEmpty(images.getData()))
 			return Response.ok(images.getData().get(0)).build();
 		else

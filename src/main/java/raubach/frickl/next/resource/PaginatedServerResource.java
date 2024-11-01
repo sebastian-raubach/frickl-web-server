@@ -2,6 +2,7 @@ package raubach.frickl.next.resource;
 
 import jakarta.ws.rs.*;
 import org.jooq.*;
+import org.jooq.Record;
 import org.jooq.impl.DSL;
 import raubach.frickl.next.pojo.PaginatedRequest;
 import raubach.frickl.next.util.StringUtils;

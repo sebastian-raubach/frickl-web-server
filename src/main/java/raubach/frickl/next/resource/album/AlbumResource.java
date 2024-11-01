@@ -6,6 +6,7 @@ import jakarta.ws.rs.core.*;
 import jhi.oddjob.JobInfo;
 import org.apache.commons.io.FileUtils;
 import org.jooq.*;
+import org.jooq.Record;
 import org.jooq.impl.DSL;
 import raubach.frickl.next.*;
 import raubach.frickl.next.auth.*;
