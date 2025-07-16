@@ -4,27 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- ADD: Added basic overall search functionality.">
+    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- CHG: Updated Gradle wrapper&#10;- CHG: Updated to Java 21.&#10;- FIX: Fixed /image/{id} GET endpoint.&#10;-">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/frickl-next.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/frickl-next.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/frickl-next.main.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.template.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/PaginatedServerResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/PaginatedServerResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/VideoResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/VideoResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/location/LocationResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/location/LocationResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/tag/TagResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/tag/TagResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/user/UserResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/user/UserResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageTagResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageTagResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/watcher/PropertyWatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/watcher/PropertyWatcher.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,6 +54,12 @@
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="build" type="c8890929:TasksNode$1" />
               </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="frickl-next" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="deployment" type="c8890929:TasksNode$1" />
+              </path>
             </expand>
             <select />
           </tree_state>
@@ -97,7 +92,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/sebastian-raubach/frickl-web-server&quot;,
-    &quot;accountId&quot;: &quot;76cf7299-8b19-4b2e-9a25-42c55741e657&quot;
+    &quot;accountId&quot;: &quot;01ef5be1-cb54-487b-a478-3a61af0079d6&quot;
   }
 }</component>
   <component name="MarkdownSettingsMigration">
@@ -113,34 +108,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.frickl-next [:DriveQuickstart.main()].executor": "Run",
-    "Gradle.frickl-next [build].executor": "Run",
-    "Gradle.frickl-next [clean].executor": "Run",
-    "Gradle.frickl-next [deployTomcat].executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "next",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/sr41756/workspaces/java/frickl-next/src/main/resources/raubach/frickl/next/database/migration",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.frickl-next [:DriveQuickstart.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.frickl-next [build].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.frickl-next [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.frickl-next [deployTomcat].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;next&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/sr41756/workspaces/java/frickl-next&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\sr41756\workspaces\java\frickl-next" />
       <recent name="C:\Users\sr41756\workspaces\java\frickl-next\src\main\resources\raubach\frickl\next\database\migration" />
       <recent name="C:\Users\sr41756\workspaces\java\frickl-next\lib" />
-      <recent name="C:\Users\sr41756\workspaces\java\frickl-next" />
       <recent name="C:\Users\sr41756\workspaces\java\frickl-next\src\main\java\raubach\frickl\next\resource" />
       <recent name="C:\Users\sr41756\workspaces\java\frickl-next\src\main\java\raubach\frickl\next\scanner" />
     </key>
@@ -156,7 +152,7 @@
       <recent name="raubach.frickl.next.util.task" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.frickl-next [build]">
+  <component name="RunManager" selected="Gradle.frickl-next [deployTomcat]">
     <configuration name="DriveQuickstart" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="raubach.frickl.next.util.DriveQuickstart" />
       <module name="frickl-next.main" />
@@ -273,9 +269,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.frickl-next [build]" />
-        <item itemvalue="Gradle.frickl-next [clean]" />
         <item itemvalue="Gradle.frickl-next [deployTomcat]" />
+        <item itemvalue="Gradle.frickl-next [clean]" />
+        <item itemvalue="Gradle.frickl-next [build]" />
         <item itemvalue="Gradle.frickl-next [codegen]" />
         <item itemvalue="Application.DriveQuickstart" />
       </list>
@@ -284,8 +280,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
-        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.26927.53" />
+        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-IU-251.26927.53" />
       </set>
     </attachedChunks>
   </component>
@@ -363,6 +359,15 @@
       <workItem from="1717575408166" duration="102000" />
       <workItem from="1721060389197" duration="1322000" />
       <workItem from="1721065572809" duration="936000" />
+      <workItem from="1730548001063" duration="595000" />
+      <workItem from="1730549393881" duration="4000" />
+      <workItem from="1730711660256" duration="180000" />
+      <workItem from="1730735203264" duration="36000" />
+      <workItem from="1731064302313" duration="1008000" />
+      <workItem from="1742838266555" duration="1426000" />
+      <workItem from="1742892123401" duration="465000" />
+      <workItem from="1746470103007" duration="471000" />
+      <workItem from="1752669970367" duration="4429000" />
     </task>
     <task id="LOCAL-00001" summary="- ADD: Code import for NEXT release.">
       <option name="closed" value="true" />
@@ -604,7 +609,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721065772554</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="- CHG: Updated Gradle wrapper&#10;- CHG: Updated to Java 21.&#10;- FIX: Fixed /image/{id} GET endpoint.&#10;-">
+      <option name="closed" value="true" />
+      <created>1730469080769</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1730469080769</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -635,6 +648,7 @@
     <MESSAGE value="- ADD: Added album by id endpoint." />
     <MESSAGE value="- ADD: Added basic overall search functionality." />
     <MESSAGE value="- CHG: Updated Gradle wrapper.&#10;- CHG: Updated to Java 21." />
-    <option name="LAST_COMMIT_MESSAGE" value="- CHG: Updated Gradle wrapper.&#10;- CHG: Updated to Java 21." />
+    <MESSAGE value="- CHG: Updated Gradle wrapper&#10;- CHG: Updated to Java 21.&#10;- FIX: Fixed /image/{id} GET endpoint.&#10;-" />
+    <option name="LAST_COMMIT_MESSAGE" value="- CHG: Updated Gradle wrapper&#10;- CHG: Updated to Java 21.&#10;- FIX: Fixed /image/{id} GET endpoint.&#10;-" />
   </component>
 </project>

@@ -158,11 +158,10 @@ public class ImageTagResource extends PaginatedServerResource
 	}
 
 	@POST
-	@Path("/tag")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Secured(Permission.TAG_ADD)
-	public Response postImageTags(@PathParam("imageId") Integer imageId, Tags[] tags)
+	public Response postImageTags(String[] tags)
 			throws IOException, SQLException
 	{
 		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
@@ -170,6 +169,8 @@ public class ImageTagResource extends PaginatedServerResource
 		boolean result = false;
 		if (tags != null && tags.length > 0 && imageId != null)
 		{
+			List<String> tagList = Arrays.stream(tags).map(String::toLowerCase).toList();
+
 			try (Connection conn = Database.getConnection())
 			{
 				DSLContext context = Database.getContext(conn);
@@ -195,48 +196,35 @@ public class ImageTagResource extends PaginatedServerResource
 
 				Images image = step.fetchAnyInto(Images.class);
 
-				List<String> tagStrings = new ArrayList<>();
-				for (Tags tag : tags)
-					tagStrings.add(tag.getName());
-
 				Map<String, Integer> tagIds = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
 				context.selectFrom(TAGS)
-					   .where(TAGS.NAME.in(tagStrings))
+					   .where(TAGS.NAME.in(tagList))
 					   .forEach(t -> {
 						   if (!tagIds.containsKey(t.getName()))
 							   tagIds.put(t.getName(), t.getId());
 					   });
 
-				for (Tags tag : tags)
+				for (String tag : tagList)
 				{
-					if (tag.getId() == null)
+					Integer id =  tagIds.get(tag);
+					if (id == null)
 					{
-						Integer existing = tagIds.get(tag.getName());
-
-						if (existing == null)
-						{
-							// Lower-case it
-							tag.setName(tag.getName().toLowerCase());
-							tag.setCreatedOn(new Timestamp(System.currentTimeMillis()));
-							TagsRecord t = context.newRecord(TAGS, tag);
-							t.store();
-							tag.setId(t.getId());
-							tagIds.put(tag.getName(), tag.getId());
-						}
-						else
-						{
-							tag.setId(existing);
-						}
+						TagsRecord t = context.newRecord(TAGS);
+						t.setName(tag);
+						t.setCreatedOn(new Timestamp(System.currentTimeMillis()));
+						t.store();
+						tagIds.put(tag, t.getId());
+						id = t.getId();
 					}
 
-					ImageTagsRecord it = context.selectFrom(IMAGE_TAGS).where(IMAGE_TAGS.TAG_ID.eq(tag.getId())).and(IMAGE_TAGS.IMAGE_ID.eq(imageId)).fetchAny();
+					ImageTagsRecord it = context.selectFrom(IMAGE_TAGS).where(IMAGE_TAGS.TAG_ID.eq(id)).and(IMAGE_TAGS.IMAGE_ID.eq(imageId)).fetchAny();
 
 					if (it == null)
 					{
 						it = context.newRecord(IMAGE_TAGS);
 						it.setImageId(imageId);
-						it.setTagId(tag.getId());
+						it.setTagId(id);
 						it.store();
 					}
 				}
@@ -248,7 +236,7 @@ public class ImageTagResource extends PaginatedServerResource
 						File file = new File(Frickl.BASE_PATH, image.getPath());
 						try
 						{
-							TagUtils.addTagToFileOrFolder(file, tagStrings);
+							TagUtils.addTagToFileOrFolder(file, tagList);
 						}
 						catch (IOException e)
 						{

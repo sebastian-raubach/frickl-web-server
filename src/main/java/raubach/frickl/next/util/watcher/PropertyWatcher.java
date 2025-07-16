@@ -124,44 +124,44 @@ public class PropertyWatcher
 			checkRequiredProperties();
 
 			Database.init(get(ServerProperty.DATABASE_SERVER), get(ServerProperty.DATABASE_NAME), get(ServerProperty.DATABASE_PORT), get(ServerProperty.DATABASE_USERNAME), get(ServerProperty.DATABASE_PASSWORD), true);
-		}
 
-		// Set properties if they are set in the environment variables
-		String username = System.getenv("FRICKL_USERNAME");
-		String password = System.getenv("FRICKL_PASSWORD");
-		String googleAnalyticsKey = System.getenv("GOOGLE_ANALYTICS_KEY");
-		if (!StringUtils.isEmpty(username))
-			set(ServerProperty.ADMIN_USERNAME, username);
-		if (!StringUtils.isEmpty(password))
-			set(ServerProperty.ADMIN_PASSWORD, password);
-		if (!StringUtils.isEmpty(googleAnalyticsKey))
-			set(ServerProperty.GOOGLE_ANALYTICS_KEY, googleAnalyticsKey);
+			// Set properties if they are set in the environment variables
+			String username = System.getenv("FRICKL_USERNAME");
+			String password = System.getenv("FRICKL_PASSWORD");
+			String googleAnalyticsKey = System.getenv("GOOGLE_ANALYTICS_KEY");
+			if (!StringUtils.isEmpty(username))
+				set(ServerProperty.ADMIN_USERNAME, username);
+			if (!StringUtils.isEmpty(password))
+				set(ServerProperty.ADMIN_PASSWORD, password);
+			if (!StringUtils.isEmpty(googleAnalyticsKey))
+				set(ServerProperty.GOOGLE_ANALYTICS_KEY, googleAnalyticsKey);
 
-		username = get(ServerProperty.ADMIN_USERNAME);
-		password = get(ServerProperty.ADMIN_PASSWORD);
+			username = get(ServerProperty.ADMIN_USERNAME);
+			password = get(ServerProperty.ADMIN_PASSWORD);
 
-		if (!StringUtils.isBlank(username) && !StringUtils.isBlank(password))
-		{
-			// Create the admin user if it doesn't exist yet
-			try (Connection conn = Database.getConnection())
+			if (!StringUtils.isBlank(username) && !StringUtils.isBlank(password))
 			{
-				DSLContext context = Database.getContext(conn);
-				UsersRecord admin = context.selectFrom(USERS).where(USERS.USERNAME.eq(username)).fetchAny();
-
-				if (admin == null)
+				// Create the admin user if it doesn't exist yet
+				try (Connection conn = Database.getConnection())
 				{
-					admin = context.newRecord(USERS);
-					admin.setUsername(get(ServerProperty.ADMIN_USERNAME));
-				}
+					DSLContext context = Database.getContext(conn);
+					UsersRecord admin = context.selectFrom(USERS).where(USERS.USERNAME.eq(username)).fetchAny();
 
-				admin.setPassword(BCrypt.hashpw(password, BCrypt.gensalt(TokenResource.SALT)));
-				admin.setViewType(UsersViewType.VIEW_ALL);
-				admin.setPermissions((short) Permission.getAll());
-				admin.store();
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
+					if (admin == null)
+					{
+						admin = context.newRecord(USERS);
+						admin.setUsername(get(ServerProperty.ADMIN_USERNAME));
+					}
+
+					admin.setPassword(BCrypt.hashpw(password, BCrypt.gensalt(TokenResource.SALT)));
+					admin.setViewType(UsersViewType.VIEW_ALL);
+					admin.setPermissions((short) Permission.getAll());
+					admin.store();
+				}
+				catch (SQLException e)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 	}
