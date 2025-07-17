@@ -26,6 +26,7 @@ import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import static raubach.frickl.next.codegen.Tables.*;
 import static raubach.frickl.next.codegen.tables.AlbumStats.ALBUM_STATS;
 import static raubach.frickl.next.codegen.tables.Albums.ALBUMS;
 import static raubach.frickl.next.codegen.tables.Images.IMAGES;
@@ -433,6 +434,60 @@ public class AlbumResource extends PaginatedServerResource
 			e.printStackTrace();
 			Logger.getLogger("").info(e.getMessage());
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+
+	@POST
+	@Path("/{albumId:\\d+}/user")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Secured(Permission.SETTINGS_CHANGE)
+	public Response setUserPermissions(@PathParam("albumId") Integer albumId, List<Integer> userIds)
+			throws SQLException
+	{
+		if (albumId == null)
+			return Response.status(Response.Status.BAD_REQUEST).build();
+
+		try (Connection conn = Database.getConnection())
+		{
+			DSLContext context = Database.getContext(conn);
+
+			// Remove all permissions
+			context.deleteFrom(ALBUM_USERS).where(ALBUM_USERS.ALBUM_ID.eq(albumId)).execute();
+
+			for (Integer userId : userIds)
+				context.insertInto(ALBUM_USERS).set(ALBUM_USERS.ALBUM_ID, albumId).set(ALBUM_USERS.USER_ID, userId).execute();
+
+			return Response.ok().build();
+		}
+	}
+
+	@GET
+	@Path("/{albumId:\\d+}/user")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Secured(Permission.SETTINGS_CHANGE)
+	public Response setUserPermissions(@PathParam("albumId") Integer albumId)
+			throws SQLException
+	{
+		if (albumId == null)
+			return Response.status(Response.Status.BAD_REQUEST).build();
+
+		try (Connection conn = Database.getConnection())
+		{
+			DSLContext context = Database.getContext(conn);
+
+			List<UserDetails> result = context.select().from(USERS).leftJoin(ALBUM_USERS).on(USERS.ID.eq(ALBUM_USERS.USER_ID)).where(ALBUM_USERS.ALBUM_ID.eq(albumId)).fetchInto(UserDetails.class);
+
+			if (!CollectionUtils.isEmpty(result))
+			{
+				result.forEach(u -> {
+					u.setCanBeEdited(!(Objects.equals(u.getUsername(), PropertyWatcher.get(ServerProperty.ADMIN_USERNAME))));
+					u.setPassword(null);
+				});
+			}
+
+			return Response.ok(result).build();
 		}
 	}
 }

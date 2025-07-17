@@ -4,16 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- CHG: Updated Gradle wrapper&#10;- CHG: Updated to Java 21.&#10;- FIX: Fixed /image/{id} GET endpoint.&#10;-">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- CHG: Changed image tag POST to accept string array.&#10;- CHG: Dependency updates.&#10;-">
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/frickl-next.main.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageTagResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/image/ImageTagResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/watcher/PropertyWatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/util/watcher/PropertyWatcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/album/AlbumResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/user/UserResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/raubach/frickl/next/resource/user/UserResource.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -367,7 +363,8 @@
       <workItem from="1742838266555" duration="1426000" />
       <workItem from="1742892123401" duration="465000" />
       <workItem from="1746470103007" duration="471000" />
-      <workItem from="1752669970367" duration="4429000" />
+      <workItem from="1752669970367" duration="4526000" />
+      <workItem from="1752733370913" duration="9149000" />
     </task>
     <task id="LOCAL-00001" summary="- ADD: Code import for NEXT release.">
       <option name="closed" value="true" />
@@ -617,7 +614,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730469080769</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="- CHG: Changed image tag POST to accept string array.&#10;- CHG: Dependency updates.&#10;-">
+      <option name="closed" value="true" />
+      <created>1752693738865</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1752693738865</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -649,6 +654,7 @@
     <MESSAGE value="- ADD: Added basic overall search functionality." />
     <MESSAGE value="- CHG: Updated Gradle wrapper.&#10;- CHG: Updated to Java 21." />
     <MESSAGE value="- CHG: Updated Gradle wrapper&#10;- CHG: Updated to Java 21.&#10;- FIX: Fixed /image/{id} GET endpoint.&#10;-" />
-    <option name="LAST_COMMIT_MESSAGE" value="- CHG: Updated Gradle wrapper&#10;- CHG: Updated to Java 21.&#10;- FIX: Fixed /image/{id} GET endpoint.&#10;-" />
+    <MESSAGE value="- CHG: Changed image tag POST to accept string array.&#10;- CHG: Dependency updates.&#10;-" />
+    <option name="LAST_COMMIT_MESSAGE" value="- CHG: Changed image tag POST to accept string array.&#10;- CHG: Dependency updates.&#10;-" />
   </component>
 </project>
