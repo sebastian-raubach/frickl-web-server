@@ -4,7 +4,6 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import org.jooq.*;
 import org.jooq.Record;
-import org.jooq.conf.ParamType;
 import raubach.frickl.next.Database;
 import raubach.frickl.next.auth.*;
 import raubach.frickl.next.codegen.tables.pojos.Users;
@@ -17,7 +16,6 @@ import raubach.frickl.next.util.watcher.PropertyWatcher;
 
 import java.sql.*;
 import java.util.*;
-import java.util.logging.Logger;
 
 import static raubach.frickl.next.codegen.tables.Users.USERS;
 
@@ -120,7 +118,7 @@ public class UserResource extends PaginatedServerResource
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Secured(Permission.SETTINGS_CHANGE)
+	@Secured(Permission.IS_ADMIN)
 	public PaginatedResult<List<UserDetails>> postUsers(PaginatedRequest request)
 			throws SQLException
 	{

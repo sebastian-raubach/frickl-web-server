@@ -68,6 +68,41 @@ public class DownloadResource extends ContextResource
 					   .build();
 	}
 
+	@DELETE
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Secured
+	@PermitAll
+	public Response deleteJobs(List<String> uuids)
+			throws SQLException
+	{
+		AuthenticationFilter.UserDetails userDetails = (AuthenticationFilter.UserDetails) securityContext.getUserPrincipal();
+
+		uuids.stream()
+			 .map(ApplicationListener.SCHEDULER_IDS::get)
+			 .filter(j -> j != null && Objects.equals(j.getUserToken(), userDetails.getToken()))
+			 .forEach(j -> {
+				 try
+				 {
+					 if (ApplicationListener.SCHEDULER.isJobFinished(j.getJobId()))
+					 {
+						 // The job is "finished", so check if the result exists
+						 String version = PropertyWatcher.get(ServerProperty.API_VERSION);
+						 File folder = new File(System.getProperty("java.io.tmpdir"), "frickl-exports" + "-" + version);
+						 File targetFolder = new File(folder, j.getToken());
+
+						 FileUtils.deleteDirectory(targetFolder);
+					 }
+				 }
+				 catch (Exception e)
+				 {
+					 // Do nothing here
+				 }
+			 });
+
+		return Response.ok().build();
+	}
+
 	@GET
 	@Path("/{uuid}")
 	@Consumes(MediaType.APPLICATION_JSON)

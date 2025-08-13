@@ -5,14 +5,12 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import org.jooq.*;
 import org.jooq.Record;
-import org.jooq.impl.DSL;
 import org.jooq.tools.StringUtils;
 import raubach.frickl.next.*;
 import raubach.frickl.next.auth.*;
 import raubach.frickl.next.codegen.tables.records.ImagesRecord;
-import raubach.frickl.next.resource.*;
+import raubach.frickl.next.resource.PaginatedServerResource;
 import raubach.frickl.next.util.*;
-import raubach.frickl.next.util.watcher.PropertyWatcher;
 
 import java.io.*;
 import java.io.File;
@@ -101,7 +99,8 @@ public class VideoResource extends PaginatedServerResource
 				{
 					// Check user permissions for the album
 					Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
-					step.and(IMAGES.ALBUM_ID.in(albumAccess));
+					step.and(IMAGES.ALBUM_ID.in(albumAccess)
+											.or(IMAGES.IS_PUBLIC.eq((byte) 1)));
 				}
 
 				ImagesRecord image = step.fetchAnyInto(ImagesRecord.class);

@@ -12,19 +12,19 @@ import org.jooq.tools.StringUtils;
 import raubach.frickl.next.*;
 import raubach.frickl.next.auth.*;
 import raubach.frickl.next.codegen.tables.pojos.*;
-import raubach.frickl.next.codegen.tables.records.ImagesRecord;
+import raubach.frickl.next.codegen.tables.records.*;
 import raubach.frickl.next.pojo.*;
 import raubach.frickl.next.resource.PaginatedServerResource;
 import raubach.frickl.next.util.*;
 import raubach.frickl.next.util.async.ImageZipExporter;
 import raubach.frickl.next.util.watcher.PropertyWatcher;
 
-import java.io.File;
 import java.io.*;
+import java.io.File;
 import java.nio.file.StandardOpenOption;
 import java.sql.*;
-import java.util.Date;
 import java.util.*;
+import java.util.Date;
 import java.util.logging.*;
 import java.util.stream.Collectors;
 
@@ -146,7 +146,8 @@ public class ImageResource extends PaginatedServerResource
 		{
 			// Check user permissions for the album
 			Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
-			step.where(IMAGES.ALBUM_ID.in(albumAccess));
+			step.where(IMAGES.ALBUM_ID.in(albumAccess)
+									  .or(IMAGES.IS_PUBLIC.eq((byte) 1)));
 		}
 
 		if (request.getImageId() != null)
@@ -237,9 +238,19 @@ public class ImageResource extends PaginatedServerResource
 
 				List<ImagesRecord> images = getImageRecord(context, imageIds, userDetails);
 
+				Set<Integer> albumIds = new HashSet<>(images.stream().map(ImagesRecord::getAlbumId).collect(Collectors.toSet()));
+				Map<Integer, AlbumsRecord> albums = context.selectFrom(ALBUMS).where(ALBUMS.ID.in(albumIds)).fetchMap(ALBUMS.ID);
+				albumIds.clear();
+
 				images.forEach(image -> {
 					try
 					{
+						AlbumsRecord album = albums.get(image.getAlbumId());
+
+						// Remember albums whose banner we just deleted
+						if (Objects.equals(image.getId(), album.getBannerImageId()))
+							albumIds.add(image.getAlbumId());
+
 						deleteImage(image);
 					}
 					catch (FileNotFoundException e)
@@ -247,6 +258,17 @@ public class ImageResource extends PaginatedServerResource
 						// Don't throw for the multi-delete
 					}
 				});
+
+				if (!CollectionUtils.isEmpty(albumIds))
+				{
+					// Select a new banner as the first image per album
+					context.update(ALBUMS)
+						   .set(ALBUMS.BANNER_IMAGE_ID, DSL.select(IMAGES.ID)
+														   .from(IMAGES)
+														   .where(IMAGES.ALBUM_ID.eq(ALBUMS.ID))
+														   .limit(1))
+						   .where(ALBUMS.ID.in(albumIds)).execute();
+				}
 
 				return Response.ok().build();
 			}
@@ -430,7 +452,8 @@ public class ImageResource extends PaginatedServerResource
 		{
 			// Check user permissions for the album
 			Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
-			step.and(IMAGES.ALBUM_ID.in(albumAccess));
+			step.and(IMAGES.ALBUM_ID.in(albumAccess)
+					.or(IMAGES.IS_PUBLIC.eq((byte) 1)));
 		}
 
 		return step.fetchInto(ImagesRecord.class);
@@ -456,7 +479,6 @@ public class ImageResource extends PaginatedServerResource
 				{
 					ImagesRecord image = images.get(0);
 					java.io.File file = new File(Frickl.BASE_PATH, image.getPath());
-					String filename = file.getName();
 					String type;
 
 					if (file.getName().toLowerCase().endsWith(".jpg"))

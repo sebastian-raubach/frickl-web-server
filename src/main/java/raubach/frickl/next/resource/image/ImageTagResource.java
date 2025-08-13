@@ -66,7 +66,8 @@ public class ImageTagResource extends PaginatedServerResource
 				{
 					// Check user permissions for the album
 					Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
-					step.and(IMAGES.ALBUM_ID.in(albumAccess));
+					step.and(IMAGES.ALBUM_ID.in(albumAccess)
+							.or(IMAGES.IS_PUBLIC.eq((byte) 1)));
 				}
 
 				return Response.ok(step.orderBy(TAGS.NAME)
@@ -115,7 +116,8 @@ public class ImageTagResource extends PaginatedServerResource
 				{
 					// Check user permissions for the album
 					Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
-					step.and(IMAGES.ALBUM_ID.in(albumAccess));
+					step.and(IMAGES.ALBUM_ID.in(albumAccess)
+							.or(IMAGES.IS_PUBLIC.eq((byte) 1)));
 				}
 
 				Images image = step.fetchAnyInto(Images.class);
@@ -191,7 +193,8 @@ public class ImageTagResource extends PaginatedServerResource
 				{
 					// Check user permissions for the album
 					Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
-					step.and(IMAGES.ALBUM_ID.in(albumAccess));
+					step.and(IMAGES.ALBUM_ID.in(albumAccess)
+							.or(IMAGES.IS_PUBLIC.eq((byte) 1)));
 				}
 
 				Images image = step.fetchAnyInto(Images.class);

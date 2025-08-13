@@ -62,7 +62,8 @@ public class StatsResource extends PaginatedServerResource
 			{
 				// Check user permissions for the album
 				Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
-				step.and(IMAGES.ALBUM_ID.in(albumAccess));
+				step.and(IMAGES.ALBUM_ID.in(albumAccess)
+						.or(IMAGES.IS_PUBLIC.eq((byte) 1)));
 			}
 
 			return Response.ok(step.groupBy(date)
@@ -105,7 +106,8 @@ public class StatsResource extends PaginatedServerResource
 			{
 				// Check user permissions for the album
 				Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
-				step.and(IMAGES.ALBUM_ID.in(albumAccess));
+				step.and(IMAGES.ALBUM_ID.in(albumAccess)
+						.or(IMAGES.IS_PUBLIC.eq((byte) 1)));
 			}
 
 			return Response.ok(step.groupBy(date)
@@ -146,7 +148,8 @@ public class StatsResource extends PaginatedServerResource
 			{
 				// Check user permissions for the album
 				Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
-				step.where(IMAGES.ALBUM_ID.in(albumAccess));
+				step.where(IMAGES.ALBUM_ID.in(albumAccess)
+						.or(IMAGES.IS_PUBLIC.eq((byte) 1)));
 			}
 			result.setImages(step.fetchOne(0, int.class));
 
@@ -191,7 +194,8 @@ public class StatsResource extends PaginatedServerResource
 			{
 				// Check user permissions for the album
 				Set<Integer> albumAccess = UserAlbumAccessStore.getAlbumsForUser(context, userDetails);
-				step.where(IMAGES.ALBUM_ID.in(albumAccess));
+				step.where(IMAGES.ALBUM_ID.in(albumAccess)
+										  .or(IMAGES.IS_PUBLIC.eq((byte) 1)));
 			}
 
 			result.setTags(step.fetchOne(0, int.class));

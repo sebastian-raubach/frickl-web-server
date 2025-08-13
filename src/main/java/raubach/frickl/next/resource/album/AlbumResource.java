@@ -11,20 +11,19 @@ import org.jooq.impl.DSL;
 import raubach.frickl.next.*;
 import raubach.frickl.next.auth.*;
 import raubach.frickl.next.codegen.tables.pojos.*;
-import raubach.frickl.next.codegen.tables.records.AlbumsRecord;
+import raubach.frickl.next.codegen.tables.records.*;
 import raubach.frickl.next.pojo.*;
 import raubach.frickl.next.resource.PaginatedServerResource;
 import raubach.frickl.next.util.*;
 import raubach.frickl.next.util.async.AlbumZipExporter;
 import raubach.frickl.next.util.watcher.PropertyWatcher;
 
-import java.io.File;
 import java.io.*;
+import java.io.File;
 import java.sql.*;
-import java.util.Date;
 import java.util.*;
+import java.util.Date;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import static raubach.frickl.next.codegen.Tables.*;
 import static raubach.frickl.next.codegen.tables.AlbumStats.ALBUM_STATS;
@@ -266,7 +265,7 @@ public class AlbumResource extends PaginatedServerResource
 					.fetchInto(AlbumStats.class)
 					.stream()
 					.map(a -> new Album(a, b))
-					.collect(Collectors.toList());
+					.toList();
 
 			long count = previousCount == -1 ? context.fetchOne("SELECT FOUND_ROWS()").into(Long.class) : previousCount;
 
@@ -305,10 +304,10 @@ public class AlbumResource extends PaginatedServerResource
 
 				AlbumsRecord parent = context.selectFrom(ALBUMS).where(ALBUMS.ID.eq(album.getParentAlbumId())).fetchAny();
 
-				if (parent == null)
-					return Response.status(Response.Status.BAD_REQUEST).build();
-
-				location = new File(location, parent.getPath());
+				if (parent != null)
+					location = new File(location, parent.getPath());
+				else
+					album.setParentAlbumId(null);
 			}
 
 			location = new File(location, album.getName());
@@ -452,11 +451,31 @@ public class AlbumResource extends PaginatedServerResource
 		{
 			DSLContext context = Database.getContext(conn);
 
+			// Get anyone who currently has access (before change)
+			Set<Integer> existingIds = context.select(ALBUM_USERS.USER_ID)
+											  .from(ALBUM_USERS)
+											  .where(ALBUM_USERS.ALBUM_ID.eq(albumId))
+											  .fetchSet(ALBUM_USERS.USER_ID);
 			// Remove all permissions
 			context.deleteFrom(ALBUM_USERS).where(ALBUM_USERS.ALBUM_ID.eq(albumId)).execute();
 
+			// Get all users for easier access
+			Map<Integer, UsersRecord> users = context.selectFrom(USERS).fetchMap(USERS.ID);
+
 			for (Integer userId : userIds)
+			{
+				// Remember to update cached album access info for this user as well
+				existingIds.add(userId);
+				// Add permission
 				context.insertInto(ALBUM_USERS).set(ALBUM_USERS.ALBUM_ID, albumId).set(ALBUM_USERS.USER_ID, userId).execute();
+			}
+
+			// Now make sure to update all cached album access for any affected user (old or new)
+			for (Integer toUpdate : existingIds)
+			{
+				UsersRecord user = users.get(toUpdate);
+				UserAlbumAccessStore.forceUpdate(context, new AuthenticationFilter.UserDetails(user.getId(), null, null, user.getPermissions(), user.getViewType(), null));
+			}
 
 			return Response.ok().build();
 		}
