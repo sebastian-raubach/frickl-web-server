@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- FIX: Fixed issue where regular logged in users weren't able to see public images.&#10;- FIX: Fixed new banner image not being set after the current banner image has been deleted.&#10;- ADD: Added an endpoint to delete current export jobs.&#10;- FIX: Fixed issue where changing user permissions didn't update the album permission cache.&#10;-">
+    <list default="true" id="d31b1585-e782-441f-9ab1-40a7a0415eea" name="Changes" comment="- CHG: Version bump.&#10;-">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -378,7 +377,8 @@
       <workItem from="1753086192886" duration="393000" />
       <workItem from="1754903199794" duration="4659000" />
       <workItem from="1754984105225" duration="11485000" />
-      <workItem from="1755067975233" duration="4836000" />
+      <workItem from="1755067975233" duration="4956000" />
+      <workItem from="1755155838801" duration="2394000" />
     </task>
     <task id="LOCAL-00001" summary="- ADD: Code import for NEXT release.">
       <option name="closed" value="true" />
@@ -652,7 +652,15 @@
       <option name="project" value="LOCAL" />
       <updated>1755068158943</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="- CHG: Version bump.&#10;-">
+      <option name="closed" value="true" />
+      <created>1755109294334</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1755109294334</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -661,7 +669,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="- FIX: Fixed logo." />
     <MESSAGE value="- FIX: Fixed codegen issue.&#10;- FIX: Fixed broken image search.&#10;- ADD: Added tag and album name search to image search." />
     <MESSAGE value="- ADD: Added stats endpoints." />
     <MESSAGE value="- ADD: Added endpoint for image upload.&#10;- ADD: Added .mkv mime type to video endpoint.&#10;- ADD: Added album scan endpoint." />
@@ -686,6 +693,7 @@
     <MESSAGE value="- CHG: Changed image tag POST to accept string array.&#10;- CHG: Dependency updates.&#10;-" />
     <MESSAGE value="- CHG: Made some changes to user endpoints to ensure the admin account isn't changed/deleted.&#10;- ADD: Added endpoints to allow setting/changing album user permissions.&#10;-" />
     <MESSAGE value="- FIX: Fixed issue where regular logged in users weren't able to see public images.&#10;- FIX: Fixed new banner image not being set after the current banner image has been deleted.&#10;- ADD: Added an endpoint to delete current export jobs.&#10;- FIX: Fixed issue where changing user permissions didn't update the album permission cache.&#10;-" />
-    <option name="LAST_COMMIT_MESSAGE" value="- FIX: Fixed issue where regular logged in users weren't able to see public images.&#10;- FIX: Fixed new banner image not being set after the current banner image has been deleted.&#10;- ADD: Added an endpoint to delete current export jobs.&#10;- FIX: Fixed issue where changing user permissions didn't update the album permission cache.&#10;-" />
+    <MESSAGE value="- CHG: Version bump.&#10;-" />
+    <option name="LAST_COMMIT_MESSAGE" value="- CHG: Version bump.&#10;-" />
   </component>
 </project>
