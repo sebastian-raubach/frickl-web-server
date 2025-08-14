@@ -1,0 +1,44 @@
+package raubach.frickl.next.pojo;
+
+import raubach.frickl.next.codegen.tables.pojos.Tags;
+
+/**
+ * @author Sebastian Raubach
+ */
+public class TagCount
+{
+	private Tags    tag;
+	private Integer count;
+
+	public TagCount()
+	{
+	}
+
+	public TagCount(Tags tag, Integer count)
+	{
+		this.tag = tag;
+		this.count = count;
+	}
+
+	public Tags getTag()
+	{
+		return tag;
+	}
+
+	public TagCount setTag(Tags tag)
+	{
+		this.tag = tag;
+		return this;
+	}
+
+	public Integer getCount()
+	{
+		return count;
+	}
+
+	public TagCount setCount(Integer count)
+	{
+		this.count = count;
+		return this;
+	}
+}

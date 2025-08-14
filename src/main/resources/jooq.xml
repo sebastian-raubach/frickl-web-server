@@ -24,30 +24,15 @@
 		<database>
 			<forcedTypes>
 				<forcedType>
-
-					<!-- Specify the Java type of your custom type. This corresponds to the Binding's <U> type. -->
-					<userType>raubach.fricklweb.server.computed.Exif</userType>
-
-					<!-- Associate that custom type with your binding. -->
-					<binding>raubach.fricklweb.server.binding.JsonExifBinding</binding>
-
-					<!-- Add a Java regular expression matching fully-qualified columns. Use the pipe to separate several expressions.
-
-						 If provided, both "expressions" and "types" must match. -->
+					<userType>raubach.frickl.next.pojo.Exif</userType>
+					<binding>raubach.frickl.next.binding.JsonExifBinding</binding>
 					<expression>.*\.(images)\..*</expression>
-
-					<!-- Add a Java regular expression matching data types to be forced to
-						 have this type.
-
-						 Data types may be reported by your database as:
-						 - NUMBER              regexp suggestion: NUMBER
-						 - NUMBER(5)           regexp suggestion: NUMBER\(5\)
-						 - NUMBER(5, 2)        regexp suggestion: NUMBER\(5,\s*2\)
-						 - any other form
-
-						 It is thus recommended to use defensive regexes for types.
-
-						 If provided, both "expressions" and "types" must match. -->
+					<types>.*json.*</types>
+				</forcedType>
+				<forcedType>
+					<userType>raubach.frickl.next.pojo.Exif</userType>
+					<binding>raubach.frickl.next.binding.JsonExifBinding</binding>
+					<expression>.*\.(lat_lngs)\..*</expression>
 					<types>.*json.*</types>
 				</forcedType>
 			</forcedTypes>
@@ -140,7 +125,7 @@
 				 jOOQ may append the schema name to this package if generating multiple schemas,
 				 e.g. org.jooq.your.packagename.schema1
 					  org.jooq.your.packagename.schema2 -->
-			<packageName>raubach.fricklweb.server.database</packageName>
+			<packageName>raubach.frickl.next.codegen</packageName>
 
 			<!-- The destination directory of your generated classes -->
 			<directory>src/main/java/</directory>
